@@ -12,5 +12,5 @@ git remote add origin https://github.com/bjh0501/OneSports.git
 git push -u origin master
 
 
-git remote add origin https://github.com/bjh0501/OneSports.git
-git push -u origin master
+이후 사용법
+https://dh-dh.tistory.com/47
