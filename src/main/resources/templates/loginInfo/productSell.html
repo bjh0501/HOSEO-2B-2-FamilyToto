@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>One Sports</title>
+
+  <!-- Custom fonts for this template-->
+  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/header/header">
+		</ul>
+	
+	    <!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+		
+		      <!-- Main Content -->
+			<div id="content">
+		
+		        <!-- Topbar -->
+		        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/loginInfo/loginInfo">
+		
+		
+		        </nav>
+		        <!-- End of Topbar -->
+		
+		        <!-- Begin Page Content -->
+				<div class="container-fluid">
+					<div class="row">
+						<h2>상품 구매</h2>
+					</div>
+					<div class="row">
+						<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<div class="input-group mb-3">
+										<h3>보유칩</h3><a href="#" >팁 충전하기</a>
+									</div>
+									<div class="ml-auto p-2 bd-highlight">
+										<h5 class="text-word-l">보유칩: ‭25,000</h5>
+									</div>
+									<div class="ml-auto p-2 bd-highlight">
+										<h5 class="text-word-l">보유마일리지: ‭400</h5>
+									</div>
+									<hr>
+									<h3>구매할 상품들</h3>
+									<div class="table-responsive">
+						              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						                <thead>
+						                  	<tr>
+							                    <th style="width:100px;">상품번호</th>
+							                    <th style="width:500px;">상품명</th>
+							                    <th style="width:100px;">가격</th>
+							                    <th style="width:110px;">개수</th>
+							                    <th>총가격</th>
+						                  	</tr>
+						                </thead>
+						                <tbody>
+					                  	<tr>
+						                    <td>2</td>
+						                    <td>장미칼</td>
+						                    <td>10,000</td>
+						                    <td>2</td>
+						                    <td>30,000</td>
+						                  </tr>
+						                  <tr>
+						                    <td>3</td>
+						                    <td>K-2</td>
+						                    <td>100,000</td>
+						                    <td>10</td>
+						                    <td>1,000,000</td>
+						                  </tr>
+						                </tbody>
+						              </table>
+						            </div>
+									<hr>
+									<h3>배송지</h3>
+									<div class="row">
+										<div class="col-xl-9 col-md-9 mb-9">
+											<div class="input-group mb-3">
+												<input type="text" class="form-control" placeholder="Address1" aria-label="Address1" >
+											</div>
+										</div>
+										<div class="col-xl-3 col-md-3 mb-3">
+											<button type="button" class="btn btn-primary">주소찾기</button>
+											<input type="checkbox" class="custom-control-input" id="use">
+											<label class="custom-control-label" for="use">기본배송지</label>
+										</div>		
+									</div>
+									<div class="row">
+										<div class="col-xl-12 col-md-12 mb-12">
+											<div class="input-group mb-3">
+												<input type="text" class="form-control" placeholder="Address2" aria-label="Address2" >
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<h4>상품가격 : 22,000</h4>
+									<h4>배송비용 : 2,500</h4>
+									<h4>총 가격 : 24,500</h4>
+									<hr>
+									<h4>결제 후 칩 : 500</h4>
+									<hr>
+									<h4>적립마일리지 : 220</h4>
+									<h4>적립후 마일리지 : 620</h4>
+									<hr>
+									<div class="d-flex justify-content-center">
+										<div class="input-group mb-3">
+											<input type="checkbox" class="custom-control-input" id="mi">
+											<label class="custom-control-label" for="mi">마일리지로 결제</label>
+										</div>
+									</div>
+									<button type="button" class="btn btn-primary btn-block">주소찾기</button>
+								</div>
+							</div>
+						</div>
+					</div>			
+				</div>
+		        <!-- /.container-fluid -->
+		
+		</div>
+	      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white" th:include="/footer/footer">
+      
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+	</div>
+  <!-- End of Page Wrapper -->
+
+  
+
+  <!-- Bootstrap core JavaScript-->
+  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script th:src="@{js/sb-admin-2.min.js}"></script>
+
+  <!-- Page level plugins -->
+  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+
+  <!-- Page level custom scripts -->
+  <script th:src="@{js/demo/chart-area-demo.js}"></script>
+  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+
+</body>
+
+</html>

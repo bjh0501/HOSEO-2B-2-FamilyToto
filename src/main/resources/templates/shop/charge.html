@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>One Sports</title>
+
+  <!-- Custom fonts for this template-->
+  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/header/header">
+		</ul>
+	
+	    <!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+		
+		      <!-- Main Content -->
+			<div id="content">
+		
+		        <!-- Topbar -->
+		        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/loginInfo/loginInfo">
+		
+		
+		        </nav>
+		        <!-- End of Topbar -->
+		
+		        <!-- Begin Page Content -->
+				<div class="container-fluid">
+					<div class="row">
+						<h2>충전</h2>
+					</div>
+					<div class="row">
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<div class="row">
+										<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+											<div class="input-group">
+												<div class="input-group-prepend">
+											    	<div class="input-group-text">
+														<input type="radio">
+													</div>
+												</div>
+												<select class="custom-select" id="inputGroupSelect01">
+												    <option value="1000" selected>1,000</option>
+												    <option value="5000">5,000</option>
+												    <option value="2">Two</option>
+												    <option value="3">Three</option>
+												</select>	
+											</div>
+										</div>
+										<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+											<div class="input-group">
+												<div class="input-group-prepend">
+											    	<div class="input-group-text">
+														<input type="radio"  >
+											    	</div>
+											  	</div>
+												<input type="text" class="form-control" placeholder="직접입력"><div style="padding-top:8px;">&nbsp;칩</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<div class="row">
+										<div class="custom-control custom-checkbox mb-3">
+											<input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
+											<label class="custom-control-label" for="customControlValidation1" >
+												충전내역 메일로 보내기<br>
+												*메일로 보내면 충전한 팁의 10%가 더 충전됩니다.
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<div class="input-group">
+										<h3>지금까지한 충전 횟수 : 12회</h3>
+									</div>
+									<div class="input-group">
+										<h3>오늘가능한 충전 횟수 : 5회</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<div class="input-group">
+										<h3>현재 보유 칩 : 5,000칩</h3>
+									</div>
+									<div class="input-group">
+										<h3>충전 후 칩 : 6,000칩</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>			
+					<div class="row">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<div style="height:150px; overflow-y: scroll;">
+										제1조(목적)<br>
+이 약관은 짱문구 회사(전자상거래 사업자)가 운영하는 짱문구 사이버 몰(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리?의무 및 책임사항을 규정함을 목적으로 합니다.<br>
+ <br>
+※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다」<br>
+<br> 
+제2조(정의)<br>
+①“몰” 이란 짱문구 회사가 재화 또는 용역(이하 “재화등”이라 함)을 이용자에게 제공하기 위하여 컴퓨터등 정보통신설비를 이용하여 재화등을 거래할 수 있도록 설정한 가상의 영업장을 말하며, 아울러 사이버몰을 운영하는 사업자의 의미로도 사용합니다.<br>
+ 
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-4">
+							
+									<div class="input-group mb-3"> 
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" id="use">
+											<label class="custom-control-label" for="use">위 내용을 확인하였고, 결제에 동의합니다.</label>
+										</div>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-4">
+							<div class="input-group mb-3">
+								<button type="button" class="btn btn-secondary btn-lg btn-block">결제하기</button>
+							</div>
+						</div>
+						
+					</div>			
+				</div>
+		        <!-- /.container-fluid -->
+		
+		</div>
+	      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white" th:include="/footer/footer">
+      
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+	</div>
+  <!-- End of Page Wrapper -->
+
+  
+
+  <!-- Bootstrap core JavaScript-->
+  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script th:src="@{js/sb-admin-2.min.js}"></script>
+
+  <!-- Page level plugins -->
+  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+
+  <!-- Page level custom scripts -->
+  <script th:src="@{js/demo/chart-area-demo.js}"></script>
+  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+
+</body>
+
+</html>

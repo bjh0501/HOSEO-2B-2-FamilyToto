@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>One Sports</title>
+
+  <!-- Custom fonts for this template-->
+  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/header/header">
+		</ul>
+	
+	    <!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+		
+		      <!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/loginInfo/loginInfo">
+				</nav>
+				<!-- End of Topbar -->
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<div class="row">
+						<h2>상품보기</h2>
+					</div>
+					<div class="card shadow mb-4">
+						<div class="card-body">
+							<div class="input-group mb-3">
+								<h1>포커 카드 정품</h1>
+							</div>
+							<div class="row">
+								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+									<img src="http://gdimg.gmarket.co.kr/982212715/still/600?ver=1532747867" width=100%>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">가격</span>
+										</div>
+										<label class="text-word-l">1,500팁</label>
+									</div>
+									<div class="input-group mb-2">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="basic-addon1">상품평</span>
+											</div>
+											<label class="text-word-l">★★★☆☆</label>
+										</div>
+									</div>
+									<div class="input-group mb-2">
+										<div class="input-group mb-3">
+											<h3>상품 설명</h3>
+										</div>
+										<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+									</div>
+									<div class="input-group mb-2">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="basic-addon1">개수</span>
+											</div>
+											<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+										</div>
+									</div>
+									<div class="input-group mb-2">
+										<div class="input-group mb-3">
+											<div class="col-6">
+												<button type="button" class="btn btn-secondary btn-block btn-lg">장바구니</button>
+											</div>
+											<div class="col-6">
+												<button type="button" class="btn btn-secondary btn-block btn-lg">즉시구매</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-xl-12 col-md-12 mb-3">
+									<div class="input-group mb-3">
+										<h4>상품 평<span style="color:orange">(2)</span></h4>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group mb-3">
+									<label style="padding-top:8px;padding-right:2px;">KakaoAd</label>
+									<a class="navbar-brand" href="#">
+									<img src="img/social/naver.jpg" width="30" height="30" alt="">
+									</a>
+									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1">
+									<button type="button" class="btn btn-secondary" style="margin-left:5px">등록</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group d-flex">
+									<div class="p-1">
+										<label class="text-word-r">구매자1</label>
+										<a class="navbar-brand" href="#">
+										<img src="img/social/naver.jpg" width="30" height="30" alt="">
+										</a>
+									</div>
+									<div class="p-1">
+										<span>★★★★☆</span><br>
+										<span>내용</span>
+									</div>
+									<p class="ml-auto p-2 ">
+										<label class="text-word-l">2015. 12. 12 12:25:33</label>
+									</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-group d-flex">
+									<div class="p-1">
+										<label class="text-word-r">KakaoAd</label>
+										<a class="navbar-brand" href="#">
+										<img src="img/social/naver.jpg" width="30" height="30" alt="">
+										</a>
+									</div>
+									<div class="p-1">
+										<span>★★★★★</span><br>
+										<span>좋네</span>
+									</div>
+									<p class="ml-auto p-2 ">
+										<button type="button" class="btn btn-secondary">수정</button>
+										<button type="button" class="btn btn-secondary">삭제</button>
+										<label class="text-word-l">2010. 05. 02 12:23:23</label>
+									</p>
+								</div>
+							</div>
+							<div class="row justify-content-md-center">
+								<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4">
+									<ul class="pagination justify-content-center">
+										<li class="page-item disabled">
+										<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+										</li>
+										<li class="page-item"><a class="page-link" href="#">1</a></li>
+										<li class="page-item"><a class="page-link" href="#">2</a></li>
+										<li class="page-item"><a class="page-link" href="#">3</a></li>
+										<li class="page-item">
+										<a class="page-link" href="#">Next</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	        <!-- /.container-fluid -->
+	
+			</div>
+		</div>
+	      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white" th:include="/footer/footer">
+      
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+	</div>
+  <!-- End of Page Wrapper -->
+
+  
+
+  <!-- Bootstrap core JavaScript-->
+  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script th:src="@{js/sb-admin-2.min.js}"></script>
+
+  <!-- Page level plugins -->
+  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+
+  <!-- Page level custom scripts -->
+  <script th:src="@{js/demo/chart-area-demo.js}"></script>
+  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+</body>
+
+</html>
