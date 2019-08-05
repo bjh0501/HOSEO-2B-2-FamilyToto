@@ -2,16 +2,20 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.familytoto.familytotoProject.mybatis.webLog.mapper">
+<mapper namespace="com.familytoto.familytotoProject.mybatis.webLog.mapper.WebLogMapper">
 
 
 	<insert id="insertWebLog">
-		INSERT INTO WEB_LOG (CURRENT_URL, PREV_URL, IP, CUST_NO)
+			INSERT INTO WEB_LOG (CURRENT_URL, PREV_URL, IP, CUST_NO)
 		VALUES(#{currentUrl},#{prevUrl},#{ip},#{custNo})
 	</insert>
-<!-- 
-	<select id="getPeopleList" resultType="PeopleVO">
-		SELECT ID, PASSWORD, NAME, PHONE
-		  FROM PEOPLE
-	</select> -->
+	
+	<select id="getWebLogList" resultType="WebLogVO">
+			SELECT	LOG_NO as logNo,
+					CURRENT_URL as currentUrl,
+					PREV_URL as prevUrl,
+					IP,
+					CUST_NO as custNo
+			FROM WEB_LOG
+	</select>
 </mapper>
