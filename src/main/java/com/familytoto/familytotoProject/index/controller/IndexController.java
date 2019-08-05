@@ -1,21 +1,10 @@
 package com.familytoto.familytotoProject.index.controller;
 
-import java.lang.reflect.Member;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.familytoto.familytotoProject.dao.BoardMapper;
 
 @Controller
-public class IndexController {
-	 @Autowired
-	 BoardMapper boardMapper; 
-	
+public class IndexController {	
 	@RequestMapping("index")
     public String index() {
         return "index";
@@ -104,11 +93,5 @@ public class IndexController {
 	@RequestMapping("productSellList")
     public String productSellList() {
         return "loginInfo/productSellList";
-    }
-	
-	@ResponseBody
-	@GetMapping("members/{board_no}")
-    public Member helloWorld(@PathVariable("board_no") long no) {
-        return boardMapper.selectMember(no);
     }
 }
