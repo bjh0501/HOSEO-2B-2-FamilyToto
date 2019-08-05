@@ -10,8 +10,7 @@
 		VALUES(#{currentUrl},#{prevUrl},#{ip},#{custNo})
 	</insert>
 	
-	<select id="getWebLogList" resultType="WebLogVO">
-			SELECT	LOG_NO as logNo,
+	<select id="getWebLogList" resultType="WebLogVO">			SELECT	LOG_NO as logNo,
 					CURRENT_URL as currentUrl,
 					PREV_URL as prevUrl,
 					IP,
