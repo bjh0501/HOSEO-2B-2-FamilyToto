@@ -1,10 +1,20 @@
 package com.familytoto.familytotoProject.index.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.familytoto.familytotoProject.mybatis.webLog.controller.WebLogController;
+import com.familytoto.familytotoProject.mybatis.webLog.domain.WebLogVO;
+
 @Controller
-public class IndexController {	
+public class IndexController {
+	WebLogController webLogController;
+	
+	HttpServletRequest httpServletRequest;
+	
 	@RequestMapping("index")
     public String index() {
         return "index";
@@ -12,6 +22,8 @@ public class IndexController {
 	
 	@RequestMapping("login")
     public String login() {
+		System.out.println("메인 호출@#$@#$");
+		System.out.println(webLogController.insertWebLog(httpServletRequest));
         return "loginInfo/login";
     }
 	

@@ -6,15 +6,16 @@
 
 
 	<insert id="insertWebLog">
-			INSERT INTO WEB_LOG (CURRENT_URL, PREV_URL, IP, CUST_NO)
-		VALUES(#{currentUrl},#{prevUrl},#{ip},#{custNo})
+			INSERT INTO WEB_LOG (CURRENT_URL, BOARD_NO, PREV_URL, IP, CUST_NO, REG_DT)
+			VALUES(#{currentUrl}, #{boardNo}, #{prevUrl},#{ip},#{custNo}, NOW())
 	</insert>
 	
-	<select id="getWebLogList" resultType="WebLogVO">			SELECT	LOG_NO as logNo,
+	<select id="getWebLogList" resultType="WebLogVO">
+			SELECT	LOG_NO as logNo,
 					CURRENT_URL as currentUrl,
 					PREV_URL as prevUrl,
 					IP,
 					CUST_NO as custNo
-			FROM WEB_LOG
+			FROM	WEB_LOG
 	</select>
 </mapper>
