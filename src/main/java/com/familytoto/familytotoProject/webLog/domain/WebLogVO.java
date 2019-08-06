@@ -1,4 +1,4 @@
-package com.familytoto.familytotoProject.mybatis.webLog.domain;
+package com.familytoto.familytotoProject.webLog.domain;
 
 import java.sql.Timestamp;
 

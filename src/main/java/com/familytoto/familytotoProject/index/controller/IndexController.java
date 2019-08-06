@@ -1,30 +1,37 @@
 package com.familytoto.familytotoProject.index.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Enumeration;
+
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.familytoto.familytotoProject.mybatis.webLog.controller.WebLogController;
-import com.familytoto.familytotoProject.mybatis.webLog.domain.WebLogVO;
+import com.familytoto.familytotoProject.webLog.domain.WebLogVO;
+import com.familytoto.familytotoProject.webLog.service.WebLogService;
 
 @Controller
 public class IndexController {
-	WebLogController webLogController;
+	@Inject
+	WebLogService webLogService;
 	
-	HttpServletRequest httpServletRequest;
-	
-	@RequestMapping("index")
+	@RequestMapping(value = { "index", "/" })
     public String index() {
         return "index";
     }
-	
+
 	@RequestMapping("login")
-    public String login() {
-		System.out.println("메인 호출@#$@#$");
-		System.out.println(webLogController.insertWebLog(httpServletRequest));
-        return "loginInfo/login";
+    public String login(@ModelAttribute WebLogVO vo, HttpServletRequest request) {
+		vo.setIp(request.getRemoteAddr());
+		vo.setCurrentUrl(getURL(request));
+		vo.setPrevUrl(request.getHeader("referer"));
+		webLogService.insertWebLog(vo, request);
+		return "loginInfo/login";
     }
 	
 	@RequestMapping("registerCust")
@@ -106,4 +113,31 @@ public class IndexController {
     public String productSellList() {
         return "loginInfo/productSellList";
     }
+	
+	public String getURL(HttpServletRequest request) {
+		Enumeration<?> param = request.getParameterNames();
+
+		StringBuffer strParam = new StringBuffer();
+		StringBuffer strURL = new StringBuffer();
+
+		if (param.hasMoreElements()) {
+			strParam.append("?");
+		}
+
+		while (param.hasMoreElements()) {
+			String name = (String) param.nextElement();
+			String value = request.getParameter(name);
+
+			strParam.append(name + "=" + value);
+
+			if (param.hasMoreElements()) {
+				strParam.append("&");
+			}
+		}
+
+		strURL.append(request.getRequestURI());
+		strURL.append(strParam);
+
+		return strURL.toString();
+	}
 }

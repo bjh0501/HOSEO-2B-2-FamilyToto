@@ -1,4 +1,4 @@
-package com.familytoto.familytotoProject.mybatis.webLog.config;
+package com.familytoto.familytotoProject.webLog;
 
 import java.util.Properties;
 
@@ -6,14 +6,12 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @Configuration
-@MapperScan("com.familytoto.familytotoProject.mybatis.webLog.mapper") // interface
 public class MybatisConfig {
 	
 	@Bean
@@ -25,7 +23,7 @@ public class MybatisConfig {
 		sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
 		sqlSessionFactoryBean.setDataSource(dataSource);
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.mybatis.webLog.domain");
-		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/**/*.xml"));
+		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/WebLogMapper.xml"));
 		return sqlSessionFactoryBean.getObject();
 	}
 	
