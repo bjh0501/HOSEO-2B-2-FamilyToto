@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="registerCust">
+
+
+	<insert id="insertRegisterCust" parameterType="com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO" useGeneratedKeys="true" keyProperty="familyCustNo">
+			INSERT INTO FAMILY_CUSTOM (FAMILY_CUST_NICKNAME, FAMILY_CUST_EMAIL, FAMILY_CUST_ADDR1, FAMILY_CUST_ADDR2, 
+									    FAMILY_CUST_RECOMMEND, FMAILY_CUST_EXP, REG_CUST_NO, CHG_CUST_NO,
+									    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN)
+			VALUES(
+									    '${familyCustNickname}', '${familyCustEmail}', '${familyCustAddr1}', '${familyCustAddr2}', 
+									    '${familyCustRecommend}', 0, 0, NULL,
+									     NOW(), NULL, '${regIp}', NULL, 'Y');
+	</insert>
+	
+	<insert id="insertCust" >
+			INSERT INTO CUSTOM ( 
+				FAMILY_CUST_NO,
+			    CUST_ID, 
+			    CUST_PASSWORD, 
+			    REG_CUST_NO, 
+			    CHG_CUST_NO, 
+			    REG_DT, 
+			    CHG_DT, 
+			    REG_IP, 
+			    CHG_IP, 
+			    USE_YN)
+			VALUES (
+				${familyCustNo},  
+			    '${custId}', 
+			    '${custPassword}', 
+			    0, 
+			    NULL, 
+			    NOW(), 
+			    NULL, 
+			    '${regIp}',  
+			    NULL, 
+			    'Y');
+	</insert>
+</mapper>

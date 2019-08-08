@@ -1,10 +1,8 @@
 package com.familytoto.familytotoProject.webLog.service;
 
-import java.util.Enumeration;
-
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.webLog.dao.WebLogDAO;
@@ -12,8 +10,7 @@ import com.familytoto.familytotoProject.webLog.domain.WebLogVO;
 
 @Service
 public class WebLogServiceImpl implements WebLogService {
-	
-	@Inject
+	@Autowired
 	WebLogDAO webLogDao;
 	
 	public void insertWebLog(WebLogVO vo, HttpServletRequest request){		

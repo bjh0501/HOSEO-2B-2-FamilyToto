@@ -52,28 +52,28 @@
               <div class="card shadow h-100 py-12">
               	<div style="padding:20px;">
 					<label>아이디</label>
-					<input type="text" class="form-control" placeholder="ID" aria-label="Username" ><br>
+					<input type="text" class="form-control" placeholder="ID" aria-label="Username" id="id"><br>
 					<label>비밀번호</label>
-					<input type="text" class="form-control" placeholder="Password" aria-label="Password" ><br>
+					<input type="password" class="form-control" placeholder="Password" aria-label="Password" id="password"><br>
 					<label>비밀번호 확인</label>
-					<input type="text" class="form-control" placeholder="Password check" aria-label="Password check" ><br>
+					<input type="password" class="form-control" placeholder="Password check" aria-label="Password check" id="passwordCheck"><br>
 					<label>닉네임</label>
-					<input type="text" class="form-control" placeholder="Nickname" aria-label="Nickname" ><br>
+					<input type="text" class="form-control" placeholder="Nickname" aria-label="Nickname" id="nickname"><br>
 					<label>이메일</label>
 					<div class="row">
 						<div class="col-xl-4 col-md-4 mb-4">
-							<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" >
+							<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="email1">
 						</div>
 						<label style="padding-top:6px;">@</label>
 						<div class="col-xl-4 col-md-4 mb-4">
-							<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail">
+							<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="email2">
 						</div>
 						<div class="col-xl-3 col-md-3 mb-3">
-							<select class="custom-select" id="inputGroupSelect01">
-							    <option selected>Choose...</option>
-							    <option value="1">One</option>
-							    <option value="2">Two</option>
-							    <option value="3">Three</option>
+							<select class="custom-select" id="emailChoose">
+							    <option selected value="J">직접선택</option>
+							    <option value="N">Naver.com</option>
+							    <option value="D">Daum.net</option>
+							    <option value="G">Google.com</option>
 							  </select>
 						  </div>
 					  </div>
@@ -82,7 +82,7 @@
 					<div class="row">
 						<div class="col-xl-9 col-md-9 mb-9">
 							<div class="input-group mb-3">
-								<input type="text" class="form-control" placeholder="Address1" aria-label="Address1" >
+								<input type="text" class="form-control" placeholder="Address1" aria-label="Address1" id="addr1">
 							</div>
 						</div>
 						<div class="col-xl-3 col-md-3 mb-3">
@@ -91,9 +91,9 @@
 							</div>
 						</div>
 					</div>
-					<input type="text" class="form-control" placeholder="Address2" aria-label="Address2" ><br>
+					<input type="text" class="form-control" placeholder="Address2" aria-label="Address2" id="addr2"><br>
 					<label>추천인</label>
-					<input type="text" class="form-control" placeholder=Recommender aria-label="Recommender" ><br>
+					<input type="text" class="form-control" placeholder=Recommender aria-label="Recommender" id="recommender"><br>
 					<div class="row">
 						<div class="col-xl-6 col-md-6 mb-6">
 							<img src="/img/cap_test.png" width=100% style="min-width:235px; max-width:425px;float:right">
@@ -114,7 +114,7 @@
 							<div class="row">
 								<div class="col-xl-12 col-md-12 mb-12">
 									<div class="input-group mb-3">
-									  <input type="text" class="form-control" placeholder="입력해 주세요." aria-label="Username" aria-describedby="basic-addon1">
+									  <input type="text" class="form-control" placeholder="입력해 주세요." aria-label="capturea" aria-describedby="basic-addon1" id="capture">
 									</div>
 								</div>
 							</div>
@@ -146,7 +146,7 @@
 						</div>
 					</div>
 					<div class="input-group mb-3">
-						<button type="button" class="btn btn-secondary btn-lg btn-block">회원가입</button>
+						<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="javascript:register();">회원가입</button>
 					</div>
                  </div>
               </div>
@@ -191,3 +191,45 @@
 </body>
 
 </html>
+<script>
+	function register() {
+		var email = "";
+		
+		custId = $("#id").val();
+		custPassword = $("#password").val();
+		familyCustNickname = $("#nickname").val();
+		addr1 = $("#addr1").val();
+		addr2 = $("#addr2").val();
+		reco = $("#recommender").val();
+		
+		email1 = $("#email1").val() + "";
+		email2 = $("#email2").val() + "";		
+		email = email1 +"@"+ email2;
+		
+		alert("AA");
+		
+		$.ajax({
+		    url: "/registerCust/register",
+		    type: "POST",
+		    cache: false,
+		    dataType: "json",
+		    data: "custId=" + custId +
+		    "&custPassword=" + custPassword +
+		    "&familyCustNickname=" + familyCustNickname + 
+		    "&familyCustEmail=" + email +
+		    "&familyCustAddr1=" + addr1 +
+		    "&familyCustAddr2=" + addr2 +
+		    "&familyCustRecommend=" + reco,
+		    success: function(data){
+		     alert(id)
+		    },
+		    
+		    error: function (request, status, error){        
+		        var msg = "ERROR : " + request.status + "<br>"
+		      msg +=  + "내용 : " + request.responseText + "<br>" + error;
+		      console.log(msg);              
+		    }
+		  });
+	}
+
+</script>

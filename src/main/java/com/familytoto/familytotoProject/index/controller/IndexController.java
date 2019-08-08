@@ -1,8 +1,5 @@
 package com.familytoto.familytotoProject.index.controller;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Enumeration;
 
 import javax.inject.Inject;
@@ -32,11 +29,6 @@ public class IndexController {
 		vo.setPrevUrl(request.getHeader("referer"));
 		webLogService.insertWebLog(vo, request);
 		return "loginInfo/login";
-    }
-	
-	@RequestMapping("registerCust")
-    public String registerCust() {
-        return "loginInfo/registerCust";
     }
 	
 	@RequestMapping("findID_PW")

@@ -1,4 +1,4 @@
-package com.familytoto.familytotoProject.webLog;
+package com.familytoto.familytotoProject.config;
 
 import java.util.Properties;
 
@@ -23,7 +23,9 @@ public class MybatisConfig {
 		sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
 		sqlSessionFactoryBean.setDataSource(dataSource);
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.mybatis.webLog.domain");
+		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.registerCust.domain");
 		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/WebLogMapper.xml"));
+		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/RegisterCustMapper.xml"));
 		return sqlSessionFactoryBean.getObject();
 	}
 	
