@@ -27,8 +27,12 @@ target/
 /.nb-gradle/
 build/
 
+
 ### VS Code ###
 .vscode/
 
 ### OneSports
 *.properties
+
+### Wrong Directory
+/OneSports
