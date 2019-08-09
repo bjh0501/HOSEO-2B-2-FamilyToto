@@ -2,6 +2,8 @@ package com.familytoto.familytotoProject.registerCust.domain;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Pattern;
+
 // OneSports회원
 public class CustVO {
 
@@ -12,6 +14,7 @@ public class CustVO {
 	private int familyCustNo;
 
 	// CUST_ID
+    @Pattern(regexp = "/^[a-zA-Z0-9+]{4,20}$/", message = "4~20자의 영문, 숫자만 가능")
 	private String custId;
 
 	// CUST_PASSWORD

@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.registerCust.service;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +21,11 @@ public class RegisterCustServiceImpl implements RegisterCustService {
 		vo.setRegIp(request.getRemoteAddr());
 		
 		return registerCustDao.insert(vo);
+	}
+
+	@Override
+	public Map<String, Object> checkNickname(RegisterCustVO vo) {
+		// TODO Auto-generated method stub
+		return registerCustDao.checkNickname(vo);
 	}
 }

@@ -15,28 +15,26 @@
 									     NOW(), NULL, '${regIp}', NULL, 'Y');
 	</insert>
 	
+	<select id="checkNickname" resultType="map">
+		SELECT	FAMILY_CUST_NICKNAME
+		FROM	FAMILY_CUSTOM 
+		WHERE	FAMILY_CUST_NICKNAME='${familyCustNickname}'
+		AND		USE_YN='Y'
+		LIMIT 1; 
+	</select>
+	
 	<insert id="insertCust" >
 			INSERT INTO CUSTOM ( 
-				FAMILY_CUST_NO,
-			    CUST_ID, 
-			    CUST_PASSWORD, 
-			    REG_CUST_NO, 
-			    CHG_CUST_NO, 
-			    REG_DT, 
-			    CHG_DT, 
-			    REG_IP, 
-			    CHG_IP, 
-			    USE_YN)
+				FAMILY_CUST_NO,	CUST_ID, CUST_PASSWORD, REG_CUST_NO, 
+			    CHG_CUST_NO, REG_DT, CHG_DT, REG_IP, 
+			    CHG_IP, USE_YN)
 			VALUES (
-				${familyCustNo},  
-			    '${custId}', 
-			    '${custPassword}', 
-			    0, 
-			    NULL, 
-			    NOW(), 
-			    NULL, 
-			    '${regIp}',  
-			    NULL, 
-			    'Y');
+				${familyCustNo}, '${custId}', '${custPassword}', 0, 
+			    NULL, NOW(),NULL, '${regIp}',  
+			    NULL, 'Y');
 	</insert>
+	
+	<select id="checkId" resultType="map">
+		select CUST_ID from CUSTOM where CUST_ID = '${custId}' and USE_YN = 'Y' limit 1; 
+	</select> 
 </mapper>

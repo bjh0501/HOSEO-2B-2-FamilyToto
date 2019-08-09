@@ -3,6 +3,7 @@ package com.familytoto.familytotoProject.registerCust.domain;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 //통합 회원
 public class RegisterCustVO {
@@ -11,6 +12,7 @@ public class RegisterCustVO {
 	private int familyCustNo;
 
 	// FAMILY_CUST_NICKNAME
+	@Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
 	private String familyCustNickname;
 
 	// FAMILY_CUST_EMAIL
@@ -26,6 +28,7 @@ public class RegisterCustVO {
 	// 0
 	private int fmailyCustExp;
 	
+	@Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
 	private String familyCustRecommend;
 	
 	// REG_CUST_NO

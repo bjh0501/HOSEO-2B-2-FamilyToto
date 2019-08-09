@@ -69,7 +69,7 @@
 							<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="email2">
 						</div>
 						<div class="col-xl-3 col-md-3 mb-3">
-							<select class="custom-select" id="emailChoose">
+							<select class="custom-select" id="emailChoose" onChange="chooseEmail()">
 							    <option selected value="J">직접선택</option>
 							    <option value="N">Naver.com</option>
 							    <option value="D">Daum.net</option>
@@ -87,7 +87,7 @@
 						</div>
 						<div class="col-xl-3 col-md-3 mb-3">
 							<div class="input-group mb-3">
-								<button type="button" class="btn btn-secondary">주소찾기</button>
+								<button type="button" class="btn btn-secondary" onClick="javascript:openDaumZipAddress();">주소찾기</button>
 							</div>
 						</div>
 					</div>
@@ -95,14 +95,14 @@
 					<label>추천인</label>
 					<input type="text" class="form-control" placeholder=Recommender aria-label="Recommender" id="recommender"><br>
 					<div class="row">
-						<div class="col-xl-6 col-md-6 mb-6">
-							<img src="/img/cap_test.png" width=100% style="min-width:235px; max-width:425px;float:right">
+						<div class="col-xl-3 col-md-6 mb-3">
+							<img src="/captcha/index" id="imgCaptcha" style="min-width:235px; max-width:425px;float:right">
 						</div>
-						<div class="col-xl-6 col-md-6 mb-6">
+						<div class="col-xl-9 col-md-6 mb-9">
 							<div class="row">
 								<div class="col-xl-6 col-md-6 mb-6">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-lg btn-block ">새로고침</button>
+										<button type="button" class="btn btn-secondary btn-lg btn-block " id="refresh">새로고침</button>
 									</div>
 								</div>
 								<div class="col-xl-6 col-md-6 mb-6">
@@ -114,14 +114,14 @@
 							<div class="row">
 								<div class="col-xl-12 col-md-12 mb-12">
 									<div class="input-group mb-3">
-									  <input type="text" class="form-control" placeholder="입력해 주세요." aria-label="capturea" aria-describedby="basic-addon1" id="capture">
+									  <input type="text" class="form-control" placeholder="입력해 주세요." aria-label="capturea" aria-describedby="basic-addon1" id="captcha">
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xl-12 col-md-12 mb-12">
 									<div class="input-group mb-3">
-									  *오른쪽 이미지에 있는 문자를 입력해주세요.
+									  *이미지에 있는 문자를 입력해주세요.
 									</div>
 								</div>
 							</div>
@@ -191,45 +191,172 @@
 </body>
 
 </html>
+<script type="text/JavaScript" src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
 <script>
+	function chooseEmail() {
+		ec = $("#emailChoose").val()
+		email2 = $("#email2")
+		
+		email2.prop('disabled', true);
+		
+		if(ec == "J") {
+			email2.val("");
+			email2.prop('disabled', false);
+		} else if(ec == "N") {
+			email2.val("naver.com");
+		} else if(ec == "D") {
+			email2.val("daume.net");
+		} else {
+			email2.val("google.com");
+		}
+	}
+
+	function openDaumZipAddress() {
+		new daum.Postcode({
+			oncomplete:function(data) {
+				jQuery("#addr1").val(data.address);
+			}
+	
+		}).open();
+	
+	}
+
 	function register() {
 		var email = "";
 		
-		custId = $("#id").val();
-		custPassword = $("#password").val();
-		familyCustNickname = $("#nickname").val();
-		addr1 = $("#addr1").val();
-		addr2 = $("#addr2").val();
-		reco = $("#recommender").val();
+		captcha = $("#captcha");
+		custId = $("#id");
+		custPassword = $("#password");
+		passwordCheck = $("#passwordCheck");
 		
-		email1 = $("#email1").val() + "";
-		email2 = $("#email2").val() + "";		
-		email = email1 +"@"+ email2;
+		familyCustNickname = $("#nickname");
+		addr1 = $("#addr1");
+		addr2 = $("#addr2");
+		reco = $("#recommender");
 		
-		alert("AA");
+		email1 = $("#email1");
+		email2 = $("#email2");		
+		email = email1.val() +"@"+ email2.val();
 		
-		$.ajax({
-		    url: "/registerCust/register",
-		    type: "POST",
-		    cache: false,
-		    dataType: "json",
-		    data: "custId=" + custId +
-		    "&custPassword=" + custPassword +
-		    "&familyCustNickname=" + familyCustNickname + 
-		    "&familyCustEmail=" + email +
-		    "&familyCustAddr1=" + addr1 +
-		    "&familyCustAddr2=" + addr2 +
-		    "&familyCustRecommend=" + reco,
-		    success: function(data){
-		     alert(id)
-		    },
-		    
-		    error: function (request, status, error){        
-		        var msg = "ERROR : " + request.status + "<br>"
-		      msg +=  + "내용 : " + request.responseText + "<br>" + error;
-		      console.log(msg);              
-		    }
-		  });
+		if(custId.val().trim() == "") {
+			alert("아이디를 입력해주세요.");
+			custId.focus();
+			return; 
+		}
+		
+		
+		// 영,숫 유효성검사하기
+		if(custId.val().length < 4 || custId.val().length > 20) {
+			alert("아이디는 4~20자리까지 입력이 가능합니다.");
+			custId.focus();
+			return ;
+		}
+		
+		if(custPassword.val() == "") {
+			alert("비밀번호를 입력해주세요.");
+			custPassword.focus();
+			return; 
+		}
+		
+		if(passwordCheck.val() == "") {
+			alert("비밀번호 확인을 입력해주세요.");
+			passwordCheck.focus();
+			return ;
+		}
+		
+		if(passwordCheck.val().length < 4 || passwordCheck.val().length > 20) {
+			alert("비밀번호는 4~20자리까지 입력이 가능합니다.");
+			passwordCheck.focus();
+			return ;
+		}
+		
+		if(passwordCheck.val() != custPassword.val()) {
+			alert("비밀번호와 비밀번호 확인이 다릅니다.");
+			passwordCheck.focus();
+			return;
+		}
+		
+		if(familyCustNickname.val().trim() == "") {
+			alert("닉네임을 입력해주세요.");
+			familyCustNickname.focus();
+			return ;
+		}
+		
+ 		if(familyCustNickname.val().length < 2 || familyCustNickname.val().length > 8) {
+			alert("닉네임은 2~8자리까지 입력이 가능합니다.");
+			familyCustNickname.focus();
+			return ;
+		}
+		
+		if(addr1.val().trim() == "") {
+			alert("첫번째 주소를 입력해주세요.");
+			addr1.focus();
+			return; 
+		}
+		
+		if(addr2.val().trim() == "") {
+			alert("두번째 주소를 입력해주세요.");
+			addr2.focus();
+			return; 
+		}
+		
+		if(captcha.val().trim() == "") {
+			alert("자동 가입 방지 문자를 입력해주세요.");
+			captcha.focus();
+			return; 
+		}
+		
+		if($("input:checkbox[id='use']").is(":checked") == false) {
+			alert("이용약관을 체크해주세요.");
+			return;
+		}
+		if($("input:checkbox[id='adult']").is(":checked") == false) {
+			alert("성인이 아니면 가입을 할 수가 없습니다.\n성인이면 체크해주세요.");
+			return;
+		}
+		
+   		$.ajax({
+   		    url: "/registerCust/register",
+   		    type: "POST",
+   		    cache: false,
+   		    async:false,
+   		    dataType: "json",
+   		    data: "custId=" + custId.val() +
+   		    "&custPassword=" + passwordCheck.val() +
+   		    "&familyCustNickname=" + familyCustNickname.val() + 
+   		    "&familyCustEmail=" + email +
+   		    "&familyCustAddr1=" + addr1.val() +
+   		    "&familyCustAddr2=" + addr2.val() +
+   		    "&familyCustRecommend=" + reco.val() +
+   		    "&captcha=" + captcha.val(),
+   		    success: function(data){
+   		    	if(data == -99) {
+   		    		alert("자동 가입 방지 문자를 잘못 입력하였습니다.");
+   		    		captcha.focus();
+   		    		return ;
+   		    	} else if(data == -98) {
+   		    		alert("이미 존재하는 아이디입니다.");
+   		    		custId.focus();
+   		    		return ;
+   		    	} else if(data == -97) {
+   		    		alert("이미 존재하는 닉네임입니다.");
+   		    		familyCustNickname.focus();
+   		    		return ;
+   		    	} 
+   		    	
+   		    	alert("회원가입에 성공하였습니다.");
+   		    },
+   		    
+   		    error: function (request, status, error){        
+   		        var msg = "ERROR : " + request.status + "<br>"
+   		      msg +=  + "내용 : " + request.responseText + "<br>" + error;
+   		      console.log(msg);              
+   		    }
+   		});
 	}
-
+	
+	$("#refresh").click(function(){
+        $("#imgCaptcha").attr("src", "/captcha/index");
+    });
 </script>

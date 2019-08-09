@@ -1,8 +1,12 @@
 package com.familytoto.familytotoProject.registerCust.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
+import com.familytoto.familytotoProject.registerCust.service.CaptchaService;
 import com.familytoto.familytotoProject.registerCust.service.CustService;
 import com.familytoto.familytotoProject.registerCust.service.RegisterCustService;
 
@@ -22,19 +27,39 @@ public class RegisterCustController {
 	@Autowired
 	CustService custService;
 	
+	@Autowired
+	CaptchaService captchaService;
+	
 	@RequestMapping("/registerCust")
-    public String registerCust() {
+    public String registerCust(HttpServletRequest request) {
+			System.out.println(request.getContextPath() );
         return "loginInfo/registerCust";
     }
 	
 	@RequestMapping(value = "/registerCust/register", method = RequestMethod.POST)
 	@ResponseBody
-	public String insertRegister(@ModelAttribute RegisterCustVO rcVo, @ModelAttribute CustVO cVo, HttpServletRequest request) throws Exception {
-		System.out.println(registerCustService.insertRegisterCust(rcVo, request));
-		cVo.setFamilyCustNo(rcVo.getFamilyCustNo());
-		custService.insertCust(cVo, request);
-
-		return "";
+	public int insertRegister(@ModelAttribute RegisterCustVO rcVo, @ModelAttribute CustVO cVo, 
+			HttpServletRequest request, HttpSession session) throws Exception {
+		int nCaptchaResult = captchaService.isRight(session, request);
+		
+		Map<String, Object> custDupleId = custService.checkCust(cVo);
+		
+		Map<String, Object> custDupleNickname = registerCustService.checkNickname(rcVo);
+		
+		int nResult=0;
+		
+		if(nCaptchaResult == 0) { // 틀린캡챠
+			nResult = -99;
+		} else if(custDupleId != null) { // 중복 아이디
+			nResult = -98;
+		} else if(custDupleNickname != null) { // 중복 닉네임
+			nResult = -97;			
+		} else {
+			registerCustService.insertRegisterCust(rcVo, request);
+			cVo.setFamilyCustNo(rcVo.getFamilyCustNo());
+			custService.insertCust(cVo, request);
+		}
+		
+		return nResult;
 	}
-
 }
