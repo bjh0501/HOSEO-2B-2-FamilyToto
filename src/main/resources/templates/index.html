@@ -25,7 +25,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/header/header">
+	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
 	</ul>
 
     <!-- Content Wrapper -->
@@ -35,7 +35,7 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/loginInfo/loginInfo">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
 
 
         </nav>
@@ -107,7 +107,7 @@
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">충전</h6>
                 </div>
-                <div class="card-body">
+                <div class="card-body" onClick="javascript:goCharge();" style="cursor:pointer;">
                   <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/charge.png" alt="">
                 </div>
               </div>
@@ -117,7 +117,7 @@
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">환급</h6>
                 </div>
-                <div class="card-body">
+                <div class="card-body" onClick="javascript:alert('환급을 할 수 없습니다.');" style="cursor:pointer;">
                   <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/exchange.png" alt="">
                 </div>
               </div>
@@ -197,3 +197,8 @@
 </body>
 
 </html>
+<script>
+	function goCharge() {
+		location.href = "/charge"
+	}
+</script>

@@ -25,7 +25,7 @@
   <!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/header/header">
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
 		</ul>
 	
 	    <!-- Content Wrapper -->
@@ -35,7 +35,7 @@
 			<div id="content">
 		
 		        <!-- Topbar -->
-		        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/loginInfo/loginInfo">
+		        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
 		
 		
 		        </nav>
@@ -57,24 +57,24 @@
 									<label>이메일</label>
 									<div class="row">
 										<div class="col-xl-3 col-md-4 mb-4">
-											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" >
+											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="idEmail1" >
 										</div>
 										<div>
 											<label style="padding-top:6px;">@</label>
 										</div>
 										<div class="col-xl-3 col-md-4 mb-4">
-											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail">
+											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="idEmail2">
 										</div>
 										<div class="col-xl-3 col-md-4 mb-4">
-											<select class="custom-select" id="inputGroupSelect01">
-											    <option selected>직접선택</option>
-											    <option value="naver.com">naver.com</option>
-											    <option value="daum.net">daum.net</option>
-												<option value="gmail.com">gmail.com</option>
+											<select class="custom-select" id="ec1" onChange="javascript:chooseEmail('ec1', 'idEmail2')">
+											    <option selected value="J">직접선택</option>
+											    <option value="N">Naver.com</option>
+											    <option value="D">Daum.net</option>
+											    <option value="G">Google.com</option>
 											</select>
 										</div>
 										<div class="col-xl-2 col-md-6 mb-6">
-											<button type="button" class="btn btn-secondary btn-lg">ID 찾기</button>
+											<button type="button" class="btn btn-secondary btn-lg" onClick="javascript:findId();">ID 찾기</button>
 										</div>
 									</div>
 									<hr/>
@@ -82,25 +82,25 @@
 				                		<h1>Password찾기</h1>
 				                	</div>
 				                	<label>아이디</label>
-									<input type="text" class="form-control" placeholder="ID" aria-label="Username" ><br>
+									<input type="text" class="form-control" placeholder="ID" aria-label="Username" id="id"><br>
 									<div class="row">
 										<div class="col-xl-3 col-md-3 mb-3">
-											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" >
+											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="pwEmail1">
 										</div>
 										<label style="padding-top:6px;">@</label>
 										<div class="col-xl-3 col-md-3 mb-3">
-											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail">
+											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="pwEmail2">
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3">
-											<select class="custom-select" id="inputGroupSelect01">
-											    <option selected>직접선택</option>
-											    <option value="naver.com">naver.com</option>
-											    <option value="daum.net">daum.net</option>
-												<option value="gmail.com">gmail.com</option>
+											<select class="custom-select" id="ec2" onChange="javascript:chooseEmail('ec2', 'pwEmail2')">
+											    <option selected="" value="J">직접선택</option>
+											    <option value="N">Naver.com</option>
+											    <option value="D">Daum.net</option>
+											    <option value="G">Google.com</option>
 											</select>
 										</div>
 										<div class="col-xl-2 col-md-6 mb-6">
-											<button type="button" class="btn btn-secondary btn-lg">비밀번호<br>발급받기</button>
+											<button type="button" class="btn btn-secondary btn-lg" onClick="javascript:findPassword();">비밀번호<br>발급받기</button>
 										</div>
 									</div>
 								</div>
@@ -109,7 +109,41 @@
 					</div>
 				</div>
 		        <!-- /.container-fluid -->
-		
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" style="display:none;" id="showModal">
+				  Launch demo modal
+				</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+				  <div class="modal-dialog modal-dialog-scrollable" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalScrollableTitle">가입한 ID 리스트</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      
+				       <table class="table table-bordered" width="100%" cellspacing="0">
+		                  <thead>
+		                    <tr>
+		                      <th style="width:40%;">아이디</th>
+		                      <th style="width:60%;">가입일</th>
+		                    </tr>
+		                  </thead>
+		                  <tbody id="modalBody">
+		                  
+		                  </tbody>
+		                </table>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 		</div>
 	      <!-- End of Main Content -->
 
@@ -123,7 +157,8 @@
     <!-- End of Content Wrapper -->
 	</div>
   <!-- End of Page Wrapper -->
-
+  
+	
 
   <!-- Bootstrap core JavaScript-->
   <script th:src="@{vendor/jquery/jquery.min.js}"></script>
@@ -145,3 +180,114 @@
 </body>
 
 </html>
+
+
+<script>
+	function findId() {
+		if($("#idEmail1").val().trim() == "") {
+			alert("이메일을 입력해주세요.")
+			$("#idEmail1").focus();
+			return;
+		}
+		
+		if($("#idEmail2").val().trim() == "") {
+			alert("이메일을 입력해주세요.")
+			$("#idEmail2").focus();
+			return;
+		}
+		
+		var email = $("#idEmail1").val() + "@" + $("#idEmail2").val(); 
+		
+ 		$.ajax({
+			url : "/findIdList",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "familyCustEmail=" + email,
+			success : function(data) {
+				if(data.length == 0) {
+					alert("해당 이메일로 가입한 내역이 없습니다.");
+				} else {
+					$("#modalBody").html("");
+					for(i = 0; i < data.length;i++) {
+						var modalBodyStr = "";
+						
+						modalBodyStr += "<tr>";
+						modalBodyStr += "<td>"+data[i].custId+"</td>";
+						modalBodyStr += "<td>" + data[i].regDt + "</td>";
+						modalBodyStr += "</tr>";
+						
+						$("#modalBody").append(modalBodyStr);
+					}
+					
+					$("#showModal").trigger("click");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function findPassword() {
+		if($("#id").val().trim() == "") {
+			alert("아이디를 입력해주세요.")
+			$("#id").focus();
+			return;
+		}
+		
+		if($("#pwEmail1").val().trim() == "") {
+			alert("이메일을 입력해주세요.")
+			$("#pwEmail1").focus();
+			return;
+		}
+		
+		if($("#pwEmail2").val().trim() == "") {
+			alert("이메일을 입력해주세요.")
+			$("#pwEmail2").focus();
+			return;
+		}
+		
+		var email = $("#pwEmail1").val() + "@" + $("#pwEmail2").val(); 
+		
+ 		$.ajax({
+			url : "/findPw",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "familyCustEmail=" + email+ "&custId=" + $("#id").val(),
+			success : function(data) {
+				if(data == 0) {
+					alert("임시 비밀번호가 이메일로 전송되었습니다.");
+				} else {
+					alert("해당 하는 정보가 없습니다.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function chooseEmail(ec, email) {
+		ec = $("#" + ec).val();
+		email = $("#" + email);
+		
+		email.prop('disabled', true);
+		
+		if(ec == "J") {
+			email.val("");
+			email.prop('disabled', false);
+		} else if(ec == "N") {
+			email.val("naver.com");
+		} else if(ec == "D") {
+			email.val("daume.net");
+		} else {
+			email.val("google.com");
+		}
+	}
+</script>

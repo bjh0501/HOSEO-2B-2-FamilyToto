@@ -14,8 +14,8 @@ public class CustDAOImpl implements CustDAO{
 	SqlSession SqlSession;
 
 	@Override
-	public void insert(CustVO vo) {
-		SqlSession.insert("registerCust.insertCust", vo);
+	public int insert(CustVO vo) {
+		return SqlSession.insert("registerCust.insertCust", vo);
 	}
 	
 	public Map<String, Object> checkId(CustVO sId) {

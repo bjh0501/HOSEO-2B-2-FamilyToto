@@ -22,24 +22,11 @@ public class IndexController {
         return "index";
     }
 
-	@RequestMapping("login")
-    public String login(@ModelAttribute WebLogVO vo, HttpServletRequest request) {
-		vo.setIp(request.getRemoteAddr());
-		vo.setCurrentUrl(getURL(request));
-		vo.setPrevUrl(request.getHeader("referer"));
-		webLogService.insertWebLog(vo, request);
-		return "loginInfo/login";
-    }
-	
-	@RequestMapping("findID_PW")
-    public String findId_Pw() {
-        return "loginInfo/findID_PW";
-    }
-	
-	@RequestMapping("changeCust")
-    public String changeCust() {
-        return "loginInfo/changeCust";
-    }
+	// 웹로그
+	/*vo.setIp(request.getRemoteAddr());
+	vo.setCurrentUrl(getURL(request));
+	vo.setPrevUrl(request.getHeader("referer"));
+	webLogService.insertWebLog(vo, request);*/
 	
 	@RequestMapping("charge")
     public String charge() {

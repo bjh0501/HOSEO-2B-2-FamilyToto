@@ -3,7 +3,10 @@ package com.familytoto.familytotoProject.registerCust.domain;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 //통합 회원
 public class RegisterCustVO {
@@ -13,6 +16,7 @@ public class RegisterCustVO {
 
 	// FAMILY_CUST_NICKNAME
 	@Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
+	@Pattern(regexp = "/^[a-zA-Zㄱ-힣0-9+]{2,8}$/", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
 	private String familyCustNickname;
 
 	// FAMILY_CUST_EMAIL
@@ -164,5 +168,4 @@ public class RegisterCustVO {
 	public void setFmailyCustRecommend(String familyCustRecommend) {
 		this.familyCustRecommend = familyCustRecommend;
 	}
- 
 }

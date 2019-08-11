@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.validation.constraints.Pattern;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 // OneSports회원
 public class CustVO {
 
@@ -14,7 +16,7 @@ public class CustVO {
 	private int familyCustNo;
 
 	// CUST_ID
-    @Pattern(regexp = "/^[a-zA-Z0-9+]{4,20}$/", message = "4~20자의 영문, 숫자만 가능")
+    @Pattern(regexp = "/^[a-zA-Zㄱ-힣0-9+]{4,20}$/", message = "4~20자의 영문, 숫자, 한글만 가능")
 	private String custId;
 
 	// CUST_PASSWORD
@@ -129,4 +131,12 @@ public class CustVO {
 		this.useYn = useYn;
 	}
 	 
+	public String toEncodePassword(String sPass) {
+		// 숫자가 높을수록 안전, 속도는 느림
+		return BCrypt.hashpw(sPass, BCrypt.gensalt(10));
+	}
+
+	public boolean isDecodePassword(CustVO vo, String sPass) {
+		return BCrypt.checkpw(vo.getCustPassword(), sPass);
+	}
 }

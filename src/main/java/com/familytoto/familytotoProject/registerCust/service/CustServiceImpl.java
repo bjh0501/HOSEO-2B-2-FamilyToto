@@ -12,30 +12,22 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
 public class CustServiceImpl implements CustService {
-	
 	@Autowired
 	CustDAO custDao; 
 	
-	@Autowired
-	PasswordGeneratorService passwordGeneratorService; 
-	
 	@Override
-	public void insertCust(CustVO vo, HttpServletRequest request) {
+	public int insertCust(CustVO vo, HttpServletRequest request) {
 		vo.setRegIp(request.getRemoteAddr());
-		String sPassword = vo.getCustPassword();
 		
-		// 비밀번호 예외처리
-//		if(sPassword.length() < 4 || sPassword.length() > 20) {
-//			
-//		}
+		String sPassword = vo.getCustPassword();	
+		String sGeneratorPassword = vo.toEncodePassword(sPassword);
+		vo.setCustPassword(sGeneratorPassword);		
 		
-		String sGeneratorPassword = passwordGeneratorService.toEncodePassword(sPassword);
-		vo.setCustPassword(sGeneratorPassword);
-		custDao.insert(vo);		
+		return custDao.insert(vo); 
 	}
 
 	@Override
-	public Map<String, Object> checkCust(CustVO sId) {
+	public Map<String, Object> checkId(CustVO sId) {
 		return custDao.checkId(sId);
 	}
 }

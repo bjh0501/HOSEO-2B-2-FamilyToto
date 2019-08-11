@@ -7,6 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 public interface CustService {
-	void insertCust(CustVO vo, HttpServletRequest request);
-	Map<String, Object> checkCust(CustVO sId);
+	int insertCust(CustVO vo, HttpServletRequest request);
+	Map<String, Object> checkId(CustVO sId);
 }	

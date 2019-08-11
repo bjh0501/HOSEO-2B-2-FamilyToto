@@ -32,7 +32,7 @@ public class RegisterCustController {
 	
 	@RequestMapping("/registerCust")
     public String registerCust(HttpServletRequest request) {
-			System.out.println(request.getContextPath() );
+		System.out.println(request.getContextPath() );
         return "loginInfo/registerCust";
     }
 	
@@ -42,8 +42,7 @@ public class RegisterCustController {
 			HttpServletRequest request, HttpSession session) throws Exception {
 		int nCaptchaResult = captchaService.isRight(session, request);
 		
-		Map<String, Object> custDupleId = custService.checkCust(cVo);
-		
+		Map<String, Object> custDupleId = custService.checkId(cVo);
 		Map<String, Object> custDupleNickname = registerCustService.checkNickname(rcVo);
 		
 		int nResult=0;
@@ -53,11 +52,16 @@ public class RegisterCustController {
 		} else if(custDupleId != null) { // 중복 아이디
 			nResult = -98;
 		} else if(custDupleNickname != null) { // 중복 닉네임
-			nResult = -97;			
+			nResult = -97;
+		} else if(cVo.getCustPassword().length() < 4 || cVo.getCustPassword().length() > 20) {
+			nResult = -96;
 		} else {
+			// 트랜잭션 걸어야함
 			registerCustService.insertRegisterCust(rcVo, request);
 			cVo.setFamilyCustNo(rcVo.getFamilyCustNo());
+			
 			custService.insertCust(cVo, request);
+			// 트랜잭션 걸어야함
 		}
 		
 		return nResult;

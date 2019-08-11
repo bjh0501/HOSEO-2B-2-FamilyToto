@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="findCust">
+	<select id="findId" resultType="hashmap" parameterType="com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO" >
+		SELECT	C.CUST_ID as custId
+		,		DATE_FORMAT(C.REG_DT, '%Y. %m. %d') as regDt
+		FROM	FAMILY_CUSTOM FC
+		INNER JOIN CUSTOM C ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO
+			AND C.USE_YN = 'Y'
+			AND FC.USE_YN = 'Y'
+		WHERE	FC.FAMILY_CUST_EMAIL = '${familyCustEmail}'
+	</select>
+	
+	<select id="findPassword" resultType="map" >
+		SELECT	C.CUST_ID as custId
+		,		FC.FAMILY_CUST_EMAIL as familyCustEmail
+		FROM	FAMILY_CUSTOM FC
+		INNER JOIN CUSTOM C ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO
+			AND C.USE_YN = 'Y'
+			AND FC.USE_YN = 'Y'
+		WHERE	FC.FAMILY_CUST_EMAIL = '${familyCustEmail}'
+		AND		C.CUST_ID = '${custId}';
+	</select>
+	
+	<update id="setPassword">
+		UPDATE	CUSTOM
+		SET		CUST_PASSWORD = '${custPassword}'
+		WHERE	CUST_ID = '${custId}'
+	</update>
+</mapper>

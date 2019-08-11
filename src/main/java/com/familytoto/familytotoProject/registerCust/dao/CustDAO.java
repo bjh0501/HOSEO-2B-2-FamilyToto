@@ -5,6 +5,6 @@ import java.util.Map;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 public interface CustDAO {
-	public void insert(CustVO vo);
+	public int insert(CustVO vo);
 	public Map<String, Object> checkId(CustVO sId);
 }

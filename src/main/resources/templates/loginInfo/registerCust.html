@@ -25,7 +25,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/header/header">
+	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
 	</ul>
 
     <!-- Content Wrapper -->
@@ -35,7 +35,7 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/loginInfo/loginInfo">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
 
 
         </nav>
@@ -96,7 +96,7 @@
 					<input type="text" class="form-control" placeholder=Recommender aria-label="Recommender" id="recommender"><br>
 					<div class="row">
 						<div class="col-xl-3 col-md-6 mb-3">
-							<img src="/captcha/index" id="imgCaptcha" style="min-width:235px; max-width:425px;float:right">
+							<img src="/captcha/index" id="imgCaptcha" style="min-width: 235px; max-width: 100%; float: right; height: 100%;">
 						</div>
 						<div class="col-xl-9 col-md-6 mb-9">
 							<div class="row">
@@ -107,7 +107,7 @@
 								</div>
 								<div class="col-xl-6 col-md-6 mb-6">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-lg btn-block">음성듣기</button>
+										<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="javascript:voice();">음성듣기</button>
 									</div>
 								</div>
 							</div>
@@ -132,7 +132,7 @@
 							<div class="input-group mb-3"> 
 								<div class="custom-control custom-checkbox">
 									<input type="checkbox" class="custom-control-input" id="use">
-									<label class="custom-control-label" for="use"><a href="#">이용약관</a>에 동의하십니까?</label>
+									<label class="custom-control-label" for="use"><a href="#"  data-toggle="modal" data-target="#exampleModalScrollable">이용약관</a>에 동의하십니까?</label>
 								</div>
 							</div>
 						</div>
@@ -188,6 +188,51 @@
   <script th:src="@{js/demo/chart-area-demo.js}"></script>
   <script th:src="@{js/demo/chart-pie-demo.js}"></script>
 
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-scrollable" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalScrollableTitle">이용 약관</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>매우긴글매우긴글매우긴글매우긴글매우긴글매우긴글매우긴글매우긴글
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	        	이용약관 관련 매우긴글<br>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 
 </html>
@@ -247,116 +292,134 @@
 		
 		
 		// 영,숫 유효성검사하기
-		if(custId.val().length < 4 || custId.val().length > 20) {
-			alert("아이디는 4~20자리까지 입력이 가능합니다.");
+
+		var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
+		v = custId.val()
+
+		if (!regexp.test(v) || custId.val().length < 4 || custId.val().length > 20) {
+			alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
 			custId.focus();
-			return ;
+			return;
 		}
-		
-		if(custPassword.val() == "") {
+
+		if (custPassword.val() == "") {
 			alert("비밀번호를 입력해주세요.");
 			custPassword.focus();
-			return; 
+			return;
 		}
-		
-		if(passwordCheck.val() == "") {
+
+		if (passwordCheck.val() == "") {
 			alert("비밀번호 확인을 입력해주세요.");
 			passwordCheck.focus();
-			return ;
+			return;
 		}
-		
-		if(passwordCheck.val().length < 4 || passwordCheck.val().length > 20) {
+
+		if (passwordCheck.val().length < 4 || passwordCheck.val().length > 20) {
 			alert("비밀번호는 4~20자리까지 입력이 가능합니다.");
 			passwordCheck.focus();
-			return ;
+			return;
 		}
-		
-		if(passwordCheck.val() != custPassword.val()) {
+
+		if (passwordCheck.val() != custPassword.val()) {
 			alert("비밀번호와 비밀번호 확인이 다릅니다.");
 			passwordCheck.focus();
 			return;
 		}
-		
-		if(familyCustNickname.val().trim() == "") {
+
+		if (familyCustNickname.val().trim() == "") {
 			alert("닉네임을 입력해주세요.");
 			familyCustNickname.focus();
-			return ;
+			return;
 		}
-		
- 		if(familyCustNickname.val().length < 2 || familyCustNickname.val().length > 8) {
-			alert("닉네임은 2~8자리까지 입력이 가능합니다.");
+
+		var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
+		v = familyCustNickname.val()
+			
+		if (!regexp.test(v) || familyCustNickname.val().length < 2 || familyCustNickname.val().length > 8) {
+			alert("닉네임은 2~8자리, 영어, 숫자, 한글만 입력이 가능합니다.");
 			familyCustNickname.focus();
-			return ;
+			return;
 		}
-		
-		if(addr1.val().trim() == "") {
+
+		if (addr1.val().trim() == "") {
 			alert("첫번째 주소를 입력해주세요.");
 			addr1.focus();
-			return; 
+			return;
 		}
-		
-		if(addr2.val().trim() == "") {
+
+		if (addr2.val().trim() == "") {
 			alert("두번째 주소를 입력해주세요.");
 			addr2.focus();
-			return; 
+			return;
 		}
-		
-		if(captcha.val().trim() == "") {
+
+		if (captcha.val().trim() == "") {
 			alert("자동 가입 방지 문자를 입력해주세요.");
 			captcha.focus();
-			return; 
+			return;
 		}
-		
-		if($("input:checkbox[id='use']").is(":checked") == false) {
+
+		if ($("input:checkbox[id='use']").is(":checked") == false) {
 			alert("이용약관을 체크해주세요.");
 			return;
 		}
-		if($("input:checkbox[id='adult']").is(":checked") == false) {
+		if ($("input:checkbox[id='adult']").is(":checked") == false) {
 			alert("성인이 아니면 가입을 할 수가 없습니다.\n성인이면 체크해주세요.");
 			return;
 		}
-		
-   		$.ajax({
-   		    url: "/registerCust/register",
-   		    type: "POST",
-   		    cache: false,
-   		    async:false,
-   		    dataType: "json",
-   		    data: "custId=" + custId.val() +
-   		    "&custPassword=" + passwordCheck.val() +
-   		    "&familyCustNickname=" + familyCustNickname.val() + 
-   		    "&familyCustEmail=" + email +
-   		    "&familyCustAddr1=" + addr1.val() +
-   		    "&familyCustAddr2=" + addr2.val() +
-   		    "&familyCustRecommend=" + reco.val() +
-   		    "&captcha=" + captcha.val(),
-   		    success: function(data){
-   		    	if(data == -99) {
-   		    		alert("자동 가입 방지 문자를 잘못 입력하였습니다.");
-   		    		captcha.focus();
-   		    		return ;
-   		    	} else if(data == -98) {
-   		    		alert("이미 존재하는 아이디입니다.");
-   		    		custId.focus();
-   		    		return ;
-   		    	} else if(data == -97) {
-   		    		alert("이미 존재하는 닉네임입니다.");
-   		    		familyCustNickname.focus();
-   		    		return ;
-   		    	} 
-   		    	
-   		    	alert("회원가입에 성공하였습니다.");
-   		    },
-   		    
-   		    error: function (request, status, error){        
-   		        var msg = "ERROR : " + request.status + "<br>"
-   		      msg +=  + "내용 : " + request.responseText + "<br>" + error;
-   		      console.log(msg);              
-   		    }
-   		});
+
+		$.ajax({
+			url : "/registerCust/register",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "custId=" + custId.val() + "&custPassword="
+					+ passwordCheck.val() + "&familyCustNickname="
+					+ familyCustNickname.val() + "&familyCustEmail=" + email
+					+ "&familyCustAddr1=" + addr1.val() + "&familyCustAddr2="
+					+ addr2.val() + "&familyCustRecommend=" + reco.val()
+					+ "&captcha=" + captcha.val(),
+			success : function(data) {
+				if (data == -99) {
+					alert("자동 가입 방지 문자를 잘못 입력하였습니다.");
+					captcha.focus();
+					return;
+				} else if (data == -98) {
+					alert("이미 존재하는 아이디입니다.");
+					custId.focus();
+					return;
+				} else if (data == -97) {
+					alert("이미 존재하는 닉네임입니다.");
+					familyCustNickname.focus();
+					return;
+				}
+
+				alert("회원가입에 성공하였습니다.");
+			},
+
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
+
+	$("#refresh").click(function() {
+		$("#imgCaptcha").attr("src", "/captcha/index");
+	});
 	
-	$("#refresh").click(function(){
-        $("#imgCaptcha").attr("src", "/captcha/index");
-    });
+	
+	function voice() {
+		 var uAgent = navigator.userAgent;
+		   var soundUrl = '/captcha/voice';
+		   if (uAgent.indexOf('Trident') > -1 || uAgent.indexOf('MSIE') > -1) {
+		       //IE일 경우 호출
+		       winPlayer(soundUrl+'?agent=msie&rand='+ Math.random());
+		   } else if (!!document.createElement('audio').canPlayType) {
+		       //Chrome일 경우 호출
+		       try { new Audio(soundUrl).play(); } catch(e) { winPlayer(soundUrl); }
+		   } else window.open(soundUrl, '', 'width=1,height=1');
+	}
 </script>

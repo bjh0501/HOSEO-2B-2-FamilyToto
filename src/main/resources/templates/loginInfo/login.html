@@ -25,7 +25,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/header/header">
+	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
 	</ul>
 
     <!-- Content Wrapper -->
@@ -35,7 +35,7 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/loginInfo/loginInfo">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
 
 
         </nav>
@@ -61,14 +61,14 @@
 					  <div class="input-group-prepend">
 					    <span class="input-group-text" >ID</span>
 					  </div>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id">
 					</div>
 					
 					<div class="input-group mb-3">
 					  <div class="input-group-prepend">
 					    <span class="input-group-text" >Password</span>
 					  </div>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+					  <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="pw">
 					</div>
 					<div class="input-group mb-3">
 						<div class="custom-control custom-checkbox">
@@ -77,7 +77,7 @@
 						</div>
 					</div>
 					<div class="input-group mb-3">
-						<button type="button" class="btn btn-secondary" style="width:100%;">로그인</button>
+						<button type="button" class="btn btn-secondary" style="width:100%;" onclick="javascript:custLogin()">로그인</button>
 					</div>
 					<div class="input-group mb-3">
 						<button type="button" class="btn btn-secondary" style="width:100%;">페이스북</button>
@@ -89,10 +89,10 @@
 						<button type="button" class="btn btn-secondary" style="width:100%;">카카오톡</button>
 					</div>
 					<p class="text-center">
-						<a href="#" >아이디/비밀번호 찾기</a>
+						<a href="/findID_PW" >아이디/비밀번호 찾기</a>
 					</p>
 					<p class="text-center">
-						<a href="#" >회원가입</a>
+						<a href="/registerCust" >회원가입</a>
 					</p>
 				</div>
               </div>
@@ -137,3 +137,93 @@
 </body>
 
 </html>
+<script>
+	function custLogin() {
+		id = $("#id");
+		pw = $("#pw");
+		
+		if(id.val().trim() == "") {
+			alert("아이디를 입력해주세요.")
+			id.focus();
+			return;
+		}
+		
+		if(pw.val().trim() == "") {
+			alert("패스워드를 입력해주세요.")
+			pw.focus();
+			return;
+		}
+
+		$.ajax({
+			url : "/login/custLogin",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "custId=" + id.val() 
+					+ "&custPassword=" + pw.val(),
+			success : function(data) {
+				if(data == -99) {
+					alert("아이디나 비밀번호가 다릅니다.")
+					return;
+				}
+				
+				if($("input:checkbox[id='use']").is(":checked") == true) {
+					setCookie("rememberCustId",id.val(),30);
+				} else {
+					deleteCookie("rememberCustId");
+				}
+				
+				location.replace("/")
+			},
+
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	$(document).ready(function(){
+		remeberedId = getCookie("rememberCustId");
+		
+		if(remeberedId != undefined) {
+			$("#id").val(remeberedId)			
+			$("input:checkbox[id='use']").prop("checked", true);
+		}
+		
+		
+        $("#id, #pw").keypress(function (e) {
+	        if (e.which == 13){
+	        	custLogin();
+	        }
+    	});
+	});
+	
+	function setCookie(cookie_name, value, days) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + days);
+		// 설정 일수만큼 현재시간에 만료값으로 지정
+		
+		var cookie_value = escape(value) + ((days == null) ? '' : ';    expires=' + exdate.toUTCString());
+		document.cookie = cookie_name + '=' + cookie_value;
+	}
+	
+	function getCookie(cookie_name) {
+	  var x, y;
+	  var val = document.cookie.split(';');
+
+	  for (var i = 0; i < val.length; i++) {
+	    x = val[i].substr(0, val[i].indexOf('='));
+	    y = val[i].substr(val[i].indexOf('=') + 1);
+	    x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
+	    if (x == cookie_name) {
+	      return unescape(y); // unescape로 디코딩 후 값 리턴
+	    }
+	  }
+	}
+	
+	var deleteCookie = function(name) {
+		document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+	}
+</script>
