@@ -55,14 +55,14 @@
 											<div class="input-group">
 												<div class="input-group-prepend">
 											    	<div class="input-group-text">
-														<input type="radio">
+														<input type="radio" name="chip" id="chip1" value="one" checked>
 													</div>
 												</div>
-												<select class="custom-select" id="inputGroupSelect01">
+												<select class="custom-select" id="oneCharge" onchange="changeCharge()">
 												    <option value="1000" selected>1,000</option>
 												    <option value="5000">5,000</option>
-												    <option value="2">Two</option>
-												    <option value="3">Three</option>
+												    <option value="7000">7,000</option>
+												    <option value="10000">10,000</option>
 												</select>	
 											</div>
 										</div>
@@ -70,10 +70,10 @@
 											<div class="input-group">
 												<div class="input-group-prepend">
 											    	<div class="input-group-text">
-														<input type="radio"  >
+														<input type="radio"  name="chip" value="two" id="chip2">
 											    	</div>
 											  	</div>
-												<input type="text" class="form-control" placeholder="직접입력"><div style="padding-top:8px;">&nbsp;칩</div>
+												<input type="text" class="form-control" placeholder="직접입력" id="twoCharge"><div style="padding-top:8px;">&nbsp;크레딧</div>
 											</div>
 										</div>
 									</div>
@@ -85,10 +85,9 @@
 								<div style="padding:20px;">
 									<div class="row">
 										<div class="custom-control custom-checkbox mb-3">
-											<input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-											<label class="custom-control-label" for="customControlValidation1" >
-												충전내역 메일로 보내기<br>
-												*메일로 보내면 충전한 팁의 10%가 더 충전됩니다.
+											<input type="checkbox" class="custom-control-input" id="mail" required>
+											<label class="custom-control-label" for="mail" >
+												충전내역 메일로 보내기
 											</label>
 										</div>
 									</div>
@@ -101,10 +100,10 @@
 							<div class="card shadow h-100 py-12">
 								<div style="padding:20px;">
 									<div class="input-group">
-										<h3>지금까지한 충전 횟수 : 12회</h3>
+										<h3>지금까지한 충전 횟수 : <span th:text=${list.totalCharge}>12</span>회</h3>
 									</div>
 									<div class="input-group">
-										<h3>오늘가능한 충전 횟수 : 5회</h3>
+										<h3>오늘가능한 충전 횟수 : <span th:text=${list.todayCharge}>12</span>회</h3>
 									</div>
 								</div>
 							</div>
@@ -113,10 +112,10 @@
 							<div class="card shadow h-100 py-12">
 								<div style="padding:20px;">
 									<div class="input-group">
-										<h3>현재 보유 칩 : 5,000칩</h3>
+										<h3>현재 보유 크레딧 : <span th:text=${list.totalCredit} id="nowCredit">0</span>크레딧</h3>
 									</div>
 									<div class="input-group">
-										<h3>충전 후 칩 : 6,000칩</h3>
+										<h3>충전 후 크레딧 : <span th:text=${list.totalCredit}+1000 id="futureCredit">0</span>크레딧</h3>
 									</div>
 								</div>
 							</div>
@@ -148,14 +147,14 @@
 										<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
 											<div class="input-group mb-3"> 
 												<div class="custom-control custom-checkbox">
-													<input type="checkbox" class="custom-control-input" id="use">
-													<label class="custom-control-label" for="use">위 내용을 확인하였고, 결제에 동의합니다.</label>
+													<input type="checkbox" class="custom-control-input" id="agree">
+													<label class="custom-control-label" for="agree">위 내용을 확인하였고, 결제에 동의합니다.</label>
 												</div>
 											</div>
 										</div>
 										<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-4">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block">결제하기</button>
+												<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="charge()">결제하기</button>
 											</div>
 										</div>
 									</div>
@@ -202,3 +201,87 @@
 </body>
 
 </html>
+
+<script>
+	function charge() {
+		var st = $(":input:radio[name=chip]:checked").val();
+		var mail = "N";
+		var credit;
+		
+		if($("input:checkbox[id='mail']").is(":checked") == true) {
+			mail = "Y";
+		}
+		
+		if(st == "one") {
+			credit = $("#oneCharge").val()
+		} else {
+			credit = $("#twoCharge").val()
+		}
+		
+		if(parseInt($("#nowCredit").html()) >= 5000) {
+			alert("5,000크레딧 미만만 충전을 할 수 있습니다.");
+			return
+		}
+		
+		if(parseInt(credit) > 10000) {
+			alert("10,000크레딧 이하로 충전할 수 있습니다.");
+			$("#twoCharge").focus();
+			return
+		}
+		
+		if($("input:checkbox[id='agree']").is(":checked") == false) {
+			alert("약관에 동의해야만 결제를 할 수 있습니다");
+			$("#agree").focus()
+			return
+		}
+		
+		$.ajax({
+			url : "/charge/doCharge",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "creditValue=" + encodeURIComponent(parseInt(credit)),
+			success : function(data) {
+				if(data == 0) {
+					alert("충전에 성공하였습니다.");
+					location.reload();
+				} else if(data == -98) {
+					alert("충전할 수 있는 횟수를 초과하였습니다.");
+				} else {
+					alert("새로고침후 다시 시도해주세요.");
+				}
+			},
+
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	var input = document.getElementById('twoCharge')
+	
+	input.onkeyup = function(event) {
+		$("#chip2").prop("checked", true)
+		
+		var chargeValue = parseInt($("#twoCharge").val())
+		var now = parseInt($("#nowCredit").html());
+		var future = now +  chargeValue;
+		
+		if($("#twoCharge").val() == "") {
+			$("#futureCredit").html(now);
+		} else {
+			$("#futureCredit").html(future);			
+		}
+	}
+	
+	function changeCharge() {
+		$("#chip1").prop("checked", true)
+		
+		var now = parseInt($("#nowCredit").html());
+		var future = now +  parseInt($("#oneCharge").val());
+		
+		$("#futureCredit").html(future);
+	}
+</script>

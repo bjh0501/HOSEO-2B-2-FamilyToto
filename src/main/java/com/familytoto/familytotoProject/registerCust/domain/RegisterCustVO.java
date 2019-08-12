@@ -28,9 +28,6 @@ public class RegisterCustVO {
 
 	// FAMILY_CUST_ADDR2
 	private String familyCustAddr2;
-
-	// 0
-	private int fmailyCustExp;
 	
 	@Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
 	private String familyCustRecommend;
@@ -95,14 +92,6 @@ public class RegisterCustVO {
 
 	public void setFamilyCustAddr2(String familyCustAddr2) {
 		this.familyCustAddr2 = familyCustAddr2;
-	}
-
-	public int getFmailyCustExp() {
-		return fmailyCustExp;
-	}
-
-	public void setFmailyCustExp(int fmailyCustExp) {
-		this.fmailyCustExp = fmailyCustExp;
 	}
 
 	public int getRegCustNo() {

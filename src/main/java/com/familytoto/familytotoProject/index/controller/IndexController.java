@@ -28,11 +28,6 @@ public class IndexController {
 	vo.setPrevUrl(request.getHeader("referer"));
 	webLogService.insertWebLog(vo, request);*/
 	
-	@RequestMapping("charge")
-    public String charge() {
-        return "shop/charge";
-    }
-	
 	@RequestMapping("itemShop")
     public String itemShop() {
         return "shop/itemShop";

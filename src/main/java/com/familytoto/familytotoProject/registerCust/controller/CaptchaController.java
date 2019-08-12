@@ -28,35 +28,6 @@ public class CaptchaController {
 	
 	@RequestMapping(value = "/voice", method = RequestMethod.GET)
 	public void captchaAudio(HttpServletRequest request, HttpServletResponse response){
-        String getAnswer = (String) request.getSession().getAttribute("captcha");
-        AudioCaptcha ac = new AudioCaptcha.Builder()
-        .addAnswer(new SetTextProducer(getAnswer))
-        .addVoice()
-        .addNoise()
-        .build();
-        
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Max-Age", 0);
-    
-        CaptchaServletUtil.writeAudio(response,  ac.getChallenge());;
-        request.getSession().setAttribute("captcha", ac.getAnswer());
+		captchaService.voice(request, response);
     }
-}
-
-class SetTextProducer implements TextProducer {
-
-    private final String srcStr;
-
-    public SetTextProducer(String answer) {    
-        srcStr = answer; 
-   }
-
-   
-
-    //@Override
-   public String getText() {        
-        return srcStr;
-   }
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="charge">
+	<select id="listCharge" resultType="map" >				
+		SELECT	COUNT(CREDIT_VALUE) as totalCharge
+		,		5-COUNT(if(IFNULL(CHG_DT, REG_DT) > curdate(), CREDIT_VALUE, NULL)) as todayCharge
+		,		IFNULL(SUM(CREDIT_VALUE), 0) as totalCredit
+		FROM	CUSTOM_CREDIT
+		WHERE	FAMILY_CUST_NO = ${familyCustNo}
+		AND		USE_YN = 'Y'
+	</select>
+	<select id="todayCharge" resultType="map" >				
+		SELECT	COUNT(*) as todayChargeCnt
+		,		IFNULL(SUM(CREDIT_VALUE), 0) AS remainCredit
+		FROM	CUSTOM_CREDIT
+		WHERE	IFNULL(CHG_DT, REG_DT) > curdate()
+		AND		FAMILY_CUST_NO = ${familyCustNo}
+	</select>
+	<insert id="insertCharge">
+		INSERT INTO CUSTOM_CREDIT
+		    ( CREDIT_VALUE,		CREDIT_STATE,		CREDIT_STATE_ID, 
+		    REG_CUST_NO,		REG_DT, 			REG_IP,
+		    USE_YN,				FAMILY_CUST_NO)
+		VALUES
+		    (${creditValue},	'fre', 				0, 
+		    ${regCustNo}, 		NOW(), 				'${regIp}',
+		    'Y',				${familyCustNo});
+	</insert>
+</mapper>

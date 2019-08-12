@@ -15,11 +15,19 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 @Component
 public class CertificationInterceptor implements HandlerInterceptor{
  
+	private final int loginSesion = 60 * 30; 
+	
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         HttpSession session = request.getSession();
         
+        // 테스트용 
+//        CustVO vo = new CustVO();
+//        vo.setFamilyCustNo(10000037);
+//        vo.setCustNo(100000008);
+//        session.setAttribute("cust", vo);
+        // 테스트용
         // 소셜은 따로처리
         CustVO sCustNoSession = (CustVO) session.getAttribute("cust");
  
@@ -29,8 +37,8 @@ public class CertificationInterceptor implements HandlerInterceptor{
             out.println("<script>alert('로그인후에 이용할 수 있습니다.'); location.href='/login'</script>");
             out.flush();
             return false;
-        }else{
-            session.setMaxInactiveInterval(60*30);
+        }else{ //로그인세션
+            session.setMaxInactiveInterval(loginSesion);
             return true;
         }
         

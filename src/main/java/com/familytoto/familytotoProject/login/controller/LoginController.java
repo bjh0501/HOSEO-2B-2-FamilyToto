@@ -55,6 +55,8 @@ public class LoginController {
 		
 		if(login != null) { // 로그인성공
 			HttpSession session = request.getSession();
+			vo.setFamilyCustNo(Integer.parseInt(login.get("familyCustNo").toString()));
+			vo.setCustNo(Integer.parseInt(login.get("custNo").toString()));
 			session.setAttribute("cust", vo);
 			nReuslt = 0;
 		} else {

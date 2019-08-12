@@ -18,8 +18,8 @@ public class InterceptorLoginConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(certificationInterceptor)
-                .addPathPatterns("/**/charge")
-                .addPathPatterns("/**/itemShop")
-        		.addPathPatterns("/**/changeCust");
+                .addPathPatterns("/charge/**/")
+                .addPathPatterns("/itemShop/**/")
+        		.addPathPatterns("/changeCust/**/");
     }
 }

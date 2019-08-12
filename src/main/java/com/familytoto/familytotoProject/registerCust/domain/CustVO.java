@@ -136,7 +136,15 @@ public class CustVO {
 		return BCrypt.hashpw(sPass, BCrypt.gensalt(10));
 	}
 
+	// 평문, 해시문
 	public boolean isDecodePassword(CustVO vo, String sPass) {
 		return BCrypt.checkpw(vo.getCustPassword(), sPass);
+	}
+
+	@Override
+	public String toString() {
+		return "CustVO [custNo=" + custNo + ", familyCustNo=" + familyCustNo + ", custId=" + custId + ", custPassword="
+				+ custPassword + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt=" + regDt
+				+ ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn + "]";
 	}
 }

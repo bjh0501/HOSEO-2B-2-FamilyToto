@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public interface CaptchaService {
-	public int isRight(HttpSession session, HttpServletRequest request);
-	public void create(HttpServletResponse response, HttpSession session);
+	int isRight(HttpSession session, HttpServletRequest request);
+	void create(HttpServletResponse response, HttpSession session);
+	void voice(HttpServletRequest request, HttpServletResponse response);
 }

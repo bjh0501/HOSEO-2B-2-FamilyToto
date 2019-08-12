@@ -30,7 +30,6 @@
 	
 	    <!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
-		
 		      <!-- Main Content -->
 			<div id="content">
 		
@@ -56,57 +55,58 @@
 				                	</div>
 				                	
 				                	<label>아이디</label>
-									<input type="text" class="form-control" placeholder="ID" aria-label="Username" disabled><br>
+									<input type="text" class="form-control" placeholder="ID" aria-label="Username" th:value="${list.custId}" disabled><br>
 									<label>닉네임</label>
 									<div class="row">
 										<div class="col-xl-6 col-md-6 mb-6">
-										<input type="text" class="form-control" placeholder="Nickname" aria-label="Nickname" disabled>
+										<input type="text" class="form-control" placeholder="Nickname" aria-label="Nickname" th:value="${list.familyCustNickname}" disabled>
 										</div>
-										<div class="col-xl-4 col-md-4 mb-4">
+										<div class="col-xl-6 col-md-6 mb-6">
 										<div>
 											<label style="padding-top:6px;">*닉네임은 <a href="#">닉네임 변경권</a>으로만 변경이 가능합니다.</label>
 										</div>
 										
 										</div>
 									</div>
+									<br>
 									<label>이메일</label>
 									<div class="row">
 										<div class="col-xl-4 col-md-4 mb-4">
-											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" >
+											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" th:value="${list.email1}" id="email1">
 										</div>
 										<label style="padding-top:6px;">@</label>
 										<div class="col-xl-4 col-md-4 mb-4">
-											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail">
+											<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" th:value="${list.email2}" id="email2"> 
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3">
-											<select class="custom-select" id="inputGroupSelect01">
-											    <option selected>Choose...</option>
-											    <option value="1">One</option>
-											    <option value="2">Two</option>
-											    <option value="3">Three</option>
-											 </select>
-										 </div>
+											<select class="custom-select" id="emailChoose" onChange="chooseEmail()">
+												<option selected value="J">직접선택</option>
+												<option value="N">Naver.com</option>
+												<option value="D">Daum.net</option>
+												<option value="G">Google.com</option>
+											</select>
+										</div>
 									</div>
 									<label>주소</label>
 									<div class="row">
 										<div class="col-xl-9 col-md-9 mb-9">
 											<div class="input-group mb-3">
-												<input type="text" class="form-control" placeholder="Address1" aria-label="Address1" >
+												<input type="text" class="form-control" placeholder="Address1" aria-label="Address1" th:value="${list.familyCustAddr1}" id="addr1">
 											</div>
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary">주소찾기</button>
+												<button type="button" class="btn btn-secondary" onClick="javascript:openDaumZipAddress();">주소찾기</button>
 											</div>
 										</div>
 									</div>
-									<input type="text" class="form-control" placeholder="Address2" aria-label="Address2" ><br>
+									<input type="text" class="form-control" placeholder="Address2" aria-label="Address2" th:value="${list.familyCustAddr2}" id="addr2" ><br>
 									<label>현재 비밀번호</label>
-									<input type="text" class="form-control" placeholder="Current Password" aria-label="Password" ><br>
+									<input type="password" class="form-control" placeholder="Current Password" aria-label="Password" id="currentPass"><br>
 									<label>새 비밀번호</label>
-									<input type="text" class="form-control" placeholder="New Password" aria-label="Password check" ><br>
+									<input type="password" class="form-control" placeholder="New Password" aria-label="Password check" id="newPass"><br>
 									<label>새 비밀번호 확인</label>
-									<input type="text" class="form-control" placeholder="New Password Check" aria-label="Password check" ><br>
+									<input type="password" class="form-control" placeholder="New Password Check" aria-label="Password check" id="newPassCheck"><br>
 									
 									<hr/>
 									<div class="row">
@@ -151,7 +151,7 @@
 			                			</div>
 			                			<div class="col-xl-6 col-md-6 mb-6">
 			                				<div class="input-group mb-3">
-				                				<button type="button" class="btn btn-secondary btn-block">수정하기</button>
+				                				<button type="button" class="btn btn-secondary btn-block" onClick="javascript:changeCust();">수정하기</button>
 			                				</div>
 			                			</div>
 				                	</div>
@@ -194,7 +194,96 @@
   <!-- Page level custom scripts -->
   <script th:src="@{js/demo/chart-area-demo.js}"></script>
   <script th:src="@{js/demo/chart-pie-demo.js}"></script>
-
+	<script type="text/JavaScript" src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 </body>
 
 </html>
+<script>
+	function chooseEmail() {
+		ec = $("#emailChoose").val()
+		email2 = $("#email2")
+		
+		email2.prop('disabled', true);
+		
+		if(ec == "J") {
+			email2.val("");
+			email2.prop('disabled', false);
+		} else if(ec == "N") {
+			email2.val("naver.com");
+		} else if(ec == "D") {
+			email2.val("daume.net");
+		} else {
+			email2.val("google.com");
+		}
+	}
+	
+	function openDaumZipAddress() {
+		new daum.Postcode({
+			oncomplete:function(data) {
+				jQuery("#addr1").val(data.address);
+			}
+	
+		}).open();
+	}
+	
+	function changeCust() {
+		email1 = $("#email1");
+		email2 = $("#email2");		
+		email = email1.val() +"@"+ email2.val();
+		
+		addr1 = $("#addr1");
+		addr2 = $("#addr2");
+		
+		currentPass = $("#currentPass");
+		newPass = $("#newPass");
+		newPassCheck = $("#newPassCheck");
+		
+		if(currentPass.val() == "") {
+			 alert("회원정보를 수정하려면 비밀번호를 입력해야합니다.");
+			 currentPass.focus();
+			 return;
+		}
+		
+		
+		if(newPass.val() != "") {
+			if (newPass.val().length < 4 || newPass.val().length > 20) {
+				alert("비밀번호는 4~20자리까지 입력이 가능합니다.");
+				newPass.focus();
+				return;
+			}
+		}
+		
+		if(newPass.val() != newPassCheck.val()) {
+			 alert("새 비밀번호와 새 비밀번호 확인이 다릅니다.");
+			 newPassCheck.focus();
+			 return;
+		}
+		
+		$.ajax({
+			url : "/changeCust/change",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "familyCustEmail=" + email 
+			+ "&familyCustAddr1=" + addr1.val()
+			+ "&familyCustAddr2=" + addr2.val()
+			+ "&currentPassword=" + currentPass.val()
+			+ "&newPassword=" + newPassCheck.val(),
+			success : function(data) {
+				if(data == 2) {
+					alert("변경에 성공하였습니다.");
+				}
+				
+				if(data == -99) {
+					alert("현재 비밀번호가 틀려서 수정에 실패하였습니다.")
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+</script>

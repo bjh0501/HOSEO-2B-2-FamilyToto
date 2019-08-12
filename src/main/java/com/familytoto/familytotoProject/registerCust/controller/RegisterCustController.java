@@ -36,6 +36,11 @@ public class RegisterCustController {
         return "loginInfo/registerCust";
     }
 	
+	@RequestMapping("/registerCust/service")
+	public String aa() {
+		return "loginInfo/service/termsOfService";
+	}
+	
 	@RequestMapping(value = "/registerCust/register", method = RequestMethod.POST)
 	@ResponseBody
 	public int insertRegister(@ModelAttribute RegisterCustVO rcVo, @ModelAttribute CustVO cVo, 

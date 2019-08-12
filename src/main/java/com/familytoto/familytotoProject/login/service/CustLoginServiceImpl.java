@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.login.dao.CustLoginDAO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
-import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 
 @Service
 public class CustLoginServiceImpl implements CustLoginService {
@@ -21,8 +20,6 @@ public class CustLoginServiceImpl implements CustLoginService {
 		if(custLogin != null) { // 아디 없으면 null
 			String getDBPass = (String) custLoginDao.login(vo).get("custPassword");
 			
-			// 
-			System.out.println(vo.getCustPassword() + "==" + getDBPass);
 			if(vo.isDecodePassword(vo,getDBPass) == false) {
 				return null;
 			}
