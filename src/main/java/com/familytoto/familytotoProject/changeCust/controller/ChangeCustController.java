@@ -69,4 +69,30 @@ public class ChangeCustController {
 			return -99;
 		}
 	}
+	
+	@RequestMapping("changeCust/dropCust")
+	@ResponseBody
+    public int change(HttpSession session, @ModelAttribute CustVO vo) {
+		CustVO sessionVo = (CustVO) session.getAttribute("cust");
+		
+		Map<String, Object> map = changeCustService.getCheckPassword(sessionVo);
+		
+		if(map != null) {
+			String sDbPass = map.get("custPassword").toString();
+			
+			// 비번옳은경우
+			if(vo.isDecodePassword(vo, sDbPass)) {
+				vo = (CustVO) session.getAttribute("cust");
+				//트랜잭션 해야함
+				changeCustService.updateDropCust(vo);
+				changeCustService.updateDropFamilyCust(vo);
+				session.removeAttribute("cust");
+			} else {
+				return -98;
+			}
+		} else {
+			return -99;
+		}
+		return 0;
+	}
 }

@@ -8,4 +8,7 @@ import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 public interface ChangeCustDAO {
 	Map<String, Object> getCustInfo(CustVO cVo);
 	int updateCustInfo(CustVO cVo, RegisterCustVO rVo);
+	int updateDropCust(CustVO rVo);
+	int updateDropFamilyCust(CustVO rVo);
+	Map<String, Object> getCheckPassword(CustVO cVo);
 }

@@ -30,6 +30,21 @@
 			    NULL, 'Y');
 	</insert>
 	<select id="checkId" resultType="map" >
-		select CUST_ID from CUSTOM where CUST_ID = '${custId}' and USE_YN = 'Y' limit 1; 
-	</select> 
+		select	CUST_ID 
+		,		FAMILY_CUST_NO as familyCustNo
+		from	CUSTOM
+		where	CUST_ID = '${custId}'
+		and		USE_YN = 'Y'
+		limit 1; 
+	</select>	
+	<insert id="insertRecommend" >
+		INSERT INTO CUSTOM_MILEAGE
+		    (FAMILY_CUST_NO,     MILEAGE_VALUE,     MILEAGE_STATE, 
+		    REG_CUST_NO,	     REG_DT,			REG_IP,
+		    USE_YN)
+		VALUES
+		    (${familyCustNo}, 	 2000, 			    'MIR', 
+		    0,				  	 NOW(), 		    '${regIp}', 
+		    'Y');
+    </insert>
 </mapper>

@@ -140,7 +140,7 @@
 							<div class="input-group mb-3"> 
 								<div class="custom-control custom-checkbox">
 									<input type="checkbox" class="custom-control-input" id="adult">
-									<label class="custom-control-label" for="adult"><a href="#">성인</a>이십니까?</label>
+									<label class="custom-control-label" for="adult"><a href="#" data-toggle="modal"  data-target="#adultModal">성인</a>이십니까?</label>
 								</div>
 							</div>
 						</div>
@@ -199,8 +199,28 @@
 	        </button>
 	      </div>
 	      <div class="modal-body" >
-	      
-​
+	      	이용약관
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="adultModal" tabindex="-1" role="dialog" aria-labelledby="adultModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-scrollable" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="adultModal">성인</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body" >
+	      	자라서 어른이 된 사람. 보통 만 19세 이상의 남녀를 이른다.<br>
+	      	성인이 아니라면 뒤로가기를 눌러주세요.
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -339,8 +359,9 @@
 			data : "custId=" + custId.val() + "&custPassword="
 					+ passwordCheck.val() + "&familyCustNickname="
 					+ familyCustNickname.val() + "&familyCustEmail=" + email
-					+ "&familyCustAddr1=" + addr1.val() + "&familyCustAddr2="
-					+ addr2.val() + "&familyCustRecommend=" + reco.val()
+					+ "&familyCustAddr1=" + addr1.val()
+					+ "&familyCustAddr2="+ addr2.val() 
+					+ "&familyCustRecommend=" + reco.val()
 					+ "&captcha=" + captcha.val(),
 			success : function(data) {
 				if (data == -99) {
@@ -355,12 +376,14 @@
 					alert("이미 존재하는 닉네임입니다.");
 					familyCustNickname.focus();
 					return;
+				} else if (data == 1) {
+					alert("추천인아이디가 존재하지않습니다.\n회원가입에는 성공하였습니다.");
+					location.replace("/")
+				} else {
+					alert("회원가입에 성공하였습니다.");
+					location.replace("/")
 				}
-
-				alert("회원가입에 성공하였습니다.");
-				location.replace("/")
 			},
-
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
 				msg += +"내용 : " + request.responseText + "<br>" + error;

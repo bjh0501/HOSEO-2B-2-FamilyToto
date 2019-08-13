@@ -2,30 +2,63 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="charge">
-	<select id="listCharge" resultType="map" >				
-		SELECT	COUNT(CREDIT_VALUE) as totalCharge
-		,		5-COUNT(if(IFNULL(CHG_DT, REG_DT) > curdate(), CREDIT_VALUE, NULL)) as todayCharge
-		,		IFNULL(SUM(CREDIT_VALUE), 0) as totalCredit
-		FROM	CUSTOM_CREDIT
-		WHERE	FAMILY_CUST_NO = ${familyCustNo}
+<mapper namespace="changeCust">
+	<select id="getCustInfo" resultType="map" >				
+		SELECT		C.CUST_ID as custId
+		,			FC.FAMILY_CUST_NICKNAME as familyCustNickname 
+		,			FC.FAMILY_CUST_EMAIL as familyCustEmail
+		,			FC.FAMILY_CUST_ADDR1 as familyCustAddr1
+		,			FC.FAMILY_CUST_ADDR2 as familyCustAddr2
+		,			C.CUST_PASSWORD as custPassword
+		,			'Y' AS fb
+		,			'N' AS kakao
+		,			'N' AS naver
+		FROM		CUSTOM C
+		INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
+		AND			C.USE_YN = 'Y'
+		AND			FC.USE_YN = 'Y'
+		WHERE		FC.FAMILY_CUST_NO = '${familyCustNo}'
+		limit 1
+	</select>
+	
+	<update id="updateFamilyCust">
+		UPDATE	FAMILY_CUSTOM
+		SET		FAMILY_CUST_EMAIL = '${familyCustEmail}'
+		,		FAMILY_CUST_ADDR1 = '${familyCustAddr1}'
+		,		FAMILY_CUST_ADDR2 = '${familyCustAddr2}'
+		,		CHG_DT = NOW()
+		,		CHG_IP = '${chgIp}'
+		WHERE	FAMILY_CUST_NO = '${familyCustNo}'
+		AND		USE_YN = 'Y'
+	</update>
+	
+	<update id="updateCust">
+		UPDATE	CUSTOM
+		SET		CHG_CUST_NO = '${chgCustNo}'
+		,		CHG_DT = NOW()
+		,		CHG_IP = '${chgIp}'
+		<!-- <if test="custPassword != null and custPassword != ''"> -->
+			,		CUST_PASSWORD = '${custPassword}'
+		<!-- </if> -->
+		WHERE	FAMILY_CUST_NO = '${familyCustNo}'
+		AND		USE_YN = 'Y'
+	</update>
+	<select id="getDropCheckPassword" resultType="map">
+		select	CUST_PASSWORD as custPassword
+	    from	CUSTOM
+	    where	FAMILY_CUST_NO = ${familyCustNo}
 		AND		USE_YN = 'Y'
 	</select>
-	<select id="todayCharge" resultType="map" >				
-		SELECT	COUNT(*) as todayChargeCnt
-		,		IFNULL(SUM(CREDIT_VALUE), 0) AS remainCredit
-		FROM	CUSTOM_CREDIT
-		WHERE	IFNULL(CHG_DT, REG_DT) > curdate()
-		AND		FAMILY_CUST_NO = ${familyCustNo}
-	</select>
-	<insert id="insertCharge">
-		INSERT INTO CUSTOM_CREDIT
-		    ( CREDIT_VALUE,		CREDIT_STATE,		CREDIT_STATE_ID, 
-		    REG_CUST_NO,		REG_DT, 			REG_IP,
-		    USE_YN,				FAMILY_CUST_NO)
-		VALUES
-		    (${creditValue},	'fre', 				0, 
-		    ${regCustNo}, 		NOW(), 				'${regIp}',
-		    'Y',				${familyCustNo});
-	</insert>
+	<update  id="dropCust">
+		UPDATE	CUSTOM
+	    SET		USE_YN = 'N'
+	    WHERE	USE_YN = 'Y'
+	    AND		FAMILY_CUST_NO = ${familyCustNo};
+	</update>
+	<update  id="dropFamilyCust">
+		UPDATE	FAMILY_CUSTOM
+	    SET		USE_YN = 'N'
+	    WHERE	USE_YN = 'Y'
+	    AND		FAMILY_CUST_NO = ${familyCustNo};
+	</update>
 </mapper>

@@ -58,6 +58,8 @@ public class LoginController {
 			vo.setFamilyCustNo(Integer.parseInt(login.get("familyCustNo").toString()));
 			vo.setCustNo(Integer.parseInt(login.get("custNo").toString()));
 			vo.setFamilyCustEmail(login.get("familyCustEmail").toString());
+			vo.setCustPassword("");
+			
 			session.setAttribute("cust", vo);
 			nReuslt = 0;
 		} else {

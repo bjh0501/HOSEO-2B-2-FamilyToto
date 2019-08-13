@@ -146,7 +146,7 @@
 									<div class="row">
 										<div class="col-xl-6 col-md-6 mb-6">
 											<div class="input-group mb-3">
-				                				<button type="button" class="btn btn-secondary btn-block">탈퇴하기</button>
+				                				<button type="button" class="btn btn-secondary btn-block" onClick="drop()">탈퇴하기</button>
 				                			</div>
 			                			</div>
 			                			<div class="col-xl-6 col-md-6 mb-6">
@@ -285,5 +285,39 @@
 				console.log(msg);
 			}
 		});
+	}
+	
+	function drop() {
+		if($("#currentPass").val() == "") {
+			alert("비밀번호를 입력해주세요.");
+			$("#currentPass").focus();
+		}
+		
+		if(confirm("회원탈퇴를 해도 복구가 가능하지만 운영자 마음입니다. ㅎ\n계속 진행하시겠습니까?")) {
+			$.ajax({
+				url : "changeCust/dropCust",
+				type : "POST",
+				cache : false,
+				async : false,
+				dataType : "json",
+				data : "custPassword=" + $("#currentPass").val(),
+				success : function(data) {
+					if(data == -98) {
+						alert("비밀번호가 틀렸습니다.");
+						return;
+					} else if(data==0){
+						alert("탈퇴에 성공하였습니다.\n소셜아이디는 이용할 수 있습니다.");
+						location.replace("/");
+					} else {
+						alert("알수없는 에러가 발생하였습니다.")
+					}
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
+		}
 	}
 </script>

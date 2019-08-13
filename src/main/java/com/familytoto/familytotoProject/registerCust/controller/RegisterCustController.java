@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,6 @@ public class RegisterCustController {
 	
 	@RequestMapping("/registerCust")
     public String registerCust(HttpServletRequest request) {
-		System.out.println(request.getContextPath() );
         return "loginInfo/registerCust";
     }
 	
@@ -47,6 +45,8 @@ public class RegisterCustController {
 			HttpServletRequest request, HttpSession session) throws Exception {
 		int nCaptchaResult = captchaService.isRight(session, request);
 		
+		rcVo.setRegIp(request.getRemoteAddr());
+
 		Map<String, Object> custDupleId = custService.checkId(cVo);
 		Map<String, Object> custDupleNickname = registerCustService.checkNickname(rcVo);
 		
@@ -61,7 +61,24 @@ public class RegisterCustController {
 		} else if(cVo.getCustPassword().length() < 4 || cVo.getCustPassword().length() > 20) {
 			nResult = -96;
 		} else {
+			
 			// 트랜잭션 걸어야함
+			if(rcVo.getFamilyCustNickname() != null && !rcVo.getFamilyCustNickname().equals("")) {
+				CustVO checkVo = new CustVO();
+				checkVo.setCustId(rcVo.getFamilyCustRecommend());
+				Map<String, Object> checkDupleRecommend = registerCustService.checkRecommend(checkVo);
+				
+				// 추천인의 아이디가 존재하지 않으면 1
+				if(checkDupleRecommend != null) {
+					RegisterCustVO vo = new RegisterCustVO(); 
+					vo.setRegIp(request.getRemoteAddr());
+					vo.setFamilyCustNo(Integer.parseInt(checkDupleRecommend.get("familyCustNo").toString()));
+					registerCustService.insertRecommend(vo);
+				} else {
+					nResult = 1;
+				}
+			}
+						
 			registerCustService.insertRegisterCust(rcVo, request);
 			cVo.setFamilyCustNo(rcVo.getFamilyCustNo());
 			
@@ -71,4 +88,12 @@ public class RegisterCustController {
 		
 		return nResult;
 	}
+	
+	@RequestMapping("/service/termsOfService")
+	public String termsOfService() {
+		return "/loginInfo/service/termsOfService";
+	}
+			
+			
+	
 }

@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="changeCust">
+<mapper namespace="charge">
 	<select id="getCustInfo" resultType="map" >				
 		SELECT		C.CUST_ID as custId
 		,			FC.FAMILY_CUST_NICKNAME as familyCustNickname 

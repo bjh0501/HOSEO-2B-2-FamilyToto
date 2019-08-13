@@ -32,5 +32,20 @@ public class ChangeCustDaoImpl implements ChangeCustDAO {
 		}
 	}
 
+	@Override
+	public int updateDropCust(CustVO rVo) {
+		return sqlSession.update("changeCust.dropCust", rVo);
+	}
+
+	@Override
+	public int updateDropFamilyCust(CustVO rVo) {
+		return sqlSession.update("changeCust.dropFamilyCust", rVo);
+	}
+
+	@Override
+	public Map<String, Object> getCheckPassword(CustVO cVo) {
+		return sqlSession.selectOne("changeCust.getDropCheckPassword", cVo);
+	}
+
 }
 

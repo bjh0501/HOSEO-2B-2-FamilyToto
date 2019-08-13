@@ -52,7 +52,6 @@ public class RegisterCustVO {
 
 	// USE_YN Y,N,B
 	private String useYn;
-			       
 
 	public int getFamilyCustNo() {
 		return familyCustNo;
@@ -92,6 +91,14 @@ public class RegisterCustVO {
 
 	public void setFamilyCustAddr2(String familyCustAddr2) {
 		this.familyCustAddr2 = familyCustAddr2;
+	}
+
+	public String getFamilyCustRecommend() {
+		return familyCustRecommend;
+	}
+
+	public void setFamilyCustRecommend(String familyCustRecommend) {
+		this.familyCustRecommend = familyCustRecommend;
 	}
 
 	public int getRegCustNo() {
@@ -149,12 +156,6 @@ public class RegisterCustVO {
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
-
-	public String getFmailyCustRecommend() {
-		return familyCustRecommend;
-	}
-
-	public void setFmailyCustRecommend(String familyCustRecommend) {
-		this.familyCustRecommend = familyCustRecommend;
-	}
+			       
+	
 }
