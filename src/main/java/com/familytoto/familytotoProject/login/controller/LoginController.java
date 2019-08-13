@@ -57,6 +57,7 @@ public class LoginController {
 			HttpSession session = request.getSession();
 			vo.setFamilyCustNo(Integer.parseInt(login.get("familyCustNo").toString()));
 			vo.setCustNo(Integer.parseInt(login.get("custNo").toString()));
+			vo.setFamilyCustEmail(login.get("familyCustEmail").toString());
 			session.setAttribute("cust", vo);
 			nReuslt = 0;
 		} else {

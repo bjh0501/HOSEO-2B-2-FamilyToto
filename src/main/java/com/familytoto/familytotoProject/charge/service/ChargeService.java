@@ -8,4 +8,5 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 public interface ChargeService {
 	Map<String, Object> getCreditInfo(CustVO vo);
 	int doCharge(CreditVO vo);
+	void sendHistoryEmail(String to, int credit);
 }

@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.charge.dao.ChargeDao;
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
+import com.familytoto.familytotoProject.findIdPw.service.EmailService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
 public class ChargeServiceImpl implements ChargeService {
 	@Autowired
 	ChargeDao chargeDao; 
+	
+	@Autowired
+	EmailService emailService;
 	
 	@Override
 	public Map<String, Object> getCreditInfo(CustVO vo) {
@@ -31,6 +35,17 @@ public class ChargeServiceImpl implements ChargeService {
 		} else {
 			return chargeDao.doCharge(vo);
 		}
+	}
+
+	@Override
+	public void sendHistoryEmail(String to, int credit) {
+		String sTitle = "[원스포츠] 충전내역";
+		String sContents = "";
+		sContents += "원스포츠입니다.\n";
+		sContents += "충전한 크레딧 : " + credit + "\n";
+		
+		
+		emailService.sendEmail(to, sTitle, sContents);
 	}
 	
 }

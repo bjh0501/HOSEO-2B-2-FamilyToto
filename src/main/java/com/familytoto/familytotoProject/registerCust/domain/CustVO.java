@@ -2,6 +2,7 @@ package com.familytoto.familytotoProject.registerCust.domain;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -42,7 +43,13 @@ public class CustVO {
 
 	// USE_YN Y,N,B
 	private String useYn;
+	
+	
+	// 로그인용도
+	private String familyCustEmail;
 
+	
+	
 	public int getCustNo() {
 		return custNo;
 	}
@@ -130,7 +137,15 @@ public class CustVO {
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
-	 
+
+	public String getFamilyCustEmail() {
+		return familyCustEmail;
+	}
+
+	public void setFamilyCustEmail(String familyCustEmail) {
+		this.familyCustEmail = familyCustEmail;
+	}
+
 	public String toEncodePassword(String sPass) {
 		// 숫자가 높을수록 안전, 속도는 느림
 		return BCrypt.hashpw(sPass, BCrypt.gensalt(10));

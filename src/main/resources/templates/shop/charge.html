@@ -240,7 +240,8 @@
 			type : "POST",
 			cache : false,
 			dataType : "json",
-			data : "creditValue=" + encodeURIComponent(parseInt(credit)),
+			data : "creditValue=" + encodeURIComponent(parseInt(credit)) 
+			+ "&mail=" + mail,
 			success : function(data) {
 				if(data == 0) {
 					alert("충전에 성공하였습니다.");

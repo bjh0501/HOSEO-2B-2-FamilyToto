@@ -5,11 +5,16 @@
 <mapper namespace="login">
 	
 	<select id="custLogin" resultType="map">
-		SELECT	CUST_NO as custNo
-		,		FAMILY_CUST_NO as familyCustNo
-		,		CUST_PASSWORD as custPassword
-		FROM	CUSTOM
+			
+		SELECT	C.CUST_NO as custNo
+		,		C.FAMILY_CUST_NO as familyCustNo
+		,		C.CUST_PASSWORD as custPassword
+	    ,		FC.FAMILY_CUST_EMAIL AS familyCustEmail
+		FROM	CUSTOM C
+	    inner join	FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
+	    AND			C.USE_YN = 'Y'
+	    AND			FC.USE_YN = 'Y'
 		where	CUST_ID = "${custId}"
-		limit 1
+		limit 1;
 	</select>
 </mapper>
