@@ -29,9 +29,8 @@ public class CertificationInterceptor implements HandlerInterceptor{
 //        session.setAttribute("cust", vo);
         // 테스트용
         // 소셜은 따로처리
-        CustVO sCustNoSession = (CustVO) session.getAttribute("cust");
  
-        if(sCustNoSession == null){
+        if(session.getAttribute("cust") == null){
         	response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인후에 이용할 수 있습니다.'); location.href='/login'</script>");

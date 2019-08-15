@@ -63,9 +63,10 @@ public class RegisterCustController {
 		} else {
 			
 			// 트랜잭션 걸어야함
-			if(rcVo.getFamilyCustNickname() != null && !rcVo.getFamilyCustNickname().equals("")) {
+			if(rcVo.getFamilyCustRecommend() != null && !rcVo.getFamilyCustRecommend().equals("")) {
 				CustVO checkVo = new CustVO();
 				checkVo.setCustId(rcVo.getFamilyCustRecommend());
+				
 				Map<String, Object> checkDupleRecommend = registerCustService.checkRecommend(checkVo);
 				
 				// 추천인의 아이디가 존재하지 않으면 1

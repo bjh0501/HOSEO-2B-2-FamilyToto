@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.changeCust.service;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,10 @@ public class ChangeCustServiceImpl implements ChangeCustService{
 	
 	@Override
 	public Map<String, Object> getCustInfo(CustVO cVo) {
-		Map<String, Object> map = changeCustDAO.getCustInfo(cVo);
-		String email = (String) map.get("familyCustEmail");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<Map<String, Object>> list = changeCustDAO.getCustInfo(cVo); 
+		
+		String email = (String) list.get(0).get("familyCustEmail");
 		String emailSplit[] = email.split("@");
 		String email1 = "";
 		String email2 = "";
@@ -29,10 +33,24 @@ public class ChangeCustServiceImpl implements ChangeCustService{
 			email1 = emailSplit[0];
 		}
 		
-		map.put("email1", email1);
-		map.put("email2", email2);
+		list.get(0).put("email1", email1);
+		list.get(0).put("email2", email2);
 		
-		return map;
+		// 리스트 맵0에는 회원정보가 다들어있음
+		resultMap = list.get(0);
+	
+		resultMap.put("NA", "");
+		resultMap.put("KA", "");
+		resultMap.put("FA", "");
+		
+		for(Map<String, Object> map : list) {
+			if(map.containsKey("scCustGubun") && map.containsValue("KA")) resultMap.put("KA", map.get("scCustEmail"));
+			if(map.containsKey("scCustGubun") && map.containsValue("NA")) resultMap.put("NA", map.get("scCustEmail"));
+			if(map.containsKey("scCustGubun") && map.containsValue("FA")) resultMap.put("FA", map.get("scCustEmail"));
+		}
+		
+		
+		return resultMap;
 	}
 
 	@Override

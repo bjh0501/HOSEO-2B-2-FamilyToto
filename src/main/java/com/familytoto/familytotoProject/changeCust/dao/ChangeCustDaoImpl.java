@@ -1,5 +1,6 @@
 package com.familytoto.familytotoProject.changeCust.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,8 +16,8 @@ public class ChangeCustDaoImpl implements ChangeCustDAO {
 	SqlSession sqlSession;
 
 	@Override
-	public Map<String, Object> getCustInfo(CustVO cVo) {
-		return sqlSession.selectOne("changeCust.getCustInfo", cVo);
+	public List<Map<String, Object>> getCustInfo(CustVO cVo) {
+		return sqlSession.selectList("changeCust.getCustInfo", cVo);
 	}
 
 	// 트랜잭션 처리해야함

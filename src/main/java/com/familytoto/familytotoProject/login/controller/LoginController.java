@@ -9,11 +9,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.login.service.CustLoginService;
+import com.familytoto.familytotoProject.login.service.naver.NaverLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller
@@ -21,14 +23,21 @@ public class LoginController {
 	@Autowired
 	CustLoginService custLoginService;
 	
+	@Autowired
+	NaverLoginService naverLoginService;
+	
 	@RequestMapping("login")
-    public String login() {
+    public String login(Model model, HttpSession session) {
+		String sNaverLoginInfo = naverLoginService.naverAuthLink(model, session);
+		model.addAttribute("naverLoginUrl", sNaverLoginInfo);
+		
 		return "loginInfo/login";
     }
 	
 	@RequestMapping("logout")
 	public void logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		session.removeAttribute("cust");
+		session.removeAttribute("social");
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("<script>location.href='/';</script>");
@@ -60,24 +69,6 @@ public class LoginController {
 			vo.setFamilyCustEmail(login.get("familyCustEmail").toString());
 			vo.setCustPassword("");
 			
-			session.setAttribute("cust", vo);
-			nReuslt = 0;
-		} else {
-			nReuslt = -99;
-		}
-		
-		return nReuslt;
-	}
-	
-	// 소셜로그인
-	@RequestMapping("login/socialLogin")
-	@ResponseBody
-	public int socialLogin(@ModelAttribute CustVO vo, HttpServletRequest request) {
-		Map<String, Object> login = custLoginService.login(vo);
-		int nReuslt = 0;
-		
-		if(login != null) { // 로그인성공
-			HttpSession session = request.getSession();
 			session.setAttribute("cust", vo);
 			nReuslt = 0;
 		} else {

@@ -116,33 +116,34 @@
 					                	<label>페이스북</label>
 					                	<div style="margin-left:7px;">
 						                	<div class="custom-control custom-switch">
-											  <input type="checkbox" class="custom-control-input" id="facebook">
-											  <label class="custom-control-label" for="facebook">연동중</label>
+											  <input type="checkbox" class="custom-control-input" id="facebook" onclick="javascript:auth('facebook')">
+											  <label class="custom-control-label" for="facebook">비연동</label>
 											</div>
 										</div>
 									</div>
-									<input type="text" class="form-control" placeholder="ID" aria-label="Username" ><br>
+									<input type="text" class="form-control" placeholder="연동을 하시려면 클릭해주세요." aria-label="Username" id="facebookEmail" disabled th:value="${list.FA}"><br>
 									<div class="row">
 									
 										<label>카카오</label>
 										<div style="margin-left:7px;">
 						                	<div class="custom-control custom-switch">
-											  <input type="checkbox" class="custom-control-input" id="kakao">
-											  <label class="custom-control-label" for="kakao">연동중</label>
+											  <input type="checkbox" class="custom-control-input" id="kakao" onclick="javascript:auth('kakao')">
+											  <label class="custom-control-label" for="kakao">비연동</label>
 											</div>
 										</div>
 									</div>
-									<input type="text" class="form-control" placeholder="ID" aria-label="Username" ><br>
+									<input type="text" class="form-control" placeholder="연동을 하시려면 클릭해주세요." aria-label="Username" id="kakaoEmail" disabled th:value="${list.KA}"><br>
 									<div class="row">
 										<label>네이버</label>
 										<div style="margin-left:7px;">
-						                	<div class="custom-control custom-switch">
-											  <input type="checkbox" class="custom-control-input" id="naver">
-											  <label class="custom-control-label" for="naver">연동중</label>
+						                	<div class="custom-control custom-switch" onclick="javascript:auth('naver')">
+											  <input type="checkbox" class="custom-control-input" id="naver"  >
+											  <label class="custom-control-label" name="naver">비연동</label>
 											</div>
+											<a th:href="${naverUrl}" style="display:none" id="naverLink"></a>
 										</div>
 									</div>
-									<input type="text" class="form-control" placeholder="ID" aria-label="Username" ><br>
+									<input type="text" class="form-control" placeholder="연동을 하시려면 클릭해주세요." aria-label="Username" id="naverEmail" disabled th:value="${list.NA}"> <br>
 									<div class="row">
 										<div class="col-xl-6 col-md-6 mb-6">
 											<div class="input-group mb-3">
@@ -199,6 +200,24 @@
 
 </html>
 <script>
+	$(document).ready(function() {
+		if($("#naverEmail").val() != "") {
+			$("input:checkbox[id='naver']").prop("checked", true)
+			$("[name=naver]").html("연동")
+		}
+	
+		if($("#kakaoEmail").val() != "") {
+			$("input:checkbox[id='kakao']").prop("checked", true)
+			$("[name=kakao]").html("연동")
+		}
+	
+		if($("#facebookEmail").val() != "") {
+			$("input:checkbox[id='facebook']").prop("checked", true)
+			$("[name=facebook]").html("연동")
+		}
+	});
+
+
 	function chooseEmail() {
 		ec = $("#emailChoose").val()
 		email2 = $("#email2")
@@ -318,6 +337,44 @@
 					console.log(msg);
 				}
 			});
+		}
+	}
+	
+	function successNaver(email) {
+		$("#naverEmail").val(email);
+		$("input:checkbox[id='naver']").prop("checked", true);
+		$("[name='naver']").html("연동");
+	}
+	
+	function auth(social) {
+		if($("input:checkbox[id='" + social + "']").is(":checked") == false) {
+			var link = $("#" + social + "Link").attr("href") + "&authCheck=check"
+			var popupX = (document.body.offsetWidth / 2) - (680 / 2);
+			var popupY= (document.body.offsetHeight / 2) - (650 / 2);
+			
+			window.open(link, '', 'status=no, height=680, width=650, left='+ popupX + ', top='+ popupY);
+			
+		} else {			
+			if(social=="naver") {
+				$.ajax({
+					url : "changeCust/social/naver/unAuth",
+					type : "POST",
+					cache : false,
+					dataType : "json",
+					data : "a=a",
+					success : function(data) {
+						
+					},		
+					error : function(request, status, error) {
+						var msg = "ERROR : " + request.status + "<br>"
+						msg += +"내용 : " + request.responseText + "<br>" + error;
+						console.log(msg);
+					}
+				});
+			}
+			
+			$("#" + social + "Email").val("");
+			$("input:checkbox[id='" + social + "']").prop("checked", false)
 		}
 	}
 </script>

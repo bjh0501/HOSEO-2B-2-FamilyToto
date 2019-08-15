@@ -10,15 +10,14 @@
 		,			FC.FAMILY_CUST_ADDR1 as familyCustAddr1
 		,			FC.FAMILY_CUST_ADDR2 as familyCustAddr2
 		,			C.CUST_PASSWORD as custPassword
-		,			'Y' AS fb
-		,			'N' AS kakao
-		,			'N' AS naver
+		,			SC.SC_CUST_GUBUN as scCustGubun
+		,			SC.SC_CUST_EMAIL as scCustEmail
 		FROM		CUSTOM C
-		INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
+		INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		LEFT OUTER JOIN SOCIAL_CUSTOM SC ON FC.FAMILY_CUST_NO = SC.FAMILY_CUST_NO AND SC.USE_YN = 'Y'
+		WHERE		FC.FAMILY_CUST_NO = ${familyCustNo}
 		AND			C.USE_YN = 'Y'
-		AND			FC.USE_YN = 'Y'
-		WHERE		FC.FAMILY_CUST_NO = '${familyCustNo}'
-		limit 1
+
 	</select>
 	
 	<update id="updateFamilyCust">
@@ -61,4 +60,34 @@
 	    WHERE	USE_YN = 'Y'
 	    AND		FAMILY_CUST_NO = ${familyCustNo};
 	</update>
+	
+	<update id="authNaver">
+		UPDATE	SOCIAL_CUSTOM
+		SET		FAMILY_CUST_NO = ${familyCustNo}
+		,		CHG_IP = '${regIp}'
+		,		CHG_CUST_NO = ${chgCustNo}
+		,		CHG_DT = now()
+		WHERE	USE_YN = 'Y'
+		AND		SC_CUST_GUBUN = 'NA'
+		AND		SC_CUST_ID = '${scCustId}'
+	</update>
+	<update id="unAuthNaver">
+		UPDATE	SOCIAL_CUSTOM
+		SET		FAMILY_CUST_NO = NULL
+		,		CHG_DT = now()
+		,		CHG_IP = '${chgIp}'
+		,		CHG_CUST_NO = ${chgCustNo}
+		WHERE	USE_YN = 'Y'
+		AND		SC_CUST_GUBUN = 'NA'
+		AND		FAMILY_CUST_NO = ${familyCustNo}
+	</update>
+	<select id="checkNaver" resultType="map">
+		SELECT	SC_CUST_NO
+		,		IFNULL(FAMILY_CUST_NO, 0) as familyCustNo
+		FROM	SOCIAL_CUSTOM
+		WHERE	USE_YN = 'Y'
+		AND		SC_CUST_GUBUN = 'NA'
+		AND		SC_CUST_ID = '${scCustId}'
+		LIMIT 1;
+	</select>
 </mapper>
