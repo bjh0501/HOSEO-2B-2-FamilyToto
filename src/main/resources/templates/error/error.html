@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>One Sports</title>
+  <style>
+  #bg {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+    
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+}
+  </style>
+  </head>
+  <body>
+	<img src="/img/error/404.png" id="bg" th:if="${code}==404" ondragstart="return false" oncontextmenu='return false'>
+	<img src="/img/error/500.png" id="bg" th:if="${code}==500" ondragstart="return false" oncontextmenu='return false'>
+</body>
+
+</html>

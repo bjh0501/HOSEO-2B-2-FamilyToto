@@ -3,8 +3,6 @@ package com.familytoto.familytotoProject.login.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.familytoto.familytotoProject.login.service.kakao.KakaoLoginApi;
-import com.familytoto.familytotoProject.login.service.naver.NaverLoginService;
+import com.familytoto.familytotoProject.login.domain.SocialVO;
+import com.familytoto.familytotoProject.login.service.kakao.KakaoLoginVO;
 import com.familytoto.familytotoProject.login.service.naver.NaverLoginVO;
+import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
+import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller
 public class SocialLoginController {
@@ -28,12 +28,16 @@ public class SocialLoginController {
 	NaverLoginVO naverLoginVO;
 	
 	@Autowired
-	NaverLoginService naverLoginService; 
+	SocalLoginService naverLoginService; 
 	
 	@Autowired
-	KakaoLoginApi kakaoLoginApi;
+	KakaoLoginVO kakaoLoginVO; 
+	
+	@Autowired
+	SocalLoginService socalLoginService;
 	
 	@RequestMapping("login/social/naver")
+	@ResponseBody
 	public int callback(HttpServletRequest request, Model model, @RequestParam String state, HttpSession session, HttpServletResponse response)
 			throws IOException, ParseException {
 		int nResult = 0;
@@ -48,66 +52,52 @@ public class SocialLoginController {
 		} else {
 			code = request.getParameter("code");
 			naverLoginVO.naverLogin(model, code,state, session, request);
-			out.println("<script>window.close();opener.document.location.replace('/');</script>");
+			out.println("<script>window.close();opener.document.location.replace('/');</script>");	
+		}
+		
+		out.flush();		
+		return nResult;
+	}
+	 
+	@RequestMapping("login/social/kakao")
+	@ResponseBody
+	public int kakaoAuth(@RequestParam("code") String code, HttpSession session, HttpServletResponse response) {
+		String access_Token = kakaoLoginVO.getAccessToken(code, "login");
+		
+		SocialVO vo = kakaoLoginVO.getKakaoLogin(access_Token, session);
+		
+		try {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
 			
-		}
-		
-		out.flush();		
-		return nResult;
-	}
-	
-	@RequestMapping("login/social/naver/auth")
-	@ResponseBody
-	public int callbackAuth(HttpServletRequest request, Model model, @RequestParam String state, HttpSession session, HttpServletResponse response)
-			throws IOException, ParseException {
-		int nResult = 0;
-		String code = "";
-		
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		
-		if(request.getParameter("code") == null) {
-			nResult = -99;
-			out.println("<script>alert('에러가 발생하였습니다. 다시 시도해주세요.'); window.close()</script>");
-		} else {
-			code = request.getParameter("code");
-			Map<String, Object> map = naverLoginVO.naverAuth(code,state, session, request);
-			if(map.get("error").toString().equals("0")) {
-				out.println("<script>"
-						+ "alert('연동에 성공하였습니다.');"
-						+ "opener.parent.successNaver('" + map.get("scCustEmail").toString() + "');"
-						+ "window.close();"
-						+ "</script>");
-			} else {
-				out.println("<script>"
-						+ "alert('다른사람이 쓰고있는 계정이라 연동을 할 수 없습니다.');"
-						+ "window.close();</script>");
+			if(vo != null) {
+				if(vo.getScCustId().equals("-99")) {
+					out.println("<script>alert('제공 항목을 전부 체크해주세요.'); window.close();</script>");
+				} else if(vo.getScCustId().equals("-98")) { 
+					out.println("<script>alert('20세 미만은 가입할 수 없습니다.'); window.close();</script>");
+				} else {
+					// 세션 제대로된거넣기
+					
+					CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
+					
+					int nScCustNo = socalLoginService.insertSocialId(vo);
+					vo.setScCustNo(nScCustNo);
+					cVo.setCustNo(nScCustNo);
+					
+					session.setAttribute("cust", cVo); // 세션 생성
+					session.setAttribute("custSocial", vo); // 세션 생성
+					session.setAttribute("social", "KA"); // 세션 생성
+					
+					// scid의 패밀리넘버가잇으면 통합로그인
+					
+					out.println("<script>window.close();opener.document.location.replace('/');</script>");
+					out.flush();
+					return 0;
+				}
+				out.flush();
 			}
-		}
-		
-		out.flush();		
-		return nResult;
-	}
-	
-	@RequestMapping("login/social/kakao/auth")
-	@ResponseBody
-	public String kakaoAuth(@RequestParam("code") String code, HttpSession session) {
-		String access_Token = kakaoLoginApi.getAccessToken(code);
-		
-		HashMap<String, Object> userInfo = kakaoLoginApi.getUserInfo(access_Token);
-	    System.out.println("login Controller : " + userInfo);
+		} catch(Exception e) { }
 	    
-	    // 연동해제
-//	    HashMap<String, Object> kakaoUnAuth = kakaoLoginApi.kakaoUnAuth(access_Token);
-//	    System.out.println("un : " + kakaoUnAuth);
-	    
-	    
-	    //    클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
-	    if (userInfo.get("email") != null) {
-	        session.setAttribute("userId", userInfo.get("email"));
-	        session.setAttribute("access_Token", access_Token);
-	    }
-	    
-		return userInfo.toString();
+		return -1;
 	}
 }

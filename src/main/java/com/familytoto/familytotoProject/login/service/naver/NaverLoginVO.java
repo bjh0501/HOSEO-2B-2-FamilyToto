@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.changeCust.service.ChangeCustAuthService;
+import com.familytoto.familytotoProject.login.domain.SocialVO;
+import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -40,16 +42,21 @@ public class NaverLoginVO {
 //response_type: 인증 과정에 대한 구분값. code로 값이 고정돼 있습니다.
 //redirect_uri: 네이버 로그인 인증의 결과를 전달받을 콜백 URL(URL 인코딩). 애플리케이션을 등록할 때 Callback URL에 설정한 정보입니다.
 //state: 애플리케이션이 생성한 상태 토큰
+	
+	
+	
 	@Autowired
-	NaverLoginService naverLoginService; 
+	SocalLoginService socalLoginService; 
 	
 	@Autowired
 	ChangeCustAuthService changeCustAuthService; 
 	
+	private final static String DOMAIN_URL = "http://test.onesports.ga";
+	
 	private final static String CLIENT_ID = "Za6kr7wC2cVLJ3c1qVvu";
 	private final static String CLIENT_SECRET = "rFm3tqGBfo";
-	private final static String REDIRECT_URI = "http://localhost/login/social/naver";
-	private final static String REDIRECT_URI2 = "http://localhost/login/social/naver/auth";
+	private final static String REDIRECT_URI = DOMAIN_URL + "/login/social/naver";
+	private final static String REDIRECT_URI2 = DOMAIN_URL + "/login/social/naver/auth";
 	private final static String SESSION_STATE = "social_cust";
 	/* 프로필 조회 API URL */
 	private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
@@ -123,8 +130,8 @@ public class NaverLoginVO {
 	    apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=delete";
 	    apiURL += "&client_id=" + CLIENT_ID;
 	    apiURL += "&client_secret=" + CLIENT_SECRET;
-	    apiURL += "&access_token=" + URLEncoder.encode(oauthToken.getAccessToken(),"UTF-8");
-	    apiURL += "&sercive_provider=NAVER";
+	    apiURL += "&access_token=" + URLEncoder.encode(oauthToken.getAccessToken(), "UTF-8");
+	    apiURL += "&service_provider=NAVER";
 	    
 	    
 	    System.out.println("apiURL="+apiURL);
@@ -135,18 +142,22 @@ public class NaverLoginVO {
 	      con.setRequestMethod("GET");
 	      int responseCode = con.getResponseCode();
 	      BufferedReader br;
-	      System.out.print("responseCode="+responseCode);
+	      
 	      if(responseCode==200) { // 정상 호출
 	        br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 	      } else {  // 에러 발생
 	        br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
 	      }
+	      
 	      String inputLine;
 	      StringBuffer res = new StringBuffer();
+	      
 	      while ((inputLine = br.readLine()) != null) {
 	        res.append(inputLine);
 	      }
+	      
 	      br.close();
+	      
 	      if(responseCode==200) {
 	        System.out.println("삭제완료 ");
 	      }
@@ -163,9 +174,8 @@ public class NaverLoginVO {
 		this.naverLoginVO = naverLoginVO;
 	}
 	
-	public ModelAndView naverLogin(Model model, @RequestParam String code, @RequestParam String state, HttpSession session, HttpServletRequest request) 
+	public void naverLogin(Model model, @RequestParam String code, @RequestParam String state, HttpSession session, HttpServletRequest request) 
 			throws IOException, ParseException{
-		ModelAndView mv = new ModelAndView();
 		
 		OAuth2AccessToken oauthToken;
 		oauthToken = naverLoginVO.getAccessToken(session, code, state);
@@ -192,30 +202,30 @@ public class NaverLoginVO {
 		// 이부분 다시봐야함.토큰이 삭제가안대는ㄴ 버그이슷ㅁ.
 		if(nickname == null || age == null || email== null) {
 			naverLoginVO.deleteNaver(oauthToken);
-			mv.setViewName("redirect:/login?naver=del");
+//			mv.setViewName("redirect:/login?naver=del");
 		} else { // 로그인완료
 			System.out.println(nickname);
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("scCustId", id);
-			map.put("scCustEmail", email);
-			map.put("regIp", request.getRemoteAddr());
-			map.put("scCustNick", nickname);
 			
+			SocialVO vo = new SocialVO();
 			
-			int nScCustNo = naverLoginService.insertNaverId(map);
-			Map<String, Object> custMap = new HashMap<String, Object>();
-			custMap.put("scCustNo", Integer.toString(nScCustNo));
-			custMap.put("social", "NA");
-			custMap.put("scCustNick", nickname);
+			vo.setScCustId(id);
+			vo.setScCustEmail(email);
+			vo.setRegIp(request.getRemoteAddr());
+			vo.setScCustNick(nickname);
+			vo.setScCustGubun("NA");
 			
-			session.setAttribute("cust", custMap); // 세션 생성
-			session.setAttribute("social", "Y"); // 세션 생성
+			CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 			
+			int nScCustNo = socalLoginService.insertSocialId(vo);
+			vo.setScCustNo(nScCustNo);
+			cVo.setCustNo(nScCustNo);
 			
-			mv.setViewName("redirect:/index");
+			session.setAttribute("cust", cVo); // 세션 생성	
+			session.setAttribute("custSocial", vo); // 세션 생성			
+			session.setAttribute("social", vo.getScCustGubun()); // 세션 생성
+			
+			//mv.setViewName("redirect:/index");
 		}
-		
-		return mv;
 	}
 	
 	// 새 연동, 업데이트 담당
@@ -248,18 +258,26 @@ public class NaverLoginVO {
 		// 사용자가 접근권한 체크를 해제했다면
 		// 이부분 다시봐야함.토큰이 삭제가안대는ㄴ 버그이슷ㅁ.
 		if(nickname == null || age == null || email== null) {
+			map.put("error", -98);
 			naverLoginVO.deleteNaver(oauthToken);
-		} else { // 
-			CustVO vo = (CustVO) session.getAttribute("cust");
 			
-			map.put("scCustId", id);
-			map.put("scCustEmail", email);
-			map.put("regIp", request.getRemoteAddr());
-			map.put("scCustNick", nickname);
-			map.put("familyCustNo", vo.getFamilyCustNo());
-			map.put("chgCustNo", vo.getCustNo());
+			return map;
+		} else { // 
+			CustVO cVo = (CustVO) session.getAttribute("cust");
+			SocialVO vo = new SocialVO();
+			
+			vo.setScCustId(id);
+			vo.setScCustEmail(email);
+			vo.setRegIp(request.getRemoteAddr());
+			vo.setScCustNick(nickname);
+			vo.setFamilyCustNo(cVo.getFamilyCustNo());
+			vo.setChgCustNo(cVo.getCustNo());
+			vo.setScCustGubun("NA");
+			
+			nResult = changeCustAuthService.updateAuthSocial(vo);
+			
 			map.put("error", 0);
-			nResult = changeCustAuthService.updateAuthNaver(map);
+			map.put("scCustEmail", email);
 		}
 		
 		if( nResult == 1) {

@@ -1,8 +1,10 @@
 package com.familytoto.familytotoProject.charge.controller;
 
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.charge.service.ChargeService;
-import com.familytoto.familytotoProject.findIdPw.service.EmailService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
-import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 
 @Controller
 public class ChargeController {
@@ -29,8 +29,22 @@ public class ChargeController {
 	private String sEmail = ""; 
 	
 	@RequestMapping("charge")
-    public ModelAndView charge(ModelAndView mv, HttpSession session) {
+    public ModelAndView charge(ModelAndView mv, HttpSession session, HttpServletResponse response) {
+		// 소셜 아이디
 		CustVO vo = (CustVO) session.getAttribute("cust");
+		
+		if(vo.getFamilyCustNo() == 0) {
+			try {
+				response.setContentType("text/html; charset=UTF-8");
+	            PrintWriter out = response.getWriter();
+	            out.println("<script>alert('연동이 안된 소셜아이디는 개인정보를 수정할 수 없습니다.'); history.go(-1);</script>");
+	            out.flush();
+			} catch(Exception e) {}
+		
+			mv.setViewName("redirect:/");
+			
+			return mv;
+		}
 		
 		sEmail = vo.getFamilyCustEmail();
 		nCustNo = vo.getCustNo();

@@ -32,7 +32,7 @@
 		@decsription
 		등록하기 위한 Form으로 상황에 맞게 수정하여 사용한다. Form 이름은 에디터를 생성할 때 설정값으로 설정한다.
 	-->
-	<form name="tx_editor_form" id="tx_editor_form" action="http://posttestserver.com/post.php" method="post" accept-charset="utf-8">
+	<form name="tx_editor_form" id="tx_editor_form" action="/registerBoard/insert" method="post" accept-charset="utf-8">
 		<!-- 에디터 컨테이너 시작 -->
 		<div id="tx_trex_container" class="tx-editor-container">
 			<!-- 사이드바 -->
@@ -526,6 +526,13 @@
 		// sample : validate that content exists
 		var validator = new Trex.Validator();
 		var content = editor.getContent();
+		
+		if($("#title").val().trim() == "") {
+			alert('제목을 입력하세요');
+			$("#title").focus();
+			return false;
+		}
+		
 		if (!validator.exists(content)) {
 			alert('내용을 입력하세요');
 			return false;
@@ -549,9 +556,16 @@
 
         // 본문 내용을 필드를 생성하여 값을 할당하는 부분
         var textarea = document.createElement('textarea');
-        textarea.name = 'content';
+        textarea.name = 'boardContents';
         textarea.value = content;
+        
+        var title = document.createElement('input');
+        title.type = 'hidden';
+        title.name = 'boardTitle';
+        title.value = $("#title").val();
+        
         form.createField(textarea);
+        form.createField(title);
 
         /* 아래의 코드는 첨부된 데이터를 필드를 생성하여 값을 할당하는 부분으로 상황에 맞게 수정하여 사용한다.
          첨부된 데이터 중에 주어진 종류(image,file..)에 해당하는 것만 배열로 넘겨준다. */
@@ -626,7 +640,8 @@
 				}
 				return allattachments;
 			}(),
-			"content": document.getElementById("sample_contents_source") /* 내용 문자열, 주어진 필드(textarea) 엘리먼트 */
+			"boardTitle": $("#title").val(),
+			"boardContetns": document.getElementById("sample_contents_source") /* 내용 문자열, 주어진 필드(textarea) 엘리먼트 */
 		});
 	}
 </script>

@@ -48,25 +48,25 @@
 					</div>
 					 <div class="card shadow mb-4">
 			            <div class="card-body">
-							<div class="input-group mb-3">
+							<div th:if="${loginGubun == null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text" id="basic-addon1">글쓴이</span>
 						  		</div>
 								<input type="text" class="form-control" placeholder="Register" aria-label="Register" aria-describedby="basic-addon1">
 							</div>
-							<div class="input-group mb-3">
+							<div th:if="${loginGubun == null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text" id="basic-addon1">비밀번호</span>
 						  		</div>
-								<input type="text" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+								<input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
 							</div>
 							<div class="input-group mb-3">
 						  		<div class="input-group-prepend">
-							 	  <span class="input-group-text" id="basic-addon1">제목</span>
+							 	  <span class="input-group-text">제목</span>
 						  		</div>
-								<input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1">
+								<input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" id="title">
 							</div>
-							<div th:include="/border/editor/editor"></div>
+							<div th:include="/board/editor/editor"></div>
 			            
 				            <div class="row">
 								<div class="col-xl-6 col-md-6 mb-6">
@@ -76,7 +76,7 @@
 								</div>
 								<div class="col-xl-6 col-md-6 mb-6">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-block" >글쓰기</button>
+										<button type="button" class="btn btn-secondary btn-block" onClick="javascript:saveContent();">글쓰기</button>
 									</div>
 								</div>
 							</div>

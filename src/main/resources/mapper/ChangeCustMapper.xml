@@ -61,32 +61,33 @@
 	    AND		FAMILY_CUST_NO = ${familyCustNo};
 	</update>
 	
-	<update id="authNaver">
+	<!--  소셜 -->
+	<update id="auth">
 		UPDATE	SOCIAL_CUSTOM
 		SET		FAMILY_CUST_NO = ${familyCustNo}
 		,		CHG_IP = '${regIp}'
 		,		CHG_CUST_NO = ${chgCustNo}
 		,		CHG_DT = now()
 		WHERE	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = 'NA'
+		AND		SC_CUST_GUBUN = '${scCustGubun}' /* 가변 */
 		AND		SC_CUST_ID = '${scCustId}'
 	</update>
-	<update id="unAuthNaver">
+	<update id="unAuth">
 		UPDATE	SOCIAL_CUSTOM
 		SET		FAMILY_CUST_NO = NULL
 		,		CHG_DT = now()
 		,		CHG_IP = '${chgIp}'
 		,		CHG_CUST_NO = ${chgCustNo}
 		WHERE	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = 'NA'
+		AND		SC_CUST_GUBUN = '${scCustGubun}' /* 가변 */
 		AND		FAMILY_CUST_NO = ${familyCustNo}
 	</update>
-	<select id="checkNaver" resultType="map">
+	<select id="check" resultType="map">
 		SELECT	SC_CUST_NO
 		,		IFNULL(FAMILY_CUST_NO, 0) as familyCustNo
 		FROM	SOCIAL_CUSTOM
 		WHERE	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = 'NA'
+		AND		SC_CUST_GUBUN = '${scCustGubun}' /* 가변 */
 		AND		SC_CUST_ID = '${scCustId}'
 		LIMIT 1;
 	</select>

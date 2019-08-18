@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<insert id="insertCustBoard">
+		INSERT INTO BOARD   
+		    (BOARD_REPLY_NO,	BOARD_TITLE,	BOARD_CONTENTS,	
+		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN)
+		VALUES
+		    (0, 				'#{boardTitle}','#{boardContents}', 		    
+		    '#{regCustNo}',		now(), 			'#{regIp}',			'Y');
+	</insert>
+	<select  id="getBoardList" resultType="BoardVO">
+		select R1.* FROM(
+			SELECT	B.BOARD_NO as boardNo
+			,		B.BOARD_TITLE as boardTitle
+			,		B.REG_CUST_NO as regCustNo
+			,		IFNULL(FC.FAMILY_CUST_NICKNAME , SC.SC_CUST_NICK) as custNickname
+			,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun 
+			,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+			,		-1 as visit
+			FROM	BOARD B
+				LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
+				LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
+				LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
+		    WHERE	B.USE_YN = 'Y'
+		    ORDER BY B.BOARD_NO DESC
+		) R1
+		LIMIT #{startList}, #{listSize}
+	</select>
+	<select id="getBoardListCnt" resultType="int">
+		select	COUNT(*) as listCnt
+		from	BOARD
+		WHERE	USE_YN = 'Y'
+	</select>
+	<select id="getShowBoard" resultType="BoardVO">
+		SELECT	B.BOARD_NO as boardNo
+		,		B.BOARD_TITLE as boardTitle
+		,		B.REG_CUST_NO as  regCustNo
+	    ,		B.BOARD_CONTENTS as boardContents
+		,		IFNULL(FC.FAMILY_CUST_NICKNAME , SC.SC_CUST_NICK) as custNickname
+		,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun
+		,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+		,		-1 as visit
+		FROM	BOARD B
+			LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
+			LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
+			LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
+	    WHERE	B.USE_YN = 'Y'
+	    AND		B.BOARD_NO = ${boardNo}
+	</select>
+	<update id="updateDeleteBorder">
+	
+	</update>
+</mapper>

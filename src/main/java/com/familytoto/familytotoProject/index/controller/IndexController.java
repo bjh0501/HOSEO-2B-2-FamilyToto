@@ -21,41 +21,15 @@ public class IndexController {
     public String index() {
         return "index";
     }
-
-	// 웹로그
-	/*vo.setIp(request.getRemoteAddr());
-	vo.setCurrentUrl(getURL(request));
-	vo.setPrevUrl(request.getHeader("referer"));
-	webLogService.insertWebLog(vo, request);*/
 	
 	@RequestMapping("itemShop")
     public String itemShop() {
         return "shop/itemShop";
     }
 	
-	@RequestMapping("border")
-    public String border() {
-        return "border/border";
-    }
-	
-	@RequestMapping("registerBorder")
-    public String registerBorder() {
-        return "border/registerBorder";
-    }
-	
 	@RequestMapping("editor")
     public String editor() {
         return "border/editor/editor";
-    }
-	
-	@RequestMapping("showEditor")
-    public String showEditor() {
-        return "border/editor/showEditor";
-    }
-	
-	@RequestMapping("showBorder")
-    public String showBorder() {
-        return "border/showBorder";
     }
 	
 	@RequestMapping("qna")

@@ -126,10 +126,11 @@
 									
 										<label>카카오</label>
 										<div style="margin-left:7px;">
-						                	<div class="custom-control custom-switch">
-											  <input type="checkbox" class="custom-control-input" id="kakao" onclick="javascript:auth('kakao')">
-											  <label class="custom-control-label" for="kakao">비연동</label>
+						                	<div class="custom-control custom-switch" onclick="javascript:auth('kakao')">
+											  <input type="checkbox" class="custom-control-input" id="kakao">
+											  <label class="custom-control-label" name="kakao">비연동</label>
 											</div>
+											<a th:href="${kakaoUrl}" style="display:none" id="kakaoLink"></a>
 										</div>
 									</div>
 									<input type="text" class="form-control" placeholder="연동을 하시려면 클릭해주세요." aria-label="Username" id="kakaoEmail" disabled th:value="${list.KA}"><br>
@@ -346,6 +347,12 @@
 		$("[name='naver']").html("연동");
 	}
 	
+	function successKakao(email) {
+		$("#kakaoEmail").val(email);
+		$("input:checkbox[id='kakao']").prop("checked", true);
+		$("[name='kakao']").html("연동");
+	}
+	
 	function auth(social) {
 		if($("input:checkbox[id='" + social + "']").is(":checked") == false) {
 			var link = $("#" + social + "Link").attr("href") + "&authCheck=check"
@@ -353,28 +360,28 @@
 			var popupY= (document.body.offsetHeight / 2) - (650 / 2);
 			
 			window.open(link, '', 'status=no, height=680, width=650, left='+ popupX + ', top='+ popupY);
-			
 		} else {			
-			if(social=="naver") {
-				$.ajax({
-					url : "changeCust/social/naver/unAuth",
-					type : "POST",
-					cache : false,
-					dataType : "json",
-					data : "a=a",
-					success : function(data) {
-						
-					},		
-					error : function(request, status, error) {
-						var msg = "ERROR : " + request.status + "<br>"
-						msg += +"내용 : " + request.responseText + "<br>" + error;
-						console.log(msg);
+			$.ajax({
+				url : "changeCust/social/" + social + "/unAuth",
+				type : "POST",
+				cache : false,
+				dataType : "json",
+				data : "a=a",
+				success : function(data) {
+					if(data == -99) {
+						alert("해당 소셜로 로그인중이라 연동해제를 할 수 없습니다.")
+						return
 					}
-				});
-			}
-			
-			$("#" + social + "Email").val("");
-			$("input:checkbox[id='" + social + "']").prop("checked", false)
+					$("#" + social + "Email").val("");
+					$("input:checkbox[id='" + social + "']").prop("checked", false)
+					$("[name='" +  social + "']").html("비연동")
+				},		
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
 		}
 	}
 </script>

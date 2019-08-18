@@ -12,11 +12,11 @@
   <title>One Sports</title>
 
   <!-- Custom fonts for this template-->
-  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/Nunito.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -57,7 +57,7 @@
 								  		<div class="input-group-prepend">
 									 	  <span class="input-group-text" id="basic-addon1">글작성자</span>
 								  		</div>
-										<label style="padding-top:8px; padding-left:2px;">Admin</label>
+										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getCustNickname()}">Admin</label>
 									</div>
 								</div>
 								<div class="col-xl-7 col-md-7 mb-2">
@@ -65,7 +65,7 @@
 								  		<div class="input-group-prepend">
 									 	  <span class="input-group-text" id="basic-addon1">작성일</span>
 								  		</div>
-										<label style="padding-top:8px; padding-left:2px;">2019. 07. 29 12:24:33</label>
+										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getRegDt()}"></label>
 									</div>
 								</div>
 							</div>
@@ -75,7 +75,7 @@
 								  		<div class="input-group-prepend">
 									 	  <span class="input-group-text" id="basic-addon1">글번호</span>
 								  		</div>
-										<label style="padding-top:8px; padding-left:2px;">12</label>
+										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getBoardNo()}"></label>
 									</div>
 								</div>
 								<div class="col-xl-7 col-md-7 mb-2">
@@ -83,21 +83,21 @@
 								  		<div class="input-group-prepend">
 									 	  <span class="input-group-text" id="basic-addon1">조회수</span>
 								  		</div>
-										<label style="padding-top:8px; padding-left:2px;">25</label>
+										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getVisit()}">0</label>
 									</div>
 								</div>
 							</div>
 							<hr>
 							<div class="row">
-								<div class="col-xl-12 col-md-12 mb-2">
-									<iframe id="content" src="showEditor"  style="width:100%; height:100%" ></iframe>
+								<div class="col-xl-12 col-md-12 mb-2" th:text="${board.getBoardContents()}" id="boardDiv">
+									<iframe id="boardContents" src="/showEditor"  style="width:100%; height:100%" onLoad="autoResize(this);"></iframe>
 								</div>
 							</div>
 			            
 				            <div class="row">
 								<div class="col-xl-3 col-md-3 mb-3">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-lg btn-block" >목록으로</button>
+										<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="javascript:location.href='/boardList'">목록으로</button>
 									</div>
 								</div>
 								<div class="col-xl-9 col-md-9 mb-9">
@@ -196,7 +196,7 @@
 									<div class="p-1">
 										<label class="text-word-r">KakaoAd</label>
 										<a class="navbar-brand" href="#">
-									   		<img src="img/social/naver.jpg" width="30" height="30" alt="">
+									   		<img src="/img/social/icon/naverMiniIcon.png" width="30" height="30" alt="">
 									 	</a>
 								 	</div>
 								 	<div class="p-1">
@@ -247,21 +247,37 @@
   
 
   <!-- Bootstrap core JavaScript-->
-  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script th:src="@{js/sb-admin-2.min.js}"></script>
+  <script src="/js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+  <script src="/vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script th:src="@{js/demo/chart-area-demo.js}"></script>
-  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+  <script src="/js/demo/chart-area-demo.js"></script>
+  <script src="/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>
+<script>
+
+	function autoResize(obj) {
+		var newheight;
+		var newwidth;
+		if (obj.contentDocument) {
+			newheight = obj.contentDocument.documentElement.scrollHeight + 30;
+			newwidth = obj.contentDocument.documentElement.scrollWidth + 30;
+		} else {
+			newheight = obj.contentWindow.document.body.scrollHeight + 30;
+			newwidth = obj.contentWindow.document.body.scrollWidth + 30;
+		}
+		obj.height = newheight + "px";
+		obj.width = newwidth + "px";
+	}
+</script>

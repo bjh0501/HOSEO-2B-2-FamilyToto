@@ -6,7 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.login.domain.SocialVO;
 
 @Repository
 public class ChangeCustAuthDaoImpl implements ChangeCustAuthDao {
@@ -14,18 +14,18 @@ public class ChangeCustAuthDaoImpl implements ChangeCustAuthDao {
 	SqlSession sqlSession;
 	
 	@Override
-	public Map<String, Object> checkNaver(Map<String, Object> map) {
-		return sqlSession.selectOne("changeCust.checkNaver", map);
+	public Map<String, Object> checkSocial(SocialVO vo) {
+		return sqlSession.selectOne("changeCust.check", vo);
 	}
 
 	@Override
-	public int authNaver(Map<String, Object> map) {
-		return sqlSession.update("changeCust.authNaver", map);
+	public int authSocial(SocialVO vo) {
+		return sqlSession.update("changeCust.auth", vo);
 	}
 
 	@Override
-	public int unAuthNaver(CustVO vo) {
-		return sqlSession.update("changeCust.unAuthNaver", vo);
+	public int unAuthSocial(SocialVO vo) {
+		return sqlSession.update("changeCust.unAuth", vo);
 	}
 
 }

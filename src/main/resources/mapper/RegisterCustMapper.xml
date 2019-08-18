@@ -47,21 +47,31 @@
 		    0,				  	 NOW(), 		    '${regIp}', 
 		    'Y');
     </insert>
-    <insert id="insertNaver" useGeneratedKeys="true" keyProperty="scCustNo">
+    
+    <insert id="insertSocial" useGeneratedKeys="true" keyProperty="scCustNo">
     	INSERT INTO SOCIAL_CUSTOM
 		    (FAMILY_CUST_NO,     SC_CUST_GUBUN,     SC_CUST_ID,     SC_CUST_EMAIL, 
 		    REG_CUST_NO, 	     REG_DT,			REG_IP,			USE_YN,
 		    SC_CUST_NICK)
 		VALUES
-		    (${familyCustNo},     'NA', 			    '${scCustId}',	'${scCustEmail}', 
+		    (
+		    <choose>
+		    	<when test='familyCustNo == 0'>
+		    		null,
+		    	</when>
+		    	<otherwise>
+		    		${familyCustNo},		    	
+		    	</otherwise>
+		    </choose>
+		         '${scCustGubun}', '${scCustId}',	'${scCustEmail}', 
 		    0,     				NOW(), 			    '${regIp}', 	'Y',
 		    '${scCustNick}');
     </insert>
-    <select id="checkNaver" resultType="map">
+    <select id="checkSocial" resultType="map">
     	select	SC_CUST_NO as scCustNo
 		from	SOCIAL_CUSTOM
 		where	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = 'NA'
+		AND		SC_CUST_GUBUN = '${scCustGubun}'
 		AND		SC_CUST_ID = '${scCustId}'
 		LIMIT 1;
     	

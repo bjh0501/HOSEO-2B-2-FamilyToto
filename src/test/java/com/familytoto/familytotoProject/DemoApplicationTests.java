@@ -1,5 +1,11 @@
 package com.familytoto.familytotoProject;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,5 +35,22 @@ public class DemoApplicationTests {
 		// 생성된 해쉬를 원래 비밀번호로 검증한다. 맞을 경우 true를 반환한다. 주로 회원 로그인 로직에서 사용된다.
 		boolean isValidPassword = BCrypt.checkpw(password, passwordHashed1);
 		System.out.println(isValidPassword);		
+	}
+	
+	@Test
+	public void timeDiff() throws ParseException {
+		String start = "2019-08-19 00:01:01.0";
+		Calendar tempcal = Calendar.getInstance();
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd Hh:mm:ss.SSS");
+		Date startday = sf.parse(start, new ParsePosition(0));
+		long startTime = startday.getTime();
+		Calendar cal = Calendar.getInstance();
+		Date endDate = sf.parse( "2019-08-18 23:58:59.0", new ParsePosition(0));
+		long endTime = endDate.getTime();
+		long mills = endTime - startTime;
+		long min = mills / 60000;
+		StringBuffer diffTime = new StringBuffer();
+		diffTime.append("시간의 차이는").append(min).append("분 입니다.");
+		System.out.println(diffTime.toString());
 	}
 }

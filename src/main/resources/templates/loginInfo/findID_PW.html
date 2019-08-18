@@ -155,10 +155,6 @@
 
     </div>
     <!-- End of Content Wrapper -->
-	</div>
-  <!-- End of Page Wrapper -->
-  
-	
 
   <!-- Bootstrap core JavaScript-->
   <script th:src="@{vendor/jquery/jquery.min.js}"></script>
@@ -176,7 +172,6 @@
   <!-- Page level custom scripts -->
   <script th:src="@{js/demo/chart-area-demo.js}"></script>
   <script th:src="@{js/demo/chart-pie-demo.js}"></script>
-
 </body>
 
 </html>
@@ -251,6 +246,12 @@
 		}
 		
 		var email = $("#pwEmail1").val() + "@" + $("#pwEmail2").val(); 
+		
+		
+		
+		
+		
+		return
 		
  		$.ajax({
 			url : "/findPw",

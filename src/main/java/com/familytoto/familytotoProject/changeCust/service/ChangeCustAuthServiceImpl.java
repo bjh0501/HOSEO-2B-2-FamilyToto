@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.changeCust.dao.ChangeCustAuthDao;
-import com.familytoto.familytotoProject.login.dao.naver.NaverDao;
-import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.login.dao.SocialDao;
+import com.familytoto.familytotoProject.login.domain.SocialVO;
 
 @Service
 public class ChangeCustAuthServiceImpl implements ChangeCustAuthService{
@@ -15,18 +15,20 @@ public class ChangeCustAuthServiceImpl implements ChangeCustAuthService{
 	ChangeCustAuthDao changeCustAuthDao; 
 	
 	@Autowired
-	NaverDao naverDao;
+	SocialDao naverDao;
 	
 	@Override
-	public int updateAuthNaver(Map<String, Object> map) {
+	public int updateAuthSocial(SocialVO vo) {
 		// 추가
-		if(changeCustAuthDao.checkNaver(map) == null) {
-			return naverDao.insertNaver(map);
+		
+		if(changeCustAuthDao.checkSocial(vo) == null) {
+			return naverDao.insertSocial(vo);
 		} else { // 있는경우 업뎃 
 			// 만약 다른사람이 쓰는 아이디라면
-			Map<String, Object> checkMap = changeCustAuthDao.checkNaver(map);
+			Map<String, Object> checkMap = changeCustAuthDao.checkSocial(vo);
+			
 			if(checkMap.get("familyCustNo").toString().equals("0")) {
-				return changeCustAuthDao.authNaver(map);
+				return changeCustAuthDao.authSocial(vo);
 			} else {
 				return -99;
 			}	
@@ -34,14 +36,13 @@ public class ChangeCustAuthServiceImpl implements ChangeCustAuthService{
 	}
 
 	@Override
-	public int updateUnAuthNaver(CustVO vo) {
-		return changeCustAuthDao.unAuthNaver(vo);
+	public int updateUnAuthSocial(SocialVO vo) {
+		return changeCustAuthDao.unAuthSocial(vo);
 	}
-
-	@Override
-	public Map<String, Object> getOtherAccountAuthNaver(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public int insertAuthKakao(Map<String, Object> map) {
+		return 0;
+		
 	}
 
 }

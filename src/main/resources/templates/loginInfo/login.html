@@ -83,12 +83,12 @@
 						<button type="button" class="btn btn-secondary" style="width:100%;">페이스북</button>
 					</div>
 					<div class="input-group mb-3">
-						<button type="button" class="btn btn-secondary" style="width:100%;" onClick="javascript:naverLogin();" >네이버</button>
+						<img src="/img/social/button/naverButton.png" style="width:100%; cursor:pointer;" onClick="javascript:naverLogin();">
 						<a th:href="${naverLoginUrl}" style="display:none" id="naverSocial">naver</a>
 					</div>
 					<div class="input-group mb-3">
-						<button type="button" class="btn btn-secondary" style="width:100%;">카카오</button>
-						<a href="https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri=http://localhost/login/social/kakao/auth&response_type=code">ㅋㅋ</a>
+					<img src="/img/social/button/kakaoButton.png" style="width:100%; cursor:pointer;" onClick="javascript:kakaoLogin();">
+						<a th:href="${kakaoLoginUrl}" style="display:none" id="kakaoSocial">kakao</a>
 					</div>
 					<p class="text-center">
 						<a href="/findID_PW" >아이디/비밀번호 찾기</a>
@@ -231,6 +231,14 @@
 	
 	function naverLogin() {
 		var url = $("#naverSocial").attr("href")
+		var popupX = (document.body.offsetWidth / 2) - (680 / 2);
+		var popupY= (document.body.offsetHeight / 2) - (650 / 2);
+
+		window.open(url, '', 'status=no, height=680, width=650, left='+ popupX + ', top='+ popupY);
+	}
+	
+	function kakaoLogin() {
+		var url = $("#kakaoSocial").attr("href")
 		var popupX = (document.body.offsetWidth / 2) - (680 / 2);
 		var popupY= (document.body.offsetHeight / 2) - (650 / 2);
 

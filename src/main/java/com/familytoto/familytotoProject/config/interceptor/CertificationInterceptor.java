@@ -16,19 +16,11 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 public class CertificationInterceptor implements HandlerInterceptor{
  
 	private final int loginSesion = 60 * 30; 
-	
+		
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         HttpSession session = request.getSession();
-        
-        // 테스트용 
-//        CustVO vo = new CustVO();
-//        vo.setFamilyCustNo(10000037);
-//        vo.setCustNo(100000008);
-//        session.setAttribute("cust", vo);
-        // 테스트용
-        // 소셜은 따로처리
  
         if(session.getAttribute("cust") == null){
         	response.setContentType("text/html; charset=UTF-8");

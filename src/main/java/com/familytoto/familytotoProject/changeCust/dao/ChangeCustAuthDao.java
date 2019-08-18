@@ -2,16 +2,17 @@ package com.familytoto.familytotoProject.changeCust.dao;
 
 import java.util.Map;
 
-import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.login.domain.SocialVO;
 
 public interface ChangeCustAuthDao {
 	
-	// 네이버 
-	Map<String, Object> checkNaver(Map<String, Object> map);
+	// 소셜로그인 
+	Map<String, Object> checkSocial(SocialVO vo);
 	
-	int authNaver(Map<String, Object> map);
+	// 소셜 연동
+	int authSocial(SocialVO vo);
 	
-	// 네이버 연동해제
-	int unAuthNaver(CustVO vo);
+	// 연동해제
+	int unAuthSocial(SocialVO vo);
 	
 }
