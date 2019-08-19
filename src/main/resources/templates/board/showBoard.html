@@ -49,8 +49,9 @@
 					 <div class="card shadow mb-4">
 			            <div class="card-body">
 							<div class="input-group mb-3">
-						  		<h1>스포츠 토토 분석글</h1>
+						  		<h1 th:text="${board.getBoardTitle()}">제목</h1>
 							</div>
+							<hr>
 							<div class="row">
 								<div class="col-xl-5 col-md-5 mb-2">
 									<div class="input-group">
@@ -97,19 +98,19 @@
 				            <div class="row">
 								<div class="col-xl-3 col-md-3 mb-3">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="javascript:location.href='/boardList'">목록으로</button>
+										<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="javascript:location.href='/boardList'"  style="min-width:114px;">목록으로</button>
 									</div>
 								</div>
 								<div class="col-xl-9 col-md-9 mb-9">
 									<div class="d-flex flex-row-reverse">
-										<div class="col-xl-3 col-md-3 mb-3">
+										<div class="col-xl-3 col-md-3 mb-3" th:if="${cust == board.getRegCustNo()}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" >수정</button>
+												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;">수정</button>
 											</div>
 										</div>
-										<div class="col-xl-3 col-md-3 mb-3">
+										<div class="col-xl-3 col-md-3 mb-3" th:if="${cust == board.getRegCustNo()}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" >삭제</button>
+												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;" th:onClick="|javascript:deleteBoard('${board.getBoardNo()}');|">삭제</button>
 											</div>
 										</div>
 									</div>
@@ -265,19 +266,12 @@
 </body>
 
 </html>
-<script>
-
-	function autoResize(obj) {
-		var newheight;
-		var newwidth;
-		if (obj.contentDocument) {
-			newheight = obj.contentDocument.documentElement.scrollHeight + 30;
-			newwidth = obj.contentDocument.documentElement.scrollWidth + 30;
-		} else {
-			newheight = obj.contentWindow.document.body.scrollHeight + 30;
-			newwidth = obj.contentWindow.document.body.scrollWidth + 30;
+<script>	
+	function deleteBoard(no) {
+		var con = confirm("정말로 삭제하시겠습니까?");
+		
+		if(con == true) {
+			location.href="/deleteBoard/" + no;
 		}
-		obj.height = newheight + "px";
-		obj.width = newwidth + "px";
 	}
 </script>

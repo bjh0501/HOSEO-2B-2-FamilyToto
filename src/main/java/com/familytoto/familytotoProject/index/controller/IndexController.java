@@ -22,6 +22,11 @@ public class IndexController {
         return "index";
     }
 	
+	@RequestMapping(value ="/navereb68e2d272389e36f17ae3a3fe3d4437.html")
+    public String naverSearchEngine() {
+        return "/etc/searchEngine/navereb68e2d272389e36f17ae3a3fe3d4437.html";
+    }
+	
 	@RequestMapping("itemShop")
     public String itemShop() {
         return "shop/itemShop";

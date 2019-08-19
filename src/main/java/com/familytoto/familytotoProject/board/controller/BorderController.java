@@ -84,13 +84,27 @@ public class BorderController {
 	@RequestMapping(value = {"/showBoard/{boardNo}"})
     public ModelAndView showBoard(HttpSession session, @PathVariable ("boardNo") String sBoardNo, ModelAndView mv) {
 		BoardVO vo = new BoardVO();
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+		int nCustNo = 0;
+		
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
 		vo = boardService.getShowBoard(vo);
 		
+		if(custVo != null) {
+			nCustNo = custVo.getCustNo();
+		} 
+		
+		mv.addObject("cust", nCustNo);
 		mv.addObject("board", vo);
-		System.out.println(vo.getBoardContents());
 		mv.setViewName("board/showBoard");
 		
 		return mv;
+    }
+	
+	@RequestMapping(value = {"/deleteBoard/{boardNo}"})
+    public String deleteBoard(HttpSession session, @PathVariable ("boardNo") String sNo,HttpServletRequest request) {
+		boardService.updateDeleteBoard(sNo, session, request);
+		
+		return "redirect:/boardList";
     }
 }

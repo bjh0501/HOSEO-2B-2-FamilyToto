@@ -2,6 +2,9 @@ package com.familytoto.familytotoProject.board.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.PagingVO;
 
@@ -10,7 +13,7 @@ public interface BoardService {
 	int insertCustBorder(BoardVO vo);
 	
 	// 삭제하기
-	int updateDeleteBoard(BoardVO vo);
+	int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request);
 	
 	// 수정하기
 	int updateBorder(BoardVO vo);

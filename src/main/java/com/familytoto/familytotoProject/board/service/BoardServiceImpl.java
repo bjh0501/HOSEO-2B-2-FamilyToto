@@ -2,12 +2,16 @@ package com.familytoto.familytotoProject.board.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.PagingVO;
+import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -69,7 +73,14 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int updateDeleteBoard(BoardVO vo) {
+	public int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request) {
+		BoardVO vo = new BoardVO();
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		vo.setBoardNo(Integer.parseInt(sNo));
+		vo.setChgCustNo(cVo.getCustNo());
+		vo.setChgIp(request.getRemoteAddr());
+		
 		return boardDao.updateDeleteBoard(vo);
 	}
 
