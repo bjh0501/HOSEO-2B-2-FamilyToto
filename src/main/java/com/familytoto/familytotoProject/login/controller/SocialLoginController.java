@@ -51,8 +51,14 @@ public class SocialLoginController {
 			out.println("<script>alert('에러가 발생하였습니다. 다시 시도해주세요.'); window.close()</script>");
 		} else {
 			code = request.getParameter("code");
-			naverLoginVO.naverLogin(model, code,state, session, request);
-			out.println("<script>window.close();opener.document.location.replace('/');</script>");	
+			int nNaverResult = naverLoginVO.naverLogin(model, code,state, session, request);
+			if(nNaverResult == 0) {
+				out.println("<script>window.close();opener.document.location.replace('/');</script>");				
+			} else if(nNaverResult == -99) {
+				out.println("<script>alert('체크항목에 전부 체크해주세요.');window.close();</script>");				
+			} else if(nNaverResult == -98) {
+				out.println("<script>alert('성인만 가입할 수 있습니다.');window.close();</script>");				
+			}
 		}
 		
 		out.flush();		

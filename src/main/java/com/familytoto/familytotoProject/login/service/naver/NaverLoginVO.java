@@ -174,7 +174,7 @@ public class NaverLoginVO {
 		this.naverLoginVO = naverLoginVO;
 	}
 	
-	public void naverLogin(Model model, @RequestParam String code, @RequestParam String state, HttpSession session, HttpServletRequest request) 
+	public int naverLogin(Model model, @RequestParam String code, @RequestParam String state, HttpSession session, HttpServletRequest request) 
 			throws IOException, ParseException{
 		
 		OAuth2AccessToken oauthToken;
@@ -202,8 +202,14 @@ public class NaverLoginVO {
 		// 이부분 다시봐야함.토큰이 삭제가안대는ㄴ 버그이슷ㅁ.
 		if(nickname == null || age == null || email== null) {
 			naverLoginVO.deleteNaver(oauthToken);
-//			mv.setViewName("redirect:/login?naver=del");
+			return -99;
 		} else { // 로그인완료
+			int nAge = Integer.parseInt(age.substring(0, 2));
+			
+			if(nAge <= 19) {
+				naverLoginVO.deleteNaver(oauthToken);
+				return -98;
+			}
 			System.out.println(nickname);
 			
 			SocialVO vo = new SocialVO();
@@ -224,7 +230,7 @@ public class NaverLoginVO {
 			session.setAttribute("custSocial", vo); // 세션 생성			
 			session.setAttribute("social", vo.getScCustGubun()); // 세션 생성
 			
-			//mv.setViewName("redirect:/index");
+			return 0;
 		}
 	}
 	
