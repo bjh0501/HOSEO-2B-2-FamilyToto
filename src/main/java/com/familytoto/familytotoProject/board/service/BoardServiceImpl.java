@@ -56,6 +56,8 @@ public class BoardServiceImpl implements BoardService{
 				vo.setCustGubun("/img/social/icon/facebookMiniIcon.png");
 			} else if(vo.getCustGubun().equals("ON")) {
 				vo.setCustGubun("/img/social/icon/oneMiniIcon.png");
+			}  else {
+				vo.setCustGubun("");
 			}
 			
 			vo.diffTime(vo.getRegDt());
@@ -82,6 +84,11 @@ public class BoardServiceImpl implements BoardService{
 		vo.setChgIp(request.getRemoteAddr());
 		
 		return boardDao.updateDeleteBoard(vo);
+	}
+
+	@Override
+	public int insertAnnoBoard(BoardVO vo) {
+		return boardDao.insertAnnoBoard(vo);
 	}
 
 }

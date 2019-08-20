@@ -22,4 +22,7 @@ public interface BoardDao {
 	public int getBoardListCnt() throws Exception;
 	
 	public List<BoardVO> getBoardList(PagingVO pagination) throws Exception;
+	
+	// 익명 게시글 등록
+	int insertAnnoBoard(BoardVO vo);
 }

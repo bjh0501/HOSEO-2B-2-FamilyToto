@@ -107,4 +107,21 @@ public class BorderController {
 		
 		return "redirect:/boardList";
     }
+	
+	@RequestMapping(value = "registerBoard/anno/insert")
+    public String insertAnnoBoard(@ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
+		vo.setRegIp(request.getRemoteAddr());
+		
+		if(session.getAttribute("cust") == null) {
+			int nResult = boardService.insertAnnoBoard(vo);
+			
+//			if(nResult == -99) {
+//				return "-99";
+//			} else if(nResult == -98) {
+//				return "-98";
+//			}
+		} 
+		
+        return "redirect:/boardList";
+    }
 }

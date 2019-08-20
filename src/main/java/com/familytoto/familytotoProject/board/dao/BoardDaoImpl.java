@@ -43,4 +43,10 @@ public class BoardDaoImpl implements BoardDao {
 	public BoardVO getShowBoard(BoardVO vo) {
 		return sqlSession.selectOne("board.getShowBoard", vo);
 	}
+
+	@Override
+	public int insertAnnoBoard(BoardVO vo) {
+		return sqlSession.insert("board.insertAnnoBoard", vo);
+	}
+	
 }
