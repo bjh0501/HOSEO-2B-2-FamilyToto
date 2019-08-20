@@ -25,4 +25,7 @@ public interface BoardService {
 	// 페이징
 	public int getBoardListCnt() throws Exception;
 	public List<BoardVO> getBoardList(PagingVO pagination) throws Exception;
+	
+	// 익명 글쓰기
+	int insertAnnoBoard(BoardVO vo);
 }

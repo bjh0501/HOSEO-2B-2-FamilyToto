@@ -25,7 +25,7 @@
     <script src="daumeditor/js/editor_loader.js?environment=development" type="text/javascript" charset="utf-8"></script>
 
 </head>
-<body>
+<body onLoad="load();">
 <div class="body">
 	<!-- 에디터 시작 -->
 	<!--
@@ -507,6 +507,14 @@
 
 <!-- Sample: Saving Contents -->
 <script type="text/javascript">
+	function load() {
+		if($("#annoGubun").val() == "Y") {
+			$("#tx_editor_form").attr("action", "/registerBoard/anno/insert"); 
+		} else {
+			$("#tx_editor_form").attr("action", "/registerBoard/insert");
+		}
+	}
+
 	/* 예제용 함수 */
 	function saveContent() {
 		Editor.save(); // 이 함수를 호출하여 글을 등록하면 된다.
@@ -526,6 +534,20 @@
 		// sample : validate that content exists
 		var validator = new Trex.Validator();
 		var content = editor.getContent();
+		
+		if($("#annoGubun").val() == "Y") {
+			if($("#annoId").val().trim() == "") {
+				alert('아이디를 입력하세요');
+				$("#annoId").focus();
+				return false;
+			}
+			
+			if($("#annoPw").val().trim() == "") {
+				alert('비밀번호를 입력하세요');
+				$("#annoPw").focus();
+				return false;
+			}
+		}
 		
 		if($("#title").val().trim() == "") {
 			alert('제목을 입력하세요');
@@ -563,6 +585,21 @@
         title.type = 'hidden';
         title.name = 'boardTitle';
         title.value = $("#title").val();
+        
+        if($("#annoGubun").val() == "Y") {
+        	var annoId = document.createElement('input');
+        	annoId.type = 'hidden';
+        	annoId.name = 'boardAnnoId';
+        	annoId.value = $("#annoId").val();
+            
+            var annoPw = document.createElement('input');
+            annoPw.type = 'hidden';
+            annoPw.name = 'boardAnnoPw';
+            annoPw.value = $("#annoPw").val();
+            
+            form.createField(annoId);
+            form.createField(annoPw);
+        }
         
         form.createField(textarea);
         form.createField(title);
@@ -646,7 +683,8 @@
 	}
 </script>
 <!-- End: Loading Contents -->
-
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 </body>
 </html>
 

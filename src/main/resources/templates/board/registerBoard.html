@@ -52,13 +52,13 @@
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text" id="basic-addon1">글쓴이</span>
 						  		</div>
-								<input type="text" class="form-control" placeholder="Register" aria-label="Register" aria-describedby="basic-addon1">
+								<input type="text" class="form-control" placeholder="Register" aria-label="Register" aria-describedby="basic-addon1" id="annoId">
 							</div>
 							<div th:if="${loginGubun == null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text" id="basic-addon1">비밀번호</span>
 						  		</div>
-								<input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+								<input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" id="annoPw">
 							</div>
 							<div class="input-group mb-3">
 						  		<div class="input-group-prepend">
@@ -66,6 +66,8 @@
 						  		</div>
 								<input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" id="title">
 							</div>
+							<input th:if="${loginGubun == null}" type="hidden" id="annoGubun" value="Y">
+							<input th:if="${loginGubun != null}" type="hidden" id="annoGubun" value="N">
 							<div th:include="/board/editor/editor"></div>
 			            
 				            <div class="row">
