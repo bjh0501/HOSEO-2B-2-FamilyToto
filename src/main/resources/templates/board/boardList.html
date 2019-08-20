@@ -69,7 +69,7 @@
 			                    <tr th:each="list: ${boardList}" class="boardrow" th:onClick="|javascript:clickBoard( ${ list.boardNo } );|">
 			                      <td th:text="${list.boardNo}"></td>
 			                      <td th:text="${list.boardTitle}"></td>
-			                      <td><span th:text="${list.custNickname}"></span><img th:src="${list.custGubun}" width=26 height=26></img></td>
+			                      <td><span th:text="${list.custNickname}"></span><img th:if="${list.custGubun != ''}" th:src="${list.custGubun}" width=26 height=26></img></td>
 			                      <td th:text="${list.regDt}"></td>
 			                      <td th:text="${list.visit}"></td>
 			                    </tr>

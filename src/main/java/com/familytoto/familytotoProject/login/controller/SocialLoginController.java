@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -84,15 +85,23 @@ public class SocialLoginController {
 				} else {
 					// 세션 제대로된거넣기
 					
+					// 소셜 부분 
 					CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 					
 					int nScCustNo = socalLoginService.insertSocialId(vo);
 					vo.setScCustNo(nScCustNo);
-					cVo.setCustNo(nScCustNo);
 					
-					session.setAttribute("cust", cVo); // 세션 생성
+					if(cVo == null) {
+						CustVO cVo2 = new CustVO();
+						cVo2.setCustNo(nScCustNo);
+						session.setAttribute("cust", cVo2); // 세션 생성
+					} else {
+						session.setAttribute("cust", cVo); // 세션 생성
+					}
+					
 					session.setAttribute("custSocial", vo); // 세션 생성
 					session.setAttribute("social", "KA"); // 세션 생성
+					// 소셜 부분
 					
 					// scid의 패밀리넘버가잇으면 통합로그인
 					
@@ -106,4 +115,28 @@ public class SocialLoginController {
 	    
 		return -1;
 	}
+	
+	@RequestMapping("/login/social/facebook")
+	@ResponseBody
+	public int facebookAuth(@ModelAttribute SocialVO vo, HttpSession session) {
+		// 소셜 부분 
+		CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
+		
+		int nScCustNo = socalLoginService.insertSocialId(vo);
+		vo.setScCustNo(nScCustNo);
+		
+		if(cVo == null) {
+			CustVO cVo2 = new CustVO();
+			cVo2.setCustNo(nScCustNo);
+			session.setAttribute("cust", cVo2); // 세션 생성
+		} else {
+			session.setAttribute("cust", cVo); // 세션 생성
+		}
+		
+		session.setAttribute("custSocial", vo); // 세션 생성
+		session.setAttribute("social", "FA"); // 세션 생성
+		// 소셜 부분
+		
+		return 0;
+	}		
 }

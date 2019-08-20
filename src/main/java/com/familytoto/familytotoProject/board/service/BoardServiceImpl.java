@@ -48,14 +48,16 @@ public class BoardServiceImpl implements BoardService{
 		int i = 0;
 		
 		for(BoardVO vo :list) {
-			if(vo.getCustGubun().equals("NA")) {
+			if(vo.getRegCustNo() == 0) {
+				vo.setCustGubun("");
+			} else if(vo.getCustGubun().equals("NA")) {
 				vo.setCustGubun("/img/social/icon/naverMiniIcon.png");
 			} else if(vo.getCustGubun().equals("KA")) {
 				vo.setCustGubun("/img/social/icon/kakaoMiniIcon.jpg");
 			} else if(vo.getCustGubun().equals("FA")) {
 				vo.setCustGubun("/img/social/icon/facebookMiniIcon.png");
 			} else if(vo.getCustGubun().equals("ON")) {
-				vo.setCustGubun("/img/social/icon/oneMiniIcon.png");
+				vo.setCustGubun("/img/social/icon/onesportsMiniIcon.png");
 			}  else {
 				vo.setCustGubun("");
 			}
@@ -88,6 +90,9 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int insertAnnoBoard(BoardVO vo) {
+		CustVO cVo = new CustVO();
+		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
+		
 		return boardDao.insertAnnoBoard(vo);
 	}
 

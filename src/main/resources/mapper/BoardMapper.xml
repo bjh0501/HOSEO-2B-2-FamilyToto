@@ -5,7 +5,7 @@
 <mapper namespace="board">
 	<insert id="insertCustBoard">
 		INSERT INTO BOARD   
-		    (BOARD_REPLY_NO,	BOARD_TITLE,	BOARD_CONTENTS,	
+		    (BOARD_REPLY_NO,	BOARD_T ITLE,	BOARD_CONTENTS,	
 		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN)
 		VALUES
 		    (0, 				#{boardTitle},#{boardContents}, 		    
@@ -16,7 +16,7 @@
 			SELECT	B.BOARD_NO as boardNo
 			,		B.BOARD_TITLE as boardTitle
 			,		B.REG_CUST_NO as regCustNo
-			,		IFNULL(FC.FAMILY_CUST_NICKNAME , SC.SC_CUST_NICK) as custNickname
+			,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
 			,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun 
 			,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
 			,		-1 as visit

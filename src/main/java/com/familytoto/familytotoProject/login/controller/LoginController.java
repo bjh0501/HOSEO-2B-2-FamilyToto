@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.login.service.CustLoginService;
+import com.familytoto.familytotoProject.login.service.facebook.FacebookLoginVO;
 import com.familytoto.familytotoProject.login.service.kakao.KakaoLoginVO;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -30,13 +31,19 @@ public class LoginController {
 	@Autowired
 	KakaoLoginVO kakaoLoginVo;
 	
+	@Autowired
+	FacebookLoginVO facebookLoginVo;
+	
 	@RequestMapping("login")
     public String login(Model model, HttpSession session, HttpServletRequest request) {
 		String sNaverLoginLink = naverLoginService.socialAuthLink(model, session);
 		String sKakaoLoginLink = kakaoLoginVo.getKakaoLink();
+		String sFacebookLoginLink = facebookLoginVo.getLoginLink();
 		
 		model.addAttribute("naverLoginUrl", sNaverLoginLink);
 		model.addAttribute("kakaoLoginUrl", sKakaoLoginLink);
+		model.addAttribute("facebookLoginUrl", sFacebookLoginLink);
+		
 		
 		return "loginInfo/login";
     }

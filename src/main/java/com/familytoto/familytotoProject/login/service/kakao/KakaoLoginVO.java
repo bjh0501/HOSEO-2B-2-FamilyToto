@@ -33,7 +33,8 @@ public class KakaoLoginVO {
 	@Autowired
 	SocalLoginService socalLoginService;
 	
-	private final String DOMAIN_URL = "http://test.onesports.ga";
+	private final String DOMAIN_URL = "https://test.onesports.ga:80";
+	// private final String DOMAIN_URL = "http://onesports.ga";
 	
 	private final String REST_API = "e051b552544132d23d2ce1fc5898963c";
 	private final String REDIRECT_URI = DOMAIN_URL + "/login/social/kakao";
