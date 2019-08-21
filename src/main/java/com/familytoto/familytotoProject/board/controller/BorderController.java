@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
@@ -94,6 +95,10 @@ public class BorderController {
 			nCustNo = custVo.getCustNo();
 		} 
 		
+		if(vo.getRegCustNo() != 0) {
+			vo.setRegCustNo(1);
+		}
+		
 		mv.addObject("cust", nCustNo);
 		mv.addObject("board", vo);
 		mv.setViewName("board/showBoard");
@@ -102,7 +107,7 @@ public class BorderController {
     }
 	
 	@RequestMapping(value = {"/deleteBoard/{boardNo}"})
-    public String deleteBoard(HttpSession session, @PathVariable ("boardNo") String sNo,HttpServletRequest request) {
+    public String deleteBoard(HttpSession session, @PathVariable ("boardNo") String sNo, HttpServletRequest request) {
 		boardService.updateDeleteBoard(sNo, session, request);
 		
 		return "redirect:/boardList";
@@ -123,5 +128,28 @@ public class BorderController {
 		} 
 		
         return "redirect:/boardList";
+    }
+	
+	@RequestMapping("/updateBoard/check")
+    public String updateCheckBoard(BoardVO bVo, Model model) {
+		CustVO cVo = new CustVO();
+		String sOriginalPass = bVo.getBoardAnnoPw();
+		
+		bVo = boardService.getUpdateBoard(bVo);
+		cVo.setCustPassword(sOriginalPass);
+		
+		if(cVo.isDecodePassword(cVo, bVo.getBoardAnnoPw())) {
+			model.addAttribute("board", bVo);
+			
+	        return updateBoard(bVo, model);
+		} else { // 비번틀린경우
+			return "-98";
+		}		
+    }
+	
+	@RequestMapping("/updateBoard/{boardNo}")
+	 public String updateBoard(BoardVO bVo, Model model) {
+		model.addAttribute("board", bVo);
+		return "redirect:/board/updateBoard"; 
     }
 }

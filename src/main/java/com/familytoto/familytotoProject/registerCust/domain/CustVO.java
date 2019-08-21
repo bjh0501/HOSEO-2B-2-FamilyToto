@@ -151,7 +151,7 @@ public class CustVO {
 		return BCrypt.hashpw(sPass, BCrypt.gensalt(10));
 	}
 
-	// 평문, 해시문
+	// 평문(a123), 해시문($~~로시작)
 	public boolean isDecodePassword(CustVO vo, String sPass) {
 		return BCrypt.checkpw(vo.getCustPassword(), sPass);
 	}

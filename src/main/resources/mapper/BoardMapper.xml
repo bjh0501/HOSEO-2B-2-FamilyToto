@@ -68,4 +68,15 @@
 		    (0, 				#{boardTitle},#{boardContents}, 		    
 		    #{boardAnnoId},		#{boardAnnoPw},	now(), 			'${regIp}',			'Y');
 	</insert>
+	<select id="getUpdateBoard" resultType="BoardVO">
+		SELECT	BOARD_ANNO_ID as boardAnnoId
+		,		BOARD_TITLE as boardTitle
+        ,		BOARD_CONTENTS as boardContents
+        ,		BOARD_NO as boardNo
+        ,		BOARD_ANNO_PW as boardAnnoPw
+        FROM	BOARD
+        WHERE	BOARD_NO = #{boardNo}
+        AND		BOARD_ANNO_ID = #{boardAnnoId}
+        AND		USE_YN = 'Y'
+	</select>
 </mapper>

@@ -65,7 +65,7 @@
 					</div>
 					
 					<div class="input-group mb-3">
-					  <div class="input-group-prepend">
+					  <div class="input-group-prepend" >
 					    <span class="input-group-text" >Password</span>
 					  </div>
 					  <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="pw">
@@ -140,6 +140,28 @@
 
 </html>
 <script>
+	function caps_lock(e) {
+	    var keyCode = 0;
+	    var shiftKey = false;
+	    keyCode = e.keyCode;
+	    shiftKey = e.shiftKey;
+	    if (((keyCode >= 65 && keyCode <= 90) && !shiftKey)
+	            || ((keyCode >= 97 && keyCode <= 122) && shiftKey)) {
+	        show_caps_lock();
+	        setTimeout("hide_caps_lock()", 3500);
+	    } else {
+	        hide_caps_lock();
+	    }
+	}
+	
+	function show_caps_lock() {
+	 $("#capslock").show();
+	}
+	
+	function hide_caps_lock() {
+	 $("#capslock").hide();
+	}
+	
 	function custLogin() {
 		id = $("#id");
 		pw = $("#pw");

@@ -28,4 +28,7 @@ public interface BoardService {
 	
 	// 익명 글쓰기
 	int insertAnnoBoard(BoardVO vo);
+	
+	// 게시글 수정 불러오기
+	BoardVO getUpdateBoard(BoardVO vo);
 }

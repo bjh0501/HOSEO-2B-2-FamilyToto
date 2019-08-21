@@ -96,4 +96,9 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.insertAnnoBoard(vo);
 	}
 
+	@Override
+	public BoardVO getUpdateBoard(BoardVO vo) {
+		return boardDao.getUpdateBoard(vo) ;
+	}
+
 }

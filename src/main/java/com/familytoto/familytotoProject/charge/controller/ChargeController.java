@@ -66,14 +66,16 @@ public class ChargeController {
 		vo.setFamilyCustNo(nFamilyCustNo);
 
 		String sMail = request.getParameter("mail");
+		
 		int nResult = chargeService.doCharge(vo);
 		
 		if(nResult == 1) {
-			if(sMail.equals("Y")) {
+			if(sMail.equals("Y") && sEmail != null) {
 				chargeService.sendHistoryEmail(sEmail, vo.getCreditValue());
+				return 0;
+			} else {
+				return 1;
 			}
-			
-			return 0;
 		} else if(nResult==-98) {
 			return -98;
 		} else {

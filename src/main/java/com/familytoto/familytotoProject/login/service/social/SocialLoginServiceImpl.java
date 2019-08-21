@@ -36,7 +36,11 @@ public class SocialLoginServiceImpl implements SocalLoginService {
 		
 		// 소셜custId값 넘김
 		if(checkMap == null) {
-			return socialDao.insertSocial(vo);
+			if(vo.getScCustGubun() != null && !vo.getScCustGubun().equals("")) {
+				return socialDao.insertSocial(vo);
+			} else {
+				return -99;
+			}
 		} else {
 			return Integer.parseInt(checkMap.get("scCustNo").toString());
 		}

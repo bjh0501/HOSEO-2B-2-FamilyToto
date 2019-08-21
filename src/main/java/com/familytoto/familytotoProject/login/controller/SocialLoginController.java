@@ -89,6 +89,12 @@ public class SocialLoginController {
 					CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 					
 					int nScCustNo = socalLoginService.insertSocialId(vo);
+					
+					// insert 실패경우
+					if(nScCustNo == -99) {
+						return -1;
+					}
+					
 					vo.setScCustNo(nScCustNo);
 					
 					if(cVo == null) {
@@ -123,6 +129,12 @@ public class SocialLoginController {
 		CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 		
 		int nScCustNo = socalLoginService.insertSocialId(vo);
+		
+		// insert 실패경우
+		if(nScCustNo == -99) {
+			return -1;
+		}
+		
 		vo.setScCustNo(nScCustNo);
 		
 		cVo.setCustNo(nScCustNo);
