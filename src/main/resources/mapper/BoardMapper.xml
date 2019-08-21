@@ -5,7 +5,7 @@
 <mapper namespace="board">
 	<insert id="insertCustBoard">
 		INSERT INTO BOARD   
-		    (BOARD_REPLY_NO,	BOARD_T ITLE,	BOARD_CONTENTS,	
+		    (BOARD_REPLY_NO,	BOARD_TITLE,	BOARD_CONTENTS,	
 		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN)
 		VALUES
 		    (0, 				#{boardTitle},#{boardContents}, 		    
