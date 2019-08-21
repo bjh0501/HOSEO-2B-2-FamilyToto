@@ -125,13 +125,9 @@ public class SocialLoginController {
 		int nScCustNo = socalLoginService.insertSocialId(vo);
 		vo.setScCustNo(nScCustNo);
 		
-		if(cVo == null) {
-			CustVO cVo2 = new CustVO();
-			cVo2.setCustNo(nScCustNo);
-			session.setAttribute("cust", cVo2); // 세션 생성
-		} else {
-			session.setAttribute("cust", cVo); // 세션 생성
-		}
+		cVo.setCustNo(nScCustNo);
+		
+		session.setAttribute("cust", cVo); // 세션 생성
 		
 		session.setAttribute("custSocial", vo); // 세션 생성
 		session.setAttribute("social", "FA"); // 세션 생성

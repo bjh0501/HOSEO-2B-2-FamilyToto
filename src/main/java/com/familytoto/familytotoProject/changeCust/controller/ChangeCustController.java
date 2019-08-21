@@ -268,7 +268,6 @@ public class ChangeCustController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("error", 0);
 		map.put("scCustEmail", sVo.getScCustEmail());
 		
 		if( nResult == 1) {
@@ -276,21 +275,31 @@ public class ChangeCustController {
 		} else if( nResult == -99) { // 다른사람이 연동한계정
 			map.put("error", -99);
 		}			
-		
-		if(map.get("error").toString().equals("0")) {
-			out.println("<script>"
-					+ "alert('연동에 성공하였습니다.');"
-					+ "opener.parent.successFacebook('" + map.get("scCustEmail").toString() + "');"
-					+ "window.close();"
-					+ "</script>");
-		} else {
-			out.println("<script>"
-					+ "alert('다른사람이 쓰고있는 계정이라 연동을 할 수 없습니다.');"
-					+ "window.close();</script>");
+						
+		if(map.get("error").toString().equals("1")) {
+			return 0;
+		} else { // 다른 사람이 쓰
+			return -98;
+		}
+	}
+	
+	@RequestMapping("changeCust/social/facebook/unAuth")
+	@ResponseBody
+    public int unAuthFacebook(HttpSession session, HttpServletRequest request) {
+		if(session.getAttribute("social") != null) {
+			if(session.getAttribute("social").equals("FA")) {
+				return -99;
+			}
 		}
 		
-		out.flush();
-				
-		return nResult;
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		SocialVO vo = new SocialVO();
+		
+		vo.setChgIp(request.getRemoteAddr());
+		vo.setChgCustNo(cVo.getChgCustNo());
+		vo.setScCustGubun("FA");
+		vo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+		return changeCustAuthService.updateUnAuthSocial(vo);
 	}
 }

@@ -10,7 +10,7 @@ import com.familytoto.familytotoProject.board.domain.PagingVO;
 
 public interface BoardService {
 	// 글쓰기
-	int insertCustBorder(BoardVO vo);
+	int insertCustBoard(BoardVO vo);
 	
 	// 삭제하기
 	int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request);

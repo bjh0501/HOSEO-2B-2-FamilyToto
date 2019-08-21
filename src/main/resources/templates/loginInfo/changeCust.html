@@ -425,9 +425,8 @@ function getUserData() {
 					+ "&scCustNick=" + name
 					+ "&scCustGubun=" + "FA",
 			success : function(data) {
-				if(data == 0) {
-					location.replace("/");
-				}
+				alert(data)
+				
 			},
 
 			error : function(request, status, error) {
@@ -440,12 +439,37 @@ function getUserData() {
 }
 
 function facebookAuth() {
+	if($("input:checkbox[id='facebook']").is(":checked") == false) {
 	 FB.login(function(response) {
 	        if (response.authResponse) {
 	            getUserData();
 	        }
 	    }, {scope: 'email,public_profile,age_range',
 	        return_scopes: true});
+	} else {
+		$.ajax({
+			url : "changeCust/social/facebook/unAuth",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "a=a",
+			success : function(data) {
+				if(data == -99) {
+					alert("해당 소셜로 로그인중이라 연동해제를 할 수 없습니다.")
+					return
+				}
+				
+				$("#facebookEmail").val("");
+				$("input:checkbox[id='facebook']").prop("checked", false)
+				$("[name='facebook']").html("비연동")
+			},		
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
 }
 </script>
 <script async defer src="https://connect.facebook.net/en_US/sdk.js">

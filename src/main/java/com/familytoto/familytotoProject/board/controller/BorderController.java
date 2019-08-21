@@ -58,7 +58,7 @@ public class BorderController {
 			CustVO cVo = (CustVO) session.getAttribute("cust");
 			vo.setRegCustNo(cVo.getCustNo());
 			
-			int nResult = boardService.insertCustBorder(vo);
+			int nResult = boardService.insertCustBoard(vo);
 			
 			if(nResult == -99) {
 				return "-99";

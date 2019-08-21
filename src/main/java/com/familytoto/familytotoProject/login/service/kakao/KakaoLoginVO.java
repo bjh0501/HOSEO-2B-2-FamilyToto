@@ -169,11 +169,23 @@ public class KakaoLoginVO {
             	vo.setScCustGubun("KA");
             	vo.setScCustId(id);
             	
-            	int nScCustNo = socalLoginService.insertSocialId(vo);
+            	// 소셜 부분 
+    			CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
+    			
+    			int nScCustNo = socalLoginService.insertSocialId(vo);
     			vo.setScCustNo(nScCustNo);
     			
-//    			session.setAttribute("cust", vo); // 세션 생성
-//    			session.setAttribute("social", vo.getScCustGubun()); // 세션 생성
+    			if(cVo == null) {
+    				CustVO cVo2 = new CustVO();
+    				cVo2.setCustNo(nScCustNo);
+    				session.setAttribute("cust", cVo2); // 세션 생성
+    			} else {
+    				session.setAttribute("cust", cVo); // 세션 생성
+    			}
+    			
+    			session.setAttribute("custSocial", vo); // 세션 생성
+    			session.setAttribute("social", "KA"); // 세션 생성
+    			// 소셜 부분
     			
     			
             }

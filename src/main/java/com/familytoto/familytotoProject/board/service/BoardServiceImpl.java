@@ -19,7 +19,7 @@ public class BoardServiceImpl implements BoardService{
 	BoardDao boardDao;
 	
 	@Override
-	public int insertCustBorder(BoardVO vo) {
+	public int insertCustBoard(BoardVO vo) {
 		if(vo.getBoardTitle() == null || vo.getBoardTitle().equals("")) {
 			return -99;
 		}
