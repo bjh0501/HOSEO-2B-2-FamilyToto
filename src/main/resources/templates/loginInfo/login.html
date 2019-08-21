@@ -249,7 +249,7 @@
 <script>
 window.fbAsyncInit = function() {
 FB.init({
-    appId            : '406668109960506',
+    appId            : '380846455933511',
     autoLogAppEvents : true,
     xfbml            : true,
     version          : 'v2.7'
@@ -262,12 +262,12 @@ function getUserData() {
     	id = response.id
     	name = response.name
     	email = response.email
-    	age = response.age_range.min // 18세 이상만 가입가능
+    	/*age = response.age_range.min // 18세 이상만 가입가능
     	
     	if(age < 18) {
     		alert("성인만 가입할 수 있습니다.");
     		return;
-    	}
+    	}*/
     	
     	$.ajax({
 			url : "/login/social/facebook",
@@ -279,18 +279,9 @@ function getUserData() {
 					+ "&scCustNick=" + name
 					+ "&scCustGubun=" + "FA",
 			success : function(data) {
-				if(data == -99) {
-					alert("아이디나 비밀번호가 다릅니다.")
-					return;
+				if(data == 0) {
+					location.replace("/");
 				}
-				
-				if($("input:checkbox[id='use']").is(":checked") == true) {
-					setCookie("rememberCustId",id.val(),30);
-				} else {
-					deleteCookie("rememberCustId");
-				}
-				
-				location.replace("/")
 			},
 
 			error : function(request, status, error) {

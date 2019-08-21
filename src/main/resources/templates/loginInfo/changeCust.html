@@ -115,15 +115,14 @@
 				                	<div class="row">
 					                	<label>페이스북</label>
 					                	<div style="margin-left:7px;">
-						                	<div class="custom-control custom-switch">
-											  <input type="checkbox" class="custom-control-input" id="facebook" onclick="javascript:auth('facebook')">
-											  <label class="custom-control-label" for="facebook">비연동</label>
+						                	<div class="custom-control custom-switch"  onclick="javascript:facebookAuth()">
+											  <input type="checkbox" class="custom-control-input" id="facebook">
+											  <label class="custom-control-label" name="facebook">비연동</label>
 											</div>
 										</div>
 									</div>
 									<input type="text" class="form-control" placeholder="연동을 하시려면 클릭해주세요." aria-label="Username" id="facebookEmail" disabled th:value="${list.FA}"><br>
 									<div class="row">
-									
 										<label>카카오</label>
 										<div style="margin-left:7px;">
 						                	<div class="custom-control custom-switch" onclick="javascript:auth('kakao')">
@@ -353,6 +352,12 @@
 		$("[name='kakao']").html("연동");
 	}
 	
+	function successFacebook(email) {
+		$("#facebookEmail").val(email);
+		$("input:checkbox[id='facebook']").prop("checked", true);
+		$("[name='facebook']").html("연동");
+	}
+	
 	function auth(social) {
 		if($("input:checkbox[id='" + social + "']").is(":checked") == false) {
 			var link = $("#" + social + "Link").attr("href") + "&authCheck=check"
@@ -384,4 +389,64 @@
 			});
 		}
 	}
+</script>
+
+
+<script>
+window.fbAsyncInit = function() {
+FB.init({
+    appId            : '406668109960506',
+    autoLogAppEvents : true,
+    xfbml            : true,
+    version          : 'v2.7'
+  });
+}
+
+function getUserData() {
+    FB.api('/me','GET', {"fields": 'name,email,id,age_range'}, function(response) {
+    	// alert(JSON.stringify(response));
+    	id = response.id
+    	name = response.name
+    	email = response.email
+    	/*age = response.age_range.min // 18세 이상만 가입가능
+    	
+    	if(age < 18) {
+    		alert("성인만 가입할 수 있습니다.");
+    		return;
+    	}*/
+    	
+    	$.ajax({
+			url : "/login/social/facebook/auth",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "scCustId=" + id
+					+ "&scCustEmail=" + email
+					+ "&scCustNick=" + name
+					+ "&scCustGubun=" + "FA",
+			success : function(data) {
+				if(data == 0) {
+					location.replace("/");
+				}
+			},
+
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+    });
+}
+
+function facebookAuth() {
+	 FB.login(function(response) {
+	        if (response.authResponse) {
+	            getUserData();
+	        }
+	    }, {scope: 'email,public_profile,age_range',
+	        return_scopes: true});
+}
+</script>
+<script async defer src="https://connect.facebook.net/en_US/sdk.js">
 </script>
