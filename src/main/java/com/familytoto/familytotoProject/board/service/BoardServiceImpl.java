@@ -18,7 +18,6 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	BoardDao boardDao;
 	
-	@Override
 	public int insertCustBoard(BoardVO vo) {
 		if(vo.getBoardTitle() == null || vo.getBoardTitle().equals("")) {
 			return -99;
@@ -31,7 +30,6 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.insertCustBoard(vo);
 	}
 
-	@Override
 	public int updateBorder(BoardVO vo) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -71,12 +69,11 @@ public class BoardServiceImpl implements BoardService{
 		return list;
 	}
 
-	@Override
 	public BoardVO getShowBoard(BoardVO vo) {
 		return boardDao.getShowBoard(vo);
 	}
 
-	@Override
+
 	public int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request) {
 		BoardVO vo = new BoardVO();
 		CustVO cVo = (CustVO) session.getAttribute("cust");
@@ -88,7 +85,6 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.updateDeleteBoard(vo);
 	}
 
-	@Override
 	public int insertAnnoBoard(BoardVO vo) {
 		CustVO cVo = new CustVO();
 		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
@@ -96,7 +92,6 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.insertAnnoBoard(vo);
 	}
 
-	@Override
 	public BoardVO getUpdateBoard(BoardVO vo) {
 		return boardDao.getUpdateBoard(vo) ;
 	}

@@ -25,13 +25,10 @@ public class MybatisConfig {
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.mybatis.webLog.domain");
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.registerCust.domain");
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.login.domain");
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.comment.domain");
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.board.domain");
+		//sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.comment.domain");
 		
 		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
-//		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/RegisterCustMapper.xml"));
-//		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/LoginCustMapper.xml"));
-//		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/FindIdPwMapper.xml"));
 		return sqlSessionFactoryBean.getObject();
 	}
 	

@@ -33,8 +33,8 @@ public class KakaoLoginVO {
 	@Autowired
 	SocalLoginService socalLoginService;
 	
-//	private final String DOMAIN_URL = "https://test.onesports.ga:80";
-	 private final String DOMAIN_URL = "http://onesports.ga";
+	private final String DOMAIN_URL = "https://test.onesports.ga:80";
+//	 private final String DOMAIN_URL = "http://onesports.ga";
 	
 	private final String REST_API = "e051b552544132d23d2ce1fc5898963c";
 	private final String REDIRECT_URI = DOMAIN_URL + "/login/social/kakao";
@@ -178,13 +178,15 @@ public class KakaoLoginVO {
     			if(cVo == null) {
     				CustVO cVo2 = new CustVO();
     				cVo2.setCustNo(nScCustNo);
+    				cVo2.setFamilyCustNick(nickname);
     				session.setAttribute("cust", cVo2); // 세션 생성
     			} else {
+    				cVo.setFamilyCustNick(nickname);
     				session.setAttribute("cust", cVo); // 세션 생성
     			}
     			
     			session.setAttribute("custSocial", vo); // 세션 생성
-    			session.setAttribute("social", "KA"); // 세션 생성
+    			session.setAttribute("social", "NA"); // 세션 생성
     			// 소셜 부분
     			
     			

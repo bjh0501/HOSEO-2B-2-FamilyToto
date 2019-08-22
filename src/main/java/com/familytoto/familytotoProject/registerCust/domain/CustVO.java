@@ -48,8 +48,18 @@ public class CustVO {
 	// 로그인용도
 	private String familyCustEmail;
 
+	// 로그인용도
+	private String familyCustNick;
 	
 	
+	public String getFamilyCustNick() {
+		return familyCustNick;
+	}
+
+	public void setFamilyCustNick(String familyCustNick) {
+		this.familyCustNick = familyCustNick;
+	}
+
 	public int getCustNo() {
 		return custNo;
 	}

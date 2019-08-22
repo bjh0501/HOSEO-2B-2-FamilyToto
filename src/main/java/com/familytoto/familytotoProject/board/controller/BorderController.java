@@ -24,11 +24,12 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller
 public class BorderController {
+	
 	@Autowired
 	BoardService boardService;
 	
-//	@Autowired
-//	CommentService commentService;
+	@Autowired
+	CommentService commentService;
 	
 	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
     public String boardList(Model model
@@ -104,11 +105,11 @@ public class BorderController {
 			vo.setRegCustNo(1);
 		}
 		
-		//List<CommentVO> listCommentVo = commentService.getListComment(vo);
+		List<CommentVO> listCommentVo = commentService.getListComment(vo);
 		
 		mv.addObject("cust", nCustNo);
 		mv.addObject("board", vo);
-		//mv.addObject("comment", listCommentVo);
+		mv.addObject("comment", listCommentVo);
 		mv.setViewName("board/showBoard");
 		
 		return mv;

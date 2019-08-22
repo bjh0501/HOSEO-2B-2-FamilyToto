@@ -21,7 +21,7 @@ public class CommentDaoImpl implements CommentDao {
 
 	@Override
 	public List<CommentVO> getListComment(BoardVO vo) {
-		return null;//sqlSession.selectList("boardComment.getListComment", vo);
+		return sqlSession.selectList("boardComment.getListComment", vo);
 	}
 
 	

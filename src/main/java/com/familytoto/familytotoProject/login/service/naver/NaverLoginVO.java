@@ -51,8 +51,8 @@ public class NaverLoginVO {
 	@Autowired
 	ChangeCustAuthService changeCustAuthService; 
 	
-//	private final static String DOMAIN_URL = "https://test.onesports.ga:80";
-	private final static String DOMAIN_URL = "http://onesports.ga";
+	private final static String DOMAIN_URL = "https://test.onesports.ga:80";
+//	private final static String DOMAIN_URL = "http://onesports.ga";
 	
 	private final static String CLIENT_ID = "Za6kr7wC2cVLJ3c1qVvu";
 	private final static String CLIENT_SECRET = "rFm3tqGBfo";
@@ -230,8 +230,10 @@ public class NaverLoginVO {
 			if(cVo == null) {
 				CustVO cVo2 = new CustVO();
 				cVo2.setCustNo(nScCustNo);
+				cVo2.setFamilyCustNick(nickname);
 				session.setAttribute("cust", cVo2); // 세션 생성
 			} else {
+				cVo.setFamilyCustNick(nickname);
 				session.setAttribute("cust", cVo); // 세션 생성
 			}
 			

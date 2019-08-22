@@ -13,7 +13,7 @@
 		    #{commentContents},		#{commentAnnoId},	#{commentAnnoPw},		0,
 		    now(),					#{regIp},			'Y');
 	</insert>
-	<select id="getListComment" resultType="CommentVO">
+	<select id="getListComment" resultType="com.familytoto.familytotoProject.comment.domain.CommentVO">
 		SELECT	C.COMMENT_ANNO_ID as commentAnnoId
 	    ,		IFNULL(C.CHG_DT, C.REG_DT) as regDt
 	    ,		C.COMMENT_CONTENTS as commentContents

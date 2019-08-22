@@ -120,13 +120,13 @@
 							<div class="row">
 								<div class="col-xl-12 col-md-12 mb-3">
 									<div class="input-group">
-										<h4>댓글<span style="color:orange">(24)</span></h4>
+										<h4>댓글<span style="color:orange">(0)</span></h4>
 									</div>
 								</div>
 							</div>
 							<div class="row" th:if="${cust != 0}"> 
 								<div class="input-group">
-									<label style="padding-top:8px;padding-right:2px;">KakaoAd</label>
+									<label style="padding-top:8px;padding-right:2px;" >이름</label>
 									<a class="navbar-brand" href="#">
 								   		<img src="/img/social/icon/onesportsMiniIcon.png" width="30" height="30" alt="" th:if="${cust != 0}">
 								 	</a>
@@ -155,98 +155,27 @@
 								</div>
 							</div>
 							<hr id="commentHr">
-							<div class="row">
-								<div class="input-group d-flex">
-									<div class="p-1">
-										<label class="text-word-r">댓글러1</label>
-										<a class="navbar-brand" href="#">
-									   		<img src="img/social/naver.jpg" width="30" height="30" alt="">
-									 	</a>
-								 	</div>
-								 	<div class="p-1">
-										<p class="text-word-l">댓글테스트</p>
+							<th:block th:each="com :${comment}">
+								<div class="row">
+									<div class="input-group d-flex">
+										<div class="p-1">
+											<b><label class="text-word-r" th:text="${com.getCommentAnnoId()}">이름</label></b>
+											<!-- <a class="navbar-brand" href="#">
+										   		<img src="/img/social/icon/naverMiniIcon.png" width="30" height="30" alt="">
+										 	</a> -->
+									 	</div>
+									 	<div class="p-1">
+											<p class="text-word-l" th:text="${com.getCommentContents()}">내가쓴 댓글</p>
+										</div>
+										<p class="ml-auto p-2 ">
+											<button type="button" class="btn btn-secondary">답글쓰기</button>
+											<button type="button" class="btn btn-secondary">수정</button>
+											<button type="button" class="btn btn-secondary">삭제</button>
+											<label class="text-word-l" th:text="${com.getRegDt()}">날짜</label>
+										</p>
 									</div>
-									<p class="ml-auto p-2 ">
-										<button type="button" class="btn btn-secondary">답글쓰기</button>
-										<label class="text-word-l">2015. 12. 12 12:25:33</label>
-									</p>
 								</div>
-							</div>
-							<div class="row">
-								<div class="input-group d-flex">
-									<div class="p-1">
-										<label class="text-word-r">>></label>
-								 	</div>
-									<div class="p-1">
-										<label class="text-word-r">댓글러1</label>
-										<a class="navbar-brand" href="#">
-									   		<img src="img/social/naver.jpg" width="30" height="30" alt="">
-									 	</a>
-								 	</div>
-								 	<div class="p-1">
-										<p class="text-word-l">댓글테스트</p>
-									</div>
-									<p class="ml-auto p-2 ">
-										<button type="button" class="btn btn-secondary">답글쓰기</button>
-										<label class="text-word-l">3시간전</label>
-									</p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="input-group d-flex">
-									<div class="p-1">
-										<label class="text-word-r">>></label>
-										<label class="text-word-r">>></label>
-								 	</div>
-									<div class="p-1">
-										<label class="text-word-r">댓글러1</label>
-										<a class="navbar-brand" href="#">
-									   		<img src="img/social/naver.jpg" width="30" height="30" alt="">
-									 	</a>
-								 	</div>
-								 	<div class="p-1">
-										<p class="text-word-l">댓글테스트</p>
-									</div>
-									<p class="ml-auto p-2 ">
-										<button type="button" class="btn btn-secondary">답글쓰기</button>
-										<label class="text-word-l">10분전</label>
-									</p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="input-group d-flex">
-									<div class="p-1">
-										<label class="text-word-r">KakaoAd</label>
-										<a class="navbar-brand" href="#">
-									   		<img src="/img/social/icon/naverMiniIcon.png" width="30" height="30" alt="">
-									 	</a>
-								 	</div>
-								 	<div class="p-1">
-										<p class="text-word-l">내가쓴 댓글</p>
-									</div>
-									<p class="ml-auto p-2 ">
-										<button type="button" class="btn btn-secondary">답글쓰기</button>
-										<button type="button" class="btn btn-secondary">수정</button>
-										<button type="button" class="btn btn-secondary">삭제</button>
-										<label class="text-word-l">2010. 05. 02 12:23:23</label>
-									</p>
-								</div>
-							</div>
-							<div class="row justify-content-md-center">
-				          		<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4">
-								  <ul class="pagination justify-content-center">
-								    <li class="page-item disabled">
-								      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-								    </li>
-								    <li class="page-item"><a class="page-link" href="#">1</a></li>
-								    <li class="page-item"><a class="page-link" href="#">2</a></li>
-								    <li class="page-item"><a class="page-link" href="#">3</a></li>
-								    <li class="page-item">
-								      <a class="page-link" href="#">Next</a>
-								    </li>
-								  </ul>
-								</div>
-							</div>
+							</th:block>
 						</div>
 		          	</div>
 				</div>
