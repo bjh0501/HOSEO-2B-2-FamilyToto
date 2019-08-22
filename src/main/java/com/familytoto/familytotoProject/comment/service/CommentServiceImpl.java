@@ -16,19 +16,26 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	public int insertComment(CommentVO vo) {
-		if(vo.getCommentAnnoId().equals("")) {
-			return -99;
+		if(vo.getRegCustNo() == 0) {
+			if(vo.getCommentAnnoId().equals("")) {
+				return -99;
+			}
+			
+			if(vo.getCommentAnnoPw().equals("")) {
+				return -98;
+			}
+			
+			if(vo.getCommentContents().equals("")) {
+				return -97;
+			}
+		} else {
+			if(vo.getCommentContents().equals("")) {
+				return -96;
+			}
 		}
 		
-		if(vo.getCommentAnnoPw().equals("")) {
-			return -98;
-		}
 		
-		if(vo.getCommentContents().equals("")) {
-			return -97;
-		}
-		
-		return commentDao.insertComment(vo);
+ 		return commentDao.insertComment(vo);
 	}
 
 	@Override

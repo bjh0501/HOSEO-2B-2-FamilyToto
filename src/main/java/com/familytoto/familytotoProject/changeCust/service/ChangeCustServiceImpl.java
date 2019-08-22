@@ -72,4 +72,9 @@ public class ChangeCustServiceImpl implements ChangeCustService{
 	public Map<String, Object> getCheckPassword(CustVO cVo) {
 		return changeCustDAO.getCheckPassword(cVo); 
 	}
+
+	@Override
+	public int updateInterAuth(CustVO rVo) {
+		return changeCustDAO.updateInterAuth(rVo);
+	}
 }

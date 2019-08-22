@@ -115,7 +115,7 @@ public class ChangeCustController {
 	
 	@RequestMapping("changeCust/dropCust")
 	@ResponseBody
-    public int change(HttpSession session, @ModelAttribute CustVO vo) {
+    public int change(HttpSession session, @ModelAttribute CustVO vo, HttpServletRequest request) {
 		CustVO sessionVo = (CustVO) session.getAttribute("cust");
 		
 		Map<String, Object> map = changeCustService.getCheckPassword(sessionVo);
@@ -126,9 +126,13 @@ public class ChangeCustController {
 			// 비번옳은경우
 			if(vo.isDecodePassword(vo, sDbPass)) {
 				vo = (CustVO) session.getAttribute("cust");
+				vo.setChgIp(request.getRemoteAddr());
+				vo.setChgIp(request.getRemoteAddr());
 				//트랜잭션 해야함
 				changeCustService.updateDropCust(vo);
 				changeCustService.updateDropFamilyCust(vo);
+				changeCustService.updateInterAuth(vo);
+				// 
 				session.removeAttribute("cust");
 			} else {
 				return -98;

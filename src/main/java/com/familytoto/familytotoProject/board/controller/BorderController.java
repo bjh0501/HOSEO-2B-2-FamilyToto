@@ -106,10 +106,28 @@ public class BorderController {
 		}
 		
 		List<CommentVO> listCommentVo = commentService.getListComment(vo);
+
+		String sGubun = (String) session.getAttribute("social"); 
 		
+		if(sGubun != null) {
+			if(sGubun.equals("KA")) {
+				sGubun = "/img/social/icon/kakaoMiniIcon.jpg";
+			} else if(sGubun.equals("FA")) {
+				sGubun = "/img/social/icon/facebookMiniIcon.jpg";
+			} else if(sGubun.equals("NA")) {
+				sGubun = "/img/social/icon/naverMiniIcon.jpg";
+			} 
+		} else {
+			sGubun = "/img/social/icon/onesportsMiniIcon.jpg";
+		}
+		
+
 		mv.addObject("cust", nCustNo);
 		mv.addObject("board", vo);
+		mv.addObject("custComment", custVo);
 		mv.addObject("comment", listCommentVo);
+		mv.addObject("socialImg", sGubun);
+		
 		mv.setViewName("board/showBoard");
 		
 		return mv;

@@ -10,5 +10,7 @@ public interface ChangeCustService {
 	int updateCustInfo(CustVO cVo, RegisterCustVO rVo);
 	int updateDropCust(CustVO rVo);
 	int updateDropFamilyCust(CustVO rVo);
+	int updateInterAuth(CustVO rVo);
 	Map<String, Object> getCheckPassword(CustVO cVo);
+	
 }

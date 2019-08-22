@@ -8,8 +8,8 @@
 		    (BOARD_REPLY_NO,	BOARD_TITLE,	BOARD_CONTENTS,	
 		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN)
 		VALUES
-		    (0, 				#{boardTitle},#{boardContents}, 		    
-		    ${regCustNo},		now(), 			'${regIp}',			'Y');
+		    (0, 				'#{boardTitle}','#{boardContents}', 		    
+		    '#{regCustNo}',		now(), 			'#{regIp}',			'Y');
 	</insert>
 	<select  id="getBoardList" resultType="BoardVO">
 		select R1.* FROM(
@@ -51,14 +51,7 @@
 	    AND		B.BOARD_NO = ${boardNo}
 	</select>
 	<update id="updateDeleteBorder">
-		UPDATE	BOARD
-		SET		USE_YN = 'N'
-		,		CHG_DT = NOW()
-		,		CHG_IP = '${chgIp}'
-		,		CHG_CUST_NO = ${chgCustNo}
-		WHERE	BOARD_NO = ${boardNo}
-		AND		REG_CUST_NO = ${chgCustNo}
-		AND		USE_YN = 'Y'
+	
 	</update>
 	<insert id="insertAnnoBoard">
 		INSERT INTO BOARD   

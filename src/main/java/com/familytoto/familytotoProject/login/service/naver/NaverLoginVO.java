@@ -234,6 +234,7 @@ public class NaverLoginVO {
 				session.setAttribute("cust", cVo2); // 세션 생성
 			} else {
 				cVo.setFamilyCustNick(nickname);
+				cVo.setCustNo(nScCustNo);
 				session.setAttribute("cust", cVo); // 세션 생성
 			}
 			

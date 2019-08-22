@@ -310,6 +310,7 @@
 		if($("#currentPass").val() == "") {
 			alert("비밀번호를 입력해주세요.");
 			$("#currentPass").focus();
+			 return ;
 		}
 		
 		if(confirm("회원탈퇴를 해도 복구가 가능하지만 운영자 마음입니다. ㅎ\n계속 진행하시겠습니까?")) {
@@ -395,7 +396,7 @@
 <script>
 window.fbAsyncInit = function() {
 FB.init({
-    appId            : '406668109960506',
+    appId            : '380846455933511',
     autoLogAppEvents : true,
     xfbml            : true,
     version          : 'v2.7'

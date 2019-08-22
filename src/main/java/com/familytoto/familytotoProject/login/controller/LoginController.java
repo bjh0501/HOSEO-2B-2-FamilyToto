@@ -50,13 +50,17 @@ public class LoginController {
 	
 	@RequestMapping("logout")
 	public void logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		session.removeAttribute("cust");
-		session.removeAttribute("social");
-		session.removeAttribute("custSocial");
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("<script>location.href='/';</script>");
-		out.flush();
+		String sRefer = request.getHeader("referer");
+		
+		if(sRefer != null && sRefer.indexOf("onesports.ga") >= 1) {
+			session.removeAttribute("cust");
+			session.removeAttribute("social");
+			session.removeAttribute("custSocial");
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>location.href='" + sRefer + "';</script>");
+			out.flush();
+		}
 	}
 	
 	// 아래처럼 구현해야하는데 오류
@@ -82,6 +86,7 @@ public class LoginController {
 			vo.setFamilyCustNo(Integer.parseInt(login.get("familyCustNo").toString()));
 			vo.setCustNo(Integer.parseInt(login.get("custNo").toString()));
 			vo.setFamilyCustEmail(login.get("familyCustEmail").toString());
+			vo.setFamilyCustNick(login.get("familyCustNickname").toString());
 			vo.setCustPassword("");
 			
 			session.setAttribute("cust", vo);
@@ -93,3 +98,4 @@ public class LoginController {
 		return nReuslt;
 	}
 }
+

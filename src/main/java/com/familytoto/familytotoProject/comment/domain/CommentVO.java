@@ -23,9 +23,9 @@ public class CommentVO {
 
     private String commentAnnoPw;
 
-    private String regCustNo;
+    private int regCustNo;
 
-    private String chgCustNo;
+    private int chgCustNo;
 
     private Timestamp regDt;
 
@@ -34,6 +34,17 @@ public class CommentVO {
     private String regIp;
 
     private String chgIp;
+
+    // 게시글페이지
+    private String scCustGubun;
+    
+	public String getScCustGubun() {
+		return scCustGubun;
+	}
+
+	public void setScCustGubun(String scCustGubun) {
+		this.scCustGubun = scCustGubun;
+	}
 
 	public int getCommentNo() {
 		return commentNo;
@@ -99,19 +110,19 @@ public class CommentVO {
 		this.commentAnnoPw = commentAnnoPw;
 	}
 
-	public String getRegCustNo() {
+	public int getRegCustNo() {
 		return regCustNo;
 	}
 
-	public void setRegCustNo(String regCustNo) {
+	public void setRegCustNo(int regCustNo) {
 		this.regCustNo = regCustNo;
 	}
 
-	public String getChgCustNo() {
+	public int getChgCustNo() {
 		return chgCustNo;
 	}
 
-	public void setChgCustNo(String chgCustNo) {
+	public void setChgCustNo(int chgCustNo) {
 		this.chgCustNo = chgCustNo;
 	}
 

@@ -48,5 +48,9 @@ public class ChangeCustDaoImpl implements ChangeCustDAO {
 		return sqlSession.selectOne("changeCust.getDropCheckPassword", cVo);
 	}
 
+	@Override
+	public int updateInterAuth(CustVO rVo) {
+		return sqlSession.update("changeCust.updateInterSocial", rVo);
+	}
 }
 

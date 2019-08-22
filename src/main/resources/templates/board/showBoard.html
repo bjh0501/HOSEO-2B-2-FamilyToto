@@ -126,12 +126,12 @@
 							</div>
 							<div class="row" th:if="${cust != 0}"> 
 								<div class="input-group">
-									<label style="padding-top:8px;padding-right:2px;" >이름</label>
-									<a class="navbar-brand" href="#">
-								   		<img src="/img/social/icon/onesportsMiniIcon.png" width="30" height="30" alt="" th:if="${cust != 0}">
+									<b><label style="padding-top:8px;padding-right:2px;" th:text="${custComment.getFamilyCustNick()}" id="custNick">이름</label></b>
+									<a class="navbar-brand" href="javascript:;" style="cursor:default;">
+								   		<img th:src="${socialImg}" width="30" height="30" alt="" th:if="${cust != 0}" id="socialImg">
 								 	</a>
-									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1">
-									<button type="button" class="btn btn-secondary" style="margin-left:5px" onClick="javascript:registerComment();">등록</button>
+									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="inputComment">
+									<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:socialComment(${board.getBoardNo()});|">등록</button>
 								</div>
 							</div>
 							<div class="row" th:if="${cust == 0}">
@@ -160,9 +160,26 @@
 									<div class="input-group d-flex">
 										<div class="p-1">
 											<b><label class="text-word-r" th:text="${com.getCommentAnnoId()}">이름</label></b>
-											<!-- <a class="navbar-brand" href="#">
-										   		<img src="/img/social/icon/naverMiniIcon.png" width="30" height="30" alt="">
-										 	</a> -->
+											<th:block th:if="${com.getScCustGubun()} == 'NA'" >
+												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											   		<img src="/img/social/icon/naverMiniIcon.jpg" width="30" height="30" alt="">
+											 	</a>
+										 	</th:block>
+										 	<th:block th:if="${com.getScCustGubun()} == 'KA'" >
+												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											   		<img src="/img/social/icon/kakaoMiniIcon.jpg" width="30" height="30" alt="">
+											 	</a>
+										 	</th:block>
+										 	<th:block th:if="${com.getScCustGubun()} == 'FA'" >
+												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											   		<img src="/img/social/icon/facebookMiniIcon.jpg" width="30" height="30" alt="">
+											 	</a>
+										 	</th:block>
+										 	<th:block th:if="${com.getScCustGubun()} == 'ON'" >
+												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											   		<img src="/img/social/icon/onesportsMiniIcon.jpg" width="30" height="30" alt="">
+											 	</a>
+										 	</th:block>
 									 	</div>
 									 	<div class="p-1">
 											<p class="text-word-l" th:text="${com.getCommentContents()}">내가쓴 댓글</p>
@@ -321,7 +338,7 @@
 					sCommentStr += '<div class="row com">';
 					sCommentStr += '	<div class="input-group d-flex">';
 					sCommentStr += '		<div class="p-1">';
-					sCommentStr += '			<label class="text-word-r">' + $("#annoId").val() + '</label>';
+					sCommentStr += '			<b><label class="text-word-r">' + $("#annoId").val() + '</label></b>';
 					// sCommentStr += '			<a class="navbar-brand" href="#">';
 					// sCommentStr += '				<img src="img/social/naver.jpg" width="30" height="30" alt="">';
 					// sCommentStr += '			</a>';
@@ -339,6 +356,8 @@
 					sCommentStr += '</div>';		
 					
 					$("#commentHr").after(sCommentStr);
+					
+					$("#annoComment").val("")
 				},
 				error : function(request, status, error) {
 					var msg = "ERROR : " + request.status + "<br>"
@@ -347,5 +366,52 @@
 				}
 			});
 		}
+	}
+	
+	function socialComment(boardNo) {
+		if($("#inputComment").val().trim() == "") {
+			alert("댓글을 입력해주세요.");
+			return ;
+		}
+		
+		$.ajax({
+			url : "/board/insertComment",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "boardNo=" + boardNo
+					+ "&commentContents=" + $("#inputComment").val(),
+			success : function(data) {
+				var sCommentStr = "";
+				
+				sCommentStr += '<div class="row com">';
+				sCommentStr += '	<div class="input-group d-flex">';
+				sCommentStr += '		<div class="p-1">';
+				sCommentStr += '			<b><label class="text-word-r">' + $("#custNick").html() + '</label></b>';
+				sCommentStr += '			<a class="navbar-brand" href="#">';
+				sCommentStr += '				<img src="' + $("#socialImg").attr("src") + '" width="30" height="30" alt="">';
+				sCommentStr += '			</a>';
+				sCommentStr += '		</div>';
+				sCommentStr += '		<div class="p-1">';
+				sCommentStr += '			<p class="text-word-l">' + $("#inputComment").val() + '</p>';
+				sCommentStr += '		</div>';
+				sCommentStr += '		<p class="ml-auto p-2 ">';
+				sCommentStr += '			<button type="button" class="btn btn-secondary">답글쓰기</button>';
+				sCommentStr += '			<button type="button" class="btn btn-secondary">수정</button>';
+				sCommentStr += '			<button type="button" class="btn btn-secondary">삭제</button>';
+				sCommentStr += '			<label class="text-word-l">2015. 12. 12 12:25:33</label>';
+				sCommentStr += '		</p>';
+				sCommentStr += '	</div>';
+				sCommentStr += '</div>';		
+				
+				$("#commentHr").after(sCommentStr);
+				$("#inputComment").val("");
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 </script>

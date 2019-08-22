@@ -12,4 +12,5 @@ public interface ChangeCustDAO {
 	int updateDropCust(CustVO rVo);
 	int updateDropFamilyCust(CustVO rVo);
 	Map<String, Object> getCheckPassword(CustVO cVo);
+	int updateInterAuth(CustVO rVo);
 }

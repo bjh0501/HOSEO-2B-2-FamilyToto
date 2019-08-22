@@ -10,17 +10,23 @@
 		    REG_DT,					REG_IP, 			USE_YN)
 		VALUES
 		    (#{boardNo},			1,					1,						1,
-		    #{commentContents},		#{commentAnnoId},	#{commentAnnoPw},		0,
+		    #{commentContents},		#{commentAnnoId},	#{commentAnnoPw},		${regCustNo},
 		    now(),					#{regIp},			'Y');
 	</insert>
 	<select id="getListComment" resultType="com.familytoto.familytotoProject.comment.domain.CommentVO">
-		SELECT	C.COMMENT_ANNO_ID as commentAnnoId
+        SELECT	IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) as commentAnnoId
 	    ,		IFNULL(C.CHG_DT, C.REG_DT) as regDt
 	    ,		C.COMMENT_CONTENTS as commentContents
 	    ,		C.COMMENT_NO as commentNo
+        ,		IFNULL(IFNULL(CUST.CUST_NO, SC.SC_CUST_NO), 0) AS regCustNo
+        ,		IF(ISNULL(C.COMMENT_ANNO_ID), IFNULL(SC.SC_CUST_GUBUN, 'ON'), 'AN') AS scCustGubun
 	    FROM	COMMENT C
-		INNER JOIN BOARD B ON C.BOARD_NO = B.BOARD_NO AND B.USE_YN = 'Y'
+			INNER JOIN BOARD B ON B.BOARD_NO = C.BOARD_NO AND B.USE_YN = 'Y'
+            LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = C.REG_CUST_NO AND SC.USE_YN ='Y'
+            LEFT OUTER JOIN CUSTOM CUST ON CUST.CUST_NO =  C.REG_CUST_NO AND CUST.USE_YN ='Y'
+			LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CUST.FAMILY_CUST_NO AND CUST.USE_YN ='Y'
 	    WHERE	C.USE_YN = 'Y'
 	    AND		B.BOARD_NO = #{boardNo}
+        ORDER BY COMMENT_NO DESC
 	</select>
 </mapper>

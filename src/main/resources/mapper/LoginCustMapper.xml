@@ -10,6 +10,7 @@
 		,		C.FAMILY_CUST_NO as familyCustNo
 		,		C.CUST_PASSWORD as custPassword
 	    ,		FC.FAMILY_CUST_EMAIL AS familyCustEmail
+	    ,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
 		FROM	CUSTOM C
 	    inner join	FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
 	    AND			C.USE_YN = 'Y'

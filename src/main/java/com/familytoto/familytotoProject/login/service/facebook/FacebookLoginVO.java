@@ -4,10 +4,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FacebookLoginVO {
-	final String APP_KEY =  "406668109960506";
-	final String APP_SECRET =  "c0d30efc5f209311e2ddb05c985d1818";
+	private final String APP_KEY =  "380846455933511";
+	private final String APP_SECRET =  "2a85a2889a2d89a6524aa41975ad5402";
 	
-	final String DOMAIN =  "http://test.onesports.ga:80";
+	private final String DOMAIN =  "http://test.onesports.ga:80";
+	// private final String DOMAIN =  "http://onesports.ga";
 	
 	public String getLoginLink() {
 		return "http://www.facebook.com/dialog/oauth?client_id=" +

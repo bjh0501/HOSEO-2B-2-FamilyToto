@@ -83,40 +83,11 @@ public class SocialLoginController {
 				} else if(vo.getScCustId().equals("-98")) { 
 					out.println("<script>alert('20세 미만은 가입할 수 없습니다.'); window.close();</script>");
 				} else {
-					// 세션 제대로된거넣기
-					
-					// 소셜 부분 
-					CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
-					
-					int nScCustNo = socalLoginService.insertSocialId(vo);
-					
-					// insert 실패경우
-					if(nScCustNo == -99) {
-						return -1;
-					}
-					
-					vo.setScCustNo(nScCustNo);
-					
-					if(cVo == null) {
-						CustVO cVo2 = new CustVO();
-						cVo2.setCustNo(nScCustNo);
-						//cVo2.setFamilyCustNick(nickname);
-						session.setAttribute("cust", cVo2); // 세션 생성
-					} else {
-						//cVo.setFamilyCustNick(nickname);
-						session.setAttribute("cust", cVo); // 세션 생성
-					}
-					
-					session.setAttribute("custSocial", vo); // 세션 생성
-					session.setAttribute("social", "KA"); // 세션 생성
-					// 소셜 부분
-					
-					// scid의 패밀리넘버가잇으면 통합로그인
-					
 					out.println("<script>window.close();opener.document.location.replace('/');</script>");
 					out.flush();
 					return 0;
 				}
+				
 				out.flush();
 			}
 		} catch(Exception e) { }
@@ -138,9 +109,10 @@ public class SocialLoginController {
 		}
 		
 		vo.setScCustNo(nScCustNo);
-		
 		cVo.setCustNo(nScCustNo);
 		
+		//페북은 이름 = 닉네임
+		cVo.setFamilyCustNick(vo.getScCustNick());
 		session.setAttribute("cust", cVo); // 세션 생성
 		
 		session.setAttribute("custSocial", vo); // 세션 생성

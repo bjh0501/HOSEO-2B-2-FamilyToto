@@ -51,14 +51,29 @@
 	<update  id="dropCust">
 		UPDATE	CUSTOM
 	    SET		USE_YN = 'N'
+	    ,		CHG_DT = NOW()
+	    ,		CHG_IP = #{chgIp}
+	    ,		CHG_CUST_NO = #{custNo}
 	    WHERE	USE_YN = 'Y'
 	    AND		FAMILY_CUST_NO = ${familyCustNo};
 	</update>
 	<update  id="dropFamilyCust">
 		UPDATE	FAMILY_CUSTOM
 	    SET		USE_YN = 'N'
+	    ,		CHG_DT = NOW()
+	    ,		CHG_IP = #{chgIp}
+	    ,		CHG_CUST_NO = #{custNo}
 	    WHERE	USE_YN = 'Y'
-	    AND		FAMILY_CUST_NO = ${familyCustNo};
+	    AND		FAMILY_CUST_NO = #{familyCustNo};
+	</update>
+	<update id="updateInterSocial">
+		UPDATE	SOCIAL_CUSTOM
+        SET		FAMILY_CUST_NO = NULL
+        ,		CHG_DT = NOW()
+        ,		CHG_IP = #{chgIp}
+        ,		CHG_CUST_NO = #{custNo}
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
 	</update>
 	
 	<!--  소셜 -->
