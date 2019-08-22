@@ -119,21 +119,42 @@
 							<hr>
 							<div class="row">
 								<div class="col-xl-12 col-md-12 mb-3">
-									<div class="input-group mb-3">
+									<div class="input-group">
 										<h4>댓글<span style="color:orange">(24)</span></h4>
 									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="input-group mb-3">
+							<div class="row" th:if="${cust != 0}"> 
+								<div class="input-group">
 									<label style="padding-top:8px;padding-right:2px;">KakaoAd</label>
 									<a class="navbar-brand" href="#">
-								   		<img src="img/social/naver.jpg" width="30" height="30" alt="">
+								   		<img src="/img/social/icon/onesportsMiniIcon.png" width="30" height="30" alt="" th:if="${cust != 0}">
 								 	</a>
 									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1">
-									<button type="button" class="btn btn-secondary" style="margin-left:5px">등록</button>
+									<button type="button" class="btn btn-secondary" style="margin-left:5px" onClick="javascript:registerComment();">등록</button>
 								</div>
 							</div>
+							<div class="row" th:if="${cust == 0}">
+								<div class="col-xl-4 col-md-6 col-sm-6 mb-3">
+									<div class="input-group">
+										<label style="padding-top:8px;padding-right:2px;">아이디</label>
+										<input type="text" class="form-control" placeholder="id" aria-describedby="basic-addon1" id="annoId">
+									</div>
+								</div>
+								<div class="col-xl-4 col-md-6 col-sm-6 mb-3">
+									<div class="input-group">
+										<label style="padding-top:8px;padding-right:2px;">비밀번호</label>
+										<input type="password" class="form-control" placeholder="passowrd" aria-describedby="basic-addon1" id="annoPw">
+									</div>
+								</div>
+								<div class="col-xl-12 col-md-12 col-sm-12">
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="annoComment">
+										<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:registerComment('anno', ${board.getBoardNo()});|">등록</button>
+									</div>
+								</div>
+							</div>
+							<hr id="commentHr">
 							<div class="row">
 								<div class="input-group d-flex">
 									<div class="p-1">
@@ -333,6 +354,69 @@
 			
 		} else { // 유저
 			
+		}
+	}
+	
+	function registerComment(gubun, boardNo) {
+		if(gubun == "anno") {
+			if($("#annoId").val().trim() == "") {
+				alert("아이디를 입력해주세요.");
+				$("#annoId").focus();
+				return ;
+			}
+			
+			if($("#annoPw").val() == "") {
+				alert("비밀번호를 입력해주세요.");
+				$("#annoPw").focus();
+				return ;
+			}
+			
+			if($("#annoComment").val().trim() == "") {
+				alert("댓글을 입력해주세요.");
+				$("#annoComment").focus();
+				return ;
+			}
+			
+			$.ajax({
+				url : "/board/insertComment",
+				type : "POST",
+				cache : false,
+				dataType : "json",
+				data : "boardNo=" + boardNo
+						+ "&commentContents=" + $("#annoComment").val()
+						+ "&commentAnnoId=" + $("#annoId").val()
+						+ "&commentAnnoPw=" + $("#annoPw").val(),
+				success : function(data) {
+					var sCommentStr = "";
+					
+					sCommentStr += '<div class="row com">';
+					sCommentStr += '	<div class="input-group d-flex">';
+					sCommentStr += '		<div class="p-1">';
+					sCommentStr += '			<label class="text-word-r">' + $("#annoId").val() + '</label>';
+					// sCommentStr += '			<a class="navbar-brand" href="#">';
+					// sCommentStr += '				<img src="img/social/naver.jpg" width="30" height="30" alt="">';
+					// sCommentStr += '			</a>';
+					sCommentStr += '		</div>';
+					sCommentStr += '		<div class="p-1">';
+					sCommentStr += '			<p class="text-word-l">' + $("#annoComment").val() + '</p>';
+					sCommentStr += '		</div>';
+					sCommentStr += '		<p class="ml-auto p-2 ">';
+					sCommentStr += '			<button type="button" class="btn btn-secondary">답글쓰기</button>';
+					sCommentStr += '			<button type="button" class="btn btn-secondary">수정</button>';
+					sCommentStr += '			<button type="button" class="btn btn-secondary">삭제</button>';
+					sCommentStr += '			<label class="text-word-l">2015. 12. 12 12:25:33</label>';
+					sCommentStr += '		</p>';
+					sCommentStr += '	</div>';
+					sCommentStr += '</div>';		
+					
+					$("#commentHr").after(sCommentStr);
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
 		}
 	}
 </script>

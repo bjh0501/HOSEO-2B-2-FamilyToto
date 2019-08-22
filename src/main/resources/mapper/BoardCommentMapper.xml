@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardComment">
+	<insert id="insertComment">
+		INSERT INTO COMMENT
+		    (BOARD_NO, 				COMMENT_GRP_NO,     COMMENT_GRP_ORD,		COMMENT_GRP_DEPTH, 
+		    COMMENT_CONTENTS,		COMMENT_ANNO_ID, 	COMMENT_ANNO_PW,		REG_CUST_NO, 
+		    REG_DT,					REG_IP, 			USE_YN)
+		VALUES
+		    (#{boardNo},			1,					1,						1,
+		    #{commentContents},		#{commentAnnoId},	#{commentAnnoPw},		0,
+		    now(),					#{regIp},			'Y');
+	</insert>
+	<select id="getListComment" resultType="CommentVO">
+		SELECT	C.COMMENT_ANNO_ID as commentAnnoId
+	    ,		IFNULL(C.CHG_DT, C.REG_DT) as regDt
+	    ,		C.COMMENT_CONTENTS as commentContents
+	    ,		C.COMMENT_NO as commentNo
+	    FROM	COMMENT C
+		INNER JOIN BOARD B ON C.BOARD_NO = B.BOARD_NO AND B.USE_YN = 'Y'
+	    WHERE	C.USE_YN = 'Y'
+	    AND		B.BOARD_NO = #{boardNo}
+	</select>
+</mapper>
