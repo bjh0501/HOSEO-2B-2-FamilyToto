@@ -12,15 +12,15 @@
   <title>One Sports</title>
 
   <!-- Custom fonts for this template-->
-  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/Nunito.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onLoad="javascript:loadContent();">
 
   <!-- Page Wrapper -->
 	<div id="wrapper">
@@ -44,15 +44,16 @@
 		        <!-- Begin Page Content -->
 				<div class="container-fluid">
 					<div class="row">
-						<h2 class="text-title">글쓰기</h2>
+						<h2 class="text-title">글수정</h2>
 					</div>
+					<textarea id="getContents" th:text="${board.getBoardContents()}" style="display:none;"></textarea>
 					 <div class="card shadow mb-4">
 			            <div class="card-body">
 							<div th:if="${loginGubun == null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text" id="basic-addon1">글쓴이</span>
 						  		</div>
-								<input type="text" class="form-control" placeholder="Register" aria-label="Register" aria-describedby="basic-addon1" id="annoId">
+								<input type="text" class="form-control" placeholder="Register" aria-label="Register" aria-describedby="basic-addon1" id="annoId" th:value="${board.getBoardAnnoId()}" >
 							</div>
 							<div th:if="${loginGubun == null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
@@ -64,7 +65,7 @@
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text">제목</span>
 						  		</div>
-								<input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" id="title">
+								<input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" id="title" th:value="${board.getBoardTitle()}" >
 							</div>
 							<input th:if="${loginGubun == null}" type="hidden" id="annoGubun" value="Y">
 							<input th:if="${loginGubun != null}" type="hidden" id="annoGubun" value="N">
@@ -78,7 +79,8 @@
 								</div>
 								<div class="col-xl-6 col-md-6 mb-6">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-block" onClick="javascript:saveContent();">글쓰기</button>
+										<button type="button" class="btn btn-secondary btn-block" onClick="javascript:saveContent();">수정하기</button>
+										<input type="text" id="updateGubun" value="Y">
 									</div>
 								</div>
 							</div>
@@ -103,22 +105,22 @@
 
   
 
-  <!-- Bootstrap core JavaScript-->
-  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+ <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script th:src="@{js/sb-admin-2.min.js}"></script>
+  <script src="/js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+  <script src="/vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script th:src="@{js/demo/chart-area-demo.js}"></script>
-  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+  <script src="/js/demo/chart-area-demo.js"></script>
+  <script src="/js/demo/chart-pie-demo.js"></script>
 
 </body>
 

@@ -252,12 +252,9 @@ public class ChangeCustController {
 	
 	@RequestMapping("login/social/facebook/auth")
 	@ResponseBody
-	public int facebookAuth(@ModelAttribute SocialVO sVo, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
+	public int facebookAuth(@ModelAttribute SocialVO sVo, HttpSession session, HttpServletRequest request) throws IOException {
 		int nResult = 0;
 		
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-			
 		CustVO cVo = (CustVO) session.getAttribute("cust");
     	
 		sVo.setRegIp(request.getRemoteAddr());
@@ -266,19 +263,12 @@ public class ChangeCustController {
 		
 		nResult = changeCustAuthService.updateAuthSocial(sVo);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		map.put("scCustEmail", sVo.getScCustEmail());
-		
+		// 연동성공
 		if( nResult == 1) {
-			map.put("error", 1);
-		} else if( nResult == -99) { // 다른사람이 연동한계정
-			map.put("error", -99);
-		}			
-						
-		if(map.get("error").toString().equals("1")) {
 			return 0;
-		} else { // 다른 사람이 쓰
+		} else if( nResult == -99) { // 다른사람이 연동한계정
+			return -99;
+		} else { // 알수없는에러
 			return -98;
 		}
 	}

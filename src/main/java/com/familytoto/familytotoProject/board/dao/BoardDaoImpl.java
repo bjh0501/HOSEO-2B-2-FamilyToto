@@ -48,5 +48,9 @@ public class BoardDaoImpl implements BoardDao {
 	public int insertAnnoBoard(BoardVO vo) {
 		return sqlSession.insert("board.insertAnnoBoard", vo);
 	}
-	
+
+	@Override
+	public BoardVO getUpdateBoard(BoardVO vo) {
+		return sqlSession.selectOne("board.getUpdateBoard", vo);
+	}	
 }
