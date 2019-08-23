@@ -55,8 +55,6 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 				contents += "\n";
 				contents += "\n";
 				
-				
-				
 				emailService.sendEmail(map.get("familyCustEmail").toString(), "[원 스포츠] 임시 비밀번호 발급", contents);
 			}
 		} else { // 존재하지않는 정보

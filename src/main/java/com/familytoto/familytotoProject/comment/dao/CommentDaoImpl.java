@@ -23,7 +23,8 @@ public class CommentDaoImpl implements CommentDao {
 	public List<CommentVO> getListComment(BoardVO vo) {
 		return sqlSession.selectList("boardComment.getListComment", vo);
 	}
-
 	
-
+	public int updateDeleteComment(CommentVO vo) {
+		
+	}
 }

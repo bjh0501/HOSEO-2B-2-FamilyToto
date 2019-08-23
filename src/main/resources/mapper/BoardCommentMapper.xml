@@ -30,4 +30,11 @@
     AND		IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) IS NOT NULL
 	ORDER BY COMMENT_NO DESC;
 	</select>
+	
+	 UPDATE	COMMENT
+    SET		USE_YN = 'N'
+    ,		CHG_IP = $ 
+    ,		CHG_DT = $
+    ,		CHG_CUST_NO = $
+    WHERE	
 </mapper>

@@ -11,4 +11,7 @@ public interface CommentService {
 	
 	// 댓글 리스트 보기
 	List<CommentVO> getListComment(BoardVO vo);
+	
+	// 댓글삭제
+	int updateDeleteComment(CommentVO vo);
 }

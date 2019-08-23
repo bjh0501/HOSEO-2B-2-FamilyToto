@@ -42,5 +42,11 @@ public class CommentServiceImpl implements CommentService{
 	public List<CommentVO> getListComment(BoardVO vo) {
 		return commentDao.getListComment(vo);
 	}
+
+	@Override
+	public int updateDeleteComment(CommentVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

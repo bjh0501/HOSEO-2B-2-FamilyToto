@@ -186,9 +186,8 @@
 										</div>
 										<p class="ml-auto p-2 ">
 											<button type="button" class="btn btn-secondary">답글쓰기</button>
-											<button type="button" class="btn btn-secondary">수정</button>
-											<button th:if="${cust == com.getRegCustNo()}"  type="button" class="btn btn-secondary" onClick="javascript:deleteComment();">삭제</button>
-											<input type="text" th:value="${com.getRegCustNo()}">
+											<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary">수정</button>
+											<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}"  type="button" class="btn btn-secondary" onClick="javascript:deleteComment();">삭제</button>
 											<label class="text-word-l" th:text="${com.getRegDt()}">날짜</label>
 										</p>
 									</div>
@@ -417,6 +416,12 @@
 	}
 	
 	function deleteComment() {
+		var con = confirm("정말로 삭제하시겠습니까?")
 		
+		if(con == true) {
+			
+		} else {
+			
+		}
 	}
 </script>
