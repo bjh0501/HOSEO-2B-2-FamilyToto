@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.comment.dao.CommentDao;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
+import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
 public class CommentServiceImpl implements CommentService{
@@ -16,7 +17,9 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	public int insertComment(CommentVO vo) {
+		
 		if(vo.getRegCustNo() == 0) {
+			CustVO cVo = new CustVO();
 			if(vo.getCommentAnnoId().equals("")) {
 				return -99;
 			}
@@ -28,6 +31,8 @@ public class CommentServiceImpl implements CommentService{
 			if(vo.getCommentContents().equals("")) {
 				return -97;
 			}
+			
+			vo.setCommentAnnoPw(cVo.toEncodePassword(vo.getCommentAnnoPw()));
 		} else {
 			if(vo.getCommentContents().equals("")) {
 				return -96;
@@ -45,8 +50,52 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	public int updateDeleteComment(CommentVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return commentDao.updateDeleteComment(vo);
+	}
+
+	@Override
+	public int updateDeleteAnnoComment(CommentVO vo) {
+		CustVO cVo = new CustVO();
+		CommentVO vo2 = commentDao.checkAnnoCommentPass(vo);
+		
+		//비밃번호틀림
+		if(vo2 == null) {
+			return -99;
+		}
+		
+		String sHashPass = vo2.getCommentAnnoPw();
+		cVo.setCustPassword(vo.getCommentAnnoPw());
+		
+		if(cVo.isDecodePassword(cVo, sHashPass) == true) {
+			return commentDao.updateDeleteAnnoComment(vo);
+		} else {
+			return -99;
+		}
+	}
+
+	@Override
+	public int updateComment(CommentVO vo) {
+		// 비회원
+		if(vo.getCommentAnnoPw() != null) {
+			CustVO cVo = new CustVO();
+			CommentVO vo2 = commentDao.checkAnnoCommentPass(vo);
+			
+			//비밃번호틀림
+			if(vo2 == null) {
+				return -99;
+			}
+			
+			String sHashPass = vo2.getCommentAnnoPw();
+			cVo.setCustPassword(vo.getCommentAnnoPw());
+			
+			if(cVo.isDecodePassword(cVo, sHashPass) == true) {
+				return commentDao.updateComment(vo);
+			} else { //비밃번호틀림
+				return -99;
+			}
+		} else {
+			return commentDao.updateComment(vo);
+		}
 	}
 	
 }

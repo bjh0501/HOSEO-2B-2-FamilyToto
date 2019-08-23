@@ -1,4 +1,4 @@
-package com.familytoto.familytotoProject.comment.controller;
+ package com.familytoto.familytotoProject.comment.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,5 +29,34 @@ public class CommentController {
 		}
 		
 		return commentService.insertComment(vo);
+	}
+	
+	@RequestMapping("/board/deleteComment")
+	@ResponseBody
+	public int deleteComment(CommentVO vo, HttpServletRequest request, HttpSession session) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		vo.setRegIp(request.getRemoteAddr());
+	
+		// 회원
+		if(cVo != null) {
+			vo.setChgCustNo(cVo.getCustNo());
+			return commentService.updateDeleteComment(vo);
+		} else { // 비회원
+			return commentService.updateDeleteAnnoComment(vo);
+		}
+	}
+	
+	@RequestMapping("/board/updateComment")
+	@ResponseBody
+	public int updateComment(CommentVO vo, HttpServletRequest request, HttpSession session) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		vo.setChgIp(request.getRemoteAddr());
+		
+		// 회원
+		if(cVo != null) {
+			vo.setChgCustNo(cVo.getCustNo());
+		}
+		
+		return commentService.updateComment(vo);
 	}
 }

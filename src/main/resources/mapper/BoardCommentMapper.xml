@@ -30,11 +30,37 @@
     AND		IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) IS NOT NULL
 	ORDER BY COMMENT_NO DESC;
 	</select>
-	
-	 UPDATE	COMMENT
-    SET		USE_YN = 'N'
-    ,		CHG_IP = $ 
-    ,		CHG_DT = $
-    ,		CHG_CUST_NO = $
-    WHERE	
+	<update id="deleteComment">
+		UPDATE	COMMENT
+	    SET		USE_YN = 'N'
+	    ,		CHG_IP = #{chgIp} 
+	    ,		CHG_DT = NOW()
+	    ,		CHG_CUST_NO = #{chgCustNo}
+	    WHERE	USE_YN = 'Y'
+	    AND		REG_CUST_NO = #{chgCustNo}
+	    AND		COMMENT_NO = #{commentNo}
+	</update>
+	<update id="deleteAnnoComment">
+		UPDATE	COMMENT
+	    SET		USE_YN = 'N'
+	    ,		CHG_DT = NOW()
+	    ,		CHG_IP = #{chgIp}
+	    WHERE	USE_YN = 'Y'
+	    AND		COMMENT_NO = #{commentNo}
+	</update>
+	<select id="checkAnnoCommentPass" resultType="com.familytoto.familytotoProject.comment.domain.CommentVO">
+		SELECT	COMMENT_ANNO_PW as commentAnnoPw
+        FROM	COMMENT
+        WHERE	COMMENT_NO = #{commentNo}
+        AND		USE_YN = 'Y'
+	</select>
+	<update id="updateComment">
+		UPDATE	COMMENT
+        SET		COMMENT_CONTENTS = #{commentContents}
+        ,		CHG_CUST_NO = #{chgCustNo}
+        ,		CHG_DT = NOW()
+        ,		CHG_IP = #{chgIp}
+        WHERE	COMMENT_NO = #{commentNo}
+        AND		USE_YN = 'Y'
+	</update>
 </mapper>

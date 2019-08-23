@@ -120,7 +120,6 @@ public class BorderController {
 		} else {
 			sGubun = "/img/social/icon/onesportsMiniIcon.jpg";
 		}
-		
 
 		mv.addObject("cust", nCustNo);
 		mv.addObject("board", vo);
@@ -140,7 +139,7 @@ public class BorderController {
 		return "redirect:/boardList";
     }
 	
-	@RequestMapping(value = "registerBoard/anno/insert")
+	@RequestMapping(value = "/registerBoard/anno/insert")
     public String insertAnnoBoard(@ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
 		vo.setRegIp(request.getRemoteAddr());
 		

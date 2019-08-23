@@ -25,6 +25,21 @@ public class CommentDaoImpl implements CommentDao {
 	}
 	
 	public int updateDeleteComment(CommentVO vo) {
-		
+		return sqlSession.update("boardComment.deleteComment", vo);
+	}
+
+	@Override
+	public int updateDeleteAnnoComment(CommentVO vo) {
+		return sqlSession.update("boardComment.deleteAnnoComment", vo);
+	}
+
+	@Override
+	public CommentVO checkAnnoCommentPass(CommentVO vo) {
+		return sqlSession.selectOne("boardComment.checkAnnoCommentPass", vo);
+	}
+
+	@Override
+	public int updateComment(CommentVO vo) {
+		return sqlSession.update("boardComment.updateComment", vo);
 	}
 }

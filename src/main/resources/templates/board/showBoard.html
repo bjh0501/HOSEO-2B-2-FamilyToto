@@ -110,7 +110,7 @@
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3" th:if="${cust == board.getRegCustNo()}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;" th:onClick="|javascript:deleteBoard(${board.getBoardNo()});|">삭제</button>
+												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;" th:onClick="|javascript:deleteBoard(${board.getBoardNo()}) |">삭제</button>
 											</div>
 										</div>
 									</div>
@@ -181,13 +181,17 @@
 											 	</a>
 										 	</th:block>
 									 	</div>
-									 	<div class="p-1">
-											<p class="text-word-l" th:text="${com.getCommentContents()}">내가쓴 댓글</p>
+									 	<div class="p-1 commentContents">
+											<p class="text-word-l" th:text="${com.getCommentContents()}">댓글</p>
 										</div>
 										<p class="ml-auto p-2 ">
 											<button type="button" class="btn btn-secondary">답글쓰기</button>
-											<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary">수정</button>
-											<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}"  type="button" class="btn btn-secondary" onClick="javascript:deleteComment();">삭제</button>
+												<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary"
+												th:data-commentno="${com.getCommentNo()}"
+												th:data-gubun="${com.getScCustGubun()}"
+												th:onClick="|javascript:updateComment($(this), this.getAttribute('data-commentno'), this.getAttribute('data-gubun'));|">수정</button>
+												
+											<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary" th:data-gubun="${com.getScCustGubun()}" th:onClick="|javascript:deleteComment( ${com.getCommentNo()}, $(this), this.getAttribute('data-gubun'));|" >삭제</button>
 											<label class="text-word-l" th:text="${com.getRegDt()}">날짜</label>
 										</p>
 									</div>
@@ -261,7 +265,29 @@
 		var con = confirm("정말로 삭제하시겠습니까?");
 		
 		if(con == true) {
-			location.href="/deleteBoard/" + no;
+			$.ajax({
+				url : "/board/deleteComment",
+				type : "POST",
+				cache : false,
+				dataType : "json",
+				data : "boardAnnoPw=" + $("#annoInputPw").val()
+						+ "&boardNo=" + boardNo
+						+ "&boardAnnoId=" + annoId
+						+ "&scCustGubun=" + "FA",
+				success : function(data) {
+					if(data == 0) {
+						
+					}  else if(data == -98) {
+						alert("비밀번호가 틀렸습니다.");
+					}
+				},
+
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
 		}
 	}
 	
@@ -415,13 +441,111 @@
 		});
 	}
 	
-	function deleteComment() {
-		var con = confirm("정말로 삭제하시겠습니까?")
-		
-		if(con == true) {
+	function deleteComment(no, obj, gubun) {
+		if(gubun == "AN") {
+			var pass = prompt("비밀번호를 입력해주세요.");
 			
+			
+			$.ajax({
+				url : "/board/deleteComment",
+				type : "POST",
+				cache : false,
+				dataType : "json",
+				data : "commentNo=" + no
+				+ "&commentAnnoPw=" + pass,				
+				success : function(data) {
+					if(data == 1) {
+						obj.parent().parent().parent()
+						.slideUp("normal", function() { $(this).remove(); } );
+					} else if(data == -99) {
+						alert("비밀번호가 틀렸습니다.")
+					}
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
 		} else {
+			var con = confirm("정말로 삭제하시겠습니까?");
 			
+			if(con == true) {
+				$.ajax({
+					url : "/board/deleteComment",
+					type : "POST",
+					cache : false,
+					dataType : "json",
+					data : "commentNo=" + no,
+					success : function(data) {
+						if(data == 1) {
+							obj.parent().parent().parent()
+							.slideUp("normal", function() { $(this).remove(); } );
+						}
+					},
+					error : function(request, status, error) {
+						var msg = "ERROR : " + request.status + "<br>"
+						msg += +"내용 : " + request.responseText + "<br>" + error;
+						console.log(msg);
+					}
+				});
+			}
+		}	
+	}
+	
+	function updateComment(obj, commentNo, gubun) {
+		obj.attr("style", "display: none");
+		var contents = obj.parent().parent().children(".commentContents").children().html()
+		var input = '<input type="text" class="form-control" placeholder="Comment" value="' + contents + '">';
+		var button = '<button type="button" class="btn btn-secondary" onclick="javascript:updateComment2(' + commentNo + ', $(this), \'' + gubun + '\')">수정하기</button>'
+		var cancelButton = "<button type='button' class='btn btn-secondary' onclick=\"javascript:cancelComment('"  + contents + "', $(this))\">수정취소</button>";
+
+		obj.parent().parent().children(".commentContents").children().html(input + button + cancelButton);
+	}
+	
+	function cancelComment(contents, obj) {
+ 		obj.parent().parent().parent().children(".p-2").children("button").attr("style", "")
+		
+		htmlCon = '<p class="text-word-l">' + contents + '</p>';
+		obj.parent().parent().html(htmlCon);		
+	}
+	
+	function updateComment2(commentNo, obj, gubun) {	
+		var contents = obj.prev().val();
+		var dataStr = "";
+		
+		if(gubun == "AN") {
+			var pass = prompt("비밀번호를 입력해주세요.");
+			
+			dataStr = "commentNo=" + commentNo
+			+"&commentContents=" + contents
+			+"&commentAnnoPw=" + pass
+		} else {
+			dataStr = "commentNo=" + commentNo
+			+"&commentContents=" + contents
 		}
+		
+		$.ajax({
+			url : "/board/updateComment",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : dataStr,
+			success : function(data) {
+				if(data == 1) {
+					obj.parent().parent().parent().children(".p-2").children("button").attr("style", "")
+					htmlCon = '<p class="text-word-l">' + contents + '</p>';
+					
+					obj.parent().parent().html(htmlCon);
+				} else if(data == -99) {
+					alert("비밀번호가 틀렸습니다.")
+				} else {
+					alert("알수 없는 오류가 발생하였습니다.\n새로고침 후 다시 시도해주세요.")
+				}
+			},
+			error : function(request, status, error) {
+				alert("알수 없는 오류가 발생하였습니다.\n새로고침 후 다시 시도해주세요.")
+			}
+		});
 	}
 </script>
