@@ -110,7 +110,7 @@
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3" th:if="${cust == board.getRegCustNo()}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;" th:onClick="|javascript:deleteBoard('${board.getBoardNo()}');|">삭제</button>
+												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;" th:onClick="|javascript:deleteBoard(${board.getBoardNo()});|">삭제</button>
 											</div>
 										</div>
 									</div>
@@ -187,7 +187,8 @@
 										<p class="ml-auto p-2 ">
 											<button type="button" class="btn btn-secondary">답글쓰기</button>
 											<button type="button" class="btn btn-secondary">수정</button>
-											<button type="button" class="btn btn-secondary">삭제</button>
+											<button th:if="${cust == com.getRegCustNo()}"  type="button" class="btn btn-secondary" onClick="javascript:deleteComment();">삭제</button>
+											<input type="text" th:value="${com.getRegCustNo()}">
 											<label class="text-word-l" th:text="${com.getRegDt()}">날짜</label>
 										</p>
 									</div>
@@ -413,5 +414,9 @@
 				console.log(msg);
 			}
 		});
+	}
+	
+	function deleteComment() {
+		
 	}
 </script>

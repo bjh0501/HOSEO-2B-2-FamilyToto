@@ -49,13 +49,13 @@ public class BoardServiceImpl implements BoardService{
 			if(vo.getRegCustNo() == 0) {
 				vo.setCustGubun("");
 			} else if(vo.getCustGubun().equals("NA")) {
-				vo.setCustGubun("/img/social/icon/naverMiniIcon.png");
+				vo.setCustGubun("/img/social/icon/naverMiniIcon.jpg");
 			} else if(vo.getCustGubun().equals("KA")) {
 				vo.setCustGubun("/img/social/icon/kakaoMiniIcon.jpg");
 			} else if(vo.getCustGubun().equals("FA")) {
-				vo.setCustGubun("/img/social/icon/facebookMiniIcon.png");
+				vo.setCustGubun("/img/social/icon/facebookMiniIcon.jpg");
 			} else if(vo.getCustGubun().equals("ON")) {
-				vo.setCustGubun("/img/social/icon/onesportsMiniIcon.png");
+				vo.setCustGubun("/img/social/icon/onesportsMiniIcon.jpg");
 			}  else {
 				vo.setCustGubun("");
 			}
@@ -85,7 +85,7 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.updateDeleteBoard(vo);
 	}
 
-	public int insertAnnoBoard(BoardVO vo) {
+		public int insertAnnoBoard(BoardVO vo) {
 		CustVO cVo = new CustVO();
 		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
 		
@@ -95,5 +95,4 @@ public class BoardServiceImpl implements BoardService{
 	public BoardVO getUpdateBoard(BoardVO vo) {
 		return boardDao.getUpdateBoard(vo) ;
 	}
-
 }

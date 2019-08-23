@@ -211,7 +211,6 @@ public class NaverLoginVO {
 				naverLoginVO.deleteNaver(oauthToken);
 				return -98;
 			}
-			System.out.println(nickname);
 			
 			SocialVO vo = new SocialVO();
 			

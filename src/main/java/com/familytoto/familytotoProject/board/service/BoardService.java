@@ -21,6 +21,8 @@ public interface BoardService {
 	// 게시글보기
 	BoardVO getShowBoard(BoardVO vo);
 	
+	// 게시글 수정 보기
+	BoardVO getUpdateBoard(BoardVO vo);
 	
 	// 페이징
 	public int getBoardListCnt() throws Exception;
@@ -28,7 +30,4 @@ public interface BoardService {
 	
 	// 익명 글쓰기
 	int insertAnnoBoard(BoardVO vo);
-	
-	// 게시글 수정 불러오기
-	BoardVO getUpdateBoard(BoardVO vo);
 }

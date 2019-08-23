@@ -18,13 +18,15 @@
     
   /* Preserve aspet ratio */
   min-width: 100%;
-  min-height: 100%;
+  max-height: 100%;
 }
   </style>
   </head>
   <body>
+  <div id="div">
 	<img src="/img/error/404.png" id="bg" th:if="${code}==404" ondragstart="return false" oncontextmenu='return false'>
 	<img src="/img/error/500.png" id="bg" th:if="${code}==500" ondragstart="return false" oncontextmenu='return false'>
+	</div>
 </body>
 
 </html>

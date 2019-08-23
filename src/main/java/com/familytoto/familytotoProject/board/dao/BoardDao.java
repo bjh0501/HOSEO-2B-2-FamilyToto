@@ -15,6 +15,9 @@ public interface BoardDao {
 	// 게시글 삭제
 	int updateDeleteBoard(BoardVO vo);
 	
+	// 게시글 수정 보기
+	BoardVO getUpdateBoard(BoardVO vo);
+	
 	// 게시글 보기
 	BoardVO getShowBoard(BoardVO vo);
 	
@@ -25,7 +28,4 @@ public interface BoardDao {
 	
 	// 익명 게시글 등록
 	int insertAnnoBoard(BoardVO vo);
-	
-	// 게시글 수정 불러오기
-	BoardVO getUpdateBoard(BoardVO vo);
 }

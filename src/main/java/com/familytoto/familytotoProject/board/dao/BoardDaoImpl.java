@@ -21,7 +21,7 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public int updateDeleteBoard(BoardVO vo) {
-		return sqlSession.update("board.updateDeleteBorder", vo);
+		return sqlSession.update("board.updateDeleteBoard", vo);
 	}	
 	
 	@Override
@@ -29,6 +29,8 @@ public class BoardDaoImpl implements BoardDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	
 	
 	// 페이징
 	public int getBoardListCnt() throws Exception {
@@ -52,5 +54,5 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public BoardVO getUpdateBoard(BoardVO vo) {
 		return sqlSession.selectOne("board.getUpdateBoard", vo);
-	}	
+	}
 }

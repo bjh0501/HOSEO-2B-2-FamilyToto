@@ -177,6 +177,6 @@ public class BorderController {
 	@RequestMapping("/updateBoard/{boardNo}")
 	 public String updateBoard(BoardVO bVo, Model model) {
 		model.addAttribute("board", bVo);
-		return "redirect:/board/updateBoard"; 
+		return "redirect:/board/updateBoard";
     }
 }

@@ -53,6 +53,7 @@ public class SocialLoginController {
 		} else {
 			code = request.getParameter("code");
 			int nNaverResult = naverLoginVO.naverLogin(model, code,state, session, request);
+
 			if(nNaverResult == 0) {
 				out.println("<script>window.close();opener.document.location.replace('/');</script>");				
 			} else if(nNaverResult == -99) {
