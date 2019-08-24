@@ -15,4 +15,6 @@ public interface ChangeCustAuthDao {
 	// 연동해제
 	int unAuthSocial(SocialVO vo);
 	
+	// 소셜로 첫 연동
+	 int insertAuthSocial(SocialVO vo);
 }

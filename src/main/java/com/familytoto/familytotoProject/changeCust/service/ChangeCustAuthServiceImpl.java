@@ -14,15 +14,12 @@ public class ChangeCustAuthServiceImpl implements ChangeCustAuthService{
 	@Autowired
 	ChangeCustAuthDao changeCustAuthDao; 
 	
-	@Autowired
-	SocialDao naverDao;
-	
 	@Override
 	public int updateAuthSocial(SocialVO vo) {
 		// 추가
 		
 		if(changeCustAuthDao.checkSocial(vo) == null) {
-			return naverDao.insertSocial(vo);
+			return changeCustAuthDao.insertAuthSocial(vo);
 		} else { // 있는경우 업뎃 
 			// 만약 다른사람이 쓰는 아이디라면
 			Map<String, Object> checkMap = changeCustAuthDao.checkSocial(vo);

@@ -223,9 +223,21 @@ public class ChangeCustController {
 						+ "opener.parent.successKakao('" + map.get("scCustEmail").toString() + "');"
 						+ "window.close();"
 						+ "</script>");
-			} else {
+			} else if(map.get("error").toString().equals("-99")) {
 				out.println("<script>"
 						+ "alert('다른사람이 쓰고있는 계정이라 연동을 할 수 없습니다.');"
+						+ "window.close();</script>");
+			} else if(map.get("error").toString().equals("-98")) {
+				out.println("<script>"
+						+ "alert('제공 항목을 전부 체크해주세요.');"
+						+ "window.close();</script>");
+			} else if(map.get("error").toString().equals("-97")) {
+				out.println("<script>"
+						+ "alert('다른사람이 쓰고있는 계정이라 연동을 할 수 없습니다.');"
+						+ "window.close();</script>");
+			} else {
+				out.println("<script>"
+						+ "alert('알 수 없는 에러가 발생하였습니다. 새로고침후 다시 시도해주세요.');"
 						+ "window.close();</script>");
 			}
 		}

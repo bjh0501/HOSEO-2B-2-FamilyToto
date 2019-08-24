@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.RespectBinding;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
@@ -92,6 +94,7 @@ public class BorderController {
     public ModelAndView showBoard(HttpSession session, @PathVariable ("boardNo") String sBoardNo, ModelAndView mv) {
 		BoardVO vo = new BoardVO();
 		CustVO custVo = (CustVO) session.getAttribute("cust");
+		int nCommentCnt = boardService.getCommentCnt();
 		int nCustNo = 0;
 		
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
@@ -100,11 +103,7 @@ public class BorderController {
 		if(custVo != null) {
 			nCustNo = custVo.getCustNo();
 		} 
-		
-		if(vo.getRegCustNo() != 0) {
-			vo.setRegCustNo(1);
-		}
-		
+				
 		List<CommentVO> listCommentVo = commentService.getListComment(vo);
 
 		String sGubun = (String) session.getAttribute("social"); 
@@ -126,6 +125,7 @@ public class BorderController {
 		mv.addObject("custComment", custVo);
 		mv.addObject("comment", listCommentVo);
 		mv.addObject("socialImg", sGubun);
+		mv.addObject("commentCnt", nCommentCnt);
 		
 		mv.setViewName("board/showBoard");
 		
@@ -133,10 +133,26 @@ public class BorderController {
     }
 	
 	@RequestMapping(value = {"/deleteBoard/{boardNo}"})
-    public String deleteBoard(HttpSession session, @PathVariable ("boardNo") String sNo, HttpServletRequest request) {
-		boardService.updateDeleteBoard(sNo, session, request);
+	public String deleteBoard(HttpSession session, @PathVariable ("boardNo") String sNo, HttpServletRequest request) {
+		if(boardService.updateDeleteBoard(sNo, session, request) == 1) {
+			return "redirect:/boardList";			
+		} else {
+			return null;
+		}
+    }
+	
+	@RequestMapping(value = {"/deleteAnnoBoard/{boardNo}"})
+	@ResponseBody
+    public int deleteAnnoBoard(@PathVariable ("boardNo") String sNo, HttpServletRequest request, @ModelAttribute BoardVO vo) {
+		int nResult = boardService.updateDeleteAnnoBoard(sNo, request,vo);
 		
-		return "redirect:/boardList";
+		if(nResult == 1) {
+			return 0;			
+		} else if(nResult == -99) {
+			return -99;
+		} else {
+			return -98;
+		}
     }
 	
 	@RequestMapping(value = "/registerBoard/anno/insert")

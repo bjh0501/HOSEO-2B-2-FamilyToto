@@ -22,7 +22,15 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public int updateDeleteBoard(BoardVO vo) {
 		return sqlSession.update("board.updateDeleteBoard", vo);
-	}	
+	}
+	
+	public int updateDeleteAnnoBoard(BoardVO vo) {
+		return sqlSession.update("board.updateDeleteAnnoBoard", vo);
+	}
+	
+	public String checkAnnoBoardPass(BoardVO vo) {
+		return sqlSession.selectOne("board.checkAnnoBoardPass", vo);
+	}
 	
 	@Override
 	public int updateBoard(BoardVO vo) {
@@ -54,5 +62,10 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public BoardVO getUpdateBoard(BoardVO vo) {
 		return sqlSession.selectOne("board.getUpdateBoard", vo);
+	}
+
+	@Override
+	public int getCommentCnt() {
+		return sqlSession.selectOne("board.commentCnt");
 	}
 }

@@ -98,7 +98,7 @@
 		AND		FAMILY_CUST_NO = ${familyCustNo}
 	</update>
 	<select id="check" resultType="map">
-		SELECT	SC_CUST_NO
+		SELECT	SC_CUST_NO as scCustNo
 		,		IFNULL(FAMILY_CUST_NO, 0) as familyCustNo
 		FROM	SOCIAL_CUSTOM
 		WHERE	USE_YN = 'Y'

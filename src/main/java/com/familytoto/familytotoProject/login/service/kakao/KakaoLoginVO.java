@@ -278,11 +278,11 @@ public class KakaoLoginVO {
             }
             
             if(nickname.equals("") || email.equals("") || age_range.equals("")) {
-            	nResult = -99;
+            	map.put("error", -98);
             	kakaoDisRegister(access_Token);
             } else {
             	if(Integer.parseInt(age_range) < 20) {
-            		nResult = -98;
+            		map.put("error", -97);
             		kakaoDisRegister(access_Token);
             	}
             	
@@ -318,6 +318,6 @@ public class KakaoLoginVO {
             return map;
         }
         
-        return null;
+        return map;
     }
 }

@@ -28,4 +28,9 @@ public class ChangeCustAuthDaoImpl implements ChangeCustAuthDao {
 		return sqlSession.update("changeCust.unAuth", vo);
 	}
 
+	@Override
+	public int insertAuthSocial(SocialVO vo) {
+		return sqlSession.update("registerCust.insertAuthSocial", vo);
+	}
+
 }

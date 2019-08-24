@@ -21,6 +21,12 @@ public interface BoardDao {
 	// 게시글 보기
 	BoardVO getShowBoard(BoardVO vo);
 	
+	// 익명게시판 삭제
+	int updateDeleteAnnoBoard(BoardVO vo);
+	
+	// 익명 게시판 비번확인
+	String checkAnnoBoardPass(BoardVO vo);
+	
 	// 페이징
 	public int getBoardListCnt() throws Exception;
 	
@@ -28,4 +34,7 @@ public interface BoardDao {
 	
 	// 익명 게시글 등록
 	int insertAnnoBoard(BoardVO vo);
+	
+	// 댓글 카운트
+	public int getCommentCnt();
 }

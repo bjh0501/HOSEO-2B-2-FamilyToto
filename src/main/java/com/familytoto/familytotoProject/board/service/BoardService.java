@@ -24,10 +24,16 @@ public interface BoardService {
 	// 게시글 수정 보기
 	BoardVO getUpdateBoard(BoardVO vo);
 	
+	// 익명 게시글삭제
+	int updateDeleteAnnoBoard(String sNo, HttpServletRequest request, BoardVO vo);
+	
 	// 페이징
 	public int getBoardListCnt() throws Exception;
 	public List<BoardVO> getBoardList(PagingVO pagination) throws Exception;
 	
 	// 익명 글쓰기
 	int insertAnnoBoard(BoardVO vo);
+
+	// 댓글 카운트
+	public int getCommentCnt();
 }

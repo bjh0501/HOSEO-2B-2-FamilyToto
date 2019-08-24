@@ -73,19 +73,33 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.getShowBoard(vo);
 	}
 
-
 	public int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request) {
 		BoardVO vo = new BoardVO();
 		CustVO cVo = (CustVO) session.getAttribute("cust");
-		
+	
 		vo.setBoardNo(Integer.parseInt(sNo));
 		vo.setChgCustNo(cVo.getCustNo());
 		vo.setChgIp(request.getRemoteAddr());
 		
-		return boardDao.updateDeleteBoard(vo);
+		return boardDao.updateDeleteBoard(vo);	
+	}
+	
+	public int updateDeleteAnnoBoard(String sNo, HttpServletRequest request, BoardVO vo) {
+		CustVO cVo = new CustVO();
+		vo.setBoardNo(Integer.parseInt(sNo));
+		vo.setChgIp(request.getRemoteAddr());
+		cVo.setCustPassword(vo.getBoardAnnoPw());
+		
+		String sPass = boardDao.checkAnnoBoardPass(vo);
+		
+		if(cVo.isDecodePassword(cVo, sPass)==true) {
+			return boardDao.updateDeleteAnnoBoard(vo);
+		} else { // 비밀번호틀림
+			return -99;
+		}
 	}
 
-		public int insertAnnoBoard(BoardVO vo) {
+	public int insertAnnoBoard(BoardVO vo) {
 		CustVO cVo = new CustVO();
 		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
 		
@@ -94,5 +108,10 @@ public class BoardServiceImpl implements BoardService{
 
 	public BoardVO getUpdateBoard(BoardVO vo) {
 		return boardDao.getUpdateBoard(vo) ;
+	}
+
+	@Override
+	public int getCommentCnt() {
+		return boardDao.getCommentCnt();
 	}
 }
