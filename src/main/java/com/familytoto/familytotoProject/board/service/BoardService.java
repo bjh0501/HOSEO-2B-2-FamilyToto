@@ -16,7 +16,7 @@ public interface BoardService {
 	int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request);
 	
 	// 수정하기
-	int updateBorder(BoardVO vo);
+	int updateBoard(BoardVO vo);
 	
 	// 게시글보기
 	BoardVO getShowBoard(BoardVO vo);
@@ -35,5 +35,7 @@ public interface BoardService {
 	int insertAnnoBoard(BoardVO vo);
 
 	// 댓글 카운트
-	public int getCommentCnt();
+	public int getCommentCnt(BoardVO vo);
+	
+	
 }

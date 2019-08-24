@@ -34,10 +34,8 @@ public class BoardDaoImpl implements BoardDao {
 	
 	@Override
 	public int updateBoard(BoardVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne("board.getUpdateBoard", vo);
 	}
-	
 	
 	
 	// 페이징
@@ -65,7 +63,7 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public int getCommentCnt() {
-		return sqlSession.selectOne("board.commentCnt");
+	public int getCommentCnt(BoardVO vo) {
+		return sqlSession.selectOne("board.commentCnt", vo);
 	}
 }

@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.insertCustBoard(vo);
 	}
 
-	public int updateBorder(BoardVO vo) {
+	public int updateBoard(BoardVO vo) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -111,7 +111,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int getCommentCnt() {
-		return boardDao.getCommentCnt();
+	public int getCommentCnt(BoardVO vo) {
+		return boardDao.getCommentCnt(vo);
 	}
 }

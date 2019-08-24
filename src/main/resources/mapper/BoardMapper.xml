@@ -84,7 +84,6 @@
         ,		BOARD_ANNO_PW as boardAnnoPw
         FROM	BOARD
         WHERE	BOARD_NO = #{boardNo}
-        AND		BOARD_ANNO_ID = #{boardAnnoId}
         AND		USE_YN = 'Y'
 	</select>
 	<select id="commentCnt" resultType="int">

@@ -526,6 +526,13 @@
 	}
 
 	/* 예제용 함수 */
+	function updateContent() {
+		alert($("#annoPw").val())
+		alert($("#title").val())
+		
+		alert(editor.getContent())
+	}
+	
 	function saveContent() {
 		Editor.save(); // 이 함수를 호출하여 글을 등록하면 된다.
 	}

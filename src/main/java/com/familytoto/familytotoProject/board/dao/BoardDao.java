@@ -36,5 +36,6 @@ public interface BoardDao {
 	int insertAnnoBoard(BoardVO vo);
 	
 	// 댓글 카운트
-	public int getCommentCnt();
+	public int getCommentCnt(BoardVO vo);
+	
 }

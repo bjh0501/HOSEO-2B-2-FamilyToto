@@ -94,7 +94,7 @@ public class BorderController {
     public ModelAndView showBoard(HttpSession session, @PathVariable ("boardNo") String sBoardNo, ModelAndView mv) {
 		BoardVO vo = new BoardVO();
 		CustVO custVo = (CustVO) session.getAttribute("cust");
-		int nCommentCnt = boardService.getCommentCnt();
+		int nCommentCnt = boardService.getCommentCnt(vo);
 		int nCustNo = 0;
 		
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
@@ -191,7 +191,11 @@ public class BorderController {
 	
 	@RequestMapping("/updateBoard/{boardNo}")
 	 public String updateBoard(BoardVO bVo, Model model) {
-		model.addAttribute("board", bVo);
-		return "redirect:/board/updateBoard";
+		// 비밀번호 체크 && 리퍼러 체크하기> 실패하면 원래있던 보드로 이동 
+		// 성공하면 수정창이동
+		BoardVO resultBoardVo = boardService.getUpdateBoard(bVo);
+		
+		model.addAttribute("board", resultBoardVo);
+		return "/board/updateBoard";
     }
 }
