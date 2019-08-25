@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
-import com.familytoto.familytotoProject.board.domain.PagingVO;
+import com.familytoto.familytotoProject.board.domain.SearchVO;
 
 @Repository
 public class BoardDaoImpl implements BoardDao {
@@ -32,19 +32,21 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSession.selectOne("board.checkAnnoBoardPass", vo);
 	}
 	
-	@Override
 	public int updateBoard(BoardVO vo) {
-		return sqlSession.selectOne("board.getUpdateBoard", vo);
+		return sqlSession.update("board.updateBoard", vo);
 	}
 	
+	public int updateSocialBoard(BoardVO vo) {
+		return sqlSession.update("board.updateSocialBoard", vo);
+	}
 	
 	// 페이징
-	public int getBoardListCnt() throws Exception {
-		return sqlSession.selectOne("board.getBoardListCnt");
+	public int getBoardListCnt(SearchVO search) throws Exception {
+		return sqlSession.selectOne("board.getBoardListCnt", search);
 	}
 	
-	public List<BoardVO> getBoardList(PagingVO pagination) throws Exception {
-		return sqlSession.selectList("board.getBoardList", pagination);
+	public List<BoardVO> getBoardList(SearchVO search) throws Exception {
+		return sqlSession.selectList("board.getBoardList", search);
 	}
 
 	@Override

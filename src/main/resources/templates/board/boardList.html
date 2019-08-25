@@ -88,61 +88,39 @@
 				          	<div class="row justify-content-md-center">
 				          		<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4">
 					          		<div class="input-group">
-						          		 <select class="custom-select" style="max-width: 135px;">
-										    <option selected>Choose...</option>
-										    <option value="1">제목+내용</option>
-										    <option value="2">제목</option>
-										    <option value="3">내용</option>
+						          		 <select class="custom-select" style="max-width: 135px;" id="searchType" th:value="${pagination.getSearchType()}">
+										    <option value="both" selected>제목+내용</option>
+										    <option value="title">제목</option>
+										    <option value="contents">내용</option>
 										  </select>
-					          			<input type="text" class="form-control" placeholder="search">
-					          			<button type="button" class="btn btn-secondary">검색</button>
+					          			<input type="text" class="form-control" placeholder="search" id="keyword" th:value="${pagination.getKeyword()}">
+					          			<button type="button" class="btn btn-secondary" onClick="javascript:fn_search();">검색</button>
 				          			</div>
 				          		</div>
 				          	</div>
-				          	
-				          	
-				          	
-				          	
-				          	
 				          	<div class="row justify-content-md-center">
 				          		<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4" id="paginationBox">
 								  <ul class="pagination justify-content-center">
-								    <li class="page-item disabled" th:if="${pagination.prev}">
-								      <a class="page-link" href="#" tabindex="-1" aria-disabled="true" th:onclick="fn_prev('${pagination.page}', '${pagination.range}', '${pagination.rangeSize}')">Previous</a>
+								    <li class="page-item" th:if="${pagination.prev}">
+								      <a class="page-link" tabindex="-1" aria-disabled="true"
+								      th:href="|javascript:fn_prev('${pagination.page}', '${pagination.range}', '${pagination.rangeSize}')|">Previous</a>
 								    </li>
-								    
-								    
-								    <th:block th:each="idx: ${#numbers.sequence(1,3)}"> <!--  pagination.getListCnt() pagination.startPage() ${pagination.endPage}  -->
-								    	<li class="page-item"><a class="page-link" href="#" th:text="${idx}" th:onClick="|fn_pagination('${idx}', pagination.range(), '1')|">2</a></li> <!-- 'idx', 'pagination.range()', 'pagination.rangeSize()' -->
-							    	</th:block>								    
-								    								    
+								    <th:block th:each="idx: ${#numbers.sequence(pagination.getStartPage(), pagination.getEndPage())}" >
+								    	<li class="page-item active" th:if="${pagination.page==idx}" >
+									    	<a class="page-link" th:text="${idx}"
+									    	th:href="|javascript:fn_pagination(${idx}, ${pagination.getRange()}, ${pagination.getRangeSize()} )|">2</a>
+								    	</li>
+								    	<li class="page-item" th:if="${pagination.page!=idx}" >
+									    	<a class="page-link" th:text="${idx}"
+									    	th:href="|javascript:fn_pagination(${idx}, ${pagination.getRange()}, ${pagination.getRangeSize()} )|">2</a>
+								    	</li>
+							    	</th:block>						    
 								    <li class="page-item" th:if="${pagination.next}">
-								      <a class="page-link" href="#" th:onClick="fn_next('${pagination.range}','${pagination.range}', '${pagination.rangeSize}')">Next</a>
+								      <a class="page-link" th:href="|javascript:fn_next('${pagination.getRange()}','${pagination.getRange()}', '${pagination.getRangeSize()}')|">Next</a>
 								    </li>
 								  </ul>
 								</div>
-							</div>
-							
-							
-							
-			
-
-
-
-
-
-<!-- pagination{s} -->
-	
-	<!-- pagination{e} -->
-							
-							
-							
-							
-							
-							
-							
-							
-							
+							</div>							
 						</div>
 					</div>
 				</div>
@@ -185,24 +163,38 @@
 
 </html>
 <script>
+	var currentKeyword = $('#keyword').val();
+	var currentSearchType = $('#searchType').val();
 
-	//이전 버튼 이벤트
+	function fn_search() {
+		var url = "/boardList";
+		url = url + "?searchType=" + $('#searchType').val();
+		url = url + "&keyword=" + $('#keyword').val();
+		
+		location.href = url;
+	}
+
+	//이전 버튼 이벤트	
 	function fn_prev(page, range, rangeSize) {
 		var page = ((range - 2) * rangeSize) + 1;
 		var range = range - 1;
 
-		var url = "${pageContext.request.contextPath}/board/getBoardList";
+		var url = "/boardList";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
-
+		url = url + "&searchType=" + currentSearchType;
+		url = url + "&keyword=" + currentKeyword;
+		
 		location.href = url;
 	}
 
   	//페이지 번호 클릭
 	function fn_pagination(page, range, rangeSize, searchType, keyword) {
-		var url = "${pageContext.request.contextPath}/board/getBoardList";
+		var url = "/boardList";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
+		url = url + "&searchType=" + currentSearchType;
+		url = url + "&keyword=" + currentKeyword;
 		
 		location.href = url;
 	}
@@ -215,6 +207,8 @@
 		
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
+		url = url + "&searchType=" + currentSearchType;
+		url = url + "&keyword=" + currentKeyword;
 
 		location.href = url;
 	}
@@ -223,4 +217,5 @@
 		location.href= "showBoard/" + no;
 	}
 
+	$("#keyword").keyup(function(e){if(e.keyCode == 13)  fn_search(); });
 </script>

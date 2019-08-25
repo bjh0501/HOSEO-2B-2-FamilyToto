@@ -22,11 +22,10 @@ public class MybatisConfig {
 		sqlSessionFactoryBean.setConfigurationProperties(mybatisProperties);
 		sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
 		sqlSessionFactoryBean.setDataSource(dataSource);
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.mybatis.webLog.domain");
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.registerCust.domain");
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.login.domain");
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.board.domain");
-		//sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.comment.domain");
+		// sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.comment.domain");
 		
 		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
 		return sqlSessionFactoryBean.getObject();

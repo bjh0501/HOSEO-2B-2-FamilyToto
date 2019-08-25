@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
-import com.familytoto.familytotoProject.board.domain.PagingVO;
+import com.familytoto.familytotoProject.board.domain.SearchVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
@@ -30,18 +30,28 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.insertCustBoard(vo);
 	}
 
-	public int updateBoard(BoardVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateBoard(BoardVO vo, HttpSession session) {
+		// 익명
+		if(vo.getBoardAnnoId() == null) {
+			CustVO cVo = new CustVO();
+			String sPass = cVo.toEncodePassword(vo.getBoardAnnoPw());
+			vo.setBoardAnnoPw(sPass);
+					
+			return boardDao.updateBoard(vo);
+		} else {
+			CustVO sessionVo = (CustVO) session.getAttribute("cust");
+			vo.setChgCustNo(sessionVo.getCustNo());
+			return boardDao.updateSocialBoard(vo);
+		}
 	}
 	
 	// 페이징
-	public int getBoardListCnt() throws Exception {
-		return boardDao.getBoardListCnt();
+	public int getBoardListCnt(SearchVO search) throws Exception {
+		return boardDao.getBoardListCnt(search);
 	}
 	
-	public List<BoardVO> getBoardList(PagingVO pagination) throws Exception {		
-		List<BoardVO> list =boardDao.getBoardList(pagination);
+	public List<BoardVO> getBoardList(SearchVO search) throws Exception {		
+		List<BoardVO> list =boardDao.getBoardList(search);
 		
 		int i = 0;
 		

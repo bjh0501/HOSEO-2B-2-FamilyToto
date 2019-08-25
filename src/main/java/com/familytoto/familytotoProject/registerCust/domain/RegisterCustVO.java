@@ -24,10 +24,7 @@ public class RegisterCustVO {
 	private String familyCustEmail;
 
 	// FAMILY_CUST_ADDR1
-	private String familyCustAddr1;
-
-	// FAMILY_CUST_ADDR2
-	private String familyCustAddr2;
+	private String familyCustAddr;
 	
 	@Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
 	private String familyCustRecommend;
@@ -53,6 +50,12 @@ public class RegisterCustVO {
 	// USE_YN Y,N,B
 	private String useYn;
 
+	private String familyCustAddrSi;
+	
+	private String familyCustAddrGugun;
+	
+	private String familyCustAddrDong;
+
 	public int getFamilyCustNo() {
 		return familyCustNo;
 	}
@@ -77,20 +80,12 @@ public class RegisterCustVO {
 		this.familyCustEmail = familyCustEmail;
 	}
 
-	public String getFamilyCustAddr1() {
-		return familyCustAddr1;
+	public String getFamilyCustAddr() {
+		return familyCustAddr;
 	}
 
-	public void setFamilyCustAddr1(String familyCustAddr1) {
-		this.familyCustAddr1 = familyCustAddr1;
-	}
-
-	public String getFamilyCustAddr2() {
-		return familyCustAddr2;
-	}
-
-	public void setFamilyCustAddr2(String familyCustAddr2) {
-		this.familyCustAddr2 = familyCustAddr2;
+	public void setFamilyCustAddr(String familyCustAddr) {
+		this.familyCustAddr = familyCustAddr;
 	}
 
 	public String getFamilyCustRecommend() {
@@ -156,6 +151,30 @@ public class RegisterCustVO {
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
-			       
+
+	public String getFamilyCustAddrSi() {
+		return familyCustAddrSi;
+	}
+
+	public void setFamilyCustAddrSi(String familyCustAddrSi) {
+		this.familyCustAddrSi = familyCustAddrSi;
+	}
+
+	public String getFamilyCustAddrGugun() {
+		return familyCustAddrGugun;
+	}
+
+	public void setFamilyCustAddrGugun(String familyCustAddrGugun) {
+		this.familyCustAddrGugun = familyCustAddrGugun;
+	}
+
+	public String getFamilyCustAddrDong() {
+		return familyCustAddrDong;
+	}
+
+	public void setFamilyCustAddrDong(String familyCustAddrDong) {
+		this.familyCustAddrDong = familyCustAddrDong;
+	}
+	
 	
 }

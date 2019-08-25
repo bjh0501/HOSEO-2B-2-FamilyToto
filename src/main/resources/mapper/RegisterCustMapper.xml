@@ -4,13 +4,15 @@
 
 <mapper namespace="registerCust">
 	<insert id="insertRegisterCust" parameterType="com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO" useGeneratedKeys="true" keyProperty="familyCustNo">
-			INSERT INTO FAMILY_CUSTOM (FAMILY_CUST_NICKNAME, FAMILY_CUST_EMAIL, FAMILY_CUST_ADDR1, FAMILY_CUST_ADDR2, 
-									    FAMILY_CUST_RECOMMEND, REG_CUST_NO, CHG_CUST_NO,
-									    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN)
+			INSERT INTO FAMILY_CUSTOM (FAMILY_CUST_NICKNAME, FAMILY_CUST_EMAIL, FAMILY_CUST_ADDR, 
+				FAMILY_CUST_ADDR_SI, FAMILY_CUST_ADDR_GUGUN, FAMILY_CUST_ADDR_DONG,
+			    FAMILY_CUST_RECOMMEND, REG_CUST_NO, CHG_CUST_NO,
+			    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN)
 			VALUES(
-									    '${familyCustNickname}', '${familyCustEmail}', '${familyCustAddr1}', '${familyCustAddr2}', 
-									    '${familyCustRecommend}', 0, NULL,
-									     NOW(), NULL, '${regIp}', NULL, 'Y');
+		    '${familyCustNickname}', '${familyCustEmail}', '${familyCustAddr}',
+		     '${familyCustAddrSi}', '${familyCustAddrGubun}', '${familyCustAddrDong}',
+		    '${familyCustRecommend}', 0, NULL,
+		     NOW(), NULL, '${regIp}', NULL, 'Y');
 	</insert>
 	<select id="checkNickname" resultType="map">
 		SELECT	FAMILY_CUST_NICKNAME
@@ -75,6 +77,32 @@
 		AND		SC_CUST_GUBUN = '${scCustGubun}'
 		AND		SC_CUST_ID = '${scCustId}'
 		LIMIT 1;
-    	
+    </select>
+    <select id="listSido" resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    	select	DISTINCT sido
+        from	ZIPCODE 
+    </select>
+    <select id="listGugun" parameterType="String" resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    	select	DISTINCT GUGUN as gugun
+        from	ZIPCODE 
+        WHERE	SIDO = #{sido} 
+    </select>
+    
+    <select id="listDong" parameterType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO"
+    resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    	select	DISTINCT DONG as dong
+        from	ZIPCODE 
+        WHERE	SIDO = #{sido}
+        AND		GUGUN = #{gugun} 
+    </select>
+    
+    <select id="listZip" parameterType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO"
+    resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    	select	DISTINCT
+    			TRIM(CONCAT(RI,' ', BUNJI, ' ', ZIPCODE)) as ri
+        from	ZIPCODE 
+        WHERE	SIDO = #{sido}
+        AND		GUGUN = #{gugun}
+        AND		DONG = #{dong}
     </select>
 </mapper>

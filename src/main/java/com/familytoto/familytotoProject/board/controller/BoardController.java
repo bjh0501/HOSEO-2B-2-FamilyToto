@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.RespectBinding;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,13 +19,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.PagingVO;
+import com.familytoto.familytotoProject.board.domain.SearchVO;
 import com.familytoto.familytotoProject.board.service.BoardService;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.comment.service.CommentService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller
-public class BorderController {
+public class BoardController {
 	
 	@Autowired
 	BoardService boardService;
@@ -36,24 +37,37 @@ public class BorderController {
 	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
     public String boardList(Model model
     		, @RequestParam(required = false, defaultValue = "1") int page
-			, @RequestParam(required = false, defaultValue = "1") int range) throws Exception {
+			, @RequestParam(required = false, defaultValue = "1") int range
+			, @RequestParam(required = false, defaultValue = "title") String searchType
+			, @RequestParam(required = false) String keyword
+    		) throws Exception {
 		//전체 게시글 개수
+		
+		SearchVO search = new SearchVO();
+		search.setSearchType(searchType);
+		search.setKeyword(keyword);
+		
+		int listCnt = boardService.getBoardListCnt(search);
 
-		int listCnt = boardService.getBoardListCnt();
+		search.pageInfo(page, range, listCnt);
 
 	    // Pagination 객체생성
 		PagingVO pagination = new PagingVO();
-		pagination.pageInfo(page, range, listCnt);					
 		
-		model.addAttribute("pagination", pagination);
-		model.addAttribute("boardList", boardService.getBoardList(pagination));
+		search.pageInfo(page, range, listCnt);
+
+		model.addAttribute("pagination", search);
+		model.addAttribute("boardList", boardService.getBoardList(search));
 		
         return "board/boardList";
     }
 	
-	@RequestMapping(value = "registerBoard")
-    public ModelAndView registerBoard(HttpSession session, ModelAndView mv) {
-		mv.setViewName("board/registerBoard");
+	@RequestMapping(value = {"/registerBoard", "/registerBoard/{boardNo}"} )
+    public ModelAndView registerBoard(HttpSession session,
+    		ModelAndView mv,
+    		@Nullable @PathVariable("boardNo") String sBoardNo) {
+		mv.addObject("replyNo", sBoardNo);	
+		mv.setViewName("/board/registerBoard");
 		mv.addObject("loginGubun", session.getAttribute("cust"));
 		
         return mv;
@@ -93,9 +107,10 @@ public class BorderController {
 	@RequestMapping(value = {"/showBoard/{boardNo}"})
     public ModelAndView showBoard(HttpSession session, @PathVariable ("boardNo") String sBoardNo, ModelAndView mv) {
 		BoardVO vo = new BoardVO();
+		vo.setBoardNo(Integer.parseInt(sBoardNo));
 		CustVO custVo = (CustVO) session.getAttribute("cust");
 		int nCommentCnt = boardService.getCommentCnt(vo);
-		int nCustNo = 0;
+		int nCustNo = -1;
 		
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
 		vo = boardService.getShowBoard(vo);
@@ -173,6 +188,7 @@ public class BorderController {
     }
 	
 	@RequestMapping("/updateBoard/check")
+	@ResponseBody
     public String updateCheckBoard(BoardVO bVo, Model model) {
 		CustVO cVo = new CustVO();
 		String sOriginalPass = bVo.getBoardAnnoPw();
@@ -183,19 +199,33 @@ public class BorderController {
 		if(cVo.isDecodePassword(cVo, bVo.getBoardAnnoPw())) {
 			model.addAttribute("board", bVo);
 			
-	        return updateBoard(bVo, model);
+	        return "0";
 		} else { // 비번틀린경우
+			
 			return "-98";
 		}		
     }
 	
 	@RequestMapping("/updateBoard/{boardNo}")
-	 public String updateBoard(BoardVO bVo, Model model) {
+	public String showUpdateBoard(BoardVO bVo, Model model) {
 		// 비밀번호 체크 && 리퍼러 체크하기> 실패하면 원래있던 보드로 이동 
 		// 성공하면 수정창이동
 		BoardVO resultBoardVo = boardService.getUpdateBoard(bVo);
 		
+		
 		model.addAttribute("board", resultBoardVo);
 		return "/board/updateBoard";
     }
+	
+	@RequestMapping("/updateBoard/{boardNo}/update")
+	@ResponseBody
+	public int updateBoard(@PathVariable ("boardNo") String sBoardNo,
+			@ModelAttribute BoardVO bVo, Model model,
+			HttpServletRequest request, HttpSession session) {
+		bVo.setChgIp(request.getRemoteAddr());
+
+		return boardService.updateBoard(bVo, session);
+    }
+	
+	
 }

@@ -57,7 +57,8 @@ public class ChangeCustController {
 			try {
 				response.setContentType("text/html; charset=UTF-8");
 	            PrintWriter out = response.getWriter();
-	            out.println("<script>alert('연동이 안된 소셜아이디는 개인정보를 수정할 수 없습니다.'); history.go(-1);</script>");
+	            out.println("<script>alert('연동이 안된 소셜아이디는 개인정보를 수정할 수 없습니다."
+	            		+ "\n원스포츠 아이디로 연동해주세요.'); history.go(-1);</script>");
 	            out.flush();
 			} catch(Exception e) {}
 		

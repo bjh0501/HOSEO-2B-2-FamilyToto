@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
-import com.familytoto.familytotoProject.board.domain.PagingVO;
+import com.familytoto.familytotoProject.board.domain.SearchVO;
 
 public interface BoardService {
 	// 글쓰기
@@ -16,7 +16,7 @@ public interface BoardService {
 	int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request);
 	
 	// 수정하기
-	int updateBoard(BoardVO vo);
+	int updateBoard(BoardVO vo, HttpSession session);
 	
 	// 게시글보기
 	BoardVO getShowBoard(BoardVO vo);
@@ -28,8 +28,8 @@ public interface BoardService {
 	int updateDeleteAnnoBoard(String sNo, HttpServletRequest request, BoardVO vo);
 	
 	// 페이징
-	public int getBoardListCnt() throws Exception;
-	public List<BoardVO> getBoardList(PagingVO pagination) throws Exception;
+	public int getBoardListCnt(SearchVO search) throws Exception;
+	public List<BoardVO> getBoardList(SearchVO search) throws Exception;
 	
 	// 익명 글쓰기
 	int insertAnnoBoard(BoardVO vo);

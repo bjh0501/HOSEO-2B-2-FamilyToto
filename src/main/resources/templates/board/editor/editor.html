@@ -526,11 +526,59 @@
 	}
 
 	/* 예제용 함수 */
-	function updateContent() {
-		alert($("#annoPw").val())
-		alert($("#title").val())
+	function updateContent(boardNo) {
+		var formData = new FormData();
+		var title = $("#title");
+		var contents = Editor.getContent();
 		
-		alert(editor.getContent())
+		// 익명
+		if(1==0) {
+			var pw = $("#annoPw");
+			
+			if(pw.val() == "") {
+				alert("비밀번호를 입력해주세요.");
+				pw.focus();
+				return;
+			}
+			
+			formData.append("boardAnnoPw", pw.val());
+		}
+		
+		if(title.val().trim() == "") {
+			alert("제목를 입력해주세요.");
+			title.focus();
+			return;
+		}
+		
+		if(contents.trim() == "") {
+			alert("내용을 입력해주세요.");
+			contents.focus();
+			return;
+		}
+		
+		formData.append("boardTitle", title.val());
+		formData.append("boardContents", contents);
+		
+		$.ajax({
+			url : "/updateBoard/" + boardNo + "/update",
+			enctype: 'multipart/form-data',
+			processData: false,
+            contentType: false,
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : formData,
+			success : function(data) {
+				if(data == 1) {
+					location.replace("/showBoard/" + boardNo);
+				} else {
+					
+				}
+			},
+			error : function(request, status, error) {
+				alert("알수 없는 오류가 발생하였습니다.\n새로고침 후 다시 시도해주세요.")
+			}
+		});
 	}
 	
 	function saveContent() {
@@ -603,6 +651,7 @@
         title.name = 'boardTitle';
         title.value = $("#title").val();
         
+        // 익명 구분
         if($("#annoGubun").val() == "Y") {
         	var annoId = document.createElement('input');
         	annoId.type = 'hidden';
@@ -617,6 +666,17 @@
             form.createField(annoId);
             form.createField(annoPw);
         }
+        
+        // 답장 구분
+        if($("#reply").val() != undefined) {
+        	var reply = document.createElement('input');
+        	reply.type = 'hidden';
+        	reply.name = 'boardReplyNo';
+        	reply.value = $("#reply").val();
+            
+            form.createField(reply);
+        }
+        
         
         form.createField(textarea);
         form.createField(title);
@@ -662,6 +722,7 @@
 	</p>
 </textarea>
 <script type="text/javascript">
+	// 글불러오기	
 	function loadContent() {
 		/*var attachments = {};
 		attachments['image'] = [];

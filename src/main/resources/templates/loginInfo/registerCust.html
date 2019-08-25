@@ -3,203 +3,295 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
 
+<style>
+	.list-group {
+		max-height: 300px;
+		margin-bottom: 10px;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+</style>
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
-	</ul>
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+			<!-- Main Content -->
+			<div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
 
-
-        </nav>
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <div class="row">
-          	<h2 class="text-title">회원가입</h2>
-          </div>
-          
-          <div class="row">
-            <div class="col-xl-12 col-md-12 mb-12">
-              <div class="card shadow h-100 py-12">
-              	<div style="padding:20px;">
-					<label>아이디</label>
-					<input type="text" class="form-control" placeholder="ID" aria-label="Username" id="id"><br>
-					<label>비밀번호</label>
-					<input type="password" class="form-control" placeholder="Password" aria-label="Password" id="password"><br>
-					<label>비밀번호 확인</label>
-					<input type="password" class="form-control" placeholder="Password check" aria-label="Password check" id="passwordCheck"><br>
-					<label>닉네임</label>
-					<input type="text" class="form-control" placeholder="Nickname" aria-label="Nickname" id="nickname"><br>
-					<label>이메일</label>
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
 					<div class="row">
-						<div class="col-xl-4 col-md-4 mb-4">
-							<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="email1">
-						</div>
-						<label style="padding-top:6px;">@</label>
-						<div class="col-xl-4 col-md-4 mb-4">
-							<input type="text" class="form-control" placeholder="E-mail" aria-label="E-mail" id="email2">
-						</div>
-						<div class="col-xl-3 col-md-3 mb-3">
-							<select class="custom-select" id="emailChoose" onChange="chooseEmail()">
-							    <option selected value="J">직접선택</option>
-							    <option value="N">Naver.com</option>
-							    <option value="D">Daum.net</option>
-							    <option value="G">Google.com</option>
-							  </select>
-						  </div>
-					  </div>
-					 <br>
-					<label>주소</label>
-					<div class="row">
-						<div class="col-xl-9 col-md-9 mb-9">
-							<div class="input-group mb-3">
-								<input type="text" class="form-control" placeholder="Address1" aria-label="Address1" id="addr1">
-							</div>
-						</div>
-						<div class="col-xl-3 col-md-3 mb-3">
-							<div class="input-group mb-3">
-								<button type="button" class="btn btn-secondary" onClick="javascript:openDaumZipAddress();">주소찾기</button>
-							</div>
-						</div>
+						<h2 class="text-title">회원가입</h2>
 					</div>
-					<input type="text" class="form-control" placeholder="Address2" aria-label="Address2" id="addr2"><br>
-					<label>추천인</label>
-					<input type="text" class="form-control" placeholder=Recommender aria-label="Recommender" id="recommender"><br>
+
 					<div class="row">
-						<div class="col-xl-3 col-md-6 mb-3">
-							<img src="/captcha/index" id="imgCaptcha" style="min-width: 235px; max-width: 100%; float: right; height: 100%;">
-						</div>
-						<div class="col-xl-9 col-md-6 mb-9">
-							<div class="row">
-								<div class="col-xl-6 col-md-6 mb-6">
-									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-lg btn-block " id="refresh">새로고침</button>
+						<div class="col-xl-12 col-md-12 mb-12">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="row">
+										<h1>회원정보</h1>
 									</div>
-								</div>
-								<div class="col-xl-6 col-md-6 mb-6">
-									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="javascript:voice();">음성듣기</button>
+									<hr>
+									<label>아이디</label> <input type="text" class="form-control"
+										placeholder="ID" aria-label="Username" id="id"><br>
+									<label>비밀번호</label> <input type="password" class="form-control"
+										placeholder="Password" aria-label="Password" id="password"><br>
+									<label>비밀번호 확인</label> <input type="password"
+										class="form-control" placeholder="Password check"
+										aria-label="Password check" id="passwordCheck"><br>
+									<label>닉네임</label> <input type="text" class="form-control"
+										placeholder="Nickname" aria-label="Nickname" id="nickname"><br>
+									<label>이메일</label>
+									<div class="row">
+										<div class="col-xl-4 col-md-4 mb-4">
+											<input type="text" class="form-control" placeholder="E-mail"
+												aria-label="E-mail" id="email1">
+										</div>
+										<label style="padding-top: 6px;">@</label>
+										<div class="col-xl-4 col-md-4 mb-4">
+											<input type="text" class="form-control" placeholder="E-mail"
+												aria-label="E-mail" id="email2">
+										</div>
+										<div class="col-xl-3 col-md-3 mb-3">
+											<select class="custom-select" id="emailChoose"
+												onChange="chooseEmail()">
+												<option selected value="J">직접선택</option>
+												<option value="N">Naver.com</option>
+												<option value="D">Daum.net</option>
+												<option value="G">Google.com</option>
+											</select>
+										</div>
 									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xl-12 col-md-12 mb-12">
-									<div class="input-group mb-3">
-									  <input type="text" class="form-control" placeholder="입력해 주세요." aria-label="capturea" aria-describedby="basic-addon1" id="captcha">
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xl-12 col-md-12 mb-12">
-									<div class="input-group mb-3">
-									  *이미지에 있는 문자를 입력해주세요.
-									</div>
+									<br>
 								</div>
 							</div>
 						</div>
 					</div>
+					<br>
 					<div class="row">
-						<div class="col-xl-6 col-md-6 mb-6">
-							<div class="input-group mb-3"> 
-								<div class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" id="use">
-									<label class="custom-control-label" for="use"><a href="#"  data-toggle="modal" data-target="#exampleModalScrollable">이용약관</a>에 동의하십니까?</label>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-6 col-md-6 mb-6">
-							<div class="input-group mb-3"> 
-								<div class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" id="adult">
-									<label class="custom-control-label" for="adult"><a href="#" data-toggle="modal"  data-target="#adultModal">성인</a>이십니까?</label>
+						<div class="col-xl-12 col-md-12 mb-12">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="row">
+										<h1>배송지</h1>
+									</div>
+									<hr>
+									<h3><label>주소</label></h3>
+									<div class="row">
+										<div class="col-xl-4 col-md-4 mb-4">
+											<span>시</span>
+											<div class="input-group mb-3">
+												<select class="custom-select" id="sido" onChange="getGugun();" >
+													<option selected="">시</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-xl-4 col-md-4 mb-4">
+											<span>구/군</span>
+											<select class="custom-select" id="gugun"
+												onchange="getDong()">
+												<option selected="">구/군</option>
+											</select>
+										</div>
+										<div class="col-xl-4 col-md-4 mb-4">
+											<span>동</span>	
+											<select class="custom-select" id="dong"
+												onchange="getZipList()">
+												<option selected="">동</option>
+											</select>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xl-12 col-md-12 mb-12">
+											<div class="input-group mb-3">
+												<span class="text-word-r">상세주소</span>
+												<input type="text" class="form-control"
+													placeholder="Address" aria-label="Address" id="addr">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<nav id="navbar-example2"
+												class="navbar navbar-light bg-light">
+												<h2>우편번호 리스트</h2>
+											</nav>
+											<div data-spy="scroll" data-target="#navbar-example2"
+												data-offset="0">
+												<div class="list-group" id="list-tab" role="tablist">
+													주소를 선택해주세요.
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="input-group mb-3">
-						<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="javascript:register();">회원가입</button>
+					<br>
+					<div class="row">
+						<div class="col-xl-12 col-md-12 mb-12">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="row">
+										<h1>기타</h1>
+									</div>
+									<hr>
+									<label>추천인</label> <input type="text" class="form-control"
+										placeholder=Recommender aria-label="Recommender"
+										id="recommender"><br>
+									<div class="row">
+										<div class="col-xl-3 col-md-6 mb-3">
+											<img src="/captcha/index" id="imgCaptcha"
+												style="min-width: 235px; max-width: 100%; float: right; height: 100%;">
+										</div>
+										<div class="col-xl-9 col-md-6 mb-9">
+											<div class="row">
+												<div class="col-xl-6 col-md-6 mb-6">
+													<div class="input-group mb-3">
+														<button type="button"
+															class="btn btn-secondary btn-lg btn-block " id="refresh">새로고침</button>
+													</div>
+												</div>
+												<div class="col-xl-6 col-md-6 mb-6">
+													<div class="input-group mb-3">
+														<button type="button"
+															class="btn btn-secondary btn-lg btn-block"
+															onclick="javascript:voice();">음성듣기</button>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-12 col-md-12 mb-12">
+													<div class="input-group mb-3">
+														<input type="text" class="form-control"
+															placeholder="입력해 주세요." aria-label="capturea"
+															aria-describedby="basic-addon1" id="captcha">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-12 col-md-12 mb-12">
+													<div class="input-group mb-3">*이미지에 있는 문자를 입력해주세요.</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xl-6 col-md-6 mb-6">
+											<div class="input-group mb-3">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input"
+														id="use"> <label class="custom-control-label"
+														for="use"><a href="#" data-toggle="modal"
+														data-target="#exampleModalScrollable">이용약관</a>에 동의하십니까?</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-6 col-md-6 mb-6">
+											<div class="input-group mb-3">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input"
+														id="adult"> <label class="custom-control-label"
+														for="adult"><a href="#" data-toggle="modal"
+														data-target="#adultModal">성인</a>이십니까?</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<button type="button"
+											class="btn btn-secondary btn-lg btn-block"
+											onClick="javascript:register();">회원가입</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-                 </div>
-              </div>
-            </div>
-            
-          </div>
-        </div>
-        <!-- /.container-fluid -->
+				</div>
+				<!-- /.container-fluid -->
 
-      </div>
-      <!-- End of Main Content -->
+			</div>
+			<!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
 
-    </div>
-    <!-- End of Content Wrapper -->
+			</footer>
+			<!-- End of Footer -->
 
-  </div>
-  <!-- End of Page Wrapper -->
+		</div>
+		<!-- End of Content Wrapper -->
 
-  <!-- Bootstrap core JavaScript-->
-  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	</div>
+	<!-- End of Page Wrapper -->
 
-  <!-- Core plugin JavaScript-->
-  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+	<!-- Bootstrap core JavaScript-->
+	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-  <!-- Custom scripts for all pages-->
-  <script th:src="@{js/sb-admin-2.min.js}"></script>
+	<!-- Core plugin JavaScript-->
+	<script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
 
-  <!-- Page level plugins -->
-  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+	<!-- Custom scripts for all pages-->
+	<script th:src="@{js/sb-admin-2.min.js}"></script>
 
-  <!-- Page level custom scripts -->
-  <script th:src="@{js/demo/chart-area-demo.js}"></script>
-  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+
+	<!-- Page level custom scripts -->
+	<script th:src="@{js/demo/chart-area-demo.js}"></script>
+	<script th:src="@{js/demo/chart-pie-demo.js}"></script>
 
 	<!-- Modal -->
-	<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-scrollable" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalScrollableTitle">이용 약관</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body" >
-	      	<pre>
+	<div class="modal fade" id="exampleModalScrollable" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalScrollableTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalScrollableTitle">이용 약관</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<pre>
 	      		
 제1조(목적)
 
@@ -360,97 +452,214 @@
 ① "패밀리"과 이용자간에 발생한 전자거래 분쟁에 관한 소송은 민사소송법상의 관할법원에 제기합니다.
 ② "패밀리"과 이용자간에 제기된 전자거래 소송에는 한국법을 적용합니다.
 	      	</pre>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	      </div>
-	    </div>
-	  </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
 	</div>
-	
+
 	<!-- Modal -->
-	<div class="modal fade" id="adultModal" tabindex="-1" role="dialog" aria-labelledby="adultModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-scrollable" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="adultModal">성인</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body" >
-	      	자라서 어른이 된 사람. 보통 만 19세 이상의 남녀를 이른다.<br>
-	      	성인이 아니라면 뒤로가기를 눌러주세요.
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	      </div>
-	    </div>
-	  </div>
+	<div class="modal fade" id="adultModal" tabindex="-1" role="dialog"
+		aria-labelledby="adultModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="adultModal">성인</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					자라서 어른이 된 사람. 보통 만 19세 이상의 남녀를 이른다.<br> 성인이 아니라면 뒤로가기를 눌러주세요.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 
 </html>
-<script type="text/JavaScript" src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script>
+	getSido();
+	getGugun();
+	getDong();
+	getZipList();
+	
+	function getSido() {
+		$.ajax({
+			url : "/zipcode/getSido",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			success : function(data) {
+				var sStr = "";
+				
+				for(var i = 0;i < data.length; i++) {
+					var sSido = data[i].sido;
+					sStr += "<option value='" + sSido + "'>" + sSido + "</option>";
+				}
+				
+				$("#sido").html(sStr);
+				getGugun();
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getGugun() {
+		$.ajax({
+			url : "/zipcode/getGugun",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "sido=" + $("#sido").val(),
+			success : function(data) {
+				var sStr = "";
+				
+				for(var i = 0;i < data.length; i++) {
+					var sData = data[i].gugun;
+					sStr += "<option value='" + sData + "'>" + sData + "</option>";
+				}
+				
+				$("#gugun").html(sStr);
+				getDong();
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getDong() {
+		$.ajax({
+			url : "/zipcode/getDong",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "sido=" + $("#sido").val()
+					+ "&gugun=" + $("#gugun").val(),
+			success : function(data) {
+				var sStr = "";
+				
+				for(var i = 0;i < data.length; i++) {
+					var sData = data[i].dong;
+					sStr += "<option value='" + sData + "'>" + sData + "</option>";
+				}
+				
+				$("#dong").html(sStr);
+				getZipList();
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getZipList() {
+		$.ajax({
+			url : "/zipcode/getZip",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "sido=" + $("#sido").val()
+					+ "&gugun=" + $("#gugun").val()
+					+ "&dong=" + $("#dong").val(),
+			success : function(data) {
+				var sStr = "";
+				var sListLi = "";
+				
+				for(var i = 0;i < data.length; i++) {
+					var sData = data[i].ri;
+					var sListData = "";
+
+					sListData += "<a class='list-group-item list-group-item-action '";
+					sListData += "data-toggle='list' href='javascript:;' onClick='javascript:chooseZip($(this));'";
+					sListData += "role='tab' >" + sData + "</a>";
+					
+					sListLi += sListData; 
+				}
+				
+				$("#list-tab").html(sListLi);
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function chooseZip(obj) {
+		$("#addr").val(obj.html());
+	}
+
 	function chooseEmail() {
 		ec = $("#emailChoose").val()
 		email2 = $("#email2")
-		
+
 		email2.prop('disabled', true);
-		
-		if(ec == "J") {
+
+		if (ec == "J") {
 			email2.val("");
 			email2.prop('disabled', false);
-		} else if(ec == "N") {
+		} else if (ec == "N") {
 			email2.val("naver.com");
-		} else if(ec == "D") {
+		} else if (ec == "D") {
 			email2.val("daume.net");
 		} else {
 			email2.val("google.com");
 		}
 	}
 
-	function openDaumZipAddress() {
-		new daum.Postcode({
-			oncomplete:function(data) {
-				jQuery("#addr1").val(data.address);
-			}
-	
-		}).open();
-	}
-
 	function register() {
 		var email = "";
-		
+
 		captcha = $("#captcha");
 		custId = $("#id");
 		custPassword = $("#password");
 		passwordCheck = $("#passwordCheck");
-		
+
 		familyCustNickname = $("#nickname");
-		addr1 = $("#addr1");
-		addr2 = $("#addr2");
+		addr = $("#addr");
 		reco = $("#recommender");
-		
+
 		email1 = $("#email1");
-		email2 = $("#email2");		
-		email = email1.val() +"@"+ email2.val();
-		
-		if(custId.val().trim() == "") {
+		email2 = $("#email2");
+		email = email1.val() + "@" + email2.val();
+
+		if (custId.val().trim() == "") {
 			alert("아이디를 입력해주세요.");
 			custId.focus();
-			return; 
+			return;
 		}
-		
-		
+
 		// 영,숫 유효성검사하기
 
 		var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
 		v = custId.val()
 
-		if (!regexp.test(v) || custId.val().length < 4 || custId.val().length > 20) {
+		if (!regexp.test(v) || custId.val().length < 4
+				|| custId.val().length > 20) {
 			alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
 			custId.focus();
 			return;
@@ -488,8 +697,9 @@
 
 		var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
 		v = familyCustNickname.val()
-			
-		if (!regexp.test(v) || familyCustNickname.val().length < 2 || familyCustNickname.val().length > 8) {
+
+		if (!regexp.test(v) || familyCustNickname.val().length < 2
+				|| familyCustNickname.val().length > 8) {
 			alert("닉네임은 2~8자리, 영어, 숫자, 한글만 입력이 가능합니다.");
 			familyCustNickname.focus();
 			return;
@@ -516,11 +726,14 @@
 			cache : false,
 			async : false,
 			dataType : "json",
-			data : "custId=" + custId.val() + "&custPassword="
-					+ passwordCheck.val() + "&familyCustNickname="
-					+ familyCustNickname.val() + "&familyCustEmail=" + email
-					+ "&familyCustAddr1=" + addr1.val()
-					+ "&familyCustAddr2="+ addr2.val() 
+			data : "custId=" + custId.val()
+					+ "&custPassword=" + passwordCheck.val()
+					+ "&familyCustNickname=" + familyCustNickname.val()
+					+ "&familyCustEmail=" + email
+					+ "&familyCustAddr=" + addr.val()
+					+ "&familyCustAddrSi=" + $("#sido").val()
+					+ "&familyCustAddrGugun=" + $("#gugun").val()
+					+ "&familyCustAddrDong=" + $("#dong").val()
 					+ "&familyCustRecommend=" + reco.val()
 					+ "&captcha=" + captcha.val(),
 			success : function(data) {
@@ -555,17 +768,21 @@
 	$("#refresh").click(function() {
 		$("#imgCaptcha").attr("src", "/captcha/index");
 	});
-	
-	
+
 	function voice() {
-		 var uAgent = navigator.userAgent;
-		   var soundUrl = '/captcha/voice';
-		   if (uAgent.indexOf('Trident') > -1 || uAgent.indexOf('MSIE') > -1) {
-		       //IE일 경우 호출
-		       winPlayer(soundUrl+'?agent=msie&rand='+ Math.random());
-		   } else if (!!document.createElement('audio').canPlayType) {
-		       //Chrome일 경우 호출
-		       try { new Audio(soundUrl).play(); } catch(e) { winPlayer(soundUrl); }
-		   } else window.open(soundUrl, '', 'width=1,height=1');
+		var uAgent = navigator.userAgent;
+		var soundUrl = '/captcha/voice';
+		if (uAgent.indexOf('Trident') > -1 || uAgent.indexOf('MSIE') > -1) {
+			//IE일 경우 호출
+			winPlayer(soundUrl + '?agent=msie&rand=' + Math.random());
+		} else if (!!document.createElement('audio').canPlayType) {
+			//Chrome일 경우 호출
+			try {
+				new Audio(soundUrl).play();
+			} catch (e) {
+				winPlayer(soundUrl);
+			}
+		} else
+			window.open(soundUrl, '', 'width=1,height=1');
 	}
 </script>

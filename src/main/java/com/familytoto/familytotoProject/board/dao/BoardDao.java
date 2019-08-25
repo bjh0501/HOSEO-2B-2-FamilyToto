@@ -3,7 +3,7 @@ package com.familytoto.familytotoProject.board.dao;
 import java.util.List;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
-import com.familytoto.familytotoProject.board.domain.PagingVO;
+import com.familytoto.familytotoProject.board.domain.SearchVO;
 
 public interface BoardDao {
 	// 게시글 등록
@@ -11,6 +11,8 @@ public interface BoardDao {
 	
 	// 게시글수정
 	int updateBoard(BoardVO vo);
+	
+	int updateSocialBoard(BoardVO vo);
 	
 	// 게시글 삭제
 	int updateDeleteBoard(BoardVO vo);
@@ -28,9 +30,9 @@ public interface BoardDao {
 	String checkAnnoBoardPass(BoardVO vo);
 	
 	// 페이징
-	public int getBoardListCnt() throws Exception;
+	public int getBoardListCnt(SearchVO search) throws Exception;
 	
-	public List<BoardVO> getBoardList(PagingVO pagination) throws Exception;
+	public List<BoardVO> getBoardList(SearchVO search) throws Exception;
 	
 	// 익명 게시글 등록
 	int insertAnnoBoard(BoardVO vo);

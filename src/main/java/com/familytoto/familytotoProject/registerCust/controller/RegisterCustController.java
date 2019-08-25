@@ -10,13 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
+import com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO;
 import com.familytoto.familytotoProject.registerCust.service.CaptchaService;
 import com.familytoto.familytotoProject.registerCust.service.CustService;
 import com.familytoto.familytotoProject.registerCust.service.RegisterCustService;
+import com.google.gson.Gson;
 
 @Controller
 public class RegisterCustController {
@@ -33,11 +36,6 @@ public class RegisterCustController {
     public String registerCust(HttpServletRequest request) {
         return "loginInfo/registerCust";
     }
-	
-	@RequestMapping("/registerCust/service")
-	public String aa() {
-		return "loginInfo/service/termsOfService";
-	}
 	
 	@RequestMapping(value = "/registerCust/register", method = RequestMethod.POST)
 	@ResponseBody
@@ -79,7 +77,7 @@ public class RegisterCustController {
 					nResult = 1;
 				}
 			}
-						
+
 			registerCustService.insertRegisterCust(rcVo, request);
 			cVo.setFamilyCustNo(rcVo.getFamilyCustNo());
 			
@@ -90,11 +88,39 @@ public class RegisterCustController {
 		return nResult;
 	}
 	
-	@RequestMapping("/service/termsOfService")
-	public String termsOfService() {
-		return "/loginInfo/service/termsOfService";
-	}
-			
-			
+	@RequestMapping("/zipcode/getSido")
+	@ResponseBody
+    public String getListSido(HttpServletRequest request) {
+		Gson gson = new Gson();
+		String sJson = gson.toJson(registerCustService.listSido());
+		
+		return sJson;
+    }
 	
+	@RequestMapping("/zipcode/getGugun")
+	@ResponseBody
+    public String getListGugun(HttpServletRequest request, @RequestParam("sido") String sSido) {
+		Gson gson = new Gson();
+		String sJson = gson.toJson(registerCustService.listGugun(sSido));
+		
+		return sJson;
+    }
+	
+	@RequestMapping("/zipcode/getDong")
+	@ResponseBody
+    public String getListDong(HttpServletRequest request, @ModelAttribute ZipcodeVO vo) {
+		Gson gson = new Gson();		
+		String sJson = gson.toJson(registerCustService.listDong(vo));
+		
+		return sJson;
+    }
+	
+	@RequestMapping("/zipcode/getZip")
+	@ResponseBody
+    public String getListZip(HttpServletRequest request, @ModelAttribute ZipcodeVO vo) {
+		Gson gson = new Gson();		
+		String sJson = gson.toJson(registerCustService.listZip(vo));
+		
+		return sJson;
+    }
 }

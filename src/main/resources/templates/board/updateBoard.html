@@ -49,13 +49,13 @@
 					<textarea id="getContents" th:text="${board.getBoardContents()}" style="display:none;"></textarea>
 					 <div class="card shadow mb-4">
 			            <div class="card-body">
-							<div th:if="${loginGubun == null}" class="input-group mb-3">
+							<div th:if="${board.getBoardAnnoId() != null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text" id="basic-addon1">글쓴이</span>
 						  		</div>
 								<input type="text" class="form-control" placeholder="Register" aria-label="Register" aria-describedby="basic-addon1" id="annoId" th:value="${board.getBoardAnnoId()}" disabled>
 							</div>
-							<div th:if="${loginGubun == null}" class="input-group mb-3">
+							<div th:if="${board.getBoardAnnoId() != null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text" id="basic-addon1">비밀번호</span>
 						  		</div>
@@ -79,8 +79,8 @@
 								</div>
 								<div class="col-xl-6 col-md-6 mb-6">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-block" onClick="javascript:updateContent();">수정하기</button>
-										<input type="text" id="updateGubun" value="Y">
+										<button type="button" class="btn btn-secondary btn-block" th:onClick="|javascript:updateContent(${board.getBoardNo()});|">수정하기</button>
+										<input type="hidden" id="updateGubun" value="Y">
 									</div>
 								</div>
 							</div>
@@ -120,8 +120,6 @@
   <!-- Page level custom scripts -->
   <script src="/js/demo/chart-area-demo.js"></script>
   <script src="/js/demo/chart-pie-demo.js"></script>
-<<<<<<< Updated upstream
-
 </body>
 
 </html>

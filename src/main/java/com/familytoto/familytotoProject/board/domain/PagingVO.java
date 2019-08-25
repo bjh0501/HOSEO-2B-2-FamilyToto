@@ -3,7 +3,7 @@ package com.familytoto.familytotoProject.board.domain;
 public class PagingVO {
 	private int listSize = 10; // 초기값으로 목록개수를 10으로 셋팅
 
-	private int rangeSize = 10; // 초기값으로 페이지범위를 10으로 셋팅
+	private int rangeSize = 5; // 초기값으로 페이지범위를 10으로 셋팅
 
 	private int page;
 
@@ -96,12 +96,12 @@ public class PagingVO {
 	}
 
 	public void pageInfo(int page, int range, int listCnt) {
-		this.page = page;
-		this.range = range;
-		this.listCnt = listCnt;
+		this.page = page;//7
+		this.range = range;//3
+		this.listCnt = listCnt; //23
 
 		// 전체 페이지수
-		this.pageCnt = (int) Math.ceil(listCnt / listSize);
+		this.pageCnt = (int) Math.ceil((double) listCnt / listSize );
 
 		// 시작 페이지
 		this.startPage = (range - 1) * rangeSize + 1;

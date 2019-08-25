@@ -7,45 +7,49 @@
 		SELECT		C.CUST_ID as custId
 		,			FC.FAMILY_CUST_NICKNAME as familyCustNickname 
 		,			FC.FAMILY_CUST_EMAIL as familyCustEmail
-		,			FC.FAMILY_CUST_ADDR1 as familyCustAddr1
-		,			FC.FAMILY_CUST_ADDR2 as familyCustAddr2
+		,			FC.FAMILY_CUST_ADDR as familyCustAddr
+		,			FAMILY_CUST_ADDR_SI as familyCustAddrSi
+		,			FAMILY_CUST_ADDR_GUGUN as familyCustAddrGugun
+		,			FAMILY_CUST_ADDR_DONG as familyCustAddrDong
 		,			C.CUST_PASSWORD as custPassword
 		,			SC.SC_CUST_GUBUN as scCustGubun
 		,			SC.SC_CUST_EMAIL as scCustEmail
 		FROM		CUSTOM C
 		INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
 		LEFT OUTER JOIN SOCIAL_CUSTOM SC ON FC.FAMILY_CUST_NO = SC.FAMILY_CUST_NO AND SC.USE_YN = 'Y'
-		WHERE		FC.FAMILY_CUST_NO = ${familyCustNo}
+		WHERE		FC.FAMILY_CUST_NO = #{familyCustNo}
 		AND			C.USE_YN = 'Y'
 
 	</select>
 	
 	<update id="updateFamilyCust">
 		UPDATE	FAMILY_CUSTOM
-		SET		FAMILY_CUST_EMAIL = '${familyCustEmail}'
-		,		FAMILY_CUST_ADDR1 = '${familyCustAddr1}'
-		,		FAMILY_CUST_ADDR2 = '${familyCustAddr2}'
+		SET		FAMILY_CUST_EMAIL = #{familyCustEmail}
+		,		FAMILY_CUST_ADDR = #{familyCustAddr}
+		,		FAMILY_CUST_ADDR_SI = #{familyCustAddrSi}
+		,		FAMILY_CUST_ADDR_GUGUN = #{familyCustAddrGugun}
+		,		FAMILY_CUST_ADDR_DONG = #{familyCustAddrDong}
 		,		CHG_DT = NOW()
-		,		CHG_IP = '${chgIp}'
-		WHERE	FAMILY_CUST_NO = '${familyCustNo}'
+		,		CHG_IP = #{chgIp}
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'Y'
 	</update>
 	
 	<update id="updateCust">
 		UPDATE	CUSTOM
-		SET		CHG_CUST_NO = '${chgCustNo}'
+		SET		CHG_CUST_NO = #{chgCustNo}
 		,		CHG_DT = NOW()
-		,		CHG_IP = '${chgIp}'
+		,		CHG_IP = #{chgIp}
 		<!-- <if test="custPassword != null and custPassword != ''"> -->
-			,		CUST_PASSWORD = '${custPassword}'
+			,		CUST_PASSWORD = #{custPassword}#
 		<!-- </if> -->
-		WHERE	FAMILY_CUST_NO = '${familyCustNo}'
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'Y'
 	</update>
 	<select id="getDropCheckPassword" resultType="map">
 		select	CUST_PASSWORD as custPassword
 	    from	CUSTOM
-	    where	FAMILY_CUST_NO = ${familyCustNo}
+	    where	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'Y'
 	</select>
 	<update  id="dropCust">
@@ -55,7 +59,7 @@
 	    ,		CHG_IP = #{chgIp}
 	    ,		CHG_CUST_NO = #{custNo}
 	    WHERE	USE_YN = 'Y'
-	    AND		FAMILY_CUST_NO = ${familyCustNo};
+	    AND		FAMILY_CUST_NO = #{familyCustNo};
 	</update>
 	<update  id="dropFamilyCust">
 		UPDATE	FAMILY_CUSTOM
@@ -79,31 +83,31 @@
 	<!--  소셜 -->
 	<update id="auth">
 		UPDATE	SOCIAL_CUSTOM
-		SET		FAMILY_CUST_NO = ${familyCustNo}
-		,		CHG_IP = '${regIp}'
-		,		CHG_CUST_NO = ${chgCustNo}
+		SET		FAMILY_CUST_NO = #{familyCustNo}
+		,		CHG_IP = #{regIp}
+		,		CHG_CUST_NO = #{chgCustNo}
 		,		CHG_DT = now()
 		WHERE	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = '${scCustGubun}' /* 가변 */
-		AND		SC_CUST_ID = '${scCustId}'
+		AND		SC_CUST_GUBUN = #{scCustGubun} /* 가변 */
+		AND		SC_CUST_ID = #{scCustId}
 	</update>
 	<update id="unAuth">
 		UPDATE	SOCIAL_CUSTOM
 		SET		FAMILY_CUST_NO = NULL
 		,		CHG_DT = now()
-		,		CHG_IP = '${chgIp}'
+		,		CHG_IP = #{chgIp}
 		,		CHG_CUST_NO = ${chgCustNo}
 		WHERE	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = '${scCustGubun}' /* 가변 */
-		AND		FAMILY_CUST_NO = ${familyCustNo}
+		AND		SC_CUST_GUBUN = #{scCustGubun} /* 가변 */
+		AND		FAMILY_CUST_NO = #{familyCustNo}
 	</update>
 	<select id="check" resultType="map">
 		SELECT	SC_CUST_NO as scCustNo
 		,		IFNULL(FAMILY_CUST_NO, 0) as familyCustNo
 		FROM	SOCIAL_CUSTOM
 		WHERE	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = '${scCustGubun}' /* 가변 */
-		AND		SC_CUST_ID = '${scCustId}'
+		AND		SC_CUST_GUBUN = #{scCustGubun} /* 가변 */
+		AND		SC_CUST_ID = #{scCustId}
 		LIMIT 1;
 	</select>
 </mapper>

@@ -8,7 +8,18 @@
 		    (BOARD_REPLY_NO,	BOARD_TITLE,	BOARD_CONTENTS,	
 		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN)
 		VALUES
-		    (0, 				#{boardTitle},#{boardContents}, 		    
+		    (
+		    <choose>
+			    <when test="boardReplyNo != null">
+				    #{boardReplyNo}
+			    </when>
+			    <otherwise>
+			    	0
+			    </otherwise>
+		    </choose>
+		    
+		    
+		    ,	#{boardTitle},#{boardContents}, 		    
 		    #{regCustNo},		now(), 			#{regIp},			'Y');
 	</insert>
 	<select  id="getBoardList" resultType="BoardVO">
@@ -25,14 +36,39 @@
 				LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
 				LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
 		    WHERE	B.USE_YN = 'Y'
+		    AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
+		    	<if test="searchType=='title' and keyword != null and keyword != ''">
+	    			AND		B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+		    	</if>
+		    	<if test="searchType=='contents' and keyword != null and keyword != ''">
+		    		AND		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%')
+		    	</if>
+		    	<if test="searchType=='both' and keyword != null and keyword != ''">
+		    		AND		(B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+	           		OR		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%'))
+		    	</if>
 		    ORDER BY B.BOARD_NO DESC
 		) R1
 		LIMIT #{startList}, #{listSize}
 	</select>
 	<select id="getBoardListCnt" resultType="int">
-		select	COUNT(*) as listCnt
-		from	BOARD
-		WHERE	USE_YN = 'Y'
+		SELECT	COUNT(*)
+			FROM	BOARD B
+				LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
+				LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
+				LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
+		    WHERE	B.USE_YN = 'Y'
+		    AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
+		    <if test="searchType=='title' and keyword != null and keyword != ''">
+	    		AND		B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+	    	</if>
+	    	<if test="searchType=='contents' and keyword != null and keyword != ''">
+	    		AND		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%')
+	    	</if>
+	    	<if test="searchType=='both' and keyword != null and keyword != ''">
+	    		AND		(B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+           		OR		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%'))
+	    	</if>
 	</select>
 	<select id="getShowBoard" resultType="BoardVO">
 		SELECT	B.BOARD_NO as boardNo
@@ -103,4 +139,25 @@
         WHERE	BOARD_NO = #{boardNo}
         AND		USE_YN = 'Y'
 	</select>
+	<update id="updateBoard">
+		UPDATE	BOARD
+        SET		BOARD_TITLE = #{boardTitle}
+        ,		BOARD_CONTENTS = #{boardContents}
+        ,		BOARD_ANNO_PW = #{boardAnnoPw}
+        ,		CHG_DT = NOW()
+        ,		CHG_IP = #{chgIp}
+        WHERE	BOARD_NO = #{boardNo}
+        AND		USE_YN = 'Y'
+	</update>
+	
+	<update id="updateSocialBoard">
+		UPDATE	BOARD
+        SET		BOARD_TITLE = #{boardTitle}
+        ,		BOARD_CONTENTS = #{boardContents}
+        ,		CHG_DT = NOW()
+        ,		CHG_IP = #{chgIp}
+        ,		CHG_CUST_NO = #{chgCustNo}
+        WHERE	BOARD_NO = #{boardNo}
+        AND		USE_YN = 'Y'
+	</update>
 </mapper>
