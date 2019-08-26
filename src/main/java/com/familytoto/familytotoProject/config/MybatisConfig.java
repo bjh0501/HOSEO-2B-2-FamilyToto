@@ -14,7 +14,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 @Configuration
 public class MybatisConfig {
 	
-	@Bean
+	 @Bean
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception{
 		SqlSessionFactoryBean sqlSessionFactoryBean=new SqlSessionFactoryBean();
 		Properties mybatisProperties = new Properties();
@@ -24,8 +24,16 @@ public class MybatisConfig {
 		sqlSessionFactoryBean.setDataSource(dataSource);
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.registerCust.domain");
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.login.domain");
+		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.qna.domain");
+		
+		// 이건 매핑이안댄다.
+		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.comment.domain");
+		
+		
+		// 보드 도메인이 맨아래여야 에러가안난다.. 무슨 문제있는듯
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.board.domain");
-		// sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.comment.domain");
+		
+
 		
 		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
 		return sqlSessionFactoryBean.getObject();

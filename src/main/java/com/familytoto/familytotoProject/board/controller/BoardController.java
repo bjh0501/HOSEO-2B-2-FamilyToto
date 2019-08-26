@@ -34,7 +34,7 @@ public class BoardController {
 	@Autowired
 	CommentService commentService;
 	
-	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
+	@RequestMapping("/boardList")
     public String boardList(Model model
     		, @RequestParam(required = false, defaultValue = "1") int page
 			, @RequestParam(required = false, defaultValue = "1") int range
@@ -71,7 +71,7 @@ public class BoardController {
         return mv;
     }
 	
-	@RequestMapping(value = "registerBoard/insert")
+	@RequestMapping("/registerBoard/insert")
     public String insertBoard(@ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
 		vo.setRegIp(request.getRemoteAddr());
 		
@@ -97,12 +97,12 @@ public class BoardController {
         return "redirect:/boardList";
     }
 	
-	@RequestMapping("showEditor")
+	@RequestMapping("/showEditor")
     public String showEditor() {
         return "board/editor/showEditor";
     }
 	
-	@RequestMapping(value = {"/showBoard/{boardNo}"})
+	@RequestMapping("/showBoard/{boardNo}")
     public ModelAndView showBoard(HttpSession session, @PathVariable ("boardNo") String sBoardNo, ModelAndView mv) {
 		BoardVO vo = new BoardVO();
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
@@ -145,7 +145,7 @@ public class BoardController {
 		return mv;
     }
 	
-	@RequestMapping(value = {"/deleteBoard/{boardNo}"})
+	@RequestMapping("/deleteBoard/{boardNo}")
 	public String deleteBoard(HttpSession session, @PathVariable ("boardNo") String sNo, HttpServletRequest request) {
 		if(boardService.updateDeleteBoard(sNo, session, request) == 1) {
 			return "redirect:/boardList";			
@@ -154,7 +154,7 @@ public class BoardController {
 		}
     }
 	
-	@RequestMapping(value = {"/deleteAnnoBoard/{boardNo}"})
+	@RequestMapping("/deleteAnnoBoard/{boardNo}")
 	@ResponseBody
     public int deleteAnnoBoard(@PathVariable ("boardNo") String sNo, HttpServletRequest request, @ModelAttribute BoardVO vo) {
 		int nResult = boardService.updateDeleteAnnoBoard(sNo, request,vo);
@@ -168,7 +168,7 @@ public class BoardController {
 		}
     }
 	
-	@RequestMapping(value = "/registerBoard/anno/insert")
+	@RequestMapping("/registerBoard/anno/insert")
     public String insertAnnoBoard(@ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
 		vo.setRegIp(request.getRemoteAddr());
 		

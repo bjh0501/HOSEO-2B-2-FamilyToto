@@ -42,10 +42,7 @@ public class IndexController {
         return "border/editor/editor";
     }
 	
-	@RequestMapping("qna")
-    public String qna() {
-        return "border/qna";
-    }
+	
 	
 	@RequestMapping("introduceTeam")
     public String introduceTeam() {

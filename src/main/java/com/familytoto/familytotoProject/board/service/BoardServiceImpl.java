@@ -70,8 +70,6 @@ public class BoardServiceImpl implements BoardService{
 				vo.setCustGubun("");
 			}
 			
-			vo.diffTime(vo.getRegDt());
-			
 			list.set(i, vo);
 			i++;
 		}

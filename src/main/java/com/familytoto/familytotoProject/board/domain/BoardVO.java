@@ -187,22 +187,4 @@ public class BoardVO {
 				+ ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt=" + regDt + ", chgDt=" + chgDt
 				+ ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn + "]";
 	}
-	
-	public long diffTime(Timestamp regDt) throws ParseException {
-		//요청시간 String
-		String reqDateStr = regDt.toString();
-		//현재시간 Date
-		Date curDate = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
-		//요청시간을 Date로 parsing 후 time가져오기
-		Date reqDate = dateFormat.parse(reqDateStr);
-		long reqDateTime = reqDate.getTime();
-		//현재시간을 요청시간의 형태로 format 후 time 가져오기
-		curDate = dateFormat.parse(dateFormat.format(curDate));
-		long curDateTime = curDate.getTime();
-		//분으로 표현
-		
-		long minute = (curDateTime - reqDateTime) / 60000;
-		return minute;
-	}
 }
