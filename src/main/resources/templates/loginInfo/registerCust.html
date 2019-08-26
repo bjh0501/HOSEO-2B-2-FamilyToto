@@ -754,7 +754,29 @@
 					location.replace("/")
 				} else {
 					alert("회원가입에 성공하였습니다.");
-					location.replace("/")
+					
+					$.ajax({
+						url : "/login/custLogin",
+						type : "POST",
+						cache : false,
+						dataType : "json",
+						data : "custId=" + custId.val() 
+								+ "&custPassword=" + passwordCheck.val(),
+						success : function(data) {
+							if(data == -99) {
+								alert("아이디나 비밀번호가 다릅니다.")
+								return;
+							}
+							
+							location.replace("/")
+						},
+
+						error : function(request, status, error) {
+							var msg = "ERROR : " + request.status + "<br>"
+							msg += +"내용 : " + request.responseText + "<br>" + error;
+							console.log(msg);
+						}
+					});
 				}
 			},
 			error : function(request, status, error) {

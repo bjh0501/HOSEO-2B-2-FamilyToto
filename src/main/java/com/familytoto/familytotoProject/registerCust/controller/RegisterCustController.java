@@ -1,5 +1,6 @@
 package com.familytoto.familytotoProject.registerCust.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.familytoto.familytotoProject.login.service.CustLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 import com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO;
@@ -28,6 +30,9 @@ public class RegisterCustController {
 	
 	@Autowired
 	CustService custService;
+	
+	@Autowired
+	CustLoginService custLoginService;
 	
 	@Autowired
 	CaptchaService captchaService;
@@ -84,6 +89,11 @@ public class RegisterCustController {
 			custService.insertCust(cVo, request);
 			// 트랜잭션 걸어야함
 		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("custId", cVo.getCustId());
+		
+		custLoginService.login(cVo);
 		
 		return nResult;
 	}

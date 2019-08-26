@@ -15,7 +15,7 @@
 	    inner join	FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
 	    AND			C.USE_YN = 'Y'
 	    AND			FC.USE_YN = 'Y'
-		where	CUST_ID = "${custId}"
+		where	CUST_ID = #{custId}
 		limit 1;
 	</select>
 	<select id="socialLogin" resultType="com.familytoto.familytotoProject.registerCust.domain.CustVO">

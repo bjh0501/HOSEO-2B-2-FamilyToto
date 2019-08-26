@@ -6,8 +6,11 @@
 
 
 	<insert id="insertWebLog">
-			INSERT INTO WEB_LOG (CURRENT_URL, BOARD_NO, PREV_URL, IP, CUST_NO, REG_DT)
-			VALUES(#{currentUrl}, #{boardNo}, #{prevUrl},#{ip},#{custNo}, NOW())
+			INSERT INTO WEB_LOG (CURRENT_URL, BOARD_NO, PREV_URL,
+								IP, CUST_NO, REG_DT)
+			VALUES(
+								#{currentUrl}, #{boardNo}, #{prevUrl},
+								#{ip},#{custNo}, NOW())
 	</insert>
 
 	<!-- 

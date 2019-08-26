@@ -10,7 +10,7 @@
 			    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN)
 			VALUES(
 		    '${familyCustNickname}', '${familyCustEmail}', '${familyCustAddr}',
-		     '${familyCustAddrSi}', '${familyCustAddrGubun}', '${familyCustAddrDong}',
+		     '${familyCustAddrSi}', '${familyCustAddrGugun}', '${familyCustAddrDong}',
 		    '${familyCustRecommend}', 0, NULL,
 		     NOW(), NULL, '${regIp}', NULL, 'Y');
 	</insert>
