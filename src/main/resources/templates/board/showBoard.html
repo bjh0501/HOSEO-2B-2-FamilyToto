@@ -120,7 +120,7 @@
 												data-toggle="modal" data-target="#deleteModal">삭제</button>
 											</div>
 										</div>
-										<div class="col-xl-3 col-md-3 mb-3">		
+										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.boardReplyNo} == 0">		
 											<div class="input-group mb-3">
 												<button type="button" class="btn btn-secondary btn-lg btn-block"
 												style="min-width:74px;" th:onClick="|javascript:location.href='/registerBoard/${board.getBoardNo()}'|">답장</button>

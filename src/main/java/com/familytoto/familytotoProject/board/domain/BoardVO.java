@@ -11,6 +11,8 @@ public class BoardVO {
     private int boardNo;
 
     private int boardReplyNo;
+    
+    private int boardGrpNo;
 
     // 한글250글자
     private String boardTitle;
@@ -40,31 +42,7 @@ public class BoardVO {
     
     private String custGubun;
     
-    private String visit;
-
-	public String getVisit() {
-		return visit;
-	}
-
-	public void setVisit(String visit) {
-		this.visit = visit;
-	}
-
-	public String getCustGubun() {
-		return custGubun;
-	}
-
-	public void setCustGubun(String custGubun) {
-		this.custGubun = custGubun;
-	}
-
-	public String getCustNickname() {
-		return custNickname;
-	}
-
-	public void setCustNickname(String custNickname) {
-		this.custNickname = custNickname;
-	}
+    private String visit;    
 
 	public int getBoardNo() {
 		return boardNo;
@@ -80,6 +58,14 @@ public class BoardVO {
 
 	public void setBoardReplyNo(int boardReplyNo) {
 		this.boardReplyNo = boardReplyNo;
+	}
+
+	public int getBoardGrpNo() {
+		return boardGrpNo;
+	}
+
+	public void setBoardGrpNo(int boardGrpNo) {
+		this.boardGrpNo = boardGrpNo;
 	}
 
 	public String getBoardTitle() {
@@ -168,6 +154,30 @@ public class BoardVO {
 
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
+	}
+
+	public String getCustNickname() {
+		return custNickname;
+	}
+
+	public void setCustNickname(String custNickname) {
+		this.custNickname = custNickname;
+	}
+
+	public String getCustGubun() {
+		return custGubun;
+	}
+
+	public void setCustGubun(String custGubun) {
+		this.custGubun = custGubun;
+	}
+
+	public String getVisit() {
+		return visit;
+	}
+
+	public void setVisit(String visit) {
+		this.visit = visit;
 	}
 
 	@Override

@@ -51,9 +51,7 @@ public class BoardController {
 
 		search.pageInfo(page, range, listCnt);
 
-	    // Pagination 객체생성
-		PagingVO pagination = new PagingVO();
-		
+	    // Pagination 객체생성		
 		search.pageInfo(page, range, listCnt);
 
 		model.addAttribute("pagination", search);
