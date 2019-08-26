@@ -69,13 +69,22 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+<<<<<<< HEAD
 		<!--  <dependency>
+=======
+		<!-- <dependency>
+>>>>>>> master
 		    <groupId>org.apache.tomcat</groupId>
 		    <artifactId>tomcat-catalina</artifactId>
 		    <version>8.5.6</version>
 		    <scope>provided</scope>
+<<<<<<< HEAD
 		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
+=======
+		</dependency>
+		 --><!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
+>>>>>>> master
 		<dependency>
 		    <groupId>javax.inject</groupId>
 		    <artifactId>javax.inject</artifactId>
