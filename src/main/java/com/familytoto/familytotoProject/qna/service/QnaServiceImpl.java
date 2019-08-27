@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +44,28 @@ public class QnaServiceImpl implements QnaService {
 	@Override
 	public List<QnaVO> listQna(QnaVO vo) {
 		return qnaDao.listQna(vo);
+	}
+
+	@Override
+	public int insertAnnoQna(QnaVO vo, HttpServletRequest request) {
+		vo.setRegIp(request.getRemoteAddr());
+		
+		if(vo.getQnaQuestionContents() == null || vo.getQnaQuestionContents().trim().equals("")) {
+			return -99;
+		}
+		
+		if(vo.getQnaQuestionAnnoId() == null || vo.getQnaQuestionAnnoId().trim().equals("")) {
+			return -98;
+		}
+				
+		if(vo.getQnaQuestionAnnoPw() == null || vo.getQnaQuestionAnnoPw().equals("")) {
+			return -97;
+		} else {
+			CustVO cVo = new CustVO();
+			String sPass = cVo.toEncodePassword(vo.getQnaQuestionAnnoPw());
+			vo.setQnaQuestionAnnoPw(sPass);
+		}
+		
+		return qnaDao.insertAnnoQna(vo);
 	}
 }

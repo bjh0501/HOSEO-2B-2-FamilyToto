@@ -11,4 +11,6 @@ public interface QnaService {
 	int insertCustQna(QnaVO vo, HttpSession session, HttpServletRequest request);
 	
 	List<QnaVO> listQna(QnaVO vo);
+	
+	int insertAnnoQna(QnaVO vo, HttpServletRequest request);
 }

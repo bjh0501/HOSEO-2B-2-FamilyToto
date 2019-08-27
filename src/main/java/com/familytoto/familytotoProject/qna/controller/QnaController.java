@@ -25,9 +25,13 @@ public class QnaController {
 		
 		model.addAttribute("qnaList", qnaService.listQna(vo));
 		
+		
 		if(cVo != null) {
 			model.addAttribute("cust", cVo);
-		} 
+			model.addAttribute("annoGubun", "N");
+		} else {
+			model.addAttribute("annoGubun", "Y");
+		}
 		
         return "/board/qna";
     }
@@ -35,6 +39,11 @@ public class QnaController {
 	@RequestMapping("/qna/register")
 	@ResponseBody
     public int qnaRegister(@ModelAttribute QnaVO vo, HttpSession session, HttpServletRequest request) {
-		return qnaService.insertCustQna(vo,session, request);
+		CustVO cVo = (CustVO)session.getAttribute("cust");
+		if(cVo == null) {
+			return qnaService.insertAnnoQna(vo,request);
+		} else {
+			return qnaService.insertCustQna(vo, session, request);
+		}
     }
 }

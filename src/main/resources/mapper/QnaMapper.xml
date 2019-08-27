@@ -14,11 +14,24 @@
 		    ,0
 		)
 	</insert>
+	<insert id="insertQnaAnno">
+		INSERT INTO QNA
+		    (QNA_QUESTION_ANNO_ID,		QNA_QUESTION_ANNO_PW,
+		    QNA_QUESTION_CONTENTS,		REG_CUST_NO, 
+		    REG_DT,						REG_IP, 				USE_YN
+		    ,QNA_ADMIN_NO
+		) VALUES (
+			#{qnaQuestionAnnoId},		#{qnaQuestionAnnoPw},
+			#{qnaQuestionContents},		0,
+			 now(),						#{regIp},				'Y'
+		    ,0
+		)
+	</insert>
 	<select id="listQna" resultType="com.familytoto.familytotoProject.qna.domain.QnaVO">
 		SELECT	QNA_QUESTION_CONTENTS as qnaQuestionContents
 		,		FCA.FAMILY_CUST_NICKNAME AS familyCustAdminNickname
 		,		QNA_ADMIN_CONTENTS as qnaAdminContents
-		,		IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK) AS familyCustNickname
+		,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), QNA_QUESTION_ANNO_ID)  AS familyCustNickname
 		,		IFNULL(Q.QNA_QUESTION_ANNO_ID, IFNULL(SC.SC_CUST_GUBUN, 'ON')) as gubun
 		FROM	QNA Q
 			LEFT OUTER JOIN CUSTOM C ON Q.QNA_QUESTION_REG_CUST_NO = C.CUST_NO AND C.USE_YN = 'Y'    

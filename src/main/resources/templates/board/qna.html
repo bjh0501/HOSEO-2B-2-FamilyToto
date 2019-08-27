@@ -68,7 +68,18 @@
 											<h3>
 												<span th:text="${list.getQnaQuestionContents()}"></span>
 												<br>
-												<span style="float:right" th:text="${list.getFamilyCustNickname()}"></span>
+												<span style="float:right" >
+													
+													<img src="/img/social/icon/facebookMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='FA'}">
+													<img src="/img/social/icon/naverMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='NA'}">
+													<img src="/img/social/icon/kakaoMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='KA'}">
+													<img src="/img/social/icon/onesportsMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='ON'}">
+													<span th:text="${list.getFamilyCustNickname()}"></span>
+												</span>
 											</h3>
 											<div>
 												<p>
@@ -139,7 +150,7 @@
 					</div>
 					<div class="form-group" th:if="${cust} == null">
 						<label for="recipient-name" class="col-form-label">비밀번호</label> <input
-							type="text" class="form-control" id="password">
+							type="password" class="form-control" id="password">
 					</div>
 					<div class="form-group">
 						<label for="message-text" class="col-form-label">문의내용</label>
@@ -180,7 +191,11 @@
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">닫기</button>
 					<button type="button" class="btn btn-secondary"
-						onClick="javascript:question();">문의하기</button>
+						onClick="javascript:question();"
+						th:if="${annoGubun} == 'N'">문의하기</button>
+					<button type="button" class="btn btn-secondary"
+						onClick="javascript:annoQuestion();"
+						th:if="${annoGubun} == 'Y'">문의하기</button>
 				</div>
 			</div>
 		</div>
@@ -226,6 +241,8 @@ $(document).ready(function(){
 });
 
 function question() {
+	
+	
 	if($("#contents").val().trim() == "") {
 		alert("내용을 입력해주세요.");
 		$("#contents").focus();
@@ -242,6 +259,58 @@ function question() {
 		cache : false,
 		dataType : "json",
 		data : "qnaQuestionContents=" + $("#contents").val().trim(),
+		success : function(data) {
+			if(data == 1) {
+				alert("문의가 등록되었습니다.");
+				location.reload();
+			} else {
+				alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+			}
+		},
+		error : function(request, status, error) {
+			alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+		}
+	});
+}
+
+function annoQuestion() {
+	if($("#nickname").val().trim() == "") {
+		alert("내용을 입력해주세요.");
+		$("#nickname").focus();
+		return;
+	}
+
+	if($("#nickname").val().length < 2 || $("#nickname").val().length > 8) {
+		alert("닉네임은 2~8글자로 입력해주세요.");
+		$("#nickname").focus();
+		return;
+	}
+	
+	
+	if($("#password").val() == "") {
+		alert("패스워드를 입력해주세요.");
+		$("#password").focus();
+		return;
+	}
+	
+	if($("#contents").val().trim() == "") {
+		alert("내용을 입력해주세요.");
+		$("#contents").focus();
+		return;
+	}
+	
+	var sContents = $("#contents").val().trim()
+	
+	sContents = sContents.replace("\n", "<br>");
+	
+	$.ajax({
+		url : "/qna/register",
+		type : "POST",
+		cache : false,
+		dataType : "json",
+		data : "qnaQuestionAnnoId=" + $("#nickname").val().trim()
+				+"&qnaQuestionAnnoPw=" + $("#password").val()
+				+"&qnaQuestionContents=" + $("#contents").val().trim(),
 		success : function(data) {
 			if(data == 1) {
 				alert("문의가 등록되었습니다.");

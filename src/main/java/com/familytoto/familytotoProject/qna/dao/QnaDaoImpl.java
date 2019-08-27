@@ -22,4 +22,9 @@ public class QnaDaoImpl implements QnaDao {
 	public List<QnaVO> listQna(QnaVO vo) {
 		return sqlSession.selectList("qna.listQna",vo);
 	}
+
+	@Override
+	public int insertAnnoQna(QnaVO vo) {
+		return sqlSession.insert("qna.insertQnaAnno",vo);
+	}
 }

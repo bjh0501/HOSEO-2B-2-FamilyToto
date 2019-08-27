@@ -8,4 +8,6 @@ public interface QnaDao {
 	int insertCustQna(QnaVO vo);
 	
 	List<QnaVO> listQna(QnaVO vo);
+	
+	int insertAnnoQna(QnaVO vo);
 }
