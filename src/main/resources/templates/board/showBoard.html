@@ -329,9 +329,7 @@
 				},
 
 				error : function(request, status, error) {
-					var msg = "ERROR : " + request.status + "<br>"
-					msg += +"내용 : " + request.responseText + "<br>" + error;
-					console.log(msg);
+					alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
 				}
 			});
 		} 

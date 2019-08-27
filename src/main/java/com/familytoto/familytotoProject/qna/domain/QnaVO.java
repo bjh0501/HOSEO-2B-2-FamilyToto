@@ -17,7 +17,7 @@ public class QnaVO {
 
     private int qnaAdminNo;
 
-    private String qnaAdminContents;
+    private String qnaAdminContents = "아직 답변이 달리지 않았습니다.";
 
     private Timestamp qnaAdminDt;
 
@@ -37,6 +37,37 @@ public class QnaVO {
 
     // Y,N,B
     private String useYn;
+
+    private String familyCustNickname;
+    
+    private String gubun;
+    
+    private String familyCustAdminNickname;
+    
+    
+	public String getFamilyCustAdminNickname() {
+		return familyCustAdminNickname;
+	}
+
+	public void setFamilyCustAdminNickname(String familyCustAdminNickname) {
+		this.familyCustAdminNickname = familyCustAdminNickname;
+	}
+
+	public String getFamilyCustNickname() {
+		return familyCustNickname;
+	}
+
+	public void setFamilyCustNickname(String familyCustNickname) {
+		this.familyCustNickname = familyCustNickname;
+	}
+
+	public String getGubun() {
+		return gubun;
+	}
+
+	public void setGubun(String gubun) {
+		this.gubun = gubun;
+	}
 
 	public int getQnaNo() {
 		return qnaNo;

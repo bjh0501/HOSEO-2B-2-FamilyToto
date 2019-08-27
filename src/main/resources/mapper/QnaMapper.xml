@@ -3,5 +3,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="qna">
-	
+	<insert id="insertQnaCust">
+		INSERT INTO QNA
+		    (QNA_QUESTION_REG_CUST_NO,		QNA_QUESTION_CONTENTS,	REG_CUST_NO, 
+		    REG_DT,							REG_IP, 				USE_YN
+		    ,QNA_ADMIN_NO
+		) VALUES (
+			#{qnaQuestionRegCustNo},		#{qnaQuestionContents},	#{regCustNo},
+		    now(),							#{regIp},				'Y'
+		    ,0
+		)
+	</insert>
+	<select id="listQna" resultType="com.familytoto.familytotoProject.qna.domain.QnaVO">
+		SELECT	QNA_QUESTION_CONTENTS as qnaQuestionContents
+		,		FCA.FAMILY_CUST_NICKNAME AS familyCustAdminNickname
+		,		QNA_ADMIN_CONTENTS as qnaAdminContents
+		,		IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK) AS familyCustNickname
+		,		IFNULL(Q.QNA_QUESTION_ANNO_ID, IFNULL(SC.SC_CUST_GUBUN, 'ON')) as gubun
+		FROM	QNA Q
+			LEFT OUTER JOIN CUSTOM C ON Q.QNA_QUESTION_REG_CUST_NO = C.CUST_NO AND C.USE_YN = 'Y'    
+		    LEFT OUTER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		    LEFT OUTER JOIN SOCIAL_CUSTOM SC ON Q.QNA_QUESTION_REG_CUST_NO = SC.SC_CUST_NO AND SC.USE_YN = 'Y'
+		    
+			LEFT OUTER JOIN CUSTOM CA ON Q.QNA_ADMIN_NO = CA.CUST_NO AND CA.USE_YN = 'Y'    
+		    LEFT OUTER JOIN FAMILY_CUSTOM FCA ON CA.FAMILY_CUST_NO = FCA.FAMILY_CUST_NO AND FCA.USE_YN = 'Y'
+		WHERE	Q.USE_YN = 'Y'
+		ORDER BY QNA_NO DESC;
+	</select>
 </mapper>

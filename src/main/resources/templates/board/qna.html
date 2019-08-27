@@ -3,193 +3,207 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
-  
-  <!--jquery ui -->
-  <link rel="stylesheet" href="css/jquery-ui.min.css">
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+
+<!--jquery ui -->
+<link rel="stylesheet" href="css/jquery-ui.min.css">
 
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
+	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
 		</ul>
-	
-	    <!-- Content Wrapper -->
+
+		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
-		
-		      <!-- Main Content -->
+
+			<!-- Main Content -->
 			<div id="content">
-		
-		        <!-- Topbar -->
-		        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
-		
-		
-		        </nav>
-		        <!-- End of Topbar -->
-		
-		        <!-- Begin Page Content -->
-				<div class="container-fluid">
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid" style="display:none;">
 					<div class="row">
 						<h2 class="text-title">Q&A</h2>
 					</div>
 					<div class="d-flex flex-row-reverse bd-highlight">
 						<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
-						<button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#exampleModal"  data-backdrop="static" data-keyboard="false">문의하기</button>
+							<button type="button" class="btn btn-secondary btn-block"
+								data-toggle="modal" data-target="#exampleModal"
+								data-backdrop="static" data-keyboard="false">문의하기</button>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow mb-4">
-				            	<div class="card-body">
-				            		<div id="accordion">
-										  <h3>댓글은 어떻게 달아요?</h3>
-										  <div>
-										    <p>ㅁㄹ</p>
-										  </div>
-										  <h3>아이템은 어떻게 구매해요?</h3>
-										  <div>
-										    <p>더블클릭으로 구매하면됩니다.</p>
-										    <br>
-										    <span style="float:right">Admin</span>
-										  </div>
-										  <h3>탈퇴는 못하나요</h3>
-										  <div>
-										    <p>아직 답변이 안달렸습니다. </p>
-										  </div>
+								<div class="card-body">
+									<div id="accordion" >
+										<th:block th:each="list : ${qnaList}">
+											<h3>
+												<span th:text="${list.getQnaQuestionContents()}"></span>
+												<br>
+												<span style="float:right" th:text="${list.getFamilyCustNickname()}"></span>
+											</h3>
+											<div>
+												<p>
+													<span th:text="${list.getQnaAdminContents()}">아직 답변이 달리지 않았습니다.</span>
+													<br>
+													<span style="float:right" th:text="${list.getFamilyCustAdminNickname()}"> wkrtjdwk</span>
+												</p>
+											</div>
+										</th:block>
 									</div>
-				            	</div>
-			            	</div>
-		            	</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="d-flex flex-row-reverse bd-highlight">
 						<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
-						<button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#exampleModal"  data-backdrop="static" data-keyboard="false">문의하기</button>
+							<button type="button" class="btn btn-secondary btn-block"
+								data-toggle="modal" data-target="#exampleModal"
+								data-backdrop="static" data-keyboard="false">문의하기</button>
 						</div>
 					</div>
 					<div class="row justify-content-md-center">
-		          		<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4">
-						  <ul class="pagination justify-content-center">
-						    <li class="page-item disabled">
-						      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-						    </li>
-						    <li class="page-item"><a class="page-link" href="#">1</a></li>
-						    <li class="page-item"><a class="page-link" href="#">2</a></li>
-						    <li class="page-item"><a class="page-link" href="#">3</a></li>
-						    <li class="page-item">
-						      <a class="page-link" href="#">Next</a>
-						    </li>
-						  </ul>
+						<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4">
+							<ul class="pagination justify-content-center">
+								<li class="page-item disabled"><a class="page-link"
+									href="#" tabindex="-1" aria-disabled="true">Previous</a></li>
+								<li class="page-item"><a class="page-link" href="#">1</a></li>
+								<li class="page-item"><a class="page-link" href="#">2</a></li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item"><a class="page-link" href="#">Next</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
-		        <!-- /.container-fluid -->
-		
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+			</footer>
+			<!-- End of Footer -->
+
 		</div>
-	      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
+		<!-- End of Content Wrapper -->
 	</div>
-  <!-- End of Page Wrapper -->
-  
-  <!-- 문의폼 -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">문의하기</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        <form>
-	          <div class="form-group">
-	            <label for="recipient-name" class="col-form-label">닉네임</label>
-	            <input type="text" class="form-control" id="recipient-name">
-	          </div>
-	          <div class="form-group">
-	            <label for="message-text" class="col-form-label">문의내용</label>
-	            <textarea class="form-control" id="message-text"></textarea>
-	          </div>
-	        </form>
-	      </div>
-	      <div class="modal-footer">
-	     
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal" >닫기</button>
-	        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ok" data-backdrop="static" data-keyboard="false">문의하기</button>
-	      </div>
-	    </div>
-	  </div>
+	<!-- End of Page Wrapper -->
+
+	<!-- 문의폼 -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">문의하기</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group" th:if="${cust} == null">
+						<label for="recipient-name" class="col-form-label">닉네임</label> <input
+							type="text" class="form-control" id="nickname">
+					</div>
+					<div class="form-group" th:if="${cust} == null">
+						<label for="recipient-name" class="col-form-label">비밀번호</label> <input
+							type="text" class="form-control" id="password">
+					</div>
+					<div class="form-group">
+						<label for="message-text" class="col-form-label">문의내용</label>
+						<textarea class="form-control" id="contents"></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-secondary" data-toggle="modal"
+						data-target="#ok" data-backdrop="static" data-keyboard="false">문의하기</button>
+				</div>
+			</div>
+		</div>
 	</div>
-<!-- 문의폼 -->
+	<!-- 문의폼 -->
 
-<!-- 메시지박스 -->
+	<!-- 메시지박스 -->
 
-<div class="modal fade" id="ok" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="top: 72px; left: -8px; width: 350px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">문의하기</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      		<center>
-        		문의를 하면 삭제나 수정을 못합니다.<br>
-        		계속 하시겠습니까?
-        	</center>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-        <button type="button" class="btn btn-secondary">문의하기</button>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="modal fade" id="ok" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document"
+			style="top: 72px; left: -8px; width: 350px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">문의하기</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<center>
+						문의를 하면 삭제나 수정을 못합니다.<br> 계속 하시겠습니까?
+					</center>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-secondary"
+						onClick="javascript:question();">문의하기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<!-- 메시지박스-->
+	<!-- 메시지박스-->
 
-  <!-- Bootstrap core JavaScript-->
-  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- Bootstrap core JavaScript-->
+	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+	<!-- Core plugin JavaScript-->
+	<script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
 
-  <!-- Custom scripts for all pages-->
-  <script th:src="@{js/sb-admin-2.min.js}"></script>
+	<!-- Custom scripts for all pages-->
+	<script th:src="@{js/sb-admin-2.min.js}"></script>
 
-  <!-- Page level plugins -->
-  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{vendor/chart.js/Chart.min.js}"></script>
 
-  <!-- Page level custom scripts -->
-  <script th:src="@{js/demo/chart-area-demo.js}"></script>
-  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{js/demo/chart-area-demo.js}"></script>
+	<script th:src="@{js/demo/chart-pie-demo.js}"></script>
 
 	<!--jquery ui -->
 	<script src="js/jquery-ui.min.js"></script>
@@ -197,11 +211,48 @@
 
 </html>
 
-	
+
 <script>
-$( function() {
-    $( "#accordion" ).accordion({
-      collapsible: true
-    });
-  } );
-  </script>
+$(document).ready(function(){
+	$("#accordion").accordion({
+		collapsible : true
+	});
+	
+	$(".container-fluid").fadeIn();
+	
+	$(".ui-accordion-content").removeAttr("style");
+	$(".ui-accordion-content").attr("style", "display:none");
+
+});
+
+function question() {
+	if($("#contents").val().trim() == "") {
+		alert("내용을 입력해주세요.");
+		$("#contents").focus();
+		return;
+	}
+	
+	var sContents = $("#contents").val().trim()
+	
+	sContents = sContents.replace("\n", "<br>");
+	
+	$.ajax({
+		url : "/qna/register",
+		type : "POST",
+		cache : false,
+		dataType : "json",
+		data : "qnaQuestionContents=" + $("#contents").val().trim(),
+		success : function(data) {
+			if(data == 1) {
+				alert("문의가 등록되었습니다.");
+				location.reload();
+			} else {
+				alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+			}
+		},
+		error : function(request, status, error) {
+			alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+		}
+	});
+}
+</script>
