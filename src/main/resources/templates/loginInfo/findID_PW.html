@@ -17,11 +17,29 @@
 
   <!-- Custom styles for this template-->
   <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+	<style>
+.loadingImg {
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	z-index: 10000;
+	width: 100px;
+}
 
+.loadingDiv {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background: #888888c7;
+	z-index: 10000;
+}
+</style>
 </head>
 
 <body id="page-top">
-
+<div class="loading loadingDiv" style="display:none;">
+</div>
+<img class="loading loadingImg" src="/img/etc/loading.gif"  style="display:none;">
   <!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -245,8 +263,10 @@
 			return;
 		}
 		
-		var email = $("#pwEmail1").val() + "@" + $("#pwEmail2").val(); 
+		var email = $("#pwEmail1").val() + "@" + $("#pwEmail2").val();
 		
+		$(".loading").attr("style", "")
+				
 		$.ajax({
 			url : "/findPw",
 			type : "POST",
@@ -259,6 +279,8 @@
 				} else {
 					alert("해당 하는 정보가 없습니다.");
 				}
+				
+				$(".loading").attr("style", "display:none")
 			},
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
