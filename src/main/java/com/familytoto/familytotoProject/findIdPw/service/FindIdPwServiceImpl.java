@@ -46,7 +46,7 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 				contents += "\n";
 				contents += "발송된 임시 비밀번호는 보안을 위해 꼭 홈페이지에 접속하셔서 로그인 후 비밀번호를 변경해주시기 바랍니다.";
 				contents += "\n";
-				contents += "1. OneSports홈페이지( https://onesports.ga/login ) 접속\n";
+				contents += "1. OneSports홈페이지( http://15.164.215.251/ ) 접속\n";
 				contents += "2. 아이디/임시 비밀번호 입력 후 로그인\n";
 				contents += "3. 내정보보기 > 비밀번호 변경\n";
 				contents += "\n";
