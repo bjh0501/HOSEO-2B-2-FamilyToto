@@ -57,19 +57,24 @@
 					<div class="row">
 						<h2 class="text-title">회원가입</h2>
 					</div>
+					<br>
 
 					<div class="row">
 						<div class="col-xl-12 col-md-12 mb-12">
 							<div class="card shadow h-100 py-12">
 								<div style="padding: 20px;">
 									<div class="row">
-										<h1>회원정보</h1>
+										<h3>회원정보</h3>
 									</div>
 									<hr>
 									<label>아이디</label> <input type="text" class="form-control"
-										placeholder="ID" aria-label="Username" id="id"><br>
+										placeholder="ID" aria-label="Username" id="id" onBlur="javascrpt:checkId()">
+										
+										<span id="check"></span>
+							<br><br>
 									<label>비밀번호</label> <input type="password" class="form-control"
-										placeholder="Password" aria-label="Password" id="password"><br>
+										placeholder="Password" aria-label="Password" id="password">
+										<br>
 									<label>비밀번호 확인</label> <input type="password"
 										class="form-control" placeholder="Password check"
 										aria-label="Password check" id="passwordCheck"><br>
@@ -107,10 +112,10 @@
 							<div class="card shadow h-100 py-12">
 								<div style="padding: 20px;">
 									<div class="row">
-										<h1>배송지</h1>
+										<h3>배송지</h3>
 									</div>
 									<hr>
-									<h3><label>주소</label></h3>
+									<h4><label>주소</label></h4>
 									<div class="row">
 										<div class="col-xl-4 col-md-4 mb-4">
 											<span>시</span>
@@ -148,7 +153,7 @@
 										<div class="col-12">
 											<nav id="navbar-example2"
 												class="navbar navbar-light bg-light">
-												<h2>우편번호 리스트</h2>
+												<h4>우편번호 리스트</h4>
 											</nav>
 											<div data-spy="scroll" data-target="#navbar-example2"
 												data-offset="0">
@@ -168,7 +173,7 @@
 							<div class="card shadow h-100 py-12">
 								<div style="padding: 20px;">
 									<div class="row">
-										<h1>기타</h1>
+										<h4>기타</h4>
 									</div>
 									<hr>
 									<label>추천인</label> <input type="text" class="form-control"
@@ -806,5 +811,41 @@
 			}
 		} else
 			window.open(soundUrl, '', 'width=1,height=1');
+	}
+	
+	function checkId() {
+		custId = $("#id")
+		var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
+		v = $("#id").val()
+				
+		if (!regexp.test(v) || custId.val().length < 4
+				|| custId.val().length > 20) {
+			$("#check").html("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+			$("#check").attr("style","color:red");
+			return;
+		}
+		
+		$.ajax({
+			url : "/registerCust/checkId",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "html",
+			data: "custId=" + $("#id").val(),
+			success : function(data) {
+				if(data.trim() == -99) {
+					$("#check").html("사용할 수 있는 아이디입니다.");
+					$("#check").attr("style","color:blue");
+				} else {
+					$("#check").html("이미 사용중인 아이디입니다.");
+					$("#check").attr("style","color:red");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 </script>

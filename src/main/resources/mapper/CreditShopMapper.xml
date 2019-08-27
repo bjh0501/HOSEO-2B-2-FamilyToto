@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="creditShop">
+	<select id="showProduct" resultType="com.familytoto.familytotoProject.creditShop.domain.ProductVO">
+		SELECT	PRODUCT_NO as productNo
+		,		PC.CATEGORY_NAME as categoryName
+		,		PRODUCT_NAME as productName
+		,		PRODUCT_DESC as productDesc
+		,		PRODUCT_CREDIT as productCredit
+		,		PRODUCT_AMOUNT as productAmount
+		,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
+		,		D.DELIVERY_NAME as DeliveryName
+		FROM	PRODUCT P
+			INNER JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_NO = PC.CATEGORY_NO AND PC.USE_YN = 'Y'
+			INNER JOIN DELIVERY D ON P.DELIVERY_NO = D.DELIVERY_NO AND P.USE_YN = 'Y'
+		    INNER JOIN CUSTOM C ON P.REG_CUST_NO = C.CUST_NO AND C.USE_YN = 'Y'
+		    INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND P.USE_YN = 'Y'
+		WHERE	P.PRODUCT_NO = ${productNo}		
+	</select>
+</mapper>

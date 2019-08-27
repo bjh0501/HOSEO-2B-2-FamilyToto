@@ -36,6 +36,15 @@ public class LoginController {
 	
 	@RequestMapping("login")
     public String login(Model model, HttpSession session, HttpServletRequest request) {
+		String sRefer = request.getHeader("referer");
+		String sReferUrl = "";
+		
+		if(sRefer != null && sRefer.indexOf("onesports.ga") >= 1) {
+			model.addAttribute("referUrl", sRefer);
+		} else {
+			model.addAttribute("referUrl", "/");
+		}
+		
 		String sNaverLoginLink = naverLoginService.socialAuthLink(model, session);
 		String sKakaoLoginLink = kakaoLoginVo.getKakaoLink();
 		String sFacebookLoginLink = facebookLoginVo.getLoginLink();
@@ -43,6 +52,7 @@ public class LoginController {
 		model.addAttribute("naverLoginUrl", sNaverLoginLink);
 		model.addAttribute("kakaoLoginUrl", sKakaoLoginLink);
 		model.addAttribute("facebookLoginUrl", sFacebookLoginLink);
+		
 		
 		
 		return "loginInfo/login";

@@ -32,7 +32,7 @@
 			    NULL, 'Y');
 	</insert>
 	<select id="checkId" resultType="map" >
-		select	CUST_ID 
+		select	CUST_ID  as custId
 		,		FAMILY_CUST_NO as familyCustNo
 		from	CUSTOM
 		where	CUST_ID = '${custId}'

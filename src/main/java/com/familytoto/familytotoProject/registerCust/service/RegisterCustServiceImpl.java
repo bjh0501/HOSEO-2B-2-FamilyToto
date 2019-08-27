@@ -62,5 +62,10 @@ public class RegisterCustServiceImpl implements RegisterCustService {
 		return registerCustDao.listZip(vo);
 	}
 
+	@Override
+	public Map<String, Object> getUsedId(CustVO vo) {
+		return registerCustDao.getUsedId(vo);
+	}
+
 	
 }

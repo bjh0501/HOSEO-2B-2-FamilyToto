@@ -23,4 +23,7 @@ public interface RegisterCustService {
 	List<ZipcodeVO> listDong(ZipcodeVO vo);
 	
 	List<ZipcodeVO> listZip(ZipcodeVO vo);
+	
+	// 아이디체크
+	Map<String, Object> getUsedId(CustVO vo);
 }

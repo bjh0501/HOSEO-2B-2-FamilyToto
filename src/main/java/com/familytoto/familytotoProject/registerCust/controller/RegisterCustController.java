@@ -133,4 +133,15 @@ public class RegisterCustController {
 		
 		return sJson;
     }
+	
+	@RequestMapping("/registerCust/checkId")
+	@ResponseBody
+    public String getCheckId(@ModelAttribute CustVO vo) {
+		Map<String,Object> map = registerCustService.getUsedId(vo);
+		if(map == null) {
+			return "-99";
+		} else {
+			return map.get("custId").toString();
+		}
+    }
 }

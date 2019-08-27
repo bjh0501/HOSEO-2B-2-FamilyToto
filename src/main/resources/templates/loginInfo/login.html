@@ -96,6 +96,7 @@
 					<p class="text-center">
 						<a href="/registerCust" >회원가입</a>
 					</p>
+					<input type="hidden" id="refer" th:value="${referUrl}">
 				</div>
               </div>
             </div>
@@ -197,7 +198,7 @@
 					deleteCookie("rememberCustId");
 				}
 				
-				location.replace("/")
+				location.replace($("#refer").val());
 			},
 
 			error : function(request, status, error) {
@@ -266,6 +267,14 @@
 
 		window.open(url, '', 'status=no, height=680, width=650, left='+ popupX + ', top='+ popupY);
 	}
+	
+	function successKakao() {
+		location.replace($("#refer").val())
+	}
+	
+	function successNaver() {
+		location.replace($("#refer").val())
+	}
 </script>
 
 <script>
@@ -318,7 +327,7 @@ function getUserData() {
 					+ "&scCustGubun=" + "FA",
 			success : function(data) {
 				if(data == 0) {
-					location.replace("/");
+					location.replace($("#refer").val())
 				}
 			},
 
@@ -339,6 +348,8 @@ function facebookLogin() {
 	    }, {scope: 'email,public_profile,age_range',
 	    	 auth_type: 'rerequest', return_scopes: true});
 }
+
+
 </script>
 <script async defer src="https://connect.facebook.net/en_US/sdk.js">
 </script>

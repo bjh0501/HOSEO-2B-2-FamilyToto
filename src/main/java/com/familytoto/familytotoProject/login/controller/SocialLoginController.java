@@ -55,7 +55,7 @@ public class SocialLoginController {
 			int nNaverResult = naverLoginVO.naverLogin(model, code,state, session, request);
 
 			if(nNaverResult == 0) {
-				out.println("<script>window.close();opener.document.location.replace('/');</script>");				
+				out.println("<script>window.close();opener.successKakao();opener.successNaver();</script>");				
 			} else if(nNaverResult == -99) {
 				out.println("<script>alert('체크항목에 전부 체크해주세요.');window.close();</script>");				
 			} else if(nNaverResult == -98) {
@@ -84,7 +84,7 @@ public class SocialLoginController {
 				} else if(vo.getScCustId().equals("-98")) { 
 					out.println("<script>alert('20세 미만은 가입할 수 없습니다.'); window.close();</script>");
 				} else {
-					out.println("<script>window.close();opener.document.location.replace('/');</script>");
+					out.println("<script>window.close();opener.successKakao();</script>");
 					out.flush();
 					return 0;
 				}

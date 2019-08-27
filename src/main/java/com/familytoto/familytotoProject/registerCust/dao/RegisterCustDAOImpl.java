@@ -55,4 +55,9 @@ public class RegisterCustDAOImpl implements RegisterCustDAO{
 	public List<ZipcodeVO> listZip(ZipcodeVO vo) {
 		return sqlSession.selectList("registerCust.listZip", vo);
 	}
+
+	@Override
+	public Map<String, Object> getUsedId(CustVO vo) {
+		return sqlSession.selectOne("registerCust.checkId", vo);
+	}
 }
