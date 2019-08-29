@@ -7,17 +7,17 @@
 			INSERT INTO FAMILY_CUSTOM (FAMILY_CUST_NICKNAME, FAMILY_CUST_EMAIL, FAMILY_CUST_ADDR, 
 				FAMILY_CUST_ADDR_SI, FAMILY_CUST_ADDR_GUGUN, FAMILY_CUST_ADDR_DONG,
 			    FAMILY_CUST_RECOMMEND, REG_CUST_NO, CHG_CUST_NO,
-			    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN)
+			    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN, ZIP_CODE1, ZIP_CODE2)
 			VALUES(
-		    '${familyCustNickname}', '${familyCustEmail}', '${familyCustAddr}',
-		     '${familyCustAddrSi}', '${familyCustAddrGugun}', '${familyCustAddrDong}',
-		    '${familyCustRecommend}', 0, NULL,
-		     NOW(), NULL, '${regIp}', NULL, 'Y');
+		    #{familyCustNickname}, #{familyCustEmail}, #{familyCustAddr},
+		     #{familyCustAddrSi}, #{familyCustAddrGugun}, #{familyCustAddrDong},
+		    #{familyCustRecommend}, 0, NULL,
+		     NOW(), NULL, #{regIp}, NULL, 'Y', #{zipCode1}, #{zipCode2});
 	</insert>
 	<select id="checkNickname" resultType="map">
 		SELECT	FAMILY_CUST_NICKNAME
 		FROM	FAMILY_CUSTOM 
-		WHERE	FAMILY_CUST_NICKNAME='${familyCustNickname}'
+		WHERE	FAMILY_CUST_NICKNAME= #{familyCustNickname}
 		AND		USE_YN='Y'
 		LIMIT 1; 
 	</select>
@@ -27,8 +27,8 @@
 			    CHG_CUST_NO, REG_DT, CHG_DT, REG_IP, 
 			    CHG_IP, USE_YN)
 			VALUES (
-				${familyCustNo}, '${custId}', '${custPassword}', 0, 
-			    NULL, NOW(),NULL, '${regIp}',  
+				#{familyCustNo}, #{custId}, #{custPassword}, 0, 
+			    NULL, NOW(),NULL, #{regIp},  
 			    NULL, 'Y');
 	</insert>
 	<select id="checkId" resultType="map" >
@@ -45,7 +45,7 @@
 		    REG_CUST_NO,	     REG_DT,			REG_IP,
 		    USE_YN)
 		VALUES
-		    (${familyCustNo}, 	 2000, 			    'MIR', 
+		    (#{familyCustNo}, 	 2000, 			    'MIR', 
 		    0,				  	 NOW(), 		    '${regIp}', 
 		    'Y');
     </insert>
@@ -81,28 +81,53 @@
     <select id="listSido" resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
     	select	DISTINCT sido
         from	ZIPCODE 
+        ORDER BY sido ASC
     </select>
     <select id="listGugun" parameterType="String" resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
-    	select	DISTINCT GUGUN as gugun
+ 		select	DISTINCT SI_GUN_GU_KOR as gugun
+        from	NEW_ZIPCODE 
+        WHERE	SI_DO_KOR = #{sido}
+        UNION DISTINCT
+        select	DISTINCT GUGUN as gugun
         from	ZIPCODE 
-        WHERE	SIDO = #{sido} 
+        WHERE	SIDO = #{sido}        
+        ORDER BY gugun ASC    
     </select>
     
     <select id="listDong" parameterType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO"
     resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
-    	select	DISTINCT DONG as dong
-        from	ZIPCODE 
+    	SELECT	DISTINCT	DONG AS DONG
+        FROM	ZIPCODE
         WHERE	SIDO = #{sido}
-        AND		GUGUN = #{gugun} 
+        AND		GUGUN = #{gugun}
+        UNION DISTINCT
+        SELECT	DISTINCT	DONG_KOR AS DONG
+        FROM	NEW_ZIPCODE  
+        WHERE	SI_DO_KOR = #{sido}
+        AND		SI_GUN_GU_KOR = #{gugun}
+        ORDER BY DONG ASC
     </select>
     
     <select id="listZip" parameterType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO"
     resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
     	select	DISTINCT
-    			TRIM(CONCAT(RI,' ', BUNJI, ' ', ZIPCODE)) as ri
+    			TRIM(CONCAT(RI,' ', BUNJI)) as ri
+ 		,		LEFT(ZIPCODE,3) as zipCode1
+ 		,		RIGHT(ZIPCODE,3) as zipCode2
         from	ZIPCODE 
         WHERE	SIDO = #{sido}
         AND		GUGUN = #{gugun}
         AND		DONG = #{dong}
+        AND		RI != ''
+        AND		BUNJI != ''
+        UNION DISTINCT
+        select	DISTINCT ROAD_NAME_KOR as ri
+        ,		null as zipCode1
+ 		,		null as zipCode2
+        from	NEW_ZIPCODE 
+        WHERE	SI_DO_KOR = #{sido}
+        AND		SI_GUN_GU_KOR = #{gugun}
+        AND		DONG_KOR = #{dong}
+        ORDER BY ri ASC
     </select>
 </mapper>
