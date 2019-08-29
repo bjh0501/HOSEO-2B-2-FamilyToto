@@ -9,6 +9,8 @@
 		,			FC.FAMILY_CUST_EMAIL as familyCustEmail
 		,			FC.FAMILY_CUST_ADDR as familyCustAddr
 		,			FAMILY_CUST_ADDR_SI as familyCustAddrSi
+		,			ZIP_CODE1 as zipCode1
+		,			ZIP_CODE2 as zipCode2
 		,			FAMILY_CUST_ADDR_GUGUN as familyCustAddrGugun
 		,			FAMILY_CUST_ADDR_DONG as familyCustAddrDong
 		,			C.CUST_PASSWORD as custPassword

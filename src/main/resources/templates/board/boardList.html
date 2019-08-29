@@ -57,7 +57,7 @@
 					</div>
 					<div class="card shadow mb-4">
 						<div class="card-body">
-							<div class="table-responsive">
+							<div class="table-responsive" th:if="${pagination.listCnt} > 0">
 								<table class="table table-bordered" id="dataTable" width="100%"
 									cellspacing="0">
 									<thead>
@@ -84,6 +84,9 @@
 									</tbody>
 								</table>
 							</div>
+							<div class="table-responsive" th:if="${pagination.listCnt} == 0">
+								<center>게시글이 존재하지 않습니다.</center>
+							</div>
 						</div>
 					</div>
 					<div class="card shadow mb-4">
@@ -98,7 +101,7 @@
 								<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4">
 									<div class="input-group">
 										<select class="custom-select" style="max-width: 135px;"
-											id="searchType" th:value="${pagination.getSearchType()}">
+											id="searchType">
 											<option value="both" selected>제목+내용</option>
 											<option value="title">제목</option>
 											<option value="contents">내용</option>
@@ -109,7 +112,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row justify-content-md-center">
+							<div class="row justify-content-md-center" th:if="${pagination.listCnt} > 0">
 								<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4"
 									id="paginationBox">
 									<ul class="pagination justify-content-center">
@@ -177,6 +180,8 @@
 
 </html>
 <script>
+	$('#searchType').val("[[ ${pagination.getSearchType()} ]]");
+
 	var currentKeyword = $('#keyword').val();
 	var currentSearchType = $('#searchType').val();
 

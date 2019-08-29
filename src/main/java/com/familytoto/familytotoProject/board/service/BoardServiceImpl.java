@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
+import com.familytoto.familytotoProject.config.XssFilter;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
@@ -27,9 +28,36 @@ public class BoardServiceImpl implements BoardService{
 			return -98;
 		}
 		
-		return boardDao.insertCustBoard(vo);
+		int nReplyResult = boardDao.insertCustBoard(vo);
+		
+		if(vo.getBoardReplyNo() == 0) {
+			if(vo.getBoardNo() >= 10000001) {
+				return boardDao.updateInsertCustBoard(vo);
+			} else { 
+				return -97;
+			}
+		} else {
+			return nReplyResult;
+		}
 	}
 
+	public int insertAnnoBoard(BoardVO vo) {
+		CustVO cVo = new CustVO();
+		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
+		
+		int nReplyResult = boardDao.insertAnnoBoard(vo);
+		
+		if(vo.getBoardReplyNo() == 0) {
+			if(vo.getBoardNo() >= 10000001) {
+				return boardDao.updateInsertCustBoard(vo);
+			} else { 
+				return -97;
+			}
+		} else {
+			return nReplyResult;
+		}
+	}
+	
 	public int updateBoard(BoardVO vo, HttpSession session) {
 		// 익명
 		if(vo.getBoardAnnoId() == null) {
@@ -78,7 +106,13 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	public BoardVO getShowBoard(BoardVO vo) {
-		return boardDao.getShowBoard(vo);
+		BoardVO bVo = boardDao.getShowBoard(vo);
+		String contents = bVo.getBoardContents();
+		XssFilter xssFilter = new XssFilter(contents);
+		
+		bVo.setBoardContents(xssFilter.getContents());
+		
+		return bVo;
 	}
 
 	public int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request) {
@@ -105,13 +139,6 @@ public class BoardServiceImpl implements BoardService{
 		} else { // 비밀번호틀림
 			return -99;
 		}
-	}
-
-	public int insertAnnoBoard(BoardVO vo) {
-		CustVO cVo = new CustVO();
-		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
-		
-		return boardDao.insertAnnoBoard(vo);
 	}
 
 	public BoardVO getUpdateBoard(BoardVO vo) {

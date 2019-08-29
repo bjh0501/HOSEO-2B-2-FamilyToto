@@ -188,7 +188,8 @@
 					+ "&custPassword=" + pw.val(),
 			success : function(data) {
 				if(data == -99) {
-					alert("아이디나 비밀번호가 다릅니다.")
+					alert("아이디나 비밀번호가 다릅니다.");
+					$("#pw").val("")
 					return;
 				}
 				

@@ -37,10 +37,16 @@ public class LoginController {
 	@RequestMapping("login")
     public String login(Model model, HttpSession session, HttpServletRequest request) {
 		String sRefer = request.getHeader("referer");
-		String sReferUrl = "";
 		
 		if(sRefer != null && sRefer.indexOf("onesports.ga") >= 1) {
 			model.addAttribute("referUrl", sRefer);
+			
+			if(sRefer.indexOf("findID_PW") >= 1 ||
+					sRefer.indexOf("registerCust") >= 1 ||
+					sRefer.indexOf("login") >= 1) {
+				model.addAttribute("referUrl", "/");
+			}
+			
 		} else {
 			model.addAttribute("referUrl", "/");
 		}
@@ -53,9 +59,7 @@ public class LoginController {
 		model.addAttribute("kakaoLoginUrl", sKakaoLoginLink);
 		model.addAttribute("facebookLoginUrl", sFacebookLoginLink);
 		
-		
-		
-		return "loginInfo/login";
+		return "/loginInfo/login";
     }
 	
 	@RequestMapping("logout")

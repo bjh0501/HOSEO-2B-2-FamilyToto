@@ -25,6 +25,7 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller
 public class BoardController {
+	private int nReplyNo = 0;
 	
 	@Autowired
 	BoardService boardService;
@@ -58,11 +59,26 @@ public class BoardController {
         return "board/boardList";
     }
 	
-	@RequestMapping(value = {"/registerBoard", "/registerBoard/{boardNo}"} )
+	@RequestMapping(value = {"/registerBoard"} )
+    public ModelAndView registerBoard(HttpSession session,
+    		ModelAndView mv) {
+		
+		mv.setViewName("/board/registerBoard");
+		mv.addObject("loginGubun", session.getAttribute("cust"));
+		
+        return mv;
+    }
+	
+	@RequestMapping(value = {"/registerBoard/{boardNo}"} )
     public ModelAndView registerBoard(HttpSession session,
     		ModelAndView mv,
-    		@Nullable @PathVariable("boardNo") String sBoardNo) {
-		mv.addObject("replyNo", sBoardNo);	
+    		@PathVariable("boardNo") int nBoardNo) {
+		
+		if(nBoardNo != 0 ) {
+			mv.addObject("replyNo", nBoardNo);
+			nReplyNo = nBoardNo;
+		}
+		
 		mv.setViewName("/board/registerBoard");
 		mv.addObject("loginGubun", session.getAttribute("cust"));
 		
@@ -72,6 +88,7 @@ public class BoardController {
 	@RequestMapping("/registerBoard/insert")
     public String insertBoard(@ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
 		vo.setRegIp(request.getRemoteAddr());
+		vo.setBoardReplyNo(nReplyNo);
 		
 		if(session.getAttribute("cust") != null) {
 			CustVO cVo = (CustVO) session.getAttribute("cust");
@@ -79,26 +96,40 @@ public class BoardController {
 			
 			int nResult = boardService.insertCustBoard(vo);
 			
-			if(nResult == -99) {
+			if(nResult==1) {
+				return "redirect:/boardList";
+			}
+		}  
+		
+		return "-99";
+    }
+	
+	@RequestMapping("/registerBoard/anno/insert")
+    public String insertAnnoBoard(@ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
+		vo.setRegIp(request.getRemoteAddr());
+		
+		if(session.getAttribute("cust") == null) {
+			int nResult = boardService.insertAnnoBoard(vo);
+			
+			if(nResult == 1) {
+				return "redirect:/boardList";
+			} else if(nResult == -99) {
 				return "-99";
 			} else if(nResult == -98) {
 				return "-98";
+			} else {
+				return Integer.toString(nResult);
 			}
-		} else {
-			if(vo.getBoardAnnoId() != null && vo.getBoardAnnoPw() != null) {
-				if(vo.getBoardAnnoId().trim().equals("") || vo.getBoardAnnoId().length() <= 3 && vo.getBoardAnnoId().length() >= 21 ) {
-					return "-99";
-				}
-			}
+		} else { // 회원이 익명 글쓰기
+			return "-1";
 		}
-		
-        return "redirect:/boardList";
     }
 	
 	@RequestMapping("/showEditor")
     public String showEditor() {
         return "board/editor/showEditor";
     }
+	
 	
 	@RequestMapping("/showBoard/{boardNo}")
     public ModelAndView showBoard(HttpSession session, @PathVariable ("boardNo") String sBoardNo, ModelAndView mv) {
@@ -164,23 +195,6 @@ public class BoardController {
 		} else {
 			return -98;
 		}
-    }
-	
-	@RequestMapping("/registerBoard/anno/insert")
-    public String insertAnnoBoard(@ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
-		vo.setRegIp(request.getRemoteAddr());
-		
-		if(session.getAttribute("cust") == null) {
-			int nResult = boardService.insertAnnoBoard(vo);
-			
-//			if(nResult == -99) {
-//				return "-99";
-//			} else if(nResult == -98) {
-//				return "-98";
-//			}
-		} 
-		
-        return "redirect:/boardList";
     }
 	
 	@RequestMapping("/updateBoard/check")

@@ -18,6 +18,16 @@ public class BoardDaoImpl implements BoardDao {
 	public int insertCustBoard(BoardVO vo) {
 		return sqlSession.insert("board.insertCustBoard", vo);
 	}
+	
+	@Override
+	public int insertAnnoBoard(BoardVO vo) {
+		return sqlSession.insert("board.insertAnnoBoard", vo);
+	}
+	
+	@Override
+	public int updateInsertCustBoard(BoardVO vo) {
+		return sqlSession.update("board.updateInsertCustBoard", vo);
+	}
 
 	@Override
 	public int updateDeleteBoard(BoardVO vo) {
@@ -52,11 +62,6 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public BoardVO getShowBoard(BoardVO vo) {
 		return sqlSession.selectOne("board.getShowBoard", vo);
-	}
-
-	@Override
-	public int insertAnnoBoard(BoardVO vo) {
-		return sqlSession.insert("board.insertAnnoBoard", vo);
 	}
 
 	@Override
