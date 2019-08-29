@@ -90,11 +90,11 @@
 							</div>
 							<hr>
 							<div class="row">
-								<div class="col-xl-12 col-md-12 mb-2" th:text="${board.getBoardContents()}" id="boardDiv">
-									<iframe id="boardContents" src="/showEditor"  style="width:100%; height:100%" onLoad="autoResize(this);"></iframe>
+								<textarea style="display:none;" id="contentsArea" th:text="${board.getBoardContents()}"></textarea>
+								<div class="col-xl-12 col-md-12 mb-2"  id="boardDiv">
+									
 								</div>
 							</div>
-							
 			            
 				            <div class="row">
 								<div class="col-xl-3 col-md-3 mb-3">
@@ -296,6 +296,9 @@
 </body>
 
 </html>
+<script>
+	$("#boardDiv").html($("#contentsArea").val());
+</script>
 <script>	
 	function deleteBoard(no, regNo) {
 		 //일반

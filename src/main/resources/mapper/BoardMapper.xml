@@ -50,11 +50,13 @@
 			    		AND		(B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
 		           		OR		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%'))
 			    	</if>
-					ORDER BY B.BOARD_GRP_NO  DESC, B.BOARD_GRP_NO  ASC
+					ORDER BY B.BOARD_NO DESC
 				) R1
 			LEFT OUTER JOIN WEB_LOG WL ON WL.BOARD_NO = R1.boardNo
 		GROUP BY R1.boardNo, R1.boardReplyNo, R1.boardTitle, R1.regCustNo, R1.custNickname, R1.custGubun, R1.regDt
+		ORDER BY R1.boardNo DESC
 		) R2
+		
 	    LIMIT #{startList}, #{listSize}
 	</select>
 	<select id="getBoardListCnt" resultType="int">

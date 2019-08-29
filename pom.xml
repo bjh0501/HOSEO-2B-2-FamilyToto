@@ -28,7 +28,14 @@
 		</repository>
 	</repositories>
 
-	<dependencies>  
+	<dependencies>
+	<!-- https://mvnrepository.com/artifact/com.navercorp.lucy/lucy-xss -->
+	<dependency>
+		<groupId>com.navercorp.lucy</groupId>
+		<artifactId>lucy-xss-servlet</artifactId>
+		<version>2.0.0</version>
+	</dependency>
+		  
 	<!-- gson  -->
 	<dependency>
 	    <groupId>com.google.code.gson</groupId>

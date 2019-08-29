@@ -113,8 +113,7 @@
 											<span>시</span>
 											<div class="input-group mb-3">
 												<select class="custom-select" id="sido"
-													onChange="getGugun();" th:value="${list.familyCustAddrSi}">
-													<option selected="">시</option>
+													onChange="getGugun();">
 												</select>
 											</div>
 										</div>
@@ -165,7 +164,7 @@
 										<div class="col-12">
 											<nav id="navbar-example2"
 												class="navbar navbar-light bg-light">
-												<h2>우편번호 리스트</h2>
+												<h2>상세주소 리스트</h2>
 											</nav>
 											<div data-spy="scroll" data-target="#navbar-example2"
 												data-offset="0">
@@ -292,149 +291,172 @@
 
 </html>
 <script>
-	getSido("[[ ${list.familyCustAddrSi} ]]");
-	getGugun("[[ ${list.familyCustAddrGugun} ]]");
-	getDong("[[ ${list.familyCustAddrDong} ]]");
-	
-	function getSido() {
-		$.ajax({
-			url : "/zipcode/getSido",
-			type : "POST",
-			cache : false,
-			async : false,
-			dataType : "json",
-			success : function(data) {
-				var sStr = "";
-				
-				for(var i = 0;i < data.length; i++) {
-					var sSido = data[i].sido;
-					sStr += "<option value='" + sSido + "'>" + sSido + "</option>";
-				}
-				
-				$("#sido").html(sStr);
-				getGugun();
-			},
-			error : function(request, status, error) {
-				var msg = "ERROR : " + request.status + "<br>"
-				msg += +"내용 : " + request.responseText + "<br>" + error;
-				console.log(msg);
+getSido("[[ ${list.familyCustAddrSi} ]]");
+getGugun("[[ ${list.familyCustAddrGugun} ]]");
+getDong("[[ ${list.familyCustAddrDong} ]]");
+$("#addr").val("[[ ${list.familyCustAddr} ]]");
+
+// 도로명주소 
+if("[[ ${list.zipCode2} ]]" == "") {
+	$("#zipcode1").val("[[ ${list.zipCode1} ]]");
+	$("input:radio[id='newCheck']").prop('checked', true);
+	radioChange("new")
+} else {
+	$("#zipcode1").val("[[ ${list.zipCode1} ]]");
+	$("#zipcode2").val("[[ ${list.zipCode2} ]]");
+	$("input:radio[id='guCheck']").prop('checked', true);
+	radioChange("gu")
+}
+
+function getSido(getData) {
+	$.ajax({
+		url : "/zipcode/getSido",
+		type : "POST",
+		cache : false,
+		async : false,
+		dataType : "json",
+		success : function(data) {
+			var sStr = "";
+			
+			for(var i = 0;i < data.length; i++) {
+				var sSido = data[i].sido;
+				sStr += "<option value='" + sSido + "'>" + sSido + "</option>";
 			}
-		});
-	}
-	
-	function getGugun() {
-		$.ajax({
-			url : "/zipcode/getGugun",
-			type : "POST",
-			cache : false,
-			async : false,
-			dataType : "json",
-			data : "sido=" + $("#sido").val(),
-			success : function(data) {
-				var sStr = "";
-				
-				for(var i = 0;i < data.length; i++) {
-					var sData = data[i].gugun;
-					sStr += "<option value='" + sData + "'>" + sData + "</option>";
-				}
-				
-				$("#gugun").html(sStr);
-				getDong();
-			},
-			error : function(request, status, error) {
-				var msg = "ERROR : " + request.status + "<br>"
-				msg += +"내용 : " + request.responseText + "<br>" + error;
-				console.log(msg);
+			
+			$("#sido").html(sStr);
+			
+			if(getData != undefined) {
+				$("#sido").val(getData);
 			}
-		});
-	}
-	
-	function getDong() {
-		$.ajax({
-			url : "/zipcode/getDong",
-			type : "POST",
-			cache : false,
-			async : false,
-			dataType : "json",
-			data : "sido=" + $("#sido").val()
-					+ "&gugun=" + $("#gugun").val(),
-			success : function(data) {
-				var sStr = "";
-				
-				for(var i = 0;i < data.length; i++) {
-					var sData = data[i].dong;
-					sStr += "<option value='" + sData + "'>" + sData + "</option>";
-				}
-				
-				$("#dong").html(sStr);
-				getZipList();
-			},
-			error : function(request, status, error) {
-				var msg = "ERROR : " + request.status + "<br>"
-				msg += +"내용 : " + request.responseText + "<br>" + error;
-				console.log(msg);
+			
+			getGugun();
+		},
+		error : function(request, status, error) {
+			var msg = "ERROR : " + request.status + "<br>"
+			msg += +"내용 : " + request.responseText + "<br>" + error;
+			console.log(msg);
+		}
+	});
+}
+function getGugun(getData) {
+	$.ajax({
+		url : "/zipcode/getGugun",
+		type : "POST",
+		cache : false,
+		async : false,
+		dataType : "json",
+		data : "sido=" + $("#sido").val(),
+		success : function(data) {
+			var sStr = "";
+			
+			for(var i = 0;i < data.length; i++) {
+				var sData = data[i].gugun;
+				sStr += "<option value='" + sData + "'>" + sData + "</option>";
 			}
-		});
-	}
-	
-	function getZipList() {
-		$.ajax({
-			url : "/zipcode/getZip",
-			type : "POST",
-			cache : false,
-			async : false,
-			dataType : "json",
-			data : "sido=" + $("#sido").val()
-					+ "&gugun=" + $("#gugun").val()
-					+ "&dong=" + $("#dong").val(),
-			success : function(data) {
-				var sStr = "";
-				var sListLi = "";
-				
-				if(data.length > 0) {
-					for(var i = 0;i < data.length; i++) {
-						var sRi = data[i].ri;
-						var zip1 = data[i].zipCode1;
-						var zip2 = data[i].zipCode2;
-						
-						var gubun = "구주소";
-						
-						
-						if(zip1 == undefined) {
-							zip1 = "";
-							gubun = "도로명주소";
-						} 
-						 
-						if(zip2 == undefined) {
-							zip2 = "";
-						}
-						
-						var sListData = "";
-	
-						sListData += "<a class='list-group-item list-group-item-action '";
-						sListData += " data-toggle='list' href='javascript:;' ri='" + sRi + "' zipcode1='" + zip1 +"' zipcode2='" + zip2 +"'";
-						sListData += " onClick='javascript:chooseZip($(this));'";						
-						sListData += "role='tab' >" + sRi + "<sup><b>" + gubun + "</b></sup></a>";
-						
-						sListLi += sListData; 
+			
+			$("#gugun").html(sStr);
+			if(getData != undefined) {
+				$("#gugun").val(getData);
+			}
+			
+			getDong();
+		},
+		error : function(request, status, error) {
+			var msg = "ERROR : " + request.status + "<br>"
+			msg += +"내용 : " + request.responseText + "<br>" + error;
+			console.log(msg);
+		}
+	});
+}
+function getDong(getData) {
+	$.ajax({
+		url : "/zipcode/getDong",
+		type : "POST",
+		cache : false,
+		async : false,
+		dataType : "json",
+		data : "sido=" + $("#sido").val()
+				+ "&gugun=" + $("#gugun").val(),
+		success : function(data) {
+			var sStr = "";
+			
+			for(var i = 0;i < data.length; i++) {
+				var sData = data[i].dong;
+				sStr += "<option value='" + sData + "'>" + sData + "</option>";
+			}
+			
+			$("#dong").html(sStr);
+			if(getData != undefined) {
+				$("#dong").val(getData);			
+			}
+			
+			getZipList();
+		},
+		error : function(request, status, error) {
+			var msg = "ERROR : " + request.status + "<br>"
+			msg += +"내용 : " + request.responseText + "<br>" + error;
+			console.log(msg);
+		}
+	});
+}
+function getZipList() {
+	$.ajax({
+		url : "/zipcode/getZip",
+		type : "POST",
+		cache : false,
+		async : false,
+		dataType : "json",
+		data : "sido=" + $("#sido").val()
+				+ "&gugun=" + $("#gugun").val()
+				+ "&dong=" + $("#dong").val(),
+		success : function(data) {
+			var sStr = "";
+			var sListLi = "";
+			
+			if(data.length > 0) {
+				for(var i = 0;i < data.length; i++) {
+					var sRi = data[i].ri;
+					var zip1 = data[i].zipCode1;
+					var zip2 = data[i].zipCode2;
+					
+					var gubun = "구주소";
+					
+					
+					if(zip1 == undefined) {
+						zip1 = "";
+						gubun = "도로명주소";
 					} 
-				} else {
-					sListLi = "<center>상세주소가 존재하지 않습니다.</center>"
-				}
-				
-				$("#addr").val("");
-				$("#zipcode1").val("");
-				$("#zipcode2").val("");
-				
-				
-				$("#list-tab").html(sListLi);				
-			},error : function(request, status, error) {
-				var msg = "ERROR : " + request.status + "<br>"
-				msg += +"내용 : " + request.responseText + "<br>" + error;
-				console.log(msg);
+					 
+					if(zip2 == undefined) {
+						zip2 = "";
+					}
+					
+					var sListData = "";
+
+					sListData += "<a class='list-group-item list-group-item-action '";
+					sListData += " data-toggle='list' href='javascript:;' ri='" + sRi + "' zipcode1='" + zip1 +"' zipcode2='" + zip2 +"'";
+					sListData += " onClick='javascript:chooseZip($(this));'";						
+					sListData += "role='tab' >" + sRi + "<sup><b>" + gubun + "</b></sup></a>";
+					
+					sListLi += sListData; 
+				} 
+			} else {
+				sListLi = "<center>상세주소가 존재하지 않습니다.</center>"
 			}
-		});
-	}
+			
+			$("#addr").val("");
+			$("#zipcode1").val("");
+			$("#zipcode2").val("");
+			
+			$("#list-tab").html(sListLi);
+		},
+		error : function(request, status, error) {
+			var msg = "ERROR : " + request.status + "<br>"
+			msg += +"내용 : " + request.responseText + "<br>" + error;
+			console.log(msg);
+		}
+	});
+}
 	
 	function chooseZip(obj) {
 		$("#addr").val(obj.attr("ri"));

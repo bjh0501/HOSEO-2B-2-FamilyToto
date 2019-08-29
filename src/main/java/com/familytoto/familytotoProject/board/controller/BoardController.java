@@ -137,7 +137,7 @@ public class BoardController {
 		mv.addObject("comment", listCommentVo);
 		mv.addObject("socialImg", sGubun);
 		mv.addObject("commentCnt", nCommentCnt);
-		
+		System.out.println(vo.getBoardContents()+"==");
 		mv.setViewName("board/showBoard");
 		
 		return mv;
