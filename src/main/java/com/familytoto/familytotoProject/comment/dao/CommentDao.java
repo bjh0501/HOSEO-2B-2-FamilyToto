@@ -9,6 +9,9 @@ public interface CommentDao {
 	// 댓글추가
 	int insertComment(CommentVO vo);
 	
+	// 댓글추가한거 그룹번호 수정
+	int updateInsertComment(CommentVO vo);
+	
 	// 댓글 리스트 보기
 	List<CommentVO> getListComment(BoardVO vo);
 	

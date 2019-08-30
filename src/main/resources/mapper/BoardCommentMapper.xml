@@ -3,17 +3,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="boardComment">
-
-	<insert id="insertComment">
+	<insert id="insertComment" useGeneratedKeys="true" keyProperty="commentNo" parameterType="com.familytoto.familytotoProject.comment.domain.CommentVO">
 		INSERT INTO COMMENT
 		    (BOARD_NO, 				COMMENT_GRP_NO,     COMMENT_GRP_ORD,		COMMENT_GRP_DEPTH, 
 		    COMMENT_CONTENTS,		COMMENT_ANNO_ID, 	COMMENT_ANNO_PW,		REG_CUST_NO, 
 		    REG_DT,					REG_IP, 			USE_YN)
 		VALUES
-		    (#{boardNo},			1,					1,						1,
+		    (#{boardNo},			-1,					0,						1,
 		    #{commentContents},		#{commentAnnoId},	#{commentAnnoPw},		${regCustNo},
 		    now(),					#{regIp},			'Y');
 	</insert>
+	<update id="updateInsertComment">
+		UPDATE	COMMENT
+		SET		COMMENT_GRP_NO = #{commentNo}
+		WHERE	COMMENT_NO = #{commentNo}
+	</update>
 	<select id="getListComment" resultType="com.familytoto.familytotoProject.comment.domain.CommentVO">
         SELECT	IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) as commentAnnoId
 		,		IFNULL(C.CHG_DT, C.REG_DT) as regDt

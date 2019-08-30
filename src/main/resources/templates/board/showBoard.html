@@ -147,7 +147,7 @@
 									<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:socialComment(${board.getBoardNo()});|">등록</button>
 								</div>
 							</div>
-							<div class="row" th:if="${cust == -1}">
+							<div class="row" th:if="${cust == -1}" id="commentDiv">
 								<div class="col-xl-4 col-md-6 col-sm-6 mb-3">
 									<div class="input-group">
 										<label style="padding-top:8px;padding-right:2px;">아이디</label>
@@ -199,7 +199,8 @@
 											<p class="text-word-l" th:text="${com.getCommentContents()}">댓글</p>
 										</div>
 										<p class="ml-auto p-2 ">
-											<button type="button" class="btn btn-secondary">답글쓰기</button>
+											<button type="button" class="btn btn-secondary" onClick="javascript:replyComment($(this));">답글쓰기</button>
+											
 												<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary"
 												th:data-commentno="${com.getCommentNo()}"
 												th:data-gubun="${com.getScCustGubun()}"
@@ -300,6 +301,14 @@
 	$("#boardDiv").html($("#contentsArea").val());
 </script>
 <script>	
+	function replyComment(obj) {
+		var htmlStr = '<div class="row">';
+		htmlStr += $("#commentDiv").html();
+		htmlStr += '</div>';
+		
+		obj.closest(".row").append(htmlStr)
+		
+	}
 	function deleteBoard(no, regNo) {
 		 //일반
 		if(regNo != 0){

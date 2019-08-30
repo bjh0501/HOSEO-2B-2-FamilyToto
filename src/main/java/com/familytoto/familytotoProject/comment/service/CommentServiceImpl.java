@@ -39,8 +39,13 @@ public class CommentServiceImpl implements CommentService{
 			}
 		}
 		
+		int nResult = commentDao.insertComment(vo);
 		
- 		return commentDao.insertComment(vo);
+		if(nResult == 1) {
+			return commentDao.updateInsertComment(vo);
+		} else {
+			return -95;
+		}
 	}
 
 	@Override

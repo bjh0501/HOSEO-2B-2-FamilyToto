@@ -18,6 +18,11 @@ public class CommentDaoImpl implements CommentDao {
 	public int insertComment(CommentVO vo) {
 		return sqlSession.insert("boardComment.insertComment", vo);
 	}
+	
+	@Override
+	public int updateInsertComment(CommentVO vo) {
+		return sqlSession.update("boardComment.updateInsertComment", vo);
+	}
 
 	@Override
 	public List<CommentVO> getListComment(BoardVO vo) {
