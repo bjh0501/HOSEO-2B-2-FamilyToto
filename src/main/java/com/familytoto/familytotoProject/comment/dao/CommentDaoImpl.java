@@ -12,7 +12,7 @@ import com.familytoto.familytotoProject.comment.domain.CommentVO;
 @Repository
 public class CommentDaoImpl implements CommentDao {
 	@Autowired
-	SqlSession sqlSession; 
+	SqlSession sqlSession;
 	
 	@Override
 	public int insertComment(CommentVO vo) {
@@ -24,6 +24,16 @@ public class CommentDaoImpl implements CommentDao {
 		return sqlSession.update("boardComment.updateInsertComment", vo);
 	}
 
+	@Override
+	public int insertReplyComment(CommentVO vo) {
+		return sqlSession.insert("boardComment.insertReplyComment", vo);
+	}
+	
+	@Override
+	public int updateBeforeReplyOrder(CommentVO vo) {
+		return sqlSession.update("boardComment.updateBeforeReply", vo);
+	}
+	
 	@Override
 	public List<CommentVO> getListComment(BoardVO vo) {
 		return sqlSession.selectList("boardComment.getListComment", vo);

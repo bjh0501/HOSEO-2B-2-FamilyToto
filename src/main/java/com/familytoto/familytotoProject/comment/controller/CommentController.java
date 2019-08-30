@@ -59,4 +59,13 @@ public class CommentController {
 		
 		return commentService.updateComment(vo);
 	}
+	
+	@RequestMapping("/board/replyComment")
+	@ResponseBody
+	public int replyComment(CommentVO vo, HttpServletRequest request, HttpSession session) {
+		vo.setRegCustNo(0);
+		vo.setRegIp(request.getRemoteAddr());
+		
+		return commentService.insertReplyComment(vo);
+	}
 }

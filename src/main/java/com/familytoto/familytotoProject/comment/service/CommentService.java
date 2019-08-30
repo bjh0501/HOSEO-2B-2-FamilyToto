@@ -9,6 +9,9 @@ public interface CommentService {
 	// insert 댓글
 	int insertComment(CommentVO vo);
 	
+	// insert 댓글
+	int insertReplyComment(CommentVO vo);
+	
 	// 댓글 리스트 보기
 	List<CommentVO> getListComment(BoardVO vo);
 	

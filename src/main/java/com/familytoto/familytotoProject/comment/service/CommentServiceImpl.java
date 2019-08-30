@@ -47,6 +47,26 @@ public class CommentServiceImpl implements CommentService{
 			return -95;
 		}
 	}
+	
+	@Override
+	public int insertReplyComment(CommentVO vo) {
+		CustVO cVo = new CustVO();
+		
+		String sPass = cVo.toEncodePassword(vo.getCommentAnnoPw());
+		
+		vo.setCommentAnnoPw(sPass);
+		
+		
+		commentDao.updateBeforeReplyOrder(vo);
+		
+		int nInsertReplyCommentResult = commentDao.insertReplyComment(vo);
+		
+		if(nInsertReplyCommentResult == 1) {
+			return 1;
+		} else {
+			return -99;
+		}
+	}
 
 	@Override
 	public List<CommentVO> getListComment(BoardVO vo) {
@@ -101,6 +121,5 @@ public class CommentServiceImpl implements CommentService{
 		} else {
 			return commentDao.updateComment(vo);
 		}
-	}
-	
+	}	
 }

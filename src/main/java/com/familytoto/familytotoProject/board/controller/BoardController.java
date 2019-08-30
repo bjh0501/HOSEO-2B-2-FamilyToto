@@ -125,6 +125,8 @@ public class BoardController {
 		}
     }
 	
+	
+	// 이 메서드 정리해야함
 	@RequestMapping("/showEditor")
     public String showEditor() {
         return "board/editor/showEditor";
@@ -172,7 +174,7 @@ public class BoardController {
 		mv.setViewName("board/showBoard");
 		
 		return mv;
-    }
+    }	
 	
 	@RequestMapping("/deleteBoard/{boardNo}")
 	public String deleteBoard(HttpSession session, @PathVariable ("boardNo") String sNo, HttpServletRequest request) {
