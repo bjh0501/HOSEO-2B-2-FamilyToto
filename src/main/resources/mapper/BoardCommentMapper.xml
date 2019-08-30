@@ -18,6 +18,9 @@
 		SET		COMMENT_GRP_NO = #{commentNo}
 		WHERE	COMMENT_NO = #{commentNo}
 	</update>
+	<insert id="insertReplyComment">
+		
+	</insert>	
 	<select id="getListComment" resultType="com.familytoto.familytotoProject.comment.domain.CommentVO">
         SELECT	IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) as commentAnnoId
 		,		IFNULL(C.CHG_DT, C.REG_DT) as regDt

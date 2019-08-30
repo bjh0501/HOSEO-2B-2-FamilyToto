@@ -199,7 +199,7 @@
 											<p class="text-word-l" th:text="${com.getCommentContents()}">댓글</p>
 										</div>
 										<p class="ml-auto p-2 ">
-											<button type="button" class="btn btn-secondary" onClick="javascript:replyComment($(this));">답글쓰기</button>
+											<button type="button" class="btn btn-secondary" onClick="javascript:replyComment($(this));" >답글쓰기</button>
 											
 												<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary"
 												th:data-commentno="${com.getCommentNo()}"
@@ -302,13 +302,48 @@
 </script>
 <script>	
 	function replyComment(obj) {
-		var htmlStr = '<div class="row">';
-		htmlStr += $("#commentDiv").html();
-		htmlStr += '</div>';
+		var getButtonName = obj.html();
 		
-		obj.closest(".row").append(htmlStr)
+		if(getButtonName == "답글쓰기") {
+			obj.html("답글닫기");
+				
+			// 익명
+				var htmlStr = "";
+				htmlStr += '<div class="row">';
+				htmlStr += '	<div class="col-xl-4 col-md-6 col-sm-6 mb-3">';
+				htmlStr += '		<div class="input-group">';
+				htmlStr += '			<label style="padding-top:8px;padding-right:2px;">아이디</label>';
+				htmlStr += '			<input type="text" class="form-control" placeholder="id" aria-describedby="basic-addon1">';
+				htmlStr += '		</div>';
+				htmlStr += '	</div>';
+				htmlStr += '	<div class="col-xl-4 col-md-6 col-sm-6 mb-3">';
+				htmlStr += '		<div class="input-group">';
+				htmlStr += '			<label style="padding-top:8px;padding-right:2px;">비밀번호</label>';
+				htmlStr += '			<input type="password" class="form-control" placeholder="passowrd" aria-describedby="basic-addon1">';
+				htmlStr += '		</div>';
+				htmlStr += '	</div>';
+				htmlStr += '	<div class="col-xl-12 col-md-12 col-sm-12">';
+				htmlStr += '		<div class="input-group">';
+				htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1">';
+				htmlStr += '			<button type="button" class="btn btn-secondary" style="margin-left:5px" onclick="javascript:registerReplyComment($(this));">등록</button>';
+				htmlStr += '		</div>';
+				htmlStr += '	</div>';
+				htmlStr += '</div>';
+				
+			obj.closest(".row").after(htmlStr);
+		} else {
+			obj.html("답글쓰기");
+
+			obj.closest(".row").next().remove()
+		}
 		
 	}
+	
+	function registerReplyComment() {
+		
+	}
+	
+	
 	function deleteBoard(no, regNo) {
 		 //일반
 		if(regNo != 0){
