@@ -8,6 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+	
+	<meta http-equiv='Content-type' content='text/html; charset=utf-8'>
+	<meta http-equiv="cache-control" content="no-cache, must-revalidate">
+	<meta http-equiv="pragma" content="no-cache">
 
   <title>One Sports</title>
 
@@ -117,7 +121,7 @@
 										<div class="col-xl-3 col-md-3 mb-3"  th:if="${cust == board.getRegCustNo() || board.getRegCustNo() == 0}">		
 											<div class="input-group mb-3">
 												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;"
-												data-toggle="modal" data-target="#deleteModal">삭제</button>
+												data-toggle="modal" data-target="#updateModal">삭제</button>
 											</div>
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.boardReplyNo} == 0">		
@@ -143,8 +147,9 @@
 									<a class="navbar-brand" href="javascript:;" style="cursor:default;">
 								   		<img th:src="${socialImg}" width="30" height="30" alt="" th:if="${cust != 0}" id="socialImg">
 								 	</a>
-									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="inputComment">
-									<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:socialComment(${board.getBoardNo()});|">등록</button>
+									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="inputComment"
+									onkeypress="if(event.keyCode==13) {$('#socialRegisterButton').trigger('click');}">
+									<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:socialComment(${board.getBoardNo()});|" id="socialRegisterButton">등록</button>
 								</div>
 							</div>
 							<div class="row" th:if="${cust == -1}" id="commentDiv">
@@ -162,8 +167,9 @@
 								</div>
 								<div class="col-xl-12 col-md-12 col-sm-12">
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="annoComment">
-										<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:registerComment('anno', ${board.getBoardNo()});|">등록</button>
+										<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="annoComment"
+										onkeypress="if(event.keyCode==13) {$('#annoRegisterButton').trigger('click');}">
+										<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:registerComment('anno', ${board.getBoardNo()});|" id="annoRegisterButton">등록</button>
 									</div>
 								</div>
 							</div>
@@ -228,7 +234,7 @@
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">비밀번호 입력</h5>
+		        <h5 class="modal-title">비밀번호 입력</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
@@ -265,6 +271,29 @@
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 		        <button type="button" class="btn btn-secondary" th:onClick="|javascript:deleteBoard(${board.getBoardNo()}, ${board.getRegCustNo()} ) |" id="goDeleteButton">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal fade" id="replyUpdateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">비밀번호 입력</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		          <div class="form-group">
+		            <label for="recipient-name" class="col-form-label">비밀번호:</label>
+		            <input type="password" class="form-control" id="replyUpdateAnnoInputPw">
+		          </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		        <button type="button" class="btn btn-secondary" th:onClick="|javascript:goUpdate(${board.getRegCustNo()}, ${board.getBoardNo()} )|" id="goUpdateButton">확인</button>
 		      </div>
 		    </div>
 		  </div>
@@ -316,29 +345,45 @@
 				id = "replyId" + currentReplyNo;
 				pass = "replyPass" + currentReplyNo;
 				comment = "replyComment" + currentReplyNo;
-			
-			// 익명
+				
 				var htmlStr = "";
-				htmlStr += '<div class="row">';
-				htmlStr += '	<div class="col-xl-4 col-md-6 col-sm-6 mb-3">';
-				htmlStr += '		<div class="input-group">';
-				htmlStr += '			<label style="padding-top:8px;padding-right:2px;">아이디</label>';
-				htmlStr += '			<input type="text" class="form-control" placeholder="id" aria-describedby="basic-addon1" id="' + id +  '">';
-				htmlStr += '		</div>';
-				htmlStr += '	</div>';
-				htmlStr += '	<div class="col-xl-4 col-md-6 col-sm-6 mb-3">';
-				htmlStr += '		<div class="input-group">';
-				htmlStr += '			<label style="padding-top:8px;padding-right:2px;">비밀번호</label>';
-				htmlStr += '			<input type="password" class="form-control" placeholder="passowrd" aria-describedby="basic-addon1" id="' + pass +  '">';
-				htmlStr += '		</div>';
-				htmlStr += '	</div>';
-				htmlStr += '	<div class="col-xl-12 col-md-12 col-sm-12">';
-				htmlStr += '		<div class="input-group">';
-				htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="' + comment +  '">';
-				htmlStr += '			<button type="button" class="btn btn-secondary" style="margin-left:5px" onclick="javascript:registerReplyComment(' + currentReplyNo + ', '+grp+', '+ord+', '+depth+');">등록</button>';
-				htmlStr += '		</div>';
-				htmlStr += '	</div>';
-				htmlStr += '</div>';
+				
+				if( $("#custNick").html() == undefined || $("#custNick").html() == "") {
+					htmlStr += '<div class="row">';
+					htmlStr += '	<div class="col-xl-4 col-md-6 col-sm-6 mb-3">';
+					htmlStr += '		<div class="input-group">';
+					htmlStr += '			<label style="padding-top:8px;padding-right:2px;">아이디</label>';
+					htmlStr += '			<input type="text" class="form-control" placeholder="id" aria-describedby="basic-addon1" id="' + id +  '">';
+					htmlStr += '		</div>';
+					htmlStr += '	</div>';
+					htmlStr += '	<div class="col-xl-4 col-md-6 col-sm-6 mb-3">';
+					htmlStr += '		<div class="input-group">';
+					htmlStr += '			<label style="padding-top:8px;padding-right:2px;">비밀번호</label>';
+					htmlStr += '			<input type="password" class="form-control" placeholder="passowrd" aria-describedby="basic-addon1" id="' + pass +  '">';
+					htmlStr += '		</div>';
+					htmlStr += '	</div>';
+					htmlStr += '	<div class="col-xl-12 col-md-12 col-sm-12">';
+					htmlStr += '		<div class="input-group">';
+					htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="' + comment +  '">';
+					htmlStr += '			<button type="button" class="btn btn-secondary" style="margin-left:5px"';
+					htmlStr += '			onclick="javascript:registerReplyComment(' + currentReplyNo + ', '+grp+', '+ord+', '+depth+');">등록</button>';
+					htmlStr += '		</div>';
+					htmlStr += '	</div>';
+					htmlStr += '</div>';
+				} else {
+					htmlStr += '<div class="row">';
+					htmlStr += '	<div class="input-group">';
+					htmlStr += '		<b><label style="padding-top:8px;padding-right:2px;">' + $("#custNick").html() + '</label></b>';
+					htmlStr += '		<a class="navbar-brand" href="javascript:;" style="cursor:default;">';
+					htmlStr += '			<img src="' + $("#socialImg").attr("src") + '" width="30" height="30" alt="">';
+					htmlStr += '		</a>';
+					htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="' + comment +  '">';
+					htmlStr += '			<button type="button" class="btn btn-secondary" style="margin-left:5px"';
+					htmlStr += '			onclick="javascript:registerReplyComment(' + currentReplyNo + ', '+grp+', '+ord+', '+depth+');">등록</button>';
+					htmlStr += '	</div>';
+					htmlStr += '</div>';
+				}
+				
 				
 			obj.closest(".row").after(htmlStr);
 		} else {
@@ -350,26 +395,66 @@
 	}
 	
 	function registerReplyComment(replyNo, grp, ord, depth) {
-		id = $("#replyId" + replyNo).val();
-		pass = $("#replyPass" + replyNo).val();
 		comment = $("#replyComment" + replyNo).val();
 		ord = parseInt(ord)+1
+		 
+		var dataStr = "boardNo=" + [[ ${board.getBoardNo()} ]];
+		
+		if( $("#custNick").html() == undefined || $("#custNick").html() == "") {
+			id = $("#replyId" + replyNo).val();
+			pass = $("#replyPass" + replyNo).val();
+			
+			var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
+			v = id
+	
+			if (!regexp.test(v) || id.length < 4
+					|| id.length > 20) {
+				alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+				$("#replyId" + replyNo).focus();
+				return;
+			}
+			
+			if($("#replyPass" + replyNo) == "") {
+				alert("비밀번호를 입력해주세요.");
+				$("#replyPass" + replyNo).focus();
+				return ;
+			}
+			
+			if(pass.length < 8 || pass.length > 20) {
+				alert("비밀번호는 8~20글자로 입력해주세요.");
+				$("#replyPass" + replyNo).focus();
+				return ;
+			}
+			
+			dataStr += "&commentAnnoId=" + id;
+			dataStr += "&commentAnnoPw=" + pass;
+		}
+		
+		if(comment.trim() == "") {
+			alert("댓글을 입력해주세요.");
+			$("#annoComment").focus();
+			return ;
+		}
+		
+		if(comment.trim().length > 120) {
+			alert("댓글은 120글자 까지만 입력가능합니다.");
+			return ;
+		}
+		 
+		dataStr += "&commentGrpNo=" + grp;
+		dataStr += "&commentGrpOrd=" + ord;
+		dataStr += "&commentGrpDepth=" + depth;
+		dataStr += "&commentContents=" + comment;
 		
 		$.ajax({
 			url : "/board/replyComment",
 			type : "POST",
 			cache : false,
 			dataType : "json",
-			data : "boardNo=" + [[ ${board.getBoardNo()} ]]
-					+ "&commentGrpNo=" + grp
-					+ "&commentGrpOrd=" + ord
-					+ "&commentGrpDepth=" + depth
-					+ "&commentContents=" + comment
-					+ "&commentAnnoId=" + id
-					+ "&commentAnnoPw=" + pass,
+			data : dataStr,
 			success : function(data) {
 				if(data == 1) {
-				//	alert("등록되엇습니다.")
+					location.reload();
 				} else {
 					alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
 				}
@@ -463,8 +548,24 @@
 				return ;
 			}
 			
+			var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
+			v = $("#annoId").val()
+
+			if (!regexp.test(v) || $("#annoId").val().length < 4
+					|| $("#annoId").val().length > 20) {
+				alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+				$("#annoId").focus();
+				return;
+			}
+			
 			if($("#annoPw").val() == "") {
 				alert("비밀번호를 입력해주세요.");
+				$("#annoPw").focus();
+				return ;
+			}
+			
+			if($("#annoPw").val().length < 8 || $("#annoPw").val().length > 20) {
+				alert("비밀번호는 8~20글자로 입력해주세요.");
 				$("#annoPw").focus();
 				return ;
 			}
@@ -472,6 +573,11 @@
 			if($("#annoComment").val().trim() == "") {
 				alert("댓글을 입력해주세요.");
 				$("#annoComment").focus();
+				return ;
+			}
+			
+			if($("#annoComment").val().trim().length > 120) {
+				alert("댓글은 120글자 까지만 입력가능합니다.");
 				return ;
 			}
 			
@@ -485,42 +591,7 @@
 						+ "&commentAnnoId=" + $("#annoId").val()
 						+ "&commentAnnoPw=" + $("#annoPw").val(),
 				success : function(data) {
-					var sCommentStr = "";
-					
-					sCommentStr += '<div class="row com" style="display: none;">';
-					sCommentStr += '	<div class="input-group d-flex">';
-					sCommentStr += '		<div class="p-1">';
-					sCommentStr += '			<b><label class="text-word-r">' + $("#annoId").val() + '</label></b>';
-					// sCommentStr += '			<a class="navbar-brand" href="#">';
-					// sCommentStr += '				<img src="img/social/naver.jpg" width="30" height="30" alt="">';
-					// sCommentStr += '			</a>';
-					sCommentStr += '		</div>';
-					sCommentStr += '		<div class="p-1">';
-					sCommentStr += '			<p class="text-word-l">' + $("#annoComment").val() + '</p>';
-					sCommentStr += '		</div>';
-					sCommentStr += '		<p class="ml-auto p-2 ">';
-					sCommentStr += '			<button type="button" class="btn btn-secondary">답글쓰기</button>';
-					sCommentStr += '			<button type="button" class="btn btn-secondary">수정</button>';
-					sCommentStr += '			<button type="button" class="btn btn-secondary">삭제</button>';
-					sCommentStr += '			<label class="text-word-l">방금전</label>';
-					sCommentStr += '		</p>';
-					sCommentStr += '	</div>';
-					sCommentStr += '</div>';		
-					
-					$(".empty").remove();
-					$("#commentHr").after(sCommentStr)
-					
-					$(".com").slideDown();
-					
-					nowCnt = $("#commentCnt").html().replace(")", "").replace("(", "")
-					nowCnt++;
-					
-					$("#commentCnt").html("("+nowCnt+")");		
-					$("#annoComment").val("")
-					$("#annoId").val("")
-					$("#annoPw").val("")
-					
-					
+					location.reload();
 				},
 				error : function(request, status, error) {
 					var msg = "ERROR : " + request.status + "<br>"
@@ -537,6 +608,11 @@
 			return ;
 		}
 		
+		if($("#inputComment").val().trim().length > 120) {
+			alert("댓글은 120글자 까지만 입력가능합니다.");
+			return ;
+		}
+		
 		$.ajax({
 			url : "/board/insertComment",
 			type : "POST",
@@ -545,34 +621,7 @@
 			data : "boardNo=" + boardNo
 					+ "&commentContents=" + $("#inputComment").val(),
 			success : function(data) {
-				var sCommentStr = "";
-				
-				sCommentStr += '<div class="row com">';
-				sCommentStr += '	<div class="input-group d-flex">';
-				sCommentStr += '		<div class="p-1">';
-				sCommentStr += '			<b><label class="text-word-r">' + $("#custNick").html() + '</label></b>';
-				sCommentStr += '			<a class="navbar-brand" href="#">';
-				sCommentStr += '				<img src="' + $("#socialImg").attr("src") + '" width="30" height="30" alt="">';
-				sCommentStr += '			</a>';
-				sCommentStr += '		</div>';
-				sCommentStr += '		<div class="p-1">';
-				sCommentStr += '			<p class="text-word-l">' + $("#inputComment").val() + '</p>';
-				sCommentStr += '		</div>';
-				sCommentStr += '		<p class="ml-auto p-2 ">';
-				sCommentStr += '			<button type="button" class="btn btn-secondary">답글쓰기</button>';
-				sCommentStr += '			<button type="button" class="btn btn-secondary">수정</button>';
-				sCommentStr += '			<button type="button" class="btn btn-secondary">삭제</button>';
-				sCommentStr += '			<label class="text-word-l">방금전</label>';
-				sCommentStr += '		</p>';
-				sCommentStr += '	</div>';
-				sCommentStr += '</div>';		
-				
-				$("#commentHr").after(sCommentStr);
-				$("#inputComment").val("");
-				
-				nowCnt = $("#commentCnt").html().replace(")", "").replace("(", "")
-				nowCnt++;
-				$("#commentCnt").html("("+nowCnt+")");
+				location.reload();
 			},
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
@@ -646,7 +695,7 @@
 		
 	}
 	
-	function updateComment(obj, commentNo, gubun) {
+	function updateComment(obj, commentNo, gubun) {		
 		obj.attr("style", "display: none");
 		var contents = obj.parent().parent().children(".commentContents").children().html()
 		var input = '<input type="text" class="form-control" placeholder="Comment" value="' + contents + '">';
@@ -676,6 +725,17 @@
 		} else {
 			dataStr = "commentNo=" + commentNo
 			+"&commentContents=" + contents
+		}
+		
+		if(contents.trim() == "") {
+			alert("댓글을 입력해주세요.");
+			$("#annoComment").focus();
+			return ;
+		}
+		
+		if(contents.trim().length > 120) {
+			alert("댓글은 120글자 까지만 입력가능합니다.");
+			return ;
 		}
 		
 		$.ajax({

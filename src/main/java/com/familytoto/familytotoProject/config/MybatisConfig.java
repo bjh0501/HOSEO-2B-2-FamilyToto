@@ -22,19 +22,8 @@ public class MybatisConfig {
 		sqlSessionFactoryBean.setConfigurationProperties(mybatisProperties);
 		sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
 		sqlSessionFactoryBean.setDataSource(dataSource);
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.registerCust.domain");
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.login.domain");
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.qna.domain");
-		
-		// 이건 매핑이안댄다.
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.comment.domain");
-		
-		
-		// 보드 도메인이 맨아래여야 에러가안난다.. 무슨 문제있는듯
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject.board.domain");
-		
-
-		
+		sqlSessionFactoryBean.setTypeAliasesPackage("com.familytoto.familytotoProject");
+				
 		sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
 		return sqlSessionFactoryBean.getObject();
 	}

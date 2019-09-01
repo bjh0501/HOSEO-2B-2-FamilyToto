@@ -14,8 +14,8 @@ TrexConfig.addTool(
 );
 
 TrexMessage.addMsg({
-	'@insertlink.cancel.image': "#iconpath/btn_cancel.gif?v=2",
-	'@insertlink.confirm.image': "#iconpath/btn_confirm.gif?v=2",
+	'@insertlink.cancel.image': "/daumeditor/images/icon/editor/btn_cancel.gif?v=2",
+	'@insertlink.confirm.image': "/daumeditor/images/icon/editor/btn_confirm.gif?v=2",
 	'@insertlink.invalid.url': "URL을 입력해주세요.",
 	'@insertlink.link.alt': "[#{title}]로 이동합니다.",
 	'@insertlink.remove.image': "#iconpath/btn_remove.gif?v=2",
@@ -181,8 +181,8 @@ Trex.MarkupTemplate.add(
 		'            <hr/>',
 		'        </dd>',
 		'        <dd>',
-		'            <img width="32" height="21" src="@insertlink.confirm.image"/>',
-		'            <img width="32" height="21" src="@insertlink.cancel.image"/>',
+		'            <img width="32" height="21" src="/daumeditor/images/icon/editor/btn_confirm.gif?v=2"/>',
+		'            <img width="32" height="21" src="/daumeditor/images/icon/editor/btn_cancel.gif?v=2"/>',
 		'            <img width="51" height="21" src="@insertlink.remove.image" style="display: none;"/>',
 		'        </dd>',
 		'    </dl>',

@@ -3,8 +3,11 @@ package com.familytoto.familytotoProject.registerCust.domain;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 // OneSports회원
@@ -17,10 +20,13 @@ public class CustVO {
 	private int familyCustNo;
 
 	// CUST_ID
-    @Pattern(regexp = "/^[a-zA-Zㄱ-힣0-9+]{4,20}$/", message = "4~20자의 영문, 숫자, 한글만 가능")
+	@Pattern(regexp = "[a-zA-Zㄱ-힣0-9]{2,8}", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
+    @NotBlank
 	private String custId;
 
 	// CUST_PASSWORD
+    @NotBlank
+    @Length(min = 4, max = 20)
 	private String custPassword;
 
 	// REG_CUST_NO
@@ -44,11 +50,14 @@ public class CustVO {
 	// USE_YN Y,N,B
 	private String useYn;
 	
-	
 	// 로그인용도
+	@Email
+	@NotBlank
 	private String familyCustEmail;
 
 	// 로그인용도
+	@Pattern(regexp = "/^[a-zA-Zㄱ-힣0-9+]{2,8}$/", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
+	@NotBlank
 	private String familyCustNick;
 	
 	

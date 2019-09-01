@@ -216,7 +216,9 @@
 			var url = isModuleNameNotPath(moduleName) ? this.getJSBasePath() + moduleName : moduleName;
 			if (DEFAULT_OPTIONS.environment === ENV_DEVELOPMENT) {
 				url = url + '?dummy=' + new Date().getTime();				
-			}
+			} 
+			
+		//	alert(url)
 			document.write('<script type="text/javascript" src="' + url + '" charset="utf-8"></script>');
 		},
 

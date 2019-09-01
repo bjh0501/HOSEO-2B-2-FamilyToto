@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="findCust">
-	<select id="findId" resultType="hashmap" parameterType="com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO" >
+	<select id="findId" resultType="hashmap" parameterType="RegisterCustVO" >
 		SELECT	C.CUST_ID as custId
 		,		DATE_FORMAT(C.REG_DT, '%Y. %m. %d') as regDt
 		FROM	FAMILY_CUSTOM FC

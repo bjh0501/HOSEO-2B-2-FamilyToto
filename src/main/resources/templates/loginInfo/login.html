@@ -68,8 +68,11 @@
 					  <div class="input-group-prepend" >
 					    <span class="input-group-text" >Password</span>
 					  </div>
-					  <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="pw">
+					  <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="pw" onkeypress="caps_lock(event)">
 					</div>
+					<p id="capslock" style="position:relative; border:2px solid #003b83; width:300px; bottom:0px; display:none"> 
+					    &nbsp;<b>CapsLock</b> 키가 눌려있습니다.&nbsp;
+					</p>
 					<div class="input-group mb-3">
 						<div class="custom-control custom-checkbox">
 							<input type="checkbox" class="custom-control-input" id="use">
@@ -129,7 +132,7 @@
 
   <!-- Custom scripts for all pages-->
   <script th:src="@{js/sb-admin-2.min.js}"></script>
-
+	<script th:src="@{js/jquery-ui.min.js}"></script>
   <!-- Page level plugins -->
   <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
 
@@ -350,6 +353,29 @@ function facebookLogin() {
 	    	 auth_type: 'rerequest', return_scopes: true});
 }
 
+
+	function caps_lock(e) {
+		var keyCode = 0;
+		var shiftKey = false;
+		keyCode = e.keyCode;
+		shiftKey = e.shiftKey;
+       
+		if (((keyCode >= 65 && keyCode <= 90) && !shiftKey)
+			|| ((keyCode >= 97 && keyCode <= 122) && shiftKey)) {
+			show_caps_lock();
+			setTimeout("hide_caps_lock()", 3500);
+		} else {
+			hide_caps_lock();
+		}
+	}
+
+	function show_caps_lock() {
+	     $("#capslock").show();
+	}
+	
+	function hide_caps_lock() {
+	     $("#capslock").hide();
+	}
 
 </script>
 <script async defer src="https://connect.facebook.net/en_US/sdk.js">

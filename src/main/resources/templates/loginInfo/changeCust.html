@@ -540,6 +540,18 @@ function getZipList() {
 			 return;
 		}
 		
+		 if(email1.val().trim() == "") {
+			 alert("이메일을 입력해주세요.");
+			 email1.focus();
+			 return;
+		 }
+		 
+		if(email2.val().trim() == "") {
+			alert("이메일을 입력해주세요.");
+			email2.focus();
+			return;
+		}
+		
 		
 		if(newPass.val() != "") {
 			if (newPass.val().length < 4 || newPass.val().length > 20) {

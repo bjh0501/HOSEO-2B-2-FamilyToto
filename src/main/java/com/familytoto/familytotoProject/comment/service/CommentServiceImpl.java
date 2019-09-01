@@ -52,10 +52,10 @@ public class CommentServiceImpl implements CommentService{
 	public int insertReplyComment(CommentVO vo) {
 		CustVO cVo = new CustVO();
 		
-		String sPass = cVo.toEncodePassword(vo.getCommentAnnoPw());
-		
-		vo.setCommentAnnoPw(sPass);
-		
+		if(vo.getCommentAnnoPw() != null) {
+			String sPass = cVo.toEncodePassword(vo.getCommentAnnoPw());	
+			vo.setCommentAnnoPw(sPass);
+		}
 		
 		commentDao.updateBeforeReplyOrder(vo);
 		

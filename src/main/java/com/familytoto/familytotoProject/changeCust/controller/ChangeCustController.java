@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,13 +84,14 @@ public class ChangeCustController {
 	@RequestMapping("changeCust/change")
 	@ResponseBody
     public int change(ModelAndView mv, HttpSession session, 
-    		@ModelAttribute CustVO cVo,@ModelAttribute RegisterCustVO rVo,
+    		@Valid @ModelAttribute CustVO cVo,@Valid @ModelAttribute RegisterCustVO rVo,
     		HttpServletRequest request) {
 			String sFrontCurrentPass = request.getParameter("currentPassword");
 			String sFrontNewPass = request.getParameter("newPassword");
 		
 		cVo.setCustPassword(sFrontCurrentPass);
 		
+		//비밀번호체크
 		if(cVo.isDecodePassword(cVo, sCurrentPassword)) {
 			CustVO vo = (CustVO) session.getAttribute("cust");
 			
@@ -97,9 +99,7 @@ public class ChangeCustController {
 			cVo.setChgIp(request.getRemoteAddr());
 			cVo.setFamilyCustNo(vo.getFamilyCustNo());
 			
-			// 임시방편
-			// 마이바티스 if문 쓸줄알면 나중에 변경예정
-			if(!sFrontNewPass.equals("")) {
+			if(!sFrontNewPass.equals("")) { 
 				cVo.setCustPassword(cVo.toEncodePassword(sFrontNewPass));
 			} else {
 				cVo.setCustPassword(cVo.toEncodePassword(sFrontCurrentPass));

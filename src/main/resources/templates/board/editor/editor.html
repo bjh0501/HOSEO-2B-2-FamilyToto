@@ -494,6 +494,9 @@
 	            }
 	        },
 		sidebar: {
+			 capacity: {
+				 maximum: 1024*1024*3 
+			 },
 			attachbox: {
 				show: true,
 				confirmForDeleteAll: true
@@ -600,26 +603,48 @@
 		var validator = new Trex.Validator();
 		var content = editor.getContent();
 		
-		if($("#annoGubun").val() == "Y") {
-			if($("#annoId").val().trim() == "") {
+		
+		if ($("#annoGubun").val() == "Y") {
+			if ($("#annoId").val().trim() == "") {
 				alert('아이디를 입력하세요');
 				$("#annoId").focus();
 				return false;
 			}
-			
-			if($("#annoPw").val().trim() == "") {
+
+			var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
+			v = $("#annoId").val()
+
+			if (!regexp.test(v) || $("#annoId").val().length < 4
+					|| $("#annoId").val().length > 20) {
+				alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+				$("#annoId").focus();
+				return;
+			}
+
+			if ($("#annoPw").val().trim() == "") {
 				alert('비밀번호를 입력하세요');
 				$("#annoPw").focus();
 				return false;
 			}
+			
+			if($("#annoPw").val().length < 8 || $("#annoPw").val().length > 20) {
+				alert("비밀번호는 8~20글자로 입력해주세요.");
+				$("#annoPw").focus();
+				return ;
+			}
 		}
-		
-		if($("#title").val().trim() == "") {
+
+		if ($("#title").val().trim() == "") {
 			alert('제목을 입력하세요');
 			$("#title").focus();
 			return false;
 		}
-		
+
+		if ($("#title").val().trim().length > 120) {
+			alert("제목은 120글자 까지만 입력가능합니다.");
+			return;
+		}
+
 		if (!validator.exists(content)) {
 			alert('내용을 입력하세요');
 			return false;
@@ -637,75 +662,75 @@
 	 * @returns {Boolean} 정상적인 경우에 true
 	 */
 	function setForm(editor) {
-        var i, input;
-        var form = editor.getForm();
-        var content = editor.getContent();
+		var i, input;
+		var form = editor.getForm();
+		var content = editor.getContent();
 
-        // 본문 내용을 필드를 생성하여 값을 할당하는 부분
-        var textarea = document.createElement('textarea');
-        textarea.name = 'boardContents';
-        textarea.value = content;
-        
-        var title = document.createElement('input');
-        title.type = 'hidden';
-        title.name = 'boardTitle';
-        title.value = $("#title").val();
-        
-        // 익명 구분
-        if($("#annoGubun").val() == "Y") {
-        	var annoId = document.createElement('input');
-        	annoId.type = 'hidden';
-        	annoId.name = 'boardAnnoId';
-        	annoId.value = $("#annoId").val();
-            
-            var annoPw = document.createElement('input');
-            annoPw.type = 'hidden';
-            annoPw.name = 'boardAnnoPw';
-            annoPw.value = $("#annoPw").val();
-            
-            form.createField(annoId);
-            form.createField(annoPw);
-        }
-        
-        // 답장 구분
-        if($("#reply").val() != undefined) {
-        	var reply = document.createElement('input');
-        	reply.type = 'hidden';
-        	reply.name = 'boardReplyNo';
-        	reply.value = $("#reply").val();
-            
-            form.createField(reply);
-        }
-        
-        
-        form.createField(textarea);
-        form.createField(title);
+		// 본문 내용을 필드를 생성하여 값을 할당하는 부분
+		var textarea = document.createElement('textarea');
+		textarea.name = 'boardContents';
+		textarea.value = content;
 
-        /* 아래의 코드는 첨부된 데이터를 필드를 생성하여 값을 할당하는 부분으로 상황에 맞게 수정하여 사용한다.
-         첨부된 데이터 중에 주어진 종류(image,file..)에 해당하는 것만 배열로 넘겨준다. */
-        var images = editor.getAttachments('image');
-        for (i = 0; i < images.length; i++) {
-            // existStage는 현재 본문에 존재하는지 여부
-            if (images[i].existStage) {
-                // data는 팝업에서 execAttach 등을 통해 넘긴 데이터
-                alert('attachment information - image[' + i + '] \r\n' + JSON.stringify(images[i].data));
-                input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'attach_image';
-                input.value = images[i].data.imageurl;  // 예에서는 이미지경로만 받아서 사용
-                form.createField(input);
-            }
-        }
+		var title = document.createElement('input');
+		title.type = 'hidden';
+		title.name = 'boardTitle';
+		title.value = $("#title").val();
 
-        var files = editor.getAttachments('file');
-        for (i = 0; i < files.length; i++) {
-            input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'attach_file';
-            input.value = files[i].data.attachurl;
-            form.createField(input);
-        }
-        return true;
+		// 익명 구분
+		if ($("#annoGubun").val() == "Y") {
+			var annoId = document.createElement('input');
+			annoId.type = 'hidden';
+			annoId.name = 'boardAnnoId';
+			annoId.value = $("#annoId").val();
+
+			var annoPw = document.createElement('input');
+			annoPw.type = 'hidden';
+			annoPw.name = 'boardAnnoPw';
+			annoPw.value = $("#annoPw").val();
+
+			form.createField(annoId);
+			form.createField(annoPw);
+		}
+
+		// 답장 구분
+		if ($("#reply").val() != undefined) {
+			var reply = document.createElement('input');
+			reply.type = 'hidden';
+			reply.name = 'boardReplyNo';
+			reply.value = $("#reply").val();
+
+			form.createField(reply);
+		}
+
+		form.createField(textarea);
+		form.createField(title);
+
+		/* 아래의 코드는 첨부된 데이터를 필드를 생성하여 값을 할당하는 부분으로 상황에 맞게 수정하여 사용한다.
+		 첨부된 데이터 중에 주어진 종류(image,file..)에 해당하는 것만 배열로 넘겨준다. */
+		var images = editor.getAttachments('image');
+		for (i = 0; i < images.length; i++) {
+			// existStage는 현재 본문에 존재하는지 여부
+			if (images[i].existStage) {
+				// data는 팝업에서 execAttach 등을 통해 넘긴 데이터
+				alert('attachment information - image[' + i + '] \r\n'
+						+ JSON.stringify(images[i].data));
+				input = document.createElement('input');
+				input.type = 'hidden';
+				input.name = 'attach_image';
+				input.value = images[i].data.imageurl; // 예에서는 이미지경로만 받아서 사용
+				form.createField(input);
+			}
+		}
+
+		var files = editor.getAttachments('file');
+		for (i = 0; i < files.length; i++) {
+			input = document.createElement('input');
+			input.type = 'hidden';
+			input.name = 'attach_file';
+			input.value = files[i].data.attachurl;
+			form.createField(input);
+		}
+		return true;
 	}
 </script>
 

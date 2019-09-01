@@ -14,15 +14,15 @@ public class CreditShopController {
 	@Autowired
 	CreditShopService creditShopService;
 	
-	@RequestMapping("creditShop")
+	@RequestMapping("/creditShop")
     public String creditShop(Model model) {
-		return "shop/creditShop/creditShop";
+		return "/shop/creditShop/creditShop";
     }
 	
-	@RequestMapping("showProduct/{productNo}")
+	@RequestMapping("/showProduct/{productNo}")
     public String showProduct(ProductVO vo, Model model, @PathVariable("productNo") int nProductNo) {
 		vo.setProductNo(nProductNo);
 		model.addAttribute("product", creditShopService.getShowProduct(vo));
-		return "shop/creditShop/showProduct";
+		return "/shop/creditShop/showProduct";
     }
 }

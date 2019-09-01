@@ -2,6 +2,10 @@ package com.familytoto.familytotoProject.qna.domain;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+
 public class QnaVO {
 	 // 10000001
     private int qnaNo;
@@ -9,8 +13,10 @@ public class QnaVO {
     // 사용자
     private int qnaQuestionRegCustNo;
 
+    @Pattern(regexp = "[a-zA-Zㄱ-힣0-9]{2,8}", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
     private String qnaQuestionAnnoId;
 
+    @Length(min = 4, max = 20)
     private String qnaQuestionAnnoPw;
 
     private String qnaQuestionContents;

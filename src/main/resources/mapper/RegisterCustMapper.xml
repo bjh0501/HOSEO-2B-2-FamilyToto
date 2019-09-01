@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="registerCust">
-	<insert id="insertRegisterCust" parameterType="com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO" useGeneratedKeys="true" keyProperty="familyCustNo">
+	<insert id="insertRegisterCust" parameterType="RegisterCustVO" useGeneratedKeys="true" keyProperty="familyCustNo">
 			INSERT INTO FAMILY_CUSTOM (FAMILY_CUST_NICKNAME, FAMILY_CUST_EMAIL, FAMILY_CUST_ADDR, 
 				FAMILY_CUST_ADDR_SI, FAMILY_CUST_ADDR_GUGUN, FAMILY_CUST_ADDR_DONG,
 			    FAMILY_CUST_RECOMMEND, REG_CUST_NO, CHG_CUST_NO,
@@ -78,12 +78,12 @@
 		AND		SC_CUST_ID = '${scCustId}'
 		LIMIT 1;
     </select>
-    <select id="listSido" resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    <select id="listSido" resultType="ZipcodeVO">
     	select	DISTINCT sido
         from	ZIPCODE 
         ORDER BY sido ASC
     </select>
-    <select id="listGugun" parameterType="String" resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    <select id="listGugun" parameterType="String" resultType="ZipcodeVO">
  		select	DISTINCT SI_GUN_GU_KOR as gugun
         from	NEW_ZIPCODE 
         WHERE	SI_DO_KOR = #{sido}
@@ -94,8 +94,7 @@
         ORDER BY gugun ASC    
     </select>
     
-    <select id="listDong" parameterType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO"
-    resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    <select id="listDong" parameterType="ZipcodeVO" resultType="ZipcodeVO">
     	SELECT	DISTINCT	DONG AS DONG
         FROM	ZIPCODE
         WHERE	SIDO = #{sido}
@@ -108,8 +107,7 @@
         ORDER BY DONG ASC
     </select>
     
-    <select id="listZip" parameterType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO"
-    resultType="com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO">
+    <select id="listZip" parameterType="ZipcodeVO" resultType="ZipcodeVO">
     	select	DISTINCT
     			TRIM(CONCAT(RI,' ', BUNJI)) as ri
  		,		LEFT(ZIPCODE,3) as zipCode1

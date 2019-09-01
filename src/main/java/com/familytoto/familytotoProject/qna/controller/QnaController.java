@@ -2,6 +2,7 @@ package com.familytoto.familytotoProject.qna.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,8 +39,9 @@ public class QnaController {
 	
 	@RequestMapping("/qna/register")
 	@ResponseBody
-    public int qnaRegister(@ModelAttribute QnaVO vo, HttpSession session, HttpServletRequest request) {
+    public int qnaRegister(@Valid @ModelAttribute QnaVO vo, HttpSession session, HttpServletRequest request) {
 		CustVO cVo = (CustVO)session.getAttribute("cust");
+		System.out.println(vo.toString());
 		if(cVo == null) {
 			return qnaService.insertAnnoQna(vo,request);
 		} else {

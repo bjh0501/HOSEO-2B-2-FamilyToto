@@ -56,7 +56,7 @@
 										<div class="input-group-prepend">
 											<span class="input-group-text" id="basic-addon1">가격</span>
 										</div>
-										<label class="text-word-l">1,500팁</label>
+										<label class="text-word-l" th:text="${product.productCredit}+'크레딧'">0</label>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
@@ -70,7 +70,7 @@
 										<div class="input-group mb-3">
 											<h3>상품 설명</h3>
 										</div>
-										<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+										<textarea class="form-control" id="productDesc" rows="3" th:value="${product.productDesc}"></textarea>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">

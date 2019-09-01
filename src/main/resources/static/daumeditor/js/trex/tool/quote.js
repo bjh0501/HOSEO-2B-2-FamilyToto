@@ -12,12 +12,12 @@ TrexConfig.addTool(
 		rows: 2,
 		cols: 3,
 		options: [
-			{ type: 'image', data: 'tx-quote1', image: '#iconpath/quote/citation01.gif?v=2' },
-			{ type: 'image', data: 'tx-quote2', image: '#iconpath/quote/citation02.gif?v=2' },
-			{ type: 'image', data: 'tx-quote3', image: '#iconpath/quote/citation03.gif?v=2' },
-			{ type: 'image', data: 'tx-quote4', image: '#iconpath/quote/citation04.gif?v=2' },
-			{ type: 'image', data: 'tx-quote5', image: '#iconpath/quote/citation05.gif?v=2' },
-			{ type: 'cancel', data: 'tx-quote6', image: '#iconpath/quote/citation06.gif?v=2' }
+			{ type: 'image', data: 'tx-quote1', image: '/daumeditor/images/icon/editor/quote/citation01.gif?v=2' },
+			{ type: 'image', data: 'tx-quote2', image: '/daumeditor/images/icon/editor/quote/citation02.gif?v=2' },
+			{ type: 'image', data: 'tx-quote3', image: '/daumeditor/images/icon/editor/quote/citation03.gif?v=2' },
+			{ type: 'image', data: 'tx-quote4', image: '/daumeditor/images/icon/editor/quote/citation04.gif?v=2' },
+			{ type: 'image', data: 'tx-quote5', image: '/daumeditor/images/icon/editor/quote/citation05.gif?v=2' },
+			{ type: 'cancel', data: 'tx-quote6', image: '/daumeditor/images/icon/editor/quote/citation06.gif?v=2' }
 		]
 	},
 	function(root){

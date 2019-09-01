@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class ChargeController {
 			try {
 				response.setContentType("text/html; charset=UTF-8");
 	            PrintWriter out = response.getWriter();
-	            out.println("<script>alert('연동이 안된 소셜아이디는 개인정보를 수정할 수 없습니다.'); history.go(-1);</script>");
+	            out.println("<script>alert('연동이 안된 소셜아이디는  충전을 할 수 없습니다.'); history.go(-1);</script>");
 	            out.flush();
 			} catch(Exception e) {}
 		
@@ -60,7 +61,7 @@ public class ChargeController {
 	
 	@RequestMapping(value="charge/doCharge",method = RequestMethod.POST)
 	@ResponseBody
-	public int doCharge(@ModelAttribute CreditVO vo, HttpServletRequest request) {
+	public int doCharge(@Valid @ModelAttribute CreditVO vo, HttpServletRequest request) {
 		vo.setRegCustNo(nCustNo);
 		vo.setRegIp(request.getRemoteAddr());
 		vo.setFamilyCustNo(nFamilyCustNo);

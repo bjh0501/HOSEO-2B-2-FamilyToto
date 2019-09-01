@@ -1,25 +1,30 @@
  package com.familytoto.familytotoProject.comment.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.comment.service.CommentService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.google.gson.Gson;
 
 @Controller
 public class CommentController {
 	@Autowired
 	CommentService commentService; 
-	
+		
 	@RequestMapping("/board/insertComment")
 	@ResponseBody
-	public int insertComment(CommentVO vo, HttpServletRequest request, HttpSession session) {
+	public int insertComment(@Valid CommentVO vo, HttpServletRequest request, HttpSession session) {
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 		vo.setRegIp(request.getRemoteAddr());
 		
@@ -62,9 +67,17 @@ public class CommentController {
 	
 	@RequestMapping("/board/replyComment")
 	@ResponseBody
-	public int replyComment(CommentVO vo, HttpServletRequest request, HttpSession session) {
-		vo.setRegCustNo(0);
+	public int replyComment(@Valid CommentVO vo, HttpServletRequest request, HttpSession session) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		if(cVo != null) {
+			vo.setRegCustNo(cVo.getCustNo());
+		} else {
+			vo.setRegCustNo(0);			
+		}
+		
 		vo.setRegIp(request.getRemoteAddr());
+		
 		
 		return commentService.insertReplyComment(vo);
 	}

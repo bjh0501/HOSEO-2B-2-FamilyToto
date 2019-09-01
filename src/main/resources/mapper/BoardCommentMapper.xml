@@ -3,14 +3,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="boardComment">
-	<insert id="insertComment" useGeneratedKeys="true" keyProperty="commentNo" parameterType="com.familytoto.familytotoProject.comment.domain.CommentVO">
+	<insert id="insertComment" useGeneratedKeys="true" keyProperty="commentNo" parameterType="CommentVO">
 		INSERT INTO COMMENT
 		    (BOARD_NO, 				COMMENT_GRP_NO,     COMMENT_GRP_ORD,		COMMENT_GRP_DEPTH, 
 		    COMMENT_CONTENTS,		COMMENT_ANNO_ID, 	COMMENT_ANNO_PW,		REG_CUST_NO, 
 		    REG_DT,					REG_IP, 			USE_YN)
 		VALUES
 		    (#{boardNo},			-1,					0,						1,
-		    #{commentContents},		#{commentAnnoId},	#{commentAnnoPw},		${regCustNo},
+		    #{commentContents},		#{commentAnnoId},	#{commentAnnoPw},		#{regCustNo},
 		    now(),					#{regIp},			'Y');
 	</insert>
 	<update id="updateInsertComment">
@@ -21,11 +21,19 @@
 	<insert id="insertReplyComment">
 		INSERT INTO COMMENT(
 			BOARD_NO,			COMMENT_GRP_NO,		COMMENT_GRP_ORD,		COMMENT_GRP_DEPTH,
-		    COMMENT_CONTENTS,	COMMENT_ANNO_ID,	COMMENT_ANNO_PW,		REG_CUST_NO,
+		    COMMENT_CONTENTS,	
+		    <if test="commentAnnoId != null">
+		    	COMMENT_ANNO_ID,	COMMENT_ANNO_PW,	
+		    </if>
+	    	REG_CUST_NO,
 		    REG_DT,				REG_IP,				USE_YN
 		) VALUES (
 			#{boardNo},			#{commentGrpNo},	#{commentGrpOrd},		#{commentGrpDepth},
-			#{commentContents},	#{commentAnnoId},	#{commentAnnoPw},		#{regCustNo},
+			#{commentContents},
+			<if test="commentAnnoId != null">
+				#{commentAnnoId},	#{commentAnnoPw},
+			</if>
+	    	#{regCustNo},	
 		    NOW(),				#{regIp},			'Y'
 		)
 	</insert>
@@ -38,7 +46,7 @@
 		AND		COMMENT_GRP_ORD >= #{commentGrpOrd}
 		]]>
 	</update>	
-	<select id="getListComment" resultType="com.familytoto.familytotoProject.comment.domain.CommentVO">
+	<select id="getListComment" resultType="CommentVO">
         SELECT	IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) as commentAnnoId
 		,		IFNULL(C.CHG_DT, C.REG_DT) as regDt
 		,		C.COMMENT_CONTENTS as commentContents
@@ -76,7 +84,7 @@
 	    WHERE	USE_YN = 'Y'
 	    AND		COMMENT_NO = #{commentNo}
 	</update>
-	<select id="checkAnnoCommentPass" resultType="com.familytoto.familytotoProject.comment.domain.CommentVO">
+	<select id="checkAnnoCommentPass" resultType="CommentVO">
 		SELECT	COMMENT_ANNO_PW as commentAnnoPw
         FROM	COMMENT
         WHERE	COMMENT_NO = #{commentNo}

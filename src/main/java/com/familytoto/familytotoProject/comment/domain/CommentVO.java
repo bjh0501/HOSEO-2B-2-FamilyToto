@@ -2,6 +2,15 @@ package com.familytoto.familytotoProject.comment.domain;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
+
 public class CommentVO {
 
     // 20000001
@@ -12,15 +21,22 @@ public class CommentVO {
 
     private int commentGrpNo;
 
+    @Min(0)
     private int commentGrpOrd;
 
+    @Max(4)
+    @Min(0)
     private int commentGrpDepth;
 
     // 한글250글자
+    @Size(max = 120, message = "최대120글자 입력가능")
+    @NotBlank(message = "공백 입력불가능")
     private String commentContents;
 
+    @Pattern(regexp = "[a-zA-Zㄱ-힣0-9]{2,8}", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
     private String commentAnnoId;
 
+    @Length(min = 4, max = 20)
     private String commentAnnoPw;
 
     private int regCustNo;

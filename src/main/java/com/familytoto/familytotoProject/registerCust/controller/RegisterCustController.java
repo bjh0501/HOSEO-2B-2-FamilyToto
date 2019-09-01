@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,8 +48,8 @@ public class RegisterCustController {
 	
 	@RequestMapping(value = "/registerCust/register", method = RequestMethod.POST)
 	@ResponseBody
-	public int insertRegister(@ModelAttribute RegisterCustVO rcVo, @ModelAttribute CustVO cVo, 
-			HttpServletRequest request, HttpSession session) throws Exception {
+	public int insertRegister(@Valid @ModelAttribute RegisterCustVO rcVo, @ModelAttribute CustVO cVo, 
+			HttpServletRequest request, HttpServletResponse rep, HttpSession session, BindingResult br) throws Exception {
 		int nCaptchaResult = captchaService.isRight(session, request);
 		
 		rcVo.setRegIp(request.getRemoteAddr());
@@ -57,6 +61,7 @@ public class RegisterCustController {
 		
 		if(nCaptchaResult == 0) { // 틀린캡챠
 			nResult = -99;
+			rep.setStatus(HttpStatus.BAD_REQUEST.value());
 		} else if(custDupleId != null) { // 중복 아이디
 			nResult = -98;
 		} else if(custDupleNickname != null) { // 중복 닉네임

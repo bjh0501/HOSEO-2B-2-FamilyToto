@@ -284,9 +284,14 @@ function annoQuestion() {
 		return;
 	}
 	
-	
 	if($("#password").val() == "") {
 		alert("패스워드를 입력해주세요.");
+		$("#password").focus();
+		return;
+	}
+	
+	if($("#password").val().length < 4 || $("#password").val().length > 20) {
+		alert("패스워드는 4~20글자로 입력해주세요.");
 		$("#password").focus();
 		return;
 	}

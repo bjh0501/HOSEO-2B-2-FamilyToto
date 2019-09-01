@@ -20,7 +20,7 @@ public class InterceptorWebLogConfig extends WebMvcConfigurerAdapter{
         registry.addInterceptor(webLogInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/css/**/")
-                .excludePathPatterns("/daumeeditor/**/")
+                .excludePathPatterns("/daumeditor/**/")
                 .excludePathPatterns("/img/**/")
                 .excludePathPatterns("/js/**/")
                 .excludePathPatterns("/scss/**/")

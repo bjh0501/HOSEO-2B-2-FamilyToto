@@ -356,7 +356,7 @@
 			return
 		}
 		
-		if(parseInt(credit) > 10000) {
+		if(parseInt(credit) >= 10000) {
 			alert("10,000크레딧 이하로 충전할 수 있습니다.");
 			$("#twoCharge").focus();
 			return
@@ -380,7 +380,13 @@
 					alert("충전에 성공하였습니다.");
 					location.reload();
 				} else if(data == 1) {
-					alert("충전에는 성공했으나,\n이메일 정보가 없어서 충전내역을 메일로 보내지 못하였습니다.");
+					if(mail == "N") {
+						alert("충전에 성공하였습니다.");
+						location.reload();
+					} else {
+						alert("충전에는 성공했으나,\n이메일 정보가 없어서 충전내역을 메일로 보내지 못하였습니다.");
+						location.reload();
+					}
 				} else if(data == -98) {
 					alert("충전할 수 있는 횟수를 초과하였습니다.");
 				} else {

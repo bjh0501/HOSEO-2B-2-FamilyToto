@@ -27,7 +27,7 @@
 		    ,0
 		)
 	</insert>
-	<select id="listQna" resultType="com.familytoto.familytotoProject.qna.domain.QnaVO">
+	<select id="listQna" resultType="QnaVO">
 		SELECT	QNA_QUESTION_CONTENTS as qnaQuestionContents
 		,		FCA.FAMILY_CUST_NICKNAME AS familyCustAdminNickname
 		,		QNA_ADMIN_CONTENTS as qnaAdminContents

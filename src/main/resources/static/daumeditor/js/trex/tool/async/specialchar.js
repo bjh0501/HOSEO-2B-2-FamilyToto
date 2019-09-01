@@ -15,8 +15,8 @@
 		_UNDEFINED;
 	
 	TrexMessage.addMsg({
-		'@specialchar.cancel.image': "#iconpath/btn_l_cancel.gif?v=2",
-		'@specialchar.confirm.image': "#iconpath/btn_l_confirm.gif?v=2",
+		'@specialchar.cancel.image': "/daumeditor/images/icon/editor/btn_l_cancel.gif?v=2",
+		'@specialchar.confirm.image': "/daumeditor/images/icon/editor/btn_l_confirm.gif?v=2",
 		'@specialchar.title': "선택한 기호"
 	});
 			

@@ -18,7 +18,7 @@
 		where	CUST_ID = #{custId}
 		limit 1;
 	</select>
-	<select id="socialLogin" resultType="com.familytoto.familytotoProject.registerCust.domain.CustVO">
+	<select id="socialLogin" resultType="CustVO">
 		SELECT	C.FAMILY_CUST_NO as familyCustNo
 		,		C.CUST_NO as custNo
 		,		SC.SC_CUST_NO as scCustNo
@@ -30,7 +30,7 @@
 		AND		SC.USE_YN = 'Y'	
 	</select>
 	
-	<select id="socialLoginNoFamilyNo" resultType="com.familytoto.familytotoProject.registerCust.domain.CustVO">
+	<select id="socialLoginNoFamilyNo" resultType="CustVO">
 		select	SC_CUST_NO as custNo
 		from	SOCIAL_CUSTOM
 		WHERE	SC_CUST_ID = '${scCustId}'

@@ -5,6 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+
 public class BoardVO {
 
     // 10000001
@@ -15,12 +21,19 @@ public class BoardVO {
     private int boardGrpNo;
 
     // 한글250글자
+    @NotBlank(message = "공백 입력불가능")
+    @Length(max=120, message = "최대 120글자까지 입력가능합니다.")
     private String boardTitle;
 
+    @NotBlank
     private String boardContents;
 
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Zㄱ-힣0-9]{2,8}", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
     private String boardAnnoId;
 
+    @NotBlank
+    @Length(min = 4, max = 20)
     private String boardAnnoPw;
 
     private int regCustNo;

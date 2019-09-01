@@ -775,6 +775,18 @@
 			familyCustNickname.focus();
 			return;
 		}
+		
+		if($("#email1").val().trim() == "") {
+			alert("이메일을 입력해주세요.");
+			$("#email1").focus();
+			return;
+		}
+		
+		if($("#email2").val().trim() == "") {
+			alert("이메일을 입력해주세요.");
+			$("#email2").focus();
+			return;
+		}
 
 		if (captcha.val().trim() == "") {
 			alert("자동 가입 방지 문자를 입력해주세요.");

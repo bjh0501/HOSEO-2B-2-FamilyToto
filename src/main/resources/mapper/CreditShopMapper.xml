@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="creditShop">
-	<select id="showProduct" resultType="com.familytoto.familytotoProject.creditShop.domain.ProductVO">
+	<select id="showProduct" resultType="ProductVO">
 		SELECT	PRODUCT_NO as productNo
 		,		PC.CATEGORY_NAME as categoryName
 		,		PRODUCT_NAME as productName

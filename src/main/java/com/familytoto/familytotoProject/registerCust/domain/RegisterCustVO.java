@@ -3,6 +3,10 @@ package com.familytoto.familytotoProject.registerCust.domain;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -15,18 +19,20 @@ public class RegisterCustVO {
 	private int familyCustNo;
 
 	// FAMILY_CUST_NICKNAME
-	@Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
-	@Pattern(regexp = "/^[a-zA-Zㄱ-힣0-9+]{2,8}$/", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
+	@Pattern(regexp = "[a-zA-Zㄱ-힣0-9]{2,8}", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
+	@NotBlank
 	private String familyCustNickname;
 
 	// FAMILY_CUST_EMAIL
 	@Email
+	@NotBlank
 	private String familyCustEmail;
 
 	// FAMILY_CUST_ADDR1
+	@Size(max=200, message="200자이하만 가능")
 	private String familyCustAddr;
 	
-	@Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
+	// @Size(min=2, max=8, message="2자에서 8자 사이의 값만 가능합니다")
 	private String familyCustRecommend;
 	
 	// REG_CUST_NO
@@ -50,17 +56,18 @@ public class RegisterCustVO {
 	// USE_YN Y,N,B
 	private String useYn;
 
+	@NotEmpty
 	private String familyCustAddrSi;
 	
+	@NotNull
 	private String familyCustAddrGugun;
 	
+	@NotNull
 	private String familyCustAddrDong;
 	
 	private String zipCode1;
 	
 	private String zipCode2;
-	
-	
 
 	public String getZipCode1() {
 		return zipCode1;

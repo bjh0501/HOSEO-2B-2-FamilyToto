@@ -67,9 +67,15 @@
         _bodyContentHeight : 0,
 
 		initializeSubModules: function(doc) {
-			var win = this.wysiwygWindow;
-			this.processor = new Trex.Canvas.ProcessorP(win, doc);
-			this.webfontLoader = new Trex.WebfontLoader(doc, this.canvasConfig);
+			try {
+				var win = this.wysiwygWindow;
+				this.processor = new Trex.Canvas.ProcessorP(win, doc);
+				
+				
+				this.webfontLoader = new Trex.WebfontLoader(doc, this.canvasConfig);
+			} catch(error) {
+				alert("광고차단관련 확장플러그인을 꺼주셔야 글쓰는데 문제가 없습니다.");
+			}
 		},
 
 
