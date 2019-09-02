@@ -256,8 +256,16 @@ public class BoardController {
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
 		ArrayList<Map<String, Object>> list = new ArrayList<>(); 
 		
-		String path = "A:/workspace/OneSports/toto/src/main/resources/static/img/board/temp/";
+		String path = "D:/ws/toto/src/main/webapp/img/board/";
 		File folder = new File(path);
+		
+		if (!folder.exists()) {
+			try {
+				folder.mkdirs(); // 폴더 생성합니다.
+			} catch (Exception e) {
+				e.getStackTrace();
+			}
+		}
 		
 		for (MultipartFile mf : fileList) {
 			long fileSize = mf.getSize(); // 파일 사이즈
@@ -266,23 +274,15 @@ public class BoardController {
 			if(fileSize <= 1024*1024) {
 //				System.out.println("originFileName : " + originFileName);
 //				System.out.println("fileSize : " + fileSize);
-
-				if (!folder.exists()) {
-					try {
-						folder.mkdir(); // 폴더 생성합니다.
-					} catch (Exception e) {
-						e.getStackTrace();
-					}
-				}
 			
-				String safeFile = path + System.currentTimeMillis()+"_" + originFileName;
-				String sPhysicalPath = request.getSession().getServletContext()
-						.getContext("/img/board/temp/").getRealPath("");
+				long lTime = System.currentTimeMillis(); 
+				
+				String safeFile = path + lTime +"_" + originFileName;
 						
 				Map<String, Object> map = new HashMap<String, Object>();
 				
-				map.put("imgUrl","/img/board/temp/" + System.currentTimeMillis()+"_" 
-				+ originFileName + "?t=" + System.currentTimeMillis());
+				map.put("imgUrl","/img/board/" + lTime+"_" 
+				+ originFileName + "?t=" + lTime);
 				map.put("originalFileName", originFileName);
 				map.put("fileSize", fileSize);
 				list.add(map);
