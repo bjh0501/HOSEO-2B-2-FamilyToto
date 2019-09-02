@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
-import com.familytoto.familytotoProject.config.XssFilter;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
@@ -108,9 +107,7 @@ public class BoardServiceImpl implements BoardService{
 	public BoardVO getShowBoard(BoardVO vo) {
 		BoardVO bVo = boardDao.getShowBoard(vo);
 		String contents = bVo.getBoardContents();
-		XssFilter xssFilter = new XssFilter(contents);
-		
-		bVo.setBoardContents(xssFilter.getContents());
+		bVo.setBoardContents(contents);
 		
 		return bVo;
 	}

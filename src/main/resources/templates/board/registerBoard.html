@@ -72,8 +72,19 @@
 						  		</div>
 								<input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" id="title">
 							</div>
+							<div class="input-group mb-3" id="fileDiv" style="display: none;">
+						  		<div class="input-group-prepend">
+							 	  <span class="input-group-text">업로드된 파일명</span>
+						  		</div>
+								<input type="text" class="form-control" id="fileName">
+								<div class="input-group-prepend">
+							 	  <span class="input-group-text">업로드된 파일크기</span>
+						  		</div>
+								<input type="text" class="form-control" id="fileSize">
+							</div>
 							<input th:if="${loginGubun == null}" type="hidden" id="annoGubun" value="Y">
 							<input th:if="${loginGubun != null}" type="hidden" id="annoGubun" value="N">
+							<input type="file" id="file">
 							<div th:include="/board/editor/editor"></div>
 			            
 				            <div class="row">
@@ -129,3 +140,14 @@
 </body>
 
 </html>
+<script>
+	function clickFile() {
+		$("#file").trigger("click");
+	}
+	
+	function fileInfo() {
+		$("#file").get(0).files[0].size
+		$("#file").get(0).files[0].name		
+	}
+	
+</script>

@@ -2,7 +2,9 @@ package com.familytoto.familytotoProject.board.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +31,9 @@ import com.familytoto.familytotoProject.board.domain.SearchVO;
 import com.familytoto.familytotoProject.board.service.BoardService;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.comment.service.CommentService;
+import com.familytoto.familytotoProject.config.GlobalVariable;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.google.gson.Gson;
-import com.nhncorp.lucy.security.xss.XssFilter;
 
 @Controller
 @ControllerAdvice
@@ -67,7 +69,7 @@ public class BoardController {
 		model.addAttribute("pagination", search);
 		model.addAttribute("boardList", boardService.getBoardList(search));
 		
-        return "board/boardList";
+        return "/board/boardList";
     }
 	
 	@RequestMapping(value = {"/registerBoard"} )
@@ -170,7 +172,9 @@ public class BoardController {
 				sGubun = "/img/social/icon/facebookMiniIcon.jpg";
 			} else if(sGubun.equals("NA")) {
 				sGubun = "/img/social/icon/naverMiniIcon.jpg";
-			} 
+			} else if(sGubun.equals("ON")) {
+				sGubun = "/img/social/icon/onesportsMiniIcon.jpg";
+			}
 		} else {
 			sGubun = "/img/social/icon/onesportsMiniIcon.jpg";
 		}
@@ -230,7 +234,7 @@ public class BoardController {
     }
 	
 	@RequestMapping("/updateBoard/{boardNo}")
-	public String showUpdateBoard(@Valid BoardVO bVo, Model model) {
+	public String showUpdateBoard(BoardVO bVo, Model model) {
 		// 비밀번호 체크 && 리퍼러 체크하기> 실패하면 원래있던 보드로 이동 
 		// 성공하면 수정창이동
 		BoardVO resultBoardVo = boardService.getUpdateBoard(bVo);
@@ -256,7 +260,17 @@ public class BoardController {
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
 		ArrayList<Map<String, Object>> list = new ArrayList<>(); 
 		
-		String path = "D:/ws/toto/src/main/webapp/img/board/";
+		SimpleDateFormat format1 = new SimpleDateFormat ("yyyy-MM-dd");		
+		Date time = new Date();
+		String time1 = format1.format(time);
+		String[] sFolderName = time1.split("-");
+		
+		String path = GlobalVariable.BOARD_IMG_PATH
+				+ "" + sFolderName[0]
+				+ "/" + sFolderName[1]
+				+ "/" + sFolderName[2]+"/";
+								
+		
 		File folder = new File(path);
 		
 		if (!folder.exists()) {
@@ -281,8 +295,11 @@ public class BoardController {
 						
 				Map<String, Object> map = new HashMap<String, Object>();
 				
-				map.put("imgUrl","/img/board/" + lTime+"_" 
-				+ originFileName + "?t=" + lTime);
+				map.put("imgUrl","/img/board/"
+						+ "" + sFolderName[0]
+						+ "/" + sFolderName[1]
+						+ "/" + sFolderName[2]
+						+ "/" + lTime+"_" + originFileName + "?t=" + lTime);
 				map.put("originalFileName", originFileName);
 				map.put("fileSize", fileSize);
 				list.add(map);

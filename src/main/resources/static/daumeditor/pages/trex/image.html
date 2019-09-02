@@ -57,16 +57,21 @@
 			closeWindow();
 		});
 	}
-
+	
 	var imgNo = 1;
+	
+	// 이미지 미리보기
+	var previewNo = 1;
+	var previewShowNo = 1;
+	
 	function registerImg() {
 		$('#file' + imgNo).trigger('click');
 
-		$('#file' + imgNo).change(function() {
+		$('#file' + imgNo).bind("change", function() {
 			readURL(this);
 		});
 
-		$("input[id=file" + imgNo + "]").change(function() {
+		//$("input[id=file" + imgNo + "]").change(function() {
 			/*
 			var file  = this.files[0];
 			var _URL = window.URL || window.webkitURL;
@@ -80,22 +85,20 @@
 			        $("input[id=file" + imgNo + "]").val("");
 			    } 
 			}*/
-		});
+		//});
 
 	}
 
-	// 이미지 미리보기
-	var previewNo = 1;
-	var previewShowNo = 1;
 	
-	function readURL(input) {	
+	
+	function readURL(input) {
 		var imgStartNo ;
 		var imgEndNo ;
 		
 		// 이미지 미리보기를 위해 필요
 		previewShowNo = previewNo;		
 		
-		if (input.files) {
+		if (input.files != undefined) {
 			imgStartNo = previewNo;
 			for(i = 0; i < input.files.length; i++) {
 				var tdImgId = "img" + previewNo;
@@ -103,51 +106,56 @@
 				var tdSizeId = "size" + previewNo;
 				var trRowId = "row" + previewNo;
 				
-				appendStr = "";
-				appendStr += "<tr class='boardrow'  id='" + trRowId + "'>";
-				appendStr += "	<td style='vertical-align: middle;'><input type='checkbox'/></td>";
-				appendStr += "	<td style='vertical-align: middle;' id='" + tdNameId + "'></td>";
-				appendStr += "	<td style='vertical-align: middle;' id='" + tdSizeId + "'></td>";
-				appendStr += '	<td style="vertical-align: middle;"><center><img id="' + tdImgId + '" width="230px"/></center></td>';
-				appendStr += "</tr>";
-				$("#dynamicTb").append(appendStr);
-				
 				// 파일명구하기
 				var fileValue = document.getElementById("file" + imgNo).files[i].name.split("\\");
 				var fileName = fileValue[fileValue.length - 1]; // 파일명
-				$("#" + tdNameId).html(fileName);
-
-				var ext = $(input).val().split(".").pop().toLowerCase();
-
-				if ($.inArray(ext, [ "gif", "jpg", "jpeg", "png", "bmp" ]) == -1) {
-					alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
-					$("input[id=file" + imgNo + "]").val("");
-					return;
-				}
-
 				
-				// 1메가
-				imgEndNo = previewNo;
-				
-				var fileSize = input.files[i].size;
-				$("#" + tdSizeId).html((fileSize / 1024).toFixed(1) + "KB")
-				var maxSize = 1024 * 1024;
-				
-				if (fileSize > maxSize) {
-					$("#" + trRowId).remove();
-					alert("파일용량제한은 1024KB입니다.\n파일 : " + fileName + "의 용량은 "
-							+ (fileSize / 1024).toFixed(1) + "KB입니다.");
-				} else {
-					// 이미지 미리보기
-					var reader = new FileReader();
-					reader.onload = function(e) {
-						$("#img" + previewShowNo).attr('src', e.target.result);
-						previewShowNo++;
+				if(fileName) {
+					appendStr = "";
+					appendStr += "<tr class='boardrow'  id='" + trRowId + "'>";
+					appendStr += "	<td style='vertical-align: middle;'><input type='checkbox'/></td>";
+					appendStr += "	<td style='vertical-align: middle;' id='" + tdNameId + "'></td>";
+					appendStr += "	<td style='vertical-align: middle;' id='" + tdSizeId + "'></td>";
+					appendStr += '	<td style="vertical-align: middle;"><center><img id="' + tdImgId + '" width="230px"/></center></td>';
+					appendStr += "</tr>";
+					$("#dynamicTb").append(appendStr);
+					
+					$("#" + tdNameId).html(fileName);
+	
+					var ext = $(input).val().split(".").pop().toLowerCase();
+	
+					if ($.inArray(ext, [ "gif", "jpg", "jpeg", "png", "bmp" ]) == -1) {
+						alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
+						$("input[id=file" + imgNo + "]").val("");
+						$("#" + trRowId).remove();
+						return;
 					}
-					reader.readAsDataURL(input.files[i]);
+	
+					
+					// 1메가
+					imgEndNo = previewNo;
+					
+					var fileSize = input.files[i].size;
+					$("#" + tdSizeId).html((fileSize / 1024).toFixed(1) + "KB")
+					var maxSize = 1024 * 1024;
+					
+					if (fileSize > maxSize) {
+						$("#" + trRowId).remove();
+						alert("파일용량제한은 1024KB입니다.\n파일 : " + fileName + "의 용량은 "
+								+ (fileSize / 1024).toFixed(1) + "KB입니다.");
+					}
+					else {
+						// 이미지 미리보기
+						/*var reader = new FileReader();
+						reader.onload = function(e) {
+							$("#img" + previewShowNo).attr('src', e.target.result);
+							previewShowNo++;
+						}
+						reader.readAsDataURL(input.files[i]);*/
+					}
+					
+					previewNo++;
 				}
-				
-				previewNo++;
 			}
 		}
 
@@ -171,7 +179,7 @@
 </head>
 <body onload="initUploader();">
 	<input type="button" class="btn btn-secondary" value="사진첨부" onClick="javascript:registerImg()"/>
-	<div id="fileDiv" style="display:none;">
+	<div id="fileDiv" style="display:none;"> 
 		<input type="file" id="file1" name="files" multiple/>
 	</div>
 	<div class="table-responsive">

@@ -110,7 +110,8 @@
 									<div class="d-flex flex-row-reverse">
 										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.getRegCustNo() == 0}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;" data-toggle="modal" data-target="#updateModal">수정</button>
+												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;"
+												onClick="javascript:clickModal('BE')">수정</button>
 											</div>
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.getRegCustNo() == cust}">
@@ -121,7 +122,7 @@
 										<div class="col-xl-3 col-md-3 mb-3"  th:if="${cust == board.getRegCustNo() || board.getRegCustNo() == 0}">		
 											<div class="input-group mb-3">
 												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;"
-												data-toggle="modal" data-target="#updateModal">삭제</button>
+												onClick="javascript:clickModal('BD')">삭제</button>
 											</div>
 										</div>
 										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.boardReplyNo} == 0">		
@@ -169,7 +170,8 @@
 									<div class="input-group">
 										<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="annoComment"
 										onkeypress="if(event.keyCode==13) {$('#annoRegisterButton').trigger('click');}">
-										<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:registerComment('anno', ${board.getBoardNo()});|" id="annoRegisterButton">등록</button>
+										<button type="button" class="btn btn-secondary" style="margin-left:5px"
+										th:onClick="|javascript:registerComment(${board.getBoardNo()});|" id="annoRegisterButton">등록</button>
 									</div>
 								</div>
 							</div>
@@ -181,26 +183,20 @@
 										<div class="p-1">
 											<th:block th:if="${com.getCommentGrpDepth() > 1}" th:each="num: ${#numbers.sequence(1, com.getCommentGrpDepth() -1)}">></th:block>
 											<b><label class="text-word-r" th:text="${com.getCommentAnnoId()}">이름</label></b>
-											<th:block th:if="${com.getScCustGubun()} == 'NA'" >
-												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+												<th:block th:if="${com.getScCustGubun()} == 'NA'" >
 											   		<img src="/img/social/icon/naverMiniIcon.jpg" width="30" height="30" alt="">
-											 	</a>
-										 	</th:block>
-										 	<th:block th:if="${com.getScCustGubun()} == 'KA'" >
-												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											 	</th:block>
+											 	<th:block th:if="${com.getScCustGubun()} == 'KA'" >
 											   		<img src="/img/social/icon/kakaoMiniIcon.jpg" width="30" height="30" alt="">
-											 	</a>
-										 	</th:block>
-										 	<th:block th:if="${com.getScCustGubun()} == 'FA'" >
-												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											 	</th:block>
+											 	<th:block th:if="${com.getScCustGubun()} == 'FA'" >
 											   		<img src="/img/social/icon/facebookMiniIcon.jpg" width="30" height="30" alt="">
-											 	</a>
-										 	</th:block>
-										 	<th:block th:if="${com.getScCustGubun()} == 'ON'" >
-												 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
+											 	</th:block>
+											 	<th:block th:if="${com.getScCustGubun()} == 'ON'" >
 											   		<img src="/img/social/icon/onesportsMiniIcon.jpg" width="30" height="30" alt="">
-											 	</a>
-										 	</th:block>
+										 		</th:block>
+										 	</a>
 									 	</div>
 									 	<div class="p-1 commentContents">
 											<p class="text-word-l" th:text="${com.getCommentContents()}">댓글</p>
@@ -230,13 +226,14 @@
 		
 		</div>
 	      <!-- End of Main Content -->
-		<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
+		<div class="modal fade" id="promptModal" tabindex="-1" role="dialog" aria-labelledby="promptModal" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <h5 class="modal-title">비밀번호 입력</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
+		          <input type="text" id="promptGubun">
 		        </button>
 		      </div>
 		      <div class="modal-body">
@@ -247,53 +244,7 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-		        <button type="button" class="btn btn-secondary" th:onClick="|javascript:goUpdate(${board.getRegCustNo()}, ${board.getBoardNo()} )|" id="goUpdateButton">확인</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">비밀번호 입력</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">비밀번호:</label>
-		            <input type="password" class="form-control" id="annoDeleteInputPw">
-		          </div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-		        <button type="button" class="btn btn-secondary" th:onClick="|javascript:deleteBoard(${board.getBoardNo()}, ${board.getRegCustNo()} ) |" id="goDeleteButton">확인</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		
-		<div class="modal fade" id="replyUpdateModal" tabindex="-1" role="dialog" aria-labelledby="updateModal" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">비밀번호 입력</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">비밀번호:</label>
-		            <input type="password" class="form-control" id="replyUpdateAnnoInputPw">
-		          </div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-		        <button type="button" class="btn btn-secondary" th:onClick="|javascript:goUpdate(${board.getRegCustNo()}, ${board.getBoardNo()} )|" id="goUpdateButton">확인</button>
+		        <button type="button" class="btn btn-secondary" th:onClick="|javascript:chooseAction()|" id="promptButton">확인</button>
 		      </div>
 		    </div>
 		  </div>
@@ -465,19 +416,18 @@
 		});
 	}
 	
-	
 	function deleteBoard(no, regNo) {
 		 //일반
-		if(regNo != 0){
+		if(regNo != -1){
 			var con = confirm("정말로 삭제하시겠습니까?");
 			
 			if(con == true) {
 				location.replace("/deleteBoard/" + no);
 			}
 		} else {
-			if($("#annoDeleteInputPw").val() == "") {
+			if($("#annoInputPw").val() == "") {
 				alert("비밀번호를 입력해주세요.");
-				$("#annoDeleteInputPw").focus();
+				$("#annoInputPw").focus();
 				return;
 			}
 			
@@ -486,7 +436,7 @@
 				type : "POST",
 				cache : false,
 				dataType : "json",
-				data : "boardAnnoPw=" + $("#annoDeleteInputPw").val(),
+				data : "boardAnnoPw=" + $("#annoInputPw").val(),
 				success : function(data) {
 					if(data == 0) {
 						location.replace("/boardList");
@@ -507,7 +457,7 @@
 	function goUpdate(reg, boardNo) {
 		// 익명
 		annoId = $("#regNick").html()
-		if(reg == 0) {
+		if(reg == -1) {
 			if($("#annoInputPw").val() == "") {
 				alert("비밀번호를 입력해주세요.");
 				return;
@@ -540,66 +490,85 @@
 		}
 	}
 	
-	function registerComment(gubun, boardNo) {
-		if(gubun == "anno") {
-			if($("#annoId").val().trim() == "") {
-				alert("아이디를 입력해주세요.");
-				$("#annoId").focus();
-				return ;
-			}
-			
-			var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
-			v = $("#annoId").val()
-
-			if (!regexp.test(v) || $("#annoId").val().length < 4
-					|| $("#annoId").val().length > 20) {
-				alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
-				$("#annoId").focus();
-				return;
-			}
-			
-			if($("#annoPw").val() == "") {
-				alert("비밀번호를 입력해주세요.");
-				$("#annoPw").focus();
-				return ;
-			}
-			
-			if($("#annoPw").val().length < 8 || $("#annoPw").val().length > 20) {
-				alert("비밀번호는 8~20글자로 입력해주세요.");
-				$("#annoPw").focus();
-				return ;
-			}
-			
-			if($("#annoComment").val().trim() == "") {
-				alert("댓글을 입력해주세요.");
-				$("#annoComment").focus();
-				return ;
-			}
-			
-			if($("#annoComment").val().trim().length > 120) {
-				alert("댓글은 120글자 까지만 입력가능합니다.");
-				return ;
-			}
-			
-			$.ajax({
-				url : "/board/insertComment",
-				type : "POST",
-				cache : false,
-				dataType : "json",
-				data : "boardNo=" + boardNo
-						+ "&commentContents=" + $("#annoComment").val()
-						+ "&commentAnnoId=" + $("#annoId").val()
-						+ "&commentAnnoPw=" + $("#annoPw").val(),
-				success : function(data) {
-					location.reload();
-				},
-				error : function(request, status, error) {
-					var msg = "ERROR : " + request.status + "<br>"
-					msg += +"내용 : " + request.responseText + "<br>" + error;
-					console.log(msg);
-				}
-			});
+	function chooseAction() {
+		gubun = $("#promptGubun").val();
+		
+		if(gubun == "BD") {
+			deleteBoard([[ ${board.getBoardNo()} ]], [[ ${cust} ]])
+		} else if(gubun == "BE") {
+			goUpdate([[ ${cust} ]], [[ ${board.getBoardNo()} ]])
 		}
+	}
+	
+	function clickModal(gubun) {		
+		$('#promptGubun').val(gubun);
+		$("#annoInputPw").val("");
+		$('#promptModal').modal("show");
+	}
+	
+	function registerComment(boardNo) {
+		if($("#annoId").val().trim() == "") { 
+			alert("아이디를 입력해 주세요.")
+			$("#annoId").focus();
+			return ;
+		}
+		
+		var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
+		v = $("#annoId").val()
+
+		if (!regexp.test(v) || $("#annoId").val().length < 4
+				|| $("#annoId").val().length > 20) {
+			alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+			$("#annoId").focus();
+			$('#promptModal').modal("hide"); 
+			return;
+		}
+		
+		if($("#annoPw").val() == "") {
+			alert("비밀번호를 입력해주세요.");
+			$("#annoPw").focus();
+			$('#promptModal').modal("hide"); 
+			return ;
+		}
+		
+		if($("#annoPw").val().length < 8 || $("#annoPw").val().length > 20) {
+			alert("비밀번호는 8~20글자로 입력해주세요.");
+			$("#annoPw").focus();
+			$('#promptModal').modal("hide"); 
+			return ;
+		}
+		
+		if($("#annoComment").val().trim() == "") {
+			alert("댓글을 입력해주세요.");
+			$("#annoComment").focus();
+			$('#promptModal').modal("hide"); 
+			return ;
+		}
+		
+		if($("#annoComment").val().trim().length > 120) {
+			alert("댓글은 120글자 까지만 입력가능합니다.");
+			$('#promptModal').modal("hide"); 
+			return ;
+		}
+		
+		$.ajax({
+			url : "/board/insertComment",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "boardNo=" + boardNo
+					+ "&commentContents=" + $("#annoComment").val()
+					+ "&commentAnnoId=" + $("#annoId").val()
+					+ "&commentAnnoPw=" + $("#annoPw").val(),
+			success : function(data) {
+				location.reload();
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 	
 	function socialComment(boardNo) {
@@ -699,6 +668,8 @@
 		obj.attr("style", "display: none");
 		var contents = obj.parent().parent().children(".commentContents").children().html()
 		var input = '<input type="text" class="form-control" placeholder="Comment" value="' + contents + '">';
+		var button = "";
+		
 		var button = '<button type="button" class="btn btn-secondary" onclick="javascript:updateComment2(' + commentNo + ', $(this), \'' + gubun + '\')">수정하기</button>'
 		var cancelButton = "<button type='button' class='btn btn-secondary' onclick=\"javascript:cancelComment('"  + contents + "', $(this))\">수정취소</button>";
 
@@ -716,17 +687,6 @@
 		var contents = obj.prev().val();
 		var dataStr = "";
 		
-		if(gubun == "AN") {
-			var pass = prompt("비밀번호를 입력해주세요.");
-			
-			dataStr = "commentNo=" + commentNo
-			+"&commentContents=" + contents
-			+"&commentAnnoPw=" + pass
-		} else {
-			dataStr = "commentNo=" + commentNo
-			+"&commentContents=" + contents
-		}
-		
 		if(contents.trim() == "") {
 			alert("댓글을 입력해주세요.");
 			$("#annoComment").focus();
@@ -736,6 +696,16 @@
 		if(contents.trim().length > 120) {
 			alert("댓글은 120글자 까지만 입력가능합니다.");
 			return ;
+		}
+		
+		if(gubun == "AN") {			
+			pass = prompt("비밀번호를 입력해주세요")
+			dataStr = "commentNo=" + commentNo
+			+"&commentContents=" + contents
+			+"&commentAnnoPw=" + pass
+		} else {
+			dataStr = "commentNo=" + commentNo
+			+"&commentContents=" + contents
 		}
 		
 		$.ajax({
@@ -764,6 +734,5 @@
 		});
 	}
 	
-	$("#annoInputPw").keyup(function(e){if(e.keyCode == 13)  $("#goUpdateButton").trigger("click")});
-  	$("#annoDeleteInputPw").keyup(function(e){if(e.keyCode == 13)  $("#goDeleteButton").trigger("click")});
+	$("#annoInputPw").keyup(function(e){if(e.keyCode == 13)  $("#promptButton").trigger("click")});
 </script>

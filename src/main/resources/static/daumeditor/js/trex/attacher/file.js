@@ -17,7 +17,7 @@ TrexConfig.addTool(
 );
 
 TrexMessage.addMsg({
-	'@file.title': "파일"
+	'@file.title': "일"
 });
 
 /**
@@ -38,7 +38,8 @@ Trex.Tool.File = Trex.Class.create({
 			new Trex.Button(this.buttonCfg), 
 			_NULL,
 			function() {
-				_editor.getSidebar().getAttacher("file").execute();
+				clickFile();
+				// _editor.getSidebar().getAttacher("file").execute();
 			}
 		);
 	}

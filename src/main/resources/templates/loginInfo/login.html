@@ -3,142 +3,161 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
-	</ul>
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+			<!-- Main Content -->
+			<div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
 
-
-        </nav>
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <div class="row">
-          	<h2 class="text-title">로그인</h2>
-          </div>
-          
-          <div class="row">
-            <div class="col-xl-6 col-md-12 mb-6">
-              <div class="card shadow h-100 py-12">
-                <img src="/img/OneSports.png" width="100%" />
-              </div>
-            </div>
-            
-            <div class="col-xl-6 col-md-12 mb-6">
-              <div class="card shadow h-100 py-12">
-              	<div style="padding:20px;">
-	              	<div class="input-group mb-3">
-					  <div class="input-group-prepend">
-					    <span class="input-group-text" >ID</span>
-					  </div>
-					  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id">
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<div class="row">
+						<h2 class="text-title">로그인</h2>
 					</div>
-					
-					<div class="input-group mb-3">
-					  <div class="input-group-prepend" >
-					    <span class="input-group-text" >Password</span>
-					  </div>
-					  <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="pw" onkeypress="caps_lock(event)">
-					</div>
-					<p id="capslock" style="position:relative; border:2px solid #003b83; width:300px; bottom:0px; display:none"> 
-					    &nbsp;<b>CapsLock</b> 키가 눌려있습니다.&nbsp;
-					</p>
-					<div class="input-group mb-3">
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="use">
-							<label class="custom-control-label" for="use">아이디 기억</label>
+
+					<div class="row">
+						<div class="col-xl-6 col-md-12 mb-6">
+							<div class="card shadow h-100 py-12">
+								<img src="/img/OneSports.png" width="100%" />
+							</div>
+						</div>
+
+						<div class="col-xl-6 col-md-12 mb-6">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text">ID</span>
+										</div>
+										<input type="text" class="form-control"
+											aria-label="Sizing example input"
+											aria-describedby="inputGroup-sizing-default" id="id">
+									</div>
+
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Password</span>
+										</div>
+										<input type="password" class="form-control"
+											aria-label="Sizing example input"
+											aria-describedby="inputGroup-sizing-default" id="pw"
+											onkeypress="caps_lock(event)">
+									</div>
+									<p id="capslock"
+										style="position: relative; border: 2px solid #003b83; width: 300px; bottom: 0px; display: none">
+										&nbsp;<b>CapsLock</b> 키가 눌려있습니다.&nbsp;
+									</p>
+									<div class="input-group mb-3">
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" id="use">
+											<label class="custom-control-label" for="use">아이디 기억</label>
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<img src="/img/social/button/onesportsButton.jpg"
+											style="width: 100%; cursor: pointer;"
+											onclick="javascript:custLogin()">
+									</div>
+									<div class="input-group mb-3">
+										<img src="/img/social/button/facebookButton.jpg"
+											style="width: 100%; cursor: pointer;"
+											onClick="javascript:facebookLogin();">
+									</div>
+									<div class="input-group mb-3">
+										<img src="/img/social/button/naverButton.jpg"
+											style="width: 100%; cursor: pointer;"
+											onClick="javascript:naverLogin();"> <a
+											th:href="${naverLoginUrl}" style="display: none"
+											id="naverSocial">naver</a>
+									</div>
+									<div class="input-group mb-3">
+										<img src="/img/social/button/kakaoButton.jpg"
+											style="width: 100%; cursor: pointer;"
+											onClick="javascript:kakaoLogin();"> <a
+											th:href="${kakaoLoginUrl}" style="display: none"
+											id="kakaoSocial">kakao</a>
+									</div>
+									<p class="text-center">
+										<a href="/findID_PW">아이디/비밀번호 찾기</a>
+									</p>
+									<p class="text-center">
+										<a href="/registerCust">회원가입</a>
+									</p>
+									<input type="hidden" id="refer" th:value="${referUrl}">
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="input-group mb-3">
-						<img src="/img/social/button/onesportsButton.jpg" style="width:100%; cursor:pointer;" onclick="javascript:custLogin()">
-					</div>
-					<div class="input-group mb-3">
-						<img src="/img/social/button/facebookButton.jpg" style="width:100%; cursor:pointer;" onClick="javascript:facebookLogin();">
-					</div>
-					<div class="input-group mb-3">
-						<img src="/img/social/button/naverButton.jpg" style="width:100%; cursor:pointer;" onClick="javascript:naverLogin();">
-						<a th:href="${naverLoginUrl}" style="display:none" id="naverSocial">naver</a>
-					</div>
-					<div class="input-group mb-3">
-						<img src="/img/social/button/kakaoButton.jpg" style="width:100%; cursor:pointer;" onClick="javascript:kakaoLogin();">
-						<a th:href="${kakaoLoginUrl}" style="display:none" id="kakaoSocial">kakao</a>
-					</div>
-					<p class="text-center">
-						<a href="/findID_PW" >아이디/비밀번호 찾기</a>
-					</p>
-					<p class="text-center">
-						<a href="/registerCust" >회원가입</a>
-					</p>
-					<input type="hidden" id="refer" th:value="${referUrl}">
 				</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /.container-fluid -->
+				<!-- /.container-fluid -->
 
-      </div>
-      <!-- End of Main Content -->
+			</div>
+			<!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
 
-    </div>
-    <!-- End of Content Wrapper -->
+			</footer>
+			<!-- End of Footer -->
 
-  </div>
-  <!-- End of Page Wrapper -->
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
 
 
-  <!-- Bootstrap core JavaScript-->
-  <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-  <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- Bootstrap core JavaScript-->
+	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+	<!-- Core plugin JavaScript-->
+	<script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
 
-  <!-- Custom scripts for all pages-->
-  <script th:src="@{js/sb-admin-2.min.js}"></script>
+	<!-- Custom scripts for all pages-->
+	<script th:src="@{js/sb-admin-2.min.js}"></script>
 	<script th:src="@{js/jquery-ui.min.js}"></script>
-  <!-- Page level plugins -->
-  <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+	<!-- Page level plugins -->
+	<script th:src="@{vendor/chart.js/Chart.min.js}"></script>
 
-  <!-- Page level custom scripts -->
-  <script th:src="@{js/demo/chart-area-demo.js}"></script>
-  <script th:src="@{js/demo/chart-pie-demo.js}"></script>
+	<!-- Page level custom scripts -->
+	<script th:src="@{js/demo/chart-area-demo.js}"></script>
+	<script th:src="@{js/demo/chart-pie-demo.js}"></script>
 
 </body>
 
@@ -346,11 +365,12 @@ function getUserData() {
 
 function facebookLogin() {
 	 FB.login(function(response) {
-	        if (response.authResponse) {
-	            getUserData();
-	        }
-	    }, {scope: 'email,public_profile,age_range',
-	    	 auth_type: 'rerequest', return_scopes: true});
+        if (response.authResponse) {
+            getUserData();
+        }
+    // }, {scope: 'email,public_profile,age_range',
+    }, {scope: 'email,public_profile',
+   	 auth_type: 'rerequest', return_scopes: true});
 }
 
 

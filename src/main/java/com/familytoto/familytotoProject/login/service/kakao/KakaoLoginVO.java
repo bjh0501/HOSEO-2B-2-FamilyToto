@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.changeCust.service.ChangeCustAuthService;
+import com.familytoto.familytotoProject.config.GlobalVariable;
 import com.familytoto.familytotoProject.login.domain.SocialVO;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -32,20 +33,16 @@ public class KakaoLoginVO {
 	
 	@Autowired
 	SocalLoginService socalLoginService;
-	
-	private final String DOMAIN_URL = "https://test.onesports.ga:80";
-//	 private final String DOMAIN_URL = "http://onesports.ga";
-	
 	private final String REST_API = "e051b552544132d23d2ce1fc5898963c";
-	private final String REDIRECT_URI = DOMAIN_URL + "/login/social/kakao";
-	private final String REDIRECT_URI_AUTH =  DOMAIN_URL + "/login/social/kakao/auth";
+	private final String REDIRECT_URI = GlobalVariable.DOMAIN_URL + "/login/social/kakao";
+	private final String REDIRECT_URI_AUTH =  GlobalVariable.DOMAIN_URL + "/login/social/kakao/auth";
 	
 	public String getKakaoLink() {
-		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+DOMAIN_URL+"/login/social/kakao&response_type=code";
+		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+GlobalVariable.DOMAIN_URL+"/login/social/kakao&response_type=code";
 	}
 	
 	public String getKakaoAuthLink() {
-		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+DOMAIN_URL+"/login/social/kakao/auth&response_type=code";
+		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+GlobalVariable.DOMAIN_URL+"/login/social/kakao/auth&response_type=code";
 	}
 	
     public String getAccessToken (String authorize_code, String sParam) {

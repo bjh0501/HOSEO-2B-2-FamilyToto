@@ -104,6 +104,7 @@ public class LoginController {
 			vo.setCustPassword("");
 			
 			session.setAttribute("cust", vo);
+			session.setAttribute("social", "ON"); // 세션 생성
 			nReuslt = 0;
 		} else {
 			nReuslt = -99;

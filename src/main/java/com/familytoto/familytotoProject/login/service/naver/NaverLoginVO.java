@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.changeCust.service.ChangeCustAuthService;
+import com.familytoto.familytotoProject.config.GlobalVariable;
 import com.familytoto.familytotoProject.login.domain.SocialVO;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -49,15 +50,12 @@ public class NaverLoginVO {
 	SocalLoginService socalLoginService; 
 	
 	@Autowired
-	ChangeCustAuthService changeCustAuthService; 
-	
-	private final static String DOMAIN_URL = "https://test.onesports.ga:80";
-//	private final static String DOMAIN_URL = "http://onesports.ga";
+	ChangeCustAuthService changeCustAuthService;
 	
 	private final static String CLIENT_ID = "Za6kr7wC2cVLJ3c1qVvu";
 	private final static String CLIENT_SECRET = "rFm3tqGBfo";
-	private final static String REDIRECT_URI = DOMAIN_URL + "/login/social/naver";
-	private final static String REDIRECT_URI2 = DOMAIN_URL + "/login/social/naver/auth";
+	private final static String REDIRECT_URI = GlobalVariable.DOMAIN_URL + "/login/social/naver";
+	private final static String REDIRECT_URI2 = GlobalVariable.DOMAIN_URL + "/login/social/naver/auth";
 	private final static String SESSION_STATE = "social_cust";
 	/* 프로필 조회 API URL */
 	private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";

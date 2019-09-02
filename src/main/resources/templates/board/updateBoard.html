@@ -69,6 +69,7 @@
 							</div>
 							<input th:if="${loginGubun == null}" type="hidden" id="annoGubun" value="Y">
 							<input th:if="${loginGubun != null}" type="hidden" id="annoGubun" value="N">
+							<input type="file" id="file">
 							<div th:include="/board/editor/editor"></div>
 			            
 				            <div class="row">

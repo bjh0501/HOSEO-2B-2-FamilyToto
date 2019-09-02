@@ -28,11 +28,9 @@ public class BoardVO {
     @NotBlank
     private String boardContents;
 
-    @NotBlank
     @Pattern(regexp = "[a-zA-Zㄱ-힣0-9]{2,8}", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
     private String boardAnnoId;
 
-    @NotBlank
     @Length(min = 4, max = 20)
     private String boardAnnoPw;
 
