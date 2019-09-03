@@ -6,20 +6,28 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.familytoto.familytotoProject.board.service.AWSService;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemoApplicationTests {
-
+	@Autowired
+	AWSService awsService;
+	
 	@Test
 	public void contextLoads() {
+		
+	}
+	
+	@Test
+	public void uploadTest() {
 		
 	}
 	

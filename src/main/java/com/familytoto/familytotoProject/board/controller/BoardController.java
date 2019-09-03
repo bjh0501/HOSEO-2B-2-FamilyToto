@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
+import com.familytoto.familytotoProject.board.service.AWSService;
 import com.familytoto.familytotoProject.board.service.BoardService;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.comment.service.CommentService;
@@ -40,6 +41,9 @@ import com.google.gson.Gson;
 @ControllerAdvice
 public class BoardController {
 	private int nReplyNo = 0;
+	
+	@Autowired
+	AWSService awsService;
 	
 	@Autowired
 	BoardService boardService;
@@ -112,9 +116,11 @@ public class BoardController {
 			
 			int nResult = boardService.insertCustBoard(vo);
 			
-			fileVo.setRegIp(request.getRemoteAddr());
-			fileVo.setBoardNo(vo.getBoardNo());
-			boardService.insertFile(fileVo);
+			if(fileVo.getBoardFilePath() != null) {
+				fileVo.setRegIp(request.getRemoteAddr());
+				fileVo.setBoardNo(vo.getBoardNo());
+				boardService.insertFile(fileVo);
+			}
 			
 			if(nResult==1) {
 				return "redirect:/boardList";
@@ -131,9 +137,11 @@ public class BoardController {
 		if(session.getAttribute("cust") == null) {
 			int nResult = boardService.insertAnnoBoard(vo);
 			
-			fileVo.setBoardNo(vo.getBoardNo());
-			fileVo.setRegIp(request.getRemoteAddr());
-			boardService.insertFile(fileVo);
+			if(fileVo.getBoardFilePath() != null) {
+				fileVo.setBoardNo(vo.getBoardNo());
+				fileVo.setRegIp(request.getRemoteAddr());
+				boardService.insertFile(fileVo);
+			}
 			
 			if(nResult == 1) {
 				return "redirect:/boardList";
@@ -259,7 +267,7 @@ public class BoardController {
 	
 	@RequestMapping("/board/uploadImages")
 	@ResponseBody
-    private String boardInsertProc(MultipartHttpServletRequest mtfRequest) throws Exception{
+    private String boardInsertProc(MultipartHttpServletRequest mtfRequest, HttpServletRequest request) throws Exception{
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
 		ArrayList<Map<String, Object>> list = new ArrayList<>(); 
 		
@@ -268,11 +276,11 @@ public class BoardController {
 		String time1 = format1.format(time);
 		String[] sFolderName = time1.split("-");
 		
-		String path = GlobalVariable.BOARD_IMG_PATH
+		String path = System.getProperty("user.dir") + "/src/main/webapp/img/board/"
+				//GlobalVariable.BOARD_IMG_PATH
 				+ "" + sFolderName[0]
 				+ "/" + sFolderName[1]
 				+ "/" + sFolderName[2]+"/";
-								
 		
 		File folder = new File(path);
 		
@@ -288,33 +296,42 @@ public class BoardController {
 			long fileSize = mf.getSize(); // 파일 사이즈
 			String originFileName = mf.getOriginalFilename(); // 원본 파일 명			
 			
-			if(fileSize <= 1024*1024) {
-//				System.out.println("originFileName : " + originFileName);
-//				System.out.println("fileSize : " + fileSize);
-			
-				long lTime = System.currentTimeMillis(); 
+			if(fileSize <= 1024*1024*3) { //3메가 제한
+				long lTime = System.currentTimeMillis();
+				String localFullPathFile = path + lTime +"_" + originFileName;
 				
-				String safeFile = path + lTime +"_" + originFileName;
-						
+				String sAwsFilePath = "img/board/"
+						+ "" + sFolderName[0]
+						+ "/" + sFolderName[1]
+						+ "/" + sFolderName[2];
+				
 				Map<String, Object> map = new HashMap<String, Object>();
 				
-				map.put("imgUrl","/img/board/"
+				map.put("imgUrl","https://onesports.s3.ap-northeast-2.amazonaws.com" +"/img/board/"
 						+ "" + sFolderName[0]
 						+ "/" + sFolderName[1]
 						+ "/" + sFolderName[2]
-						+ "/" + lTime+"_" + originFileName + "?t=" + lTime);
+						+ "/" + lTime+"_" + originFileName);
 				map.put("originalFileName", originFileName);
 				map.put("fileSize", fileSize);
 				list.add(map);
 				
 				try {
-					mf.transferTo(new File(safeFile));
+					// 여러개일떄 에러 첫번째껏만 들어간다..
+					mf.transferTo(new File(localFullPathFile));
+					File awsUploadFile = new File(localFullPathFile);
+					if(awsService.uploadFile(sAwsFilePath, awsUploadFile) == 0) {
+						// 사진삭제만하면 403에러가뜬다..
+						//awsUploadFile.delete();						
+					}
 				} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return "-99";
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return "-99";
 				}
 			}
 		}
@@ -335,11 +352,10 @@ public class BoardController {
 		String time1 = format1.format(time);
 		String[] sFolderName = time1.split("-");
 		
-		String path = GlobalVariable.BOARD_FILE_PATH
+		String path = System.getProperty("user.dir") + "/src/main/webapp/file/board/"
 				+ "" + sFolderName[0]
 				+ "/" + sFolderName[1]
 				+ "/" + sFolderName[2]+"/";
-								
 		
 		File folder = new File(path);
 		
@@ -357,19 +373,28 @@ public class BoardController {
 			
 			if(fileSize <= 1024*1024*3) { //3메가 제한
 				long lTime = System.currentTimeMillis();
-				String safeFile = path + lTime +"_" + originFileName;
+				String localFullPathFile = path + lTime +"_" + originFileName;
 				String sFileName = lTime+"_" + originFileName;
-				String sFilePath = "/file/board/"
+				String sDBFilePath = "https://onesports.s3.ap-northeast-2.amazonaws.com"+"/file/board/"
 						+ "" + sFolderName[0]
 						+ "/" + sFolderName[1]
 						+ "/" + sFolderName[2]
 						+ "/" + sFileName;
 				
-				fileVo.setBoardFilePath(sFilePath);
-				fileVo.setBoardFileName(originFileName);
+				String sAwsFilePath = "file/board/"
+						+ "" + sFolderName[0]
+						+ "/" + sFolderName[1]
+						+ "/" + sFolderName[2];
+				
+				fileVo.setBoardFilePath(sDBFilePath);			// DB에들어갈 패스
+				fileVo.setBoardFileName(originFileName);	// DB에 들어갈 이름
+				
 				
 				try {
-					mf.transferTo(new File(safeFile));
+					mf.transferTo(new File(localFullPathFile));
+					File awsUploadFile = new File(localFullPathFile);
+					awsService.uploadFile(sAwsFilePath, awsUploadFile);
+					awsUploadFile.delete();
 				} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -385,6 +410,45 @@ public class BoardController {
 		return "0";
     }
 	
+//	@RequestMapping(value="/board/downloadFile")
+//	public void downloadFile(ModelMap model, HttpServletRequest request, HttpServletResponse response, BoardVO vo) throws Exception {
+//		
+//		String dFile = "테스트.txt";
+//		String upDir = "D:/upload/";
+//		String path = upDir+File.separator+dFile;
+//	  
+//		File file = new File(path);
+//
+//		String userAgent = request.getHeader("User-Agent");
+//		boolean ie = userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("rv:11") > -1;
+//		String fileName = null;
+//	   
+//		if (ie) {
+//			fileName = URLEncoder.encode(file.getName(), "utf-8");
+//		} else {
+//			fileName = new String(file.getName().getBytes("utf-8"),"iso-8859-1");
+//		}
+//	  
+//		response.setContentType("application/octet-stream");
+//		response.setHeader("Content-Disposition","attachment;filename=\"" +fileName+"\";");
+//	  
+//		FileInputStream fis=new FileInputStream(file);
+//		BufferedInputStream bis=new BufferedInputStream(fis);
+//		ServletOutputStream so=response.getOutputStream();
+//		BufferedOutputStream bos=new BufferedOutputStream(so);
+//	  
+//		byte[] data=new byte[2048];
+//		int input=0;
+//		while((input=bis.read(data))!=-1) {
+//			bos.write(data,0,input);
+//			bos.flush();
+//		}
+//	  
+//		if(bos!=null) bos.close();
+//		if(bis!=null) bis.close();
+//		if(so!=null) so.close();
+//		if(fis!=null) fis.close();
+//	}
 	
 	/*@Autowired
 	private AmazonS3 amazonS3;

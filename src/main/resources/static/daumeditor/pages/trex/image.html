@@ -40,6 +40,7 @@
 			dataType: "json",
 			contentType : false,
 			cache : false,
+			async : false,
 			processData : false
 		}).done(function(data) {
 			for(i = 0; i < data.length; i++) {
@@ -54,7 +55,7 @@
 				
 				execAttach(_mockdata[i]);
 			}
-			closeWindow();
+			//closeWindow();
 		});
 	}
 	
