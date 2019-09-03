@@ -76,15 +76,15 @@
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text">업로드된 파일명</span>
 						  		</div>
-								<input type="text" class="form-control" id="fileName">
+								<input type="text" class="form-control" id="fileName" disabled>
 								<div class="input-group-prepend">
 							 	  <span class="input-group-text">업로드된 파일크기</span>
 						  		</div>
-								<input type="text" class="form-control" id="fileSize">
+								<input type="text" class="form-control" id="fileSize" disabled>
 							</div>
 							<input th:if="${loginGubun == null}" type="hidden" id="annoGubun" value="Y">
 							<input th:if="${loginGubun != null}" type="hidden" id="annoGubun" value="N">
-							<input type="file" id="file">
+							<input type="file" id="file" style="display: none;">
 							<div th:include="/board/editor/editor"></div>
 			            
 				            <div class="row">
@@ -143,11 +143,20 @@
 <script>
 	function clickFile() {
 		$("#file").trigger("click");
+		
+		$('#file').bind("change", function() {
+			fileInfo();
+		});
 	}
 	
 	function fileInfo() {
-		$("#file").get(0).files[0].size
-		$("#file").get(0).files[0].name		
+		if($("#file").get(0).files[0] == undefined) {
+			$("#fileDiv").attr("style", "display: none;");
+		} else {
+			$("#fileDiv").attr("style", "");
+			$("#fileSize").val($("#file").get(0).files[0].size)
+			$("#fileName").val($("#file").get(0).files[0].name)
+		}
 	}
 	
 </script>

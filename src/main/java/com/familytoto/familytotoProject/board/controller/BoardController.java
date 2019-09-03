@@ -321,4 +321,44 @@ public class BoardController {
 		
 		return sPath;
     }
+	
+	
+	/*@Autowired
+	private AmazonS3 amazonS3;
+	 
+	@Value("${cloud.aws.s3.bucket}")
+	private String bucket;
+	@RequestMapping("/board/uploadFile")
+	@ResponseBody
+	public void s3Test(MultipartFile file, String fname) {
+	    TransferManager tm = TransferManagerBuilder.standard().withS3Client(amazonS3).build();
+	 
+	 
+	    PutObjectRequest request;
+	    try {
+	 
+	        ObjectMetadata metadata = new ObjectMetadata();
+	        metadata.setCacheControl("604800"); // 60*60*24*7 일주일
+	        metadata.setContentType("image/png");
+	        request = new PutObjectRequest(bucket, fname, file.getInputStream(), metadata)
+	                .withCannedAcl(CannedAccessControlList.PublicRead);
+	        // amazonS3.putObject(request);
+	        Upload upload = tm.upload(request);
+	 
+	        upload.waitForCompletion();
+	 
+	    } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    } catch (AmazonServiceException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    } catch (AmazonClientException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    } catch (InterruptedException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    }
+	   }*/
 }
