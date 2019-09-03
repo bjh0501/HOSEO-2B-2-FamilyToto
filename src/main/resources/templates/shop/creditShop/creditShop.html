@@ -18,6 +18,10 @@
   <!-- Custom styles for this template-->
   <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
 
+ <style>
+
+ </style>
+ 
 </head>
 <body id="page-top">
 
@@ -46,7 +50,7 @@
 						<h2 class="text-title">크레딧 샵</h2>
 					</div>
 					<div class="row">
-						<div class="col-xl-4 col-lg-6 col-md-8 col-sm-12" >
+						<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12" >
 							<div class="input-group mb-3">
 								<select class="custom-select" id="inputGroupSelect01">
 								    <option selected>전체보기</option>
@@ -59,7 +63,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" >
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
 							<div class="input-group mb-3">
 							  <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1">
 							  <button type="button" class="btn btn-secondary">검색</button>
@@ -67,147 +71,145 @@
 						</div>
 					</div><br>
 
-					<!-- 1번 레일  --><div class="row">
-					<div class="container" >
+					<!-- 따라다니는 광고 레이어 시작-->
+					<div class="fixed-bottom-right">
+					    <img src="img/add/nomoney.png">
+					</div>
+					<!-- 따라다니는 광고 레이어 마지막 -->
+					
+					<div class="container">
+										
+					<!-- 1번 레일  -->
 					<div class="row">
-					  <div class="card col-sm-4 col-md-3 col-lg-4 col-xl-3">
-					    <img src="http://img.newspim.com/news/2017/10/01/1710010702431460.jpg" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">양주 패키지<span style="float:right"><input class="btn-secondary" type="button" value="상세보기"></input></span></h5>
-					      <p class="card-text">500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
-					  <br>
-					  
-					  
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNzA4MjVfOTgg%2FMDAxNTAzNTg3MTg4MTU0.0qadFvSOHnjn1c2omKfOEQwVV2HM04eD9tXdKP2QfDgg.ZViNEzpSWrmOTOucwczXyaIjY5GcpgyE23Klh7_e4Iog.JPEG.ducky147%2FKakaoTalk_20170825_000457804.jpg&type=b400"
-					     class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">세븐스타
-					      <span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">15,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
-					  <br>
-					  
-					  
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2Fdata42%2F2009%2F5%2F18%2F221%2F2%25281%2529_fbi919.jpg&type=b400"
-					     class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">k-2<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					    </div>
-					    <div class="col-md-1"></div>
-					    
-					     </div><br><br><br>
+					
+						  <div class="card col-lg-3 col-md-3 col-sm-6  col-xs-12">
+						    <img src="http://img.newspim.com/news/2017/10/01/1710010702431460.jpg" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">양주 패키지<span style="float:right"><input class="btn-secondary" type="button" value="상세보기"></input></span></h5>
+						      <p class="card-text">500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+						  
+						  
+						 <div class="card col-lg-3 col-md-3 col-sm-6  col-xs-12">
+						    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxNzA4MjVfOTgg%2FMDAxNTAzNTg3MTg4MTU0.0qadFvSOHnjn1c2omKfOEQwVV2HM04eD9tXdKP2QfDgg.ZViNEzpSWrmOTOucwczXyaIjY5GcpgyE23Klh7_e4Iog.JPEG.ducky147%2FKakaoTalk_20170825_000457804.jpg&type=b400"
+						     class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">세븐스타
+						      <span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">15,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+						  
+						  
+						  
+						 <div class="card col-lg-3 col-md-3 col-sm-6  col-xs-12">
+						    <img src="/img/k2.jpg"
+						     class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">K-2<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						 </div>
+						 
+						 <div class="card col-lg-3 col-md-3 col-sm-6  col-xs-12 m0">
+						    <img src="img/ak47.jpg" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">AK47 단품<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+					   
+					</div>
+					     
+
 					     
 					 <!-- 2번 레일 -->
 					 <div class="row">     
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="img/ak47.jpg" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">AK47 단품<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
+						 
+	
+						  
+						  
+						 <div class="card col-lg-3 col-md-3 col-sm-6  col-xs-12">
+						    <img src="img/microUzi.jpg" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">MicroUzi소음기 세트<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">700,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+	
+						
+						 <div class="card col-lg-3 col-md-6 col-sm-6 col-xs-12">
+						    <img src="http://shop1.phinf.naver.net/20180828_56/sglife4451_1535452518482a4brP_JPEG/21702341618703288_150739478.jpg" class="card-img-top"
+						      alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">장미칼<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">30,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+						  
+						 <div class="card col-lg-3 col-md-6 col-sm-6 col-xs-12">
+						    <img src="http://gdimg.gmarket.co.kr/1622912847/still/600?ver=1560142638" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">화투패<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">1,100크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+
 					  
 					  
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="img/microUzi.jpg" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">MicroUzi소음기 세트<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">700,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
+						 <div class="card col-lg-3 col-md-6 col-sm-6 col-xs-12">
+						    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20140723_8%2Fnmp_1406109436654PIycH_JPEG%2F71352837753cf86b457c9e.jpg&type=b400"
+						    class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">카지노칩<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">9,900크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+
 					  </div>
-					  <div class="col-md-1"></div>
-					
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="http://shop1.phinf.naver.net/20180828_56/sglife4451_1535452518482a4brP_JPEG/21702341618703288_150739478.jpg" class="card-img-top"
-					      alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">장미칼<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">30,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
-					  </div><br><br><br>
 					  
 					  
 					  <!-- 3번레일 -->
 					  <div class="row">
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="http://gdimg.gmarket.co.kr/1622912847/still/600?ver=1560142638" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">화투패<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">1,100크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
+						 
+
+					  
+						 <div class="card col-lg-3 col-md-6 col-sm-6 col-xs-12">
+						    <img src="http://gdimg.gmarket.co.kr/1467635506/still/600?ver=1538615519" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">화투담요<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">3,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
+					 
+						 <div class="card col-lg-3 col-md-6 col-sm-6 col-xs-3">
+						    <img src="img/Methamphetamine.jpg" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">히로뽕<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">12,500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
 					  
 					  
-					  <div class="col-md-1"></div>
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20140723_8%2Fnmp_1406109436654PIycH_JPEG%2F71352837753cf86b457c9e.jpg&type=b400"
-					    class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">카지노칩<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">9,900크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
+						 <div class="card col-lg-3 col-md-6 col-sm-6 col-xs-12">
+						    <img src="img/Kokain.jpg" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">코카인<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">4,750,120크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						  </div>
 					  
 					  
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="http://gdimg.gmarket.co.kr/1467635506/still/600?ver=1538615519" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">화투담요<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">3,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
-					  </div><br><br><br>
+					    <div class="card col-lg-3 col-md-6 col-sm-6 col-xs-12">
+						    <img src="http://img-cdn.ddanzi.com/ddfile/201706-images/187854958.jpg" class="card-img-top" alt="..." style="height:180px">
+						    <div class="card-body"><hr>
+						      <h5 class="card-title">떨<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
+						      <p class="card-text">1,000,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
+						    </div>
+						</div>
 					  
-					  
-					  <!-- 4번 레일 -->
-					  <div class="row">
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="img/Methamphetamine.jpg" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">히로뽕<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">12,500,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
-					  
-					  
-					 <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="img/Kokain.jpg" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">코카인<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">4,750,120크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
-					  
-					  
-				    <div class="card col-sm-4 col-md-4 col-lg-4 col-xl-3">
-					    <img src="http://img-cdn.ddanzi.com/ddfile/201706-images/187854958.jpg" class="card-img-top" alt="..." style="height:180px">
-					    <div class="card-body"><hr>
-					      <h5 class="card-title">떨<span style="float:right"><input class="btn-secondary" type="button" value="상세보기" ></input></span></h5>
-					      <p class="card-text">1,000,000크레딧<span style="float:right"><input class="btn-secondary" type="button" value="장바구니"></p>
-					    </div>
-					  </div>
-					  <div class="col-md-1"></div>
-					  </div><br><br>
-					  
-					</div>
-					
-				</div>		
+					</div>		
 			</div>
 		        <!-- /.container-fluid -->
 		
