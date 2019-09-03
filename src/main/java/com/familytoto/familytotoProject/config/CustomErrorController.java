@@ -31,7 +31,7 @@ public class CustomErrorController implements ErrorController{
         model.addAttribute("msg", httpStatus.getReasonPhrase());
         model.addAttribute("timestamp", new Date());
         
-        return "error/error";
+        return "/error/error";
     }
 
 }

@@ -141,14 +141,17 @@
 	</update>
 	
 	<select id="getUpdateBoard" resultType="BoardVO">
-		SELECT	BOARD_ANNO_ID as boardAnnoId
+		
+        SELECT	BOARD_ANNO_ID as boardAnnoId
 		,		BOARD_TITLE as boardTitle
         ,		BOARD_CONTENTS as boardContents
-        ,		BOARD_NO as boardNo
+        ,		B.BOARD_NO as boardNo
         ,		BOARD_ANNO_PW as boardAnnoPw
-        FROM	BOARD
-        WHERE	BOARD_NO = #{boardNo}
-        AND		USE_YN = 'Y'
+        ,		BF.BOARD_FILE_NAME as boardFileName
+        FROM	BOARD B
+			LEFT OUTER JOIN BOARD_FILE BF ON B.BOARD_NO = BF.BOARD_NO AND BF.USE_YN = 'Y'
+        WHERE	B.BOARD_NO = #{boardNo}
+        AND		B.USE_YN = 'Y'
 	</select>
 	<select id="commentCnt" resultType="int">
 		SELECT	COUNT(*) as commentCnt
@@ -197,4 +200,13 @@
             NOW(),			#{regIp},			'Y'
         )
 	</insert>
+	<update id="updateNotUseFile">
+		UPDATE	BOARD_FILE
+        SET		USE_YN = 'N'
+		,		CHG_DT = NOW()
+        ,		CHG_IP = #{chgIp}
+        ,		CHG_CUST_NO = #{chgCustNo}
+        WHERE	BOARD_NO = #{boardNo}
+        AND		USE_YN = 'Y'
+	</update>
 </mapper>

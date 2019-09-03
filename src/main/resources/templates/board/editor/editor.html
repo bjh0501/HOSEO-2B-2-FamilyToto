@@ -615,8 +615,8 @@
 			v = $("#annoId").val()
 
 			if (!regexp.test(v) || $("#annoId").val().length < 4
-					|| $("#annoId").val().length > 20) {
-				alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+					|| $("#annoId").val().length > 8) {
+				alert("아이디는 4~8자리, 영어, 숫자, 한글만 입력이 가능합니다.");
 				$("#annoId").focus();
 				return;
 			}
@@ -670,6 +670,7 @@
 		var textarea = document.createElement('textarea');
 		textarea.name = 'boardContents';
 		textarea.value = content;
+		textarea.type = 'hidden';
 
 		var title = document.createElement('input');
 		title.type = 'hidden';

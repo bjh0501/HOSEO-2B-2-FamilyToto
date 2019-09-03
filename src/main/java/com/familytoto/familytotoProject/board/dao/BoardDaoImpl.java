@@ -79,4 +79,9 @@ public class BoardDaoImpl implements BoardDao {
 	public int insertFile(FileVO vo) {
 		return sqlSession.insert("board.insertFile", vo);
 	}
+
+	@Override
+	public int updateFile(FileVO vo) {
+		return sqlSession.update("board.updateNotUseFile", vo);
+	}
 }

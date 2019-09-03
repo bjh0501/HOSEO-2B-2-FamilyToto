@@ -243,7 +243,7 @@
 		        <h5 class="modal-title">비밀번호 입력</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
-		          <input type="text" id="promptGubun">
+		          <input type="text" id="promptGubun" style="display:none;">
 		        </button>
 		      </div>
 		      <div class="modal-body">
@@ -368,9 +368,9 @@
 			var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
 			v = id
 	
-			if (!regexp.test(v) || id.length < 4
-					|| id.length > 20) {
-				alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+			if (!regexp.test(v) || id.length < 2
+					|| id.length > 8) {
+				alert("아이디는 2~8자리, 영어, 숫자, 한글만 입력이 가능합니다.");
 				$("#replyId" + replyNo).focus();
 				return;
 			}
@@ -510,10 +510,14 @@
 		}
 	}
 	
-	function clickModal(gubun) {		
-		$('#promptGubun').val(gubun);
-		$("#annoInputPw").val("");
-		$('#promptModal').modal("show");
+	function clickModal(gubun) {
+		if(gubun == "BD" && [[${cust}]] != -1) {
+			deleteBoard([[ ${board.getBoardNo()} ]], [[ ${cust} ]])
+		} else {
+			$('#promptGubun').val(gubun);
+			$("#annoInputPw").val("");
+			$('#promptModal').modal("show");	
+		}		
 	}
 	
 	function registerComment(boardNo) {
@@ -526,9 +530,9 @@
 		var regexp = /^[0-9ㄱ-힣a-zA-Z]*$/
 		v = $("#annoId").val()
 
-		if (!regexp.test(v) || $("#annoId").val().length < 4
+		if (!regexp.test(v) || $("#annoId").val().length < 2
 				|| $("#annoId").val().length > 20) {
-			alert("아이디는 4~20자리, 영어, 숫자, 한글만 입력이 가능합니다.");
+			alert("아이디는 2~8자리, 영어, 숫자, 한글만 입력이 가능합니다.");
 			$("#annoId").focus();
 			$('#promptModal').modal("hide"); 
 			return;

@@ -46,4 +46,7 @@ public interface BoardDao {
 
 	// 파일첨부
 	public int insertFile(FileVO vo);
+	
+	// 파일수정
+	public int updateFile(FileVO vo);
 }

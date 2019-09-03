@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
@@ -43,15 +51,15 @@ public class BoardController {
 	private int nReplyNo = 0;
 	
 	@Autowired
-	AWSService awsService;
-	
-	@Autowired
 	BoardService boardService;
 	
 	@Autowired
 	CommentService commentService;
 	
 	private FileVO fileVo = new FileVO();
+	
+	// 게시글 업데이트 할 때 파일삭제여부 변수
+	private String isDeleteFile = "";
 	
 	@RequestMapping("/boardList")
     public String boardList(Model model
@@ -119,6 +127,7 @@ public class BoardController {
 			if(fileVo.getBoardFilePath() != null) {
 				fileVo.setRegIp(request.getRemoteAddr());
 				fileVo.setBoardNo(vo.getBoardNo());
+				fileVo.setRegCustNo(cVo.getCustNo());
 				boardService.insertFile(fileVo);
 			}
 			
@@ -250,7 +259,6 @@ public class BoardController {
 		// 성공하면 수정창이동
 		BoardVO resultBoardVo = boardService.getUpdateBoard(bVo);
 		
-		
 		model.addAttribute("board", resultBoardVo);
 		return "/board/updateBoard";
     }
@@ -261,6 +269,31 @@ public class BoardController {
 			@Valid @ModelAttribute BoardVO bVo, Model model,
 			HttpServletRequest request, HttpSession session) {
 		bVo.setChgIp(request.getRemoteAddr());
+		
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		if(cVo == null) {
+			fileVo.setChgCustNo(0);
+		} else {
+			fileVo.setChgCustNo(cVo.getCustNo());
+			fileVo.setRegCustNo(cVo.getCustNo());
+		}
+		
+		// 파일 삭제한 경우
+		if(isDeleteFile.equals("Y")) {
+			fileVo.setChgIp(request.getRemoteAddr());
+			fileVo.setBoardNo(bVo.getBoardNo());
+			boardService.updateFile(fileVo); // 기존에있는 파일 삭제
+		}
+		
+		// 업로드한 파일 있을경우
+		if(fileVo.getBoardFilePath() != null) {
+			fileVo.setRegIp(request.getRemoteAddr());
+			fileVo.setBoardNo(bVo.getBoardNo());
+			fileVo.setChgIp(request.getRemoteAddr());
+			boardService.updateFile(fileVo); // 기존에있는 파일 삭제
+			boardService.insertFile(fileVo);
+		}
 
 		return boardService.updateBoard(bVo, session);
     }
@@ -292,6 +325,8 @@ public class BoardController {
 			}
 		}
 		
+		AWSService awsService = new AWSService();
+		
 		for (MultipartFile mf : fileList) {
 			long fileSize = mf.getSize(); // 파일 사이즈
 			String originFileName = mf.getOriginalFilename(); // 원본 파일 명			
@@ -307,7 +342,7 @@ public class BoardController {
 				
 				Map<String, Object> map = new HashMap<String, Object>();
 				
-				map.put("imgUrl","https://onesports.s3.ap-northeast-2.amazonaws.com" +"/img/board/"
+				map.put("imgUrl",GlobalVariable.AWS_S3_LINK +"/img/board/"
 						+ "" + sFolderName[0]
 						+ "/" + sFolderName[1]
 						+ "/" + sFolderName[2]
@@ -317,12 +352,11 @@ public class BoardController {
 				list.add(map);
 				
 				try {
-					// 여러개일떄 에러 첫번째껏만 들어간다..
 					mf.transferTo(new File(localFullPathFile));
 					File awsUploadFile = new File(localFullPathFile);
+					
 					if(awsService.uploadFile(sAwsFilePath, awsUploadFile) == 0) {
-						// 사진삭제만하면 403에러가뜬다..
-						//awsUploadFile.delete();						
+						awsUploadFile.delete();						
 					}
 				} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block
@@ -341,6 +375,7 @@ public class BoardController {
 		
 		return sPath;
     }
+	
 	
 	@RequestMapping("/board/uploadFile")
 	@ResponseBody
@@ -367,6 +402,8 @@ public class BoardController {
 			}
 		}
 		
+		AWSService awsService = new AWSService();
+		
 		for (MultipartFile mf : fileList) {
 			long fileSize = mf.getSize(); // 파일 사이즈
 			String originFileName = mf.getOriginalFilename(); // 원본 파일 명			
@@ -375,7 +412,7 @@ public class BoardController {
 				long lTime = System.currentTimeMillis();
 				String localFullPathFile = path + lTime +"_" + originFileName;
 				String sFileName = lTime+"_" + originFileName;
-				String sDBFilePath = "https://onesports.s3.ap-northeast-2.amazonaws.com"+"/file/board/"
+				String sDBFilePath = GlobalVariable.AWS_S3_LINK+"/file/board/"
 						+ "" + sFolderName[0]
 						+ "/" + sFolderName[1]
 						+ "/" + sFolderName[2]
@@ -389,103 +426,35 @@ public class BoardController {
 				fileVo.setBoardFilePath(sDBFilePath);			// DB에들어갈 패스
 				fileVo.setBoardFileName(originFileName);	// DB에 들어갈 이름
 				
-				
 				try {
 					mf.transferTo(new File(localFullPathFile));
 					File awsUploadFile = new File(localFullPathFile);
-					awsService.uploadFile(sAwsFilePath, awsUploadFile);
-					awsUploadFile.delete();
+					if(awsService.uploadFile(sAwsFilePath, awsUploadFile) == 0) {
+						awsUploadFile.delete();
+					}
 				} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block
+					awsService =  null;
 					e.printStackTrace();
 					return "-99";
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
+					awsService =  null;
 					e.printStackTrace();
 					return "-99";
 				}
 			}
 		}
 		
+		awsService =  null;
+		
 		return "0";
     }
 	
-//	@RequestMapping(value="/board/downloadFile")
-//	public void downloadFile(ModelMap model, HttpServletRequest request, HttpServletResponse response, BoardVO vo) throws Exception {
-//		
-//		String dFile = "테스트.txt";
-//		String upDir = "D:/upload/";
-//		String path = upDir+File.separator+dFile;
-//	  
-//		File file = new File(path);
-//
-//		String userAgent = request.getHeader("User-Agent");
-//		boolean ie = userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("rv:11") > -1;
-//		String fileName = null;
-//	   
-//		if (ie) {
-//			fileName = URLEncoder.encode(file.getName(), "utf-8");
-//		} else {
-//			fileName = new String(file.getName().getBytes("utf-8"),"iso-8859-1");
-//		}
-//	  
-//		response.setContentType("application/octet-stream");
-//		response.setHeader("Content-Disposition","attachment;filename=\"" +fileName+"\";");
-//	  
-//		FileInputStream fis=new FileInputStream(file);
-//		BufferedInputStream bis=new BufferedInputStream(fis);
-//		ServletOutputStream so=response.getOutputStream();
-//		BufferedOutputStream bos=new BufferedOutputStream(so);
-//	  
-//		byte[] data=new byte[2048];
-//		int input=0;
-//		while((input=bis.read(data))!=-1) {
-//			bos.write(data,0,input);
-//			bos.flush();
-//		}
-//	  
-//		if(bos!=null) bos.close();
-//		if(bis!=null) bis.close();
-//		if(so!=null) so.close();
-//		if(fis!=null) fis.close();
-//	}
-	
-	/*@Autowired
-	private AmazonS3 amazonS3;
-	 
-	@Value("${cloud.aws.s3.bucket}")
-	private String bucket;
-	@RequestMapping("/board/uploadFile")
+	@RequestMapping("/updateBoard/deleteFile")
 	@ResponseBody
-	public void s3Test(MultipartFile file, String fname) {
-	    TransferManager tm = TransferManagerBuilder.standard().withS3Client(amazonS3).build();
-	 
-	 
-	    PutObjectRequest request;
-	    try {
-	 
-	        ObjectMetadata metadata = new ObjectMetadata();
-	        metadata.setCacheControl("604800"); // 60*60*24*7 일주일
-	        metadata.setContentType("image/png");
-	        request = new PutObjectRequest(bucket, fname, file.getInputStream(), metadata)
-	                .withCannedAcl(CannedAccessControlList.PublicRead);
-	        // amazonS3.putObject(request);
-	        Upload upload = tm.upload(request);
-	 
-	        upload.waitForCompletion();
-	 
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    } catch (AmazonServiceException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    } catch (AmazonClientException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    } catch (InterruptedException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }
-	   }*/
+	private String deleteFile() {
+		this.isDeleteFile = "Y";
+		return "0";
+	}
 }

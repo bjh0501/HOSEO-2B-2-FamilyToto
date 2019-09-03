@@ -152,4 +152,9 @@ public class BoardServiceImpl implements BoardService{
 	public int insertFile(FileVO vo) {
 		return boardDao.insertFile(vo);
 	}
+
+	@Override
+	public int updateFile(FileVO vo) {
+		return boardDao.updateFile(vo);
+	}
 }
