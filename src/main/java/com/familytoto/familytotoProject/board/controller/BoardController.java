@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
+import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
 import com.familytoto.familytotoProject.board.service.BoardService;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
@@ -45,6 +46,8 @@ public class BoardController {
 	
 	@Autowired
 	CommentService commentService;
+	
+	private FileVO fileVo = new FileVO();
 	
 	@RequestMapping("/boardList")
     public String boardList(Model model
@@ -109,6 +112,10 @@ public class BoardController {
 			
 			int nResult = boardService.insertCustBoard(vo);
 			
+			fileVo.setRegIp(request.getRemoteAddr());
+			fileVo.setBoardNo(vo.getBoardNo());
+			boardService.insertFile(fileVo);
+			
 			if(nResult==1) {
 				return "redirect:/boardList";
 			}
@@ -124,6 +131,10 @@ public class BoardController {
 		if(session.getAttribute("cust") == null) {
 			int nResult = boardService.insertAnnoBoard(vo);
 			
+			fileVo.setBoardNo(vo.getBoardNo());
+			fileVo.setRegIp(request.getRemoteAddr());
+			boardService.insertFile(fileVo);
+			
 			if(nResult == 1) {
 				return "redirect:/boardList";
 			} else if(nResult == -99) {
@@ -137,15 +148,7 @@ public class BoardController {
 			return "-1";
 		}
     }
-	
-	
-	// 이 메서드 정리해야함
-	@RequestMapping("/showEditor")
-    public String showEditor() {
-        return "board/editor/showEditor";
-    }
-	
-	
+		
 	@RequestMapping("/showBoard/{boardNo}")
     public ModelAndView showBoard(HttpSession session, @PathVariable ("boardNo") String sBoardNo, ModelAndView mv) {
 		BoardVO vo = new BoardVO();
@@ -254,9 +257,9 @@ public class BoardController {
 		return boardService.updateBoard(bVo, session);
     }
 	
-	@RequestMapping("/board/uploadFile")
+	@RequestMapping("/board/uploadImages")
 	@ResponseBody
-    private String boardInsertProc(MultipartHttpServletRequest mtfRequest, HttpServletRequest request) throws Exception{
+    private String boardInsertProc(MultipartHttpServletRequest mtfRequest) throws Exception{
 		List<MultipartFile> fileList = mtfRequest.getFiles("file");
 		ArrayList<Map<String, Object>> list = new ArrayList<>(); 
 		
@@ -320,6 +323,66 @@ public class BoardController {
 		String sPath = gson.toJson(list);
 		
 		return sPath;
+    }
+	
+	@RequestMapping("/board/uploadFile")
+	@ResponseBody
+    private String boardInsertFile(MultipartHttpServletRequest mtfRequest) throws Exception{
+		List<MultipartFile> fileList = mtfRequest.getFiles("file");
+		
+		SimpleDateFormat format1 = new SimpleDateFormat ("yyyy-MM-dd");		
+		Date time = new Date();
+		String time1 = format1.format(time);
+		String[] sFolderName = time1.split("-");
+		
+		String path = GlobalVariable.BOARD_FILE_PATH
+				+ "" + sFolderName[0]
+				+ "/" + sFolderName[1]
+				+ "/" + sFolderName[2]+"/";
+								
+		
+		File folder = new File(path);
+		
+		if (!folder.exists()) {
+			try {
+				folder.mkdirs(); // 폴더 생성합니다.
+			} catch (Exception e) {
+				e.getStackTrace();
+			}
+		}
+		
+		for (MultipartFile mf : fileList) {
+			long fileSize = mf.getSize(); // 파일 사이즈
+			String originFileName = mf.getOriginalFilename(); // 원본 파일 명			
+			
+			if(fileSize <= 1024*1024*3) { //3메가 제한
+				long lTime = System.currentTimeMillis();
+				String safeFile = path + lTime +"_" + originFileName;
+				String sFileName = lTime+"_" + originFileName;
+				String sFilePath = "/file/board/"
+						+ "" + sFolderName[0]
+						+ "/" + sFolderName[1]
+						+ "/" + sFolderName[2]
+						+ "/" + sFileName;
+				
+				fileVo.setBoardFilePath(sFilePath);
+				fileVo.setBoardFileName(originFileName);
+				
+				try {
+					mf.transferTo(new File(safeFile));
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return "-99";
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return "-99";
+				}
+			}
+		}
+		
+		return "0";
     }
 	
 	

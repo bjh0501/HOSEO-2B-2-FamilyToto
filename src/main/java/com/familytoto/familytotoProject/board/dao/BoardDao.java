@@ -3,6 +3,7 @@ package com.familytoto.familytotoProject.board.dao;
 import java.util.List;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
+import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
 
 public interface BoardDao {
@@ -42,5 +43,7 @@ public interface BoardDao {
 	
 	// 댓글 카운트
 	public int getCommentCnt(BoardVO vo);
-	
+
+	// 파일첨부
+	public int insertFile(FileVO vo);
 }

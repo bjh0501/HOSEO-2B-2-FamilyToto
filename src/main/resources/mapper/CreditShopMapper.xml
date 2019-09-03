@@ -20,4 +20,10 @@
 		WHERE	P.PRODUCT_NO = ${productNo}		
 		AND		P.USE_YN = 'Y'
 	</select>
+	<select id="productAmountCheck" resultType="ProductVO">
+	 	SELECT	PRODUCT_AMOUNT as productAmount
+        FROM	PRODUCT
+        WHERE	PRODUCT_NO = #{productNo}
+		AND		USE_YN = 'Y'
+	</select>
 </mapper>

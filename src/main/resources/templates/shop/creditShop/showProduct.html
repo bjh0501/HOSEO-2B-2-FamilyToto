@@ -87,13 +87,13 @@
 											<div class="input-group-prepend">
 												<span class="input-group-text" id="basic-addon1">개수</span>
 											</div>
-											<input type="text" class="form-control" placeholder="Amount" aria-label="Username" aria-describedby="basic-addon1">
+											<input type="text" class="form-control" placeholder="Amount" id="amount">
 										</div>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="col-6">
-												<button type="button" class="btn btn-secondary btn-block btn-lg">장바구니</button>
+												<button type="button" class="btn btn-secondary btn-block btn-lg" th:onClick="|javascript:basket(${product.productNo});|">장바구니</button>
 											</div>
 											<div class="col-6">
 												<button type="button" class="btn btn-secondary btn-block btn-lg">즉시구매</button>
@@ -197,3 +197,43 @@
   <script src="/js/demo/chart-pie-demo.js"></script>
 </body>
 </html>
+<script>
+	function basket(productNo) {
+		if(isNaN($("#amount").val()) == true) {
+			alert("숫자만 입력해주세요.");
+			$("#amount").focus();
+			return;
+		}
+		
+		if($("#amount").val() < 1) {
+			alert("수량은 1개이상 써주세요.");
+			$("#amount").focus();
+			return;
+		}
+		
+		$.ajax({
+			url : "/basket/insert",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : "productNo=" + productNo 
+					+ "&basketAmount=" + $("#amount").val(),
+			success : function(data) {
+				if(data.trim() == -99) {
+					alert("로그인을 해야 장바구니에 담을 수 있습니다.");
+				} else if(data.trim() == -98) {
+					alert("패밀리 회원만 장바구니에 담을 수 있습니다.");
+				} else if(data.trim() == -97) {
+					alert("장바구니 수량을 상품 수량보다 적게 입력해주세요.");
+				} else if(data.trim() == 0) {
+					alert("장바구니에 담았습니다.\n누군가 전부 구입하기전에 먼저 구입해주세요!");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+</script>

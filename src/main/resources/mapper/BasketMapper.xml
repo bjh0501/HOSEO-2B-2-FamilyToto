@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="basket">
+	<insert id="insertBasket">
+        INSERT INTO BASKET (
+			FAMILY_CUST_NO,		PRODUCT_NO,		BASKET_AMOUNT,
+            REG_CUST_NO,		REG_DT,			REG_IP,			USE_YN
+        ) VALUES (
+			#{familyCustNo},	#{productNo},	#{basketAmount},
+            #{regCustNo},		NOW(),			#{regIp},		'Y'
+        )
+	</insert>
+</mapper>

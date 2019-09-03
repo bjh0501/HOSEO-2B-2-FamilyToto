@@ -92,6 +92,16 @@
 									</div>
 								</div>
 							</div>
+							<div class="row" th:if="${board.getBoardFileName() != ''}">
+								<div class="col-xl-5 col-md-5 mb-2">
+									<div class="input-group">
+								  		<div class="input-group-prepend">
+									 	  <span class="input-group-text" id="basic-addon1">첨부파일</span>
+								  		</div>
+										<a style="padding-top:8px; padding-left:2px;" th:text="${board.getBoardFileName()}" href="#"></a>
+									</div>
+								</div>
+							</div>
 							<hr>
 							<div class="row">
 								<textarea style="display:none;" id="contentsArea" th:text="${board.getBoardContents()}"></textarea>

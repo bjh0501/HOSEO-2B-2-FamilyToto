@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
+import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
 
 public interface BoardService {
@@ -37,5 +38,6 @@ public interface BoardService {
 	// 댓글 카운트
 	public int getCommentCnt(BoardVO vo);
 	
-	
+	// 파일첨부
+	public int insertFile(FileVO vo);
 }

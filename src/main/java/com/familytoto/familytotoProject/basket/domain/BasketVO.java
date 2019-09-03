@@ -1,20 +1,19 @@
-package com.familytoto.familytotoProject.board.domain;
+package com.familytoto.familytotoProject.basket.domain;
 
 import java.sql.Timestamp;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 
-public class FileVO {
-    // 100001
-    private int boardFileNo;
+public class BasketVO {
+	// 50000001
+    private int basketNo;
 
-    private int boardNo;
+    private int familyCustNo;
 
-    @NotBlank
-    private String boardFilePath;
+    private int productNo;
 
-    @NotBlank
-    private String boardFileName;
+    @Min(1)
+    private int basketAmount;
 
     private int regCustNo;
 
@@ -28,39 +27,39 @@ public class FileVO {
 
     private String chgIp;
 
-    // Y,N,B
+    // Y,N
     private String useYn;
 
-	public int getBoardFileNo() {
-		return boardFileNo;
+	public int getBasketNo() {
+		return basketNo;
 	}
 
-	public void setBoardFileNo(int boardFileNo) {
-		this.boardFileNo = boardFileNo;
+	public void setBasketNo(int basketNo) {
+		this.basketNo = basketNo;
 	}
 
-	public int getBoardNo() {
-		return boardNo;
+	public int getFamilyCustNo() {
+		return familyCustNo;
 	}
 
-	public void setBoardNo(int boardNo) {
-		this.boardNo = boardNo;
+	public void setFamilyCustNo(int familyCustNo) {
+		this.familyCustNo = familyCustNo;
 	}
 
-	public String getBoardFilePath() {
-		return boardFilePath;
+	public int getProductNo() {
+		return productNo;
 	}
 
-	public void setBoardFilePath(String boardFilePath) {
-		this.boardFilePath = boardFilePath;
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
 	}
 
-	public String getBoardFileName() {
-		return boardFileName;
+	public int getBasketAmount() {
+		return basketAmount;
 	}
 
-	public void setBoardFileName(String boardFileName) {
-		this.boardFileName = boardFileName;
+	public void setBasketAmount(int basketAmount) {
+		this.basketAmount = basketAmount;
 	}
 
 	public int getRegCustNo() {
@@ -121,9 +120,11 @@ public class FileVO {
 
 	@Override
 	public String toString() {
-		return "FileVO [boardFileNo=" + boardFileNo + ", boardNo=" + boardNo + ", boardFilePath=" + boardFilePath
-				+ ", boardFileName=" + boardFileName + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo
+		return "BasketVO [basketNo=" + basketNo + ", familyCustNo=" + familyCustNo + ", productNo=" + productNo
+				+ ", basketAmount=" + basketAmount + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo
 				+ ", regDt=" + regDt + ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn
 				+ "]";
-	}	
+	}
+
+    
 }

@@ -101,7 +101,8 @@
 	    	</if>
 	</select>
 	<select id="getShowBoard" resultType="BoardVO">
-		SELECT	B.BOARD_NO as boardNo
+		
+        SELECT	B.BOARD_NO as boardNo
 		,		B.BOARD_TITLE as boardTitle
 		,		B.BOARD_REPLY_NO as boardReplyNo
 		,		IFNULL(B.REG_CUST_NO, 0) as  regCustNo
@@ -110,30 +111,33 @@
 		,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun
 		,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
 		,		COUNT(WC.BOARD_NO) as visit
+        ,		IFNULL(BF.BOARD_FILE_PATH, '') as boardFilePath
+        ,		IFNULL(BF.BOARD_FILE_NAME, '') as boardFileName
 		FROM	BOARD B
 			INNER JOIN WEB_LOG WC ON B.BOARD_NO = WC.BOARD_NO
 			LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
 			LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
 			LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
+            LEFT OUTER JOIN BOARD_FILE BF ON BF.BOARD_NO = B.BOARD_NO AND BF.USE_YN = 'Y'
 	    WHERE	B.USE_YN = 'Y'
-	    AND		B.BOARD_NO = ${boardNo}
+	    AND		B.BOARD_NO = #{boardNo}
 	</select>
 	<update id="updateDeleteBoard">
 		UPDATE	BOARD
 		SET		USE_YN = 'N'
 		,		CHG_DT = NOW()
-		,		CHG_IP = '${chgIp}'
-		,		CHG_CUST_NO = ${chgCustNo}
-		WHERE	BOARD_NO = ${boardNo}
-		AND		REG_CUST_NO = ${chgCustNo}
+		,		CHG_IP = #{chgIp}
+		,		CHG_CUST_NO = #{chgCustNo}
+		WHERE	BOARD_NO = #{boardNo}
+		AND		REG_CUST_NO = #{chgCustNo}
 		AND		USE_YN = 'Y'
 	</update>
 	<update id="updateDeleteAnnoBoard">
 		UPDATE	BOARD
 		SET		USE_YN = 'N'
 		,		CHG_DT = NOW()
-		,		CHG_IP = '${chgIp}'
-		WHERE	BOARD_NO = ${boardNo}
+		,		CHG_IP = #{chgIp}
+		WHERE	BOARD_NO = #{boardNo}
 		AND		USE_YN = 'Y'		
 	</update>
 	
@@ -185,4 +189,13 @@
         WHERE	BOARD_NO = #{boardNo}
         AND		USE_YN = 'Y'
 	</update>
+	<insert id="insertFile">
+		INSERT INTO BOARD_FILE(
+			BOARD_NO,		BOARD_FILE_PATH,	BOARD_FILE_NAME,	REG_CUST_NO,
+			REG_DT,			REG_IP,				USE_YN
+        ) VALUES (
+			#{boardNo},		#{boardFilePath},	#{boardFileName},	#{regCustNo},
+            NOW(),			#{regIp},			'Y'
+        )
+	</insert>
 </mapper>

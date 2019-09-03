@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.familytoto.familytotoProject.board.domain.BoardVO;
+import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
 
 @Repository
@@ -72,5 +73,10 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public int getCommentCnt(BoardVO vo) {
 		return sqlSession.selectOne("board.commentCnt", vo);
+	}
+
+	@Override
+	public int insertFile(FileVO vo) {
+		return sqlSession.insert("board.insertFile", vo);
 	}
 }

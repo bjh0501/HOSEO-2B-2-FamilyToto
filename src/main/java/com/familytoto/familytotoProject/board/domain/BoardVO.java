@@ -54,6 +54,10 @@ public class BoardVO {
     private String custGubun;
     
     private String visit;    
+    
+    private String boardFilePath;
+    
+    private String boardFileName;
 
 	public int getBoardNo() {
 		return boardNo;
@@ -191,11 +195,31 @@ public class BoardVO {
 		this.visit = visit;
 	}
 
+	public String getBoardFilePath() {
+		return boardFilePath;
+	}
+
+	public void setBoardFilePath(String boardFilePath) {
+		this.boardFilePath = boardFilePath;
+	}
+
+	public String getBoardFileName() {
+		return boardFileName;
+	}
+
+	public void setBoardFileName(String boardFileName) {
+		this.boardFileName = boardFileName;
+	}
+
 	@Override
 	public String toString() {
-		return "BoardVO [boardNo=" + boardNo + ", boardReplyNo=" + boardReplyNo + ", boardTitle=" + boardTitle
-				+ ", boardContents=" + boardContents + ", boardAnnoId=" + boardAnnoId + ", boardAnnoPw=" + boardAnnoPw
-				+ ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt=" + regDt + ", chgDt=" + chgDt
-				+ ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn + "]";
+		return "BoardVO [boardNo=" + boardNo + ", boardReplyNo=" + boardReplyNo + ", boardGrpNo=" + boardGrpNo
+				+ ", boardTitle=" + boardTitle + ", boardContents=" + boardContents + ", boardAnnoId=" + boardAnnoId
+				+ ", boardAnnoPw=" + boardAnnoPw + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt="
+				+ regDt + ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn
+				+ ", custNickname=" + custNickname + ", custGubun=" + custGubun + ", visit=" + visit
+				+ ", boardFilePath=" + boardFilePath + ", boardFileName=" + boardFileName + "]";
 	}
+    
+    
 }

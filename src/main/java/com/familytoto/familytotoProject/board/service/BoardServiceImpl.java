@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
+import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
@@ -145,5 +146,10 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int getCommentCnt(BoardVO vo) {
 		return boardDao.getCommentCnt(vo);
+	}
+
+	@Override
+	public int insertFile(FileVO vo) {
+		return boardDao.insertFile(vo);
 	}
 }

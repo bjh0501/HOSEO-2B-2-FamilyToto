@@ -67,6 +67,16 @@
 						  		</div>
 								<input type="text" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" id="title" th:value="${board.getBoardTitle()}" >
 							</div>
+							<div class="input-group mb-3" id="fileDiv" style="display: none;">
+						  		<div class="input-group-prepend">
+							 	  <span class="input-group-text">업로드된 파일명</span>
+						  		</div>
+								<input type="text" class="form-control" id="fileName" disabled>
+								<div class="input-group-prepend">
+							 	  <span class="input-group-text">업로드된 파일크기</span>
+						  		</div>
+								<input type="text" class="form-control" id="fileSize" disabled>
+							</div>
 							<input th:if="${loginGubun == null}" type="hidden" id="annoGubun" value="Y">
 							<input th:if="${loginGubun != null}" type="hidden" id="annoGubun" value="N">
 							<input type="file" id="file">
