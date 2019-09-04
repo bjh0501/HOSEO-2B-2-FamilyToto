@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="productBuy">
+	<insert id="insertProductBuy" useGeneratedKeys="true" keyProperty="productBuyNo">
+		INSERT INTO PRODUCT_BUY (
+			FAMILY_CUST_NO,			PRODUCT_NO,				DELIVERY_NO,	PRODUCT_BUY_CREDIT,
+            PRODUCT_BUY_AMOUNT,		PRODUCT_BUY_DEL_CREDIT,	REG_CUST_NO,	REG_DT,
+            REG_IP,					USE_YN
+        ) VALUES (
+			#{familyCustNo},		#{productNo},			#{deliveryNo},	#{productBuyCredit},
+            #{productBuyAmount},	#{productBuyDelCredit},	#{regCustNo},	NOW(),
+            #{regIp},				'Y'
+        )
+	</insert>
+	<insert id="insertproductBuyGrp">
+        INSERT INTO PRODUCT_BUY_GRP (
+			PRODUCT_BUY_NO,		REG_CUST_NO,		REG_DT,
+            REG_IP,				USE_YN
+        ) VALUES (
+			#{productBuyNo},	#{regCustNo},		NOW(),
+            #{regIp},			'Y'
+        )
+	</insert>
+	<select id="getCustCredit" parameterType="ProductBuyVO" resultType="boolean">
+		SELECT	COUNT(*) as familyCustNo
+        FROM	CUSTOM_CREDIT CC
+			INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+        AND		CC.USE_YN = 'Y'
+        HAVING SUM(CREDIT_VALUE) >= #{productBuyCredit}
+	</select>
+	<select id="isProductAmount"  parameterType="ProductBuyVO" resultType="boolean">
+		SELECT	COUNT(*) as productNo
+        FROM	PRODUCT
+        WHERE	PRODUCT_NO = #{productNo}
+        AND		PRODUCT_AMOUNT >= #{productBuyAmount}
+        AND		USE_YN = 'Y'
+	</select>
+	<update id="updateProductAmount">
+		UPDATE	PRODUCT
+        SET		PRODUCT_AMOUNT = PRODUCT_AMOUNT - #{productBuyAmount}
+        WHERE	PRODUCT_NO = #{productNo}
+        AND		USE_YN = 'Y'		
+	</update>
+</mapper>

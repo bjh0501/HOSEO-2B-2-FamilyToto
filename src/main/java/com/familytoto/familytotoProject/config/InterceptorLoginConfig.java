@@ -20,6 +20,7 @@ public class InterceptorLoginConfig extends WebMvcConfigurerAdapter{
         registry.addInterceptor(certificationInterceptor)
                 .addPathPatterns("/charge/**/")
                 .addPathPatterns("/itemShop/**/")
-        		.addPathPatterns("/changeCust/**/");
+        		.addPathPatterns("/changeCust/**/")
+        		.addPathPatterns("/basket/**/");
     }
 }

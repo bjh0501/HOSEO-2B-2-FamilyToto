@@ -96,7 +96,7 @@
 												<button type="button" class="btn btn-secondary btn-block btn-lg" th:onClick="|javascript:basket(${product.productNo});|">장바구니</button>
 											</div>
 											<div class="col-6">
-												<button type="button" class="btn btn-secondary btn-block btn-lg">즉시구매</button>
+												<button type="button" class="btn btn-secondary btn-block btn-lg" th:onClick="|javascript:directBuy(${product.productNo});|">즉시구매</button>
 											</div>
 										</div>
 									</div>
@@ -219,14 +219,61 @@
 			data : "productNo=" + productNo 
 					+ "&basketAmount=" + $("#amount").val(),
 			success : function(data) {
-				if(data.trim() == -99) {
+				if(data.trim() == 0) {
+					alert("장바구니에 담았습니다.\n누군가 전부 구입하기전에 먼저 구입해주세요!");
+				} else if(data.trim() == -99) {
 					alert("로그인을 해야 장바구니에 담을 수 있습니다.");
 				} else if(data.trim() == -98) {
 					alert("패밀리 회원만 장바구니에 담을 수 있습니다.");
 				} else if(data.trim() == -97) {
 					alert("장바구니 수량을 상품 수량보다 적게 입력해주세요.");
-				} else if(data.trim() == 0) {
-					alert("장바구니에 담았습니다.\n누군가 전부 구입하기전에 먼저 구입해주세요!");
+				} else if(data.trim() == -95) {
+					alert("이미 장바구니에 담은 상품입니다.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function directBuy() {
+		if(isNaN($("#amount").val()) == true) {
+			alert("숫자만 입력해주세요.");
+			$("#amount").focus();
+			return;
+		}
+		
+		if($("#amount").val() < 1) {
+			alert("수량은 1개이상 써주세요.");
+			$("#amount").focus();
+			return;
+		}
+		
+		$.ajax({
+			url : "/productSell/insert",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : "productBuyAmount=" + $("#amount").val(),
+			success : function(data) {
+				if(data.trim() == 1) {
+					alert("상품을 구입했습니다.");
+					location.reload();
+				} else if(data.trim() == -99) {
+					alert("로그인을 해야 구입을 할 수 있습니다.");
+				} else if(data.trim() == -98) {
+					alert("패밀리 회원만 구입을 할 수 있습니다.");
+				} else if(data.trim() == -97) {
+					alert("얘! 구입할 크레딧이 없단다.\n토토하러 가렴.");
+				} else if(data.trim() == -96) {
+					alert("얘! 그만큼의 재고가 없단다.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
 				}
 			},
 			error : function(request, status, error) {

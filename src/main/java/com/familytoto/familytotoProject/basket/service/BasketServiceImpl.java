@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.basket.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +16,20 @@ public class BasketServiceImpl implements BasketService{
 	
 	@Override
 	public int insertBasket(BasketVO vo) {
-		return basketDao.insertBasket(vo);
+		if(basketDao.isChecvkBeforeBasket(vo) == false) {
+			return basketDao.insertBasket(vo);			
+		} else {
+			return -95;
+		}
 	}
 
 	@Override
 	public ProductVO checkProductAmount(BasketVO vo) {
 		return basketDao.checkProductAmount(vo);
+	}
+
+	@Override
+	public List<BasketVO> listBasket(int familyCustNo) {
+		return basketDao.listBasket(familyCustNo);
 	}
 }

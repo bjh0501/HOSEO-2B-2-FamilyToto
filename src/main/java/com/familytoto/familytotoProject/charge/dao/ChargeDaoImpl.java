@@ -28,5 +28,4 @@ public class ChargeDaoImpl implements ChargeDao{
 	public Map<String, Object> todayCharge(CreditVO vo) {
 		return sqlSession.selectOne("charge.todayCharge",vo);
 	}
-	
 }

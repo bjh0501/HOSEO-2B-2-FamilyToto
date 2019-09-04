@@ -49,11 +49,6 @@ public class IndexController {
         return "aboutUs/project";
     }
 	
-	@RequestMapping("productSell")
-    public String productSell() {
-        return "loginInfo/productSell";
-    }
-	
 	@RequestMapping("productSellList")
     public String productSellList() {
         return "loginInfo/productSellList";

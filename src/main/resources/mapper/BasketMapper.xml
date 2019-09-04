@@ -12,4 +12,22 @@
             #{regCustNo},		NOW(),			#{regIp},		'Y'
         )
 	</insert>
+	<select id="listBasket" parameterType="int" resultType="BasketVO">
+	        SELECT	B.PRODUCT_NO as productNo
+        ,		P.PRODUCT_NAME as productName
+        ,		P.PRODUCT_CREDIT as productCredit
+        ,		B.BASKET_AMOUNT as basketAmount
+        ,		P.PRODUCT_CREDIT * B.BASKET_AMOUNT as totalCredit
+        FROM	BASKET B
+			INNER JOIN PRODUCT P ON B.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		B.USE_YN = 'Y'
+	</select>
+	<select id="isChecvkBeforeBasket" parameterType="int" resultType="boolean">
+	    SELECT	BASKET_NO as basketNo
+        FROM	BASKET
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		PRODUCT_NO = #{productNo}
+        AND		USE_YN = 'Y'
+	</select>
 </mapper>

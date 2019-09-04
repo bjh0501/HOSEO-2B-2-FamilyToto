@@ -8,7 +8,7 @@
 		,		5-COUNT(if(IFNULL(CHG_DT, REG_DT) > curdate(), CREDIT_VALUE, NULL)) as todayCharge
 		,		IFNULL(SUM(CREDIT_VALUE), 0) as totalCredit
 		FROM	CUSTOM_CREDIT
-		WHERE	FAMILY_CUST_NO = ${familyCustNo}
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'Y'
 	</select>
 	<select id="todayCharge" resultType="map" >				
@@ -16,7 +16,7 @@
 		,		IFNULL(SUM(CREDIT_VALUE), 0) AS remainCredit
 		FROM	CUSTOM_CREDIT
 		WHERE	IFNULL(CHG_DT, REG_DT) > curdate()
-		AND		FAMILY_CUST_NO = ${familyCustNo}
+		AND		FAMILY_CUST_NO = #{familyCustNo}
 	</select>
 	<insert id="insertCharge">
 		INSERT INTO CUSTOM_CREDIT
@@ -24,8 +24,8 @@
 		    REG_CUST_NO,		REG_DT, 			REG_IP,
 		    USE_YN,				FAMILY_CUST_NO)
 		VALUES
-		    (${creditValue},	'fre', 				0, 
-		    ${regCustNo}, 		NOW(), 				'${regIp}',
-		    'Y',				${familyCustNo});
+		    (#{creditValue},	#{creditState}, 	0, 
+		    #{regCustNo}, 		NOW(), 				#{regIp},
+		    'Y',				#{familyCustNo});
 	</insert>
 </mapper>

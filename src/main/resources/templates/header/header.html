@@ -12,33 +12,39 @@
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="/login" role="button">
 				<i class="fas fa-sign-in-alt"></i>
-				로그인
+				<span class="header-word">로그인</span>
 			</a>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="/findID_PW" role="button">
 				<i class="fas fa-lock-open"></i>
-				ID/PW 찾기
+				<span class="header-word">ID/PW 찾기</span>
 			</a>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="/registerCust" role="button" >
 				<i class="fas fa-user-plus"></i>
-				회원가입
+				<span class="header-word">회원가입</span>
 			</a>
 		</li>
 	</ul>	
 	<ul th:if="${session.cust != null}" class="navbar-nav ml-auto">
+	<li class="nav-item dropdown no-arrow mx-1">
+			<a class="nav-link dropdown-toggle" href="/basket" role="button">
+				<i class="fas fa-shopping-cart"></i>
+				<span class="header-word">장바구니</span>
+			</a>
+		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="/changeCust" role="button" >
 				<i class="fas fa-user-edit"></i>
-				내정보보기
+				<span class="header-word">내정보보기</span>
 			</a>
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="/logout" role="button" >
 				<i class="fas fa-sign-out-alt"></i>
-				로그아웃
+				<span class="header-word">로그아웃</span>
 			</a>
 		</li>
 	</ul>

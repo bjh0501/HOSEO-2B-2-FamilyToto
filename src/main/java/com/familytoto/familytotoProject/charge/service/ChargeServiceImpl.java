@@ -26,6 +26,8 @@ public class ChargeServiceImpl implements ChargeService {
 	@Override
 	public int doCharge(CreditVO vo) {
 		// 오늘 충전한거 갯수 예외처리하기
+		
+		vo.setCreditState("fre");
 		Map<String, Object> map = chargeDao.todayCharge(vo);
 		
 		if(Integer.parseInt(map.get("todayChargeCnt").toString()) >= 5) {

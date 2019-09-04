@@ -29,6 +29,12 @@ public class BasketVO {
 
     // Y,N
     private String useYn;
+    
+    private String productName;
+    
+    private int productCredit;
+    
+    private int totalCredit;
 
 	public int getBasketNo() {
 		return basketNo;
@@ -118,13 +124,36 @@ public class BasketVO {
 		this.useYn = useYn;
 	}
 
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public int getProductCredit() {
+		return productCredit;
+	}
+
+	public void setProductCredit(int productCredit) {
+		this.productCredit = productCredit;
+	}
+
+	public int getTotalCredit() {
+		return totalCredit;
+	}
+
+	public void setTotalCredit(int totalCredit) {
+		this.totalCredit = totalCredit;
+	}
+
 	@Override
 	public String toString() {
 		return "BasketVO [basketNo=" + basketNo + ", familyCustNo=" + familyCustNo + ", productNo=" + productNo
 				+ ", basketAmount=" + basketAmount + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo
 				+ ", regDt=" + regDt + ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn
+				+ ", productName=" + productName + ", productCredit=" + productCredit + ", totalCredit=" + totalCredit
 				+ "]";
 	}
-
-    
 }

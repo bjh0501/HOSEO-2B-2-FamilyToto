@@ -12,18 +12,13 @@
 		,		PRODUCT_AMOUNT as productAmount
 		,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
 		,		D.DELIVERY_NAME as deliveryName
+		,		P.DELIVERY_NO as deliveryNo
 		FROM	PRODUCT P
 			INNER JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_NO = PC.CATEGORY_NO AND PC.USE_YN = 'Y'
 			INNER JOIN DELIVERY D ON P.DELIVERY_NO = D.DELIVERY_NO AND D.USE_YN = 'Y'
 		    INNER JOIN CUSTOM C ON P.REG_CUST_NO = C.CUST_NO AND C.USE_YN = 'Y'
 		    INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
-		WHERE	P.PRODUCT_NO = ${productNo}		
+		WHERE	P.PRODUCT_NO = #{productNo}		
 		AND		P.USE_YN = 'Y'
-	</select>
-	<select id="productAmountCheck" resultType="ProductVO">
-	 	SELECT	PRODUCT_AMOUNT as productAmount
-        FROM	PRODUCT
-        WHERE	PRODUCT_NO = #{productNo}
-		AND		USE_YN = 'Y'
 	</select>
 </mapper>
