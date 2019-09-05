@@ -138,7 +138,7 @@
 										<div class="col-xl-3 col-md-3 mb-3">		
 											<div class="input-group mb-3">
 												<button type="button" class="btn btn-secondary btn-lg btn-block"
-												style="min-width:74px;">답장</button>
+												style="min-width:74px;" th:onClick="|javascript:reply(${board.getBoardNo()});|">답장</button>
 											</div>
 										</div>
 									</div>
@@ -735,6 +735,14 @@
 				alert("알수 없는 오류가 발생하였습니다.\n새로고침 후 다시 시도해주세요.")
 			}
 		});
+	}
+	
+	function reply(boardNo) {
+		grpNo = [[ ${board.boardGrpNo} ]] ;
+		grpOrd = [[ ${board.boardGrpOrd} ]];
+		grpDepth = [[ ${board.boardGrpDepth} ]];
+		location.href="/registerBoard/" + boardNo + "?grpNo=" + grpNo 
+				+ "&grpOrd=" + grpOrd + "&grpDepth=" + grpDepth
 	}
 	
 	$("#annoInputPw").keyup(function(e){if(e.keyCode == 13)  $("#promptButton").trigger("click")});

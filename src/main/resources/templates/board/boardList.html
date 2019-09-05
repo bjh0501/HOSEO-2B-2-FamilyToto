@@ -72,8 +72,14 @@
 									<tbody>
 										<tr th:each="list: ${boardList}" class="boardrow"
 											th:onClick="|javascript:clickBoard( ${ list.boardNo } );|">
-											<td th:if="${list.boardReplyNo} == 0" th:text="${list.boardNo}"></td>
-											<td th:if="${list.boardReplyNo} != 0" th:text="'→'+${list.boardNo}"></td>
+											<td>
+											 	<th:block
+											 	 th:if="${list.boardGrpDepth} > 0"
+											 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
+													>
+												</th:block>
+												<span th:text="${list.boardNo}"></span>
+											</td>
 											<td th:text="${list.boardTitle}"></td>
 											<td><span th:text="${list.custNickname}"></span><img
 												th:if="${list.custGubun != ''}" th:src="${list.custGubun}"

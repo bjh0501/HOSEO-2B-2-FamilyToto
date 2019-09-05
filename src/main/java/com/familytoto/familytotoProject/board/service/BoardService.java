@@ -11,7 +11,7 @@ import com.familytoto.familytotoProject.board.domain.SearchVO;
 
 public interface BoardService {
 	// 글쓰기
-	int insertCustBoard(BoardVO vo);
+	int insertCustBoard(BoardVO vo, int nGubun);
 	
 	// 삭제하기
 	int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request);
@@ -33,7 +33,7 @@ public interface BoardService {
 	public List<BoardVO> getBoardList(SearchVO search) throws Exception;
 	
 	// 익명 글쓰기
-	int insertAnnoBoard(BoardVO vo);
+	int insertAnnoBoard(BoardVO vo, int nGubun); // 0 글쓰기, 1 답글
 
 	// 댓글 카운트
 	public int getCommentCnt(BoardVO vo);

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
@@ -19,7 +20,8 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	BoardDao boardDao;
 	
-	public int insertCustBoard(BoardVO vo) {
+	@Transactional
+	public int insertCustBoard(BoardVO vo, int nGubun) {
 		if(vo.getBoardTitle() == null || vo.getBoardTitle().equals("")) {
 			return -99;
 		}
@@ -28,22 +30,51 @@ public class BoardServiceImpl implements BoardService{
 			return -98;
 		}
 		
-		return 0;
+		if(nGubun == 0) { 							// 새글
+			if(boardDao.insertCustBoard(vo) == 1) {
+				return boardDao.updateBoardGrpNo(vo);				
+			} else {
+				return -97;
+			}
+		} else {
+			boardDao.updateBeforeReply(vo);
+			
+			if(boardDao.insertCustBoard(vo) == 1) {
+				return 1;
+			} else {
+				return -97;
+			}
+		}	
 	}
 
-	public int insertAnnoBoard(BoardVO vo) {
+	@Transactional
+	public int insertAnnoBoard(BoardVO vo, int nGubun ) {
 		CustVO cVo = new CustVO();
 		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
 		
-		boardDao.updateBeforeBoardReply(vo);
-		
-		int nReplyResult = boardDao.insertAnnoBoard(vo);
-		
-		if(nReplyResult == 1) {
-			return 1;
-		} else {
+		if(vo.getBoardTitle() == null || vo.getBoardTitle().equals("")) {
 			return -99;
 		}
+		
+		if(vo.getBoardContents() == null || vo.getBoardContents().equals("")) {
+			return -98;
+		}
+		
+		if(nGubun == 0) { 							// 새글
+			if(boardDao.insertAnnoBoard(vo) == 1) {
+				return boardDao.updateBoardGrpNo(vo);				
+			} else {
+				return -97;
+			}
+		} else {
+			boardDao.updateBeforeReply(vo);
+			
+			if(boardDao.insertAnnoBoard(vo) == 1) {
+				return 1;
+			} else {
+				return -97;
+			}
+		}	
 	}
 	
 	public int updateBoard(BoardVO vo, HttpSession session) {

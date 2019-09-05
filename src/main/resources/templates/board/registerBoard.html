@@ -51,6 +51,9 @@
 			            	<div th:if="${replyNo != null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text">답장글번호</span>
+							 	  <input type="text" id="boardGrpNo" th:value="${grpNo}">
+							 	  <input type="text" id="boardGrpOrd" th:value="${grpOrd}">
+							 	  <input type="text" id="boardGrpDepth" th:value="${grpDepth}">
 						  		</div>
 								<input type="text" class="form-control" th:value="${replyNo}"  id="reply" disabled>
 							</div>

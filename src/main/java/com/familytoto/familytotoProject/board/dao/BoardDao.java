@@ -13,6 +13,12 @@ public interface BoardDao {
 	// 익명 게시글 등록
 	int insertAnnoBoard(BoardVO vo);
 	
+	// 게시글 등록후 GrpNo부여
+	int updateBoardGrpNo(BoardVO vo);
+	
+	// 다답글 재정렬
+	int updateBeforeReply(BoardVO vo);
+	
 	// 게시글수정
 	int updateBoard(BoardVO vo);
 	

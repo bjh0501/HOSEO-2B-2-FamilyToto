@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,15 +41,15 @@ import com.google.gson.Gson;
 
 @Controller
 @ControllerAdvice
-public class BoardController {
-	private int nReplyNo = 0;
-	
+public class BoardController {	
 	@Autowired
 	BoardService boardService;
 	
 	@Autowired
 	CommentService commentService;
 	
+	
+	// 쿠키처럼 남아있는거 같다.. 
 	private FileVO fileVo = new FileVO();
 	
 	// 게시글 업데이트 할 때 파일삭제여부 변수
@@ -92,29 +94,46 @@ public class BoardController {
 	@RequestMapping(value = {"/registerBoard/{boardNo}"} )
     public ModelAndView registerBoard(HttpSession session,
     		ModelAndView mv,
-    		@PathVariable("boardNo") int nBoardNo) {
+    		@PathVariable("boardNo") int nBoardNo
+    		,@Param("grpNo") int grpNo
+    		,@Param("grpOrd") int grpOrd
+    		,@Param("grpDepth") int grpDepth) {
 		
-		if(nBoardNo != 0 ) {
-			mv.addObject("replyNo", nBoardNo);
-			nReplyNo = nBoardNo;
-		}
+		
 		
 		mv.setViewName("/board/registerBoard");
 		mv.addObject("loginGubun", session.getAttribute("cust"));
+		mv.addObject("grpNo", grpNo);
+		mv.addObject("grpOrd", grpOrd);
+		mv.addObject("grpDepth", grpDepth);
+		mv.addObject("replyNo", nBoardNo);
 		
         return mv;
     }
 	
 	@RequestMapping("/registerBoard/insert")
+	@Transactional
     public String insertBoard(@Valid @ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
 		vo.setRegIp(request.getRemoteAddr());
-		// vo.setBoardReplyNo(nReplyNo);
 		
 		if(session.getAttribute("cust") != null) {
 			CustVO cVo = (CustVO) session.getAttribute("cust");
 			vo.setRegCustNo(cVo.getCustNo());
 			
-			int nResult = boardService.insertCustBoard(vo);
+			int nResult = 0;
+			
+			if(vo.getBoardGrpNo() != 0) {						// 답장
+				vo.setBoardGrpNo(vo.getBoardGrpNo());
+				vo.setBoardGrpDepth(vo.getBoardGrpDepth()+1);
+				vo.setBoardGrpOrd(vo.getBoardGrpOrd()+1);
+				
+				nResult = boardService.insertCustBoard(vo, 1);
+			} else {
+				vo.setBoardGrpNo(0);
+				vo.setBoardGrpDepth(0);
+				vo.setBoardGrpOrd(0);
+				nResult = boardService.insertCustBoard(vo, 0);
+			}
 			
 			if(fileVo.getBoardFilePath() != null) {
 				fileVo.setRegIp(request.getRemoteAddr());
@@ -132,11 +151,25 @@ public class BoardController {
     }
 	
 	@RequestMapping("/registerBoard/anno/insert")
+	@Transactional
     public String insertAnnoBoard(@Valid @ModelAttribute BoardVO vo, HttpServletRequest request, HttpSession session) {
 		vo.setRegIp(request.getRemoteAddr());
 		
 		if(session.getAttribute("cust") == null) {
-			int nResult = boardService.insertAnnoBoard(vo);
+			int nResult = 0;
+			
+			if(vo.getBoardGrpNo() != 0) {						// 답장
+				vo.setBoardGrpNo(vo.getBoardGrpNo());
+				vo.setBoardGrpDepth(vo.getBoardGrpDepth()+1);
+				vo.setBoardGrpOrd(vo.getBoardGrpOrd()+1);
+				
+				nResult = boardService.insertAnnoBoard(vo, 1);
+			} else {
+				vo.setBoardGrpNo(0);
+				vo.setBoardGrpDepth(0);
+				vo.setBoardGrpOrd(0);
+				nResult = boardService.insertAnnoBoard(vo, 0);
+			}
 			
 			if(fileVo.getBoardFilePath() != null) {
 				fileVo.setBoardNo(vo.getBoardNo());
@@ -144,7 +177,7 @@ public class BoardController {
 				boardService.insertFile(fileVo);
 			}
 			
-			if(nResult == 1) {
+			if(nResult >= 1) {
 				return "redirect:/boardList";
 			} else if(nResult == -99) {
 				return "-99";
@@ -198,7 +231,7 @@ public class BoardController {
 		mv.addObject("socialImg", sGubun);
 		mv.addObject("commentCnt", nCommentCnt);
 
-		mv.setViewName("board/showBoard");
+		mv.setViewName("/board/showBoard");
 		
 		return mv;
     }	

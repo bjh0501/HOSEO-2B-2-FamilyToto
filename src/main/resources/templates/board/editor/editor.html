@@ -695,12 +695,23 @@
 
 		// 답장 구분
 		if ($("#reply").val() != undefined) {
-			var reply = document.createElement('input');
-			reply.type = 'hidden';
-			reply.name = 'boardReplyNo';
-			reply.value = $("#reply").val();
-
-			form.createField(reply);
+			var boardGrpNo = document.createElement('input');
+			boardGrpNo.type = 'hidden';
+			boardGrpNo.name = 'boardGrpNo';
+			boardGrpNo.value = $("#boardGrpNo").val();
+			form.createField(boardGrpNo);
+			
+			var boardGrpOrd = document.createElement('input');
+			boardGrpOrd.type = 'hidden';
+			boardGrpOrd.name = 'boardGrpOrd';
+			boardGrpOrd.value = $("#boardGrpOrd").val();
+			form.createField(boardGrpOrd);
+			
+			var boardGrpDepth = document.createElement('input');
+			boardGrpDepth.type = 'hidden';
+			boardGrpDepth.name = 'boardGrpDepth';
+			boardGrpDepth.value = $("#boardGrpDepth").val();
+			form.createField(boardGrpDepth);
 		}
 
 		form.createField(textarea);

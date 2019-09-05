@@ -9,9 +9,9 @@
 		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN,
 		    BOARD_GRP_ORD,		BOARD_GRP_DEPTH
 		) VALUES (
-		    0,					#{boardTitle},	#{boardContents}, 		    
-		    #{regCustNo},		now(), 			#{regIp},			'Y',
-		    0,					0);
+		    #{boardGrpNo},		#{boardTitle},	#{boardContents}, 		    
+		    #{regCustNo},		now(), 			#{regIp},		'Y',
+		    #{boardGrpOrd},		#{boardGrpDepth});
 	</insert>
 	<insert id="insertAnnoBoard" useGeneratedKeys="true" keyProperty="boardNo"  parameterType="BoardVO">
 		INSERT INTO BOARD   
@@ -20,20 +20,25 @@
 		    BOARD_GRP_ORD,		BOARD_GRP_DEPTH)
 		VALUES
 		    (
-			0,					#{boardTitle},	#{boardContents}, 		    
+			#{boardGrpNo},		#{boardTitle},	#{boardContents}, 		    
 		    #{boardAnnoId},		#{boardAnnoPw},	now(), 			#{regIp},			'Y',
-		    0,					0);
+		    #{boardGrpOrd},		#{boardGrpDepth});
 	</insert>
-	<update id="updateBeforeBoardReply">
+	<update id="updateBoardGrpNo">
+		UPDATE	BOARD
+		SET		BOARD_GRP_NO = #{boardNo} 
+		WHERE	BOARD_NO = #{boardNo}
+		AND		USE_YN = 'Y'
+	</update>
+	<!-- 삭제된것도 수정되어야하기때문에 useYN 사용x -->
+	<update id="updateBeforeReply">
 		<![CDATA[
 		UPDATE	BOARD
 		SET		BOARD_GRP_ORD = BOARD_GRP_ORD +1
 		WHERE	BOARD_GRP_NO = #{boardGrpNo}
 		AND		BOARD_GRP_ORD >= #{boardGrpOrd}
 		]]>
-	</update>
-	
-	
+	</update>		
 	<select  id="getBoardList" parameterType="BoardVO" resultType="BoardVO">
 		select R2.* FROM(
 			select	R1.*
@@ -47,6 +52,8 @@
 					,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
 					,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun 
 					,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+					,		B.BOARD_GRP_DEPTH as boardGrpDepth
+					,		B.BOARD_GRP_ORD as boardGrpOrd
 					FROM	BOARD B
 						LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
 						LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
@@ -66,7 +73,7 @@
 				) R1
 			LEFT OUTER JOIN WEB_LOG WL ON WL.BOARD_NO = R1.boardNo
 		GROUP BY R1.boardNo, R1.boardReplyNo, R1.boardTitle, R1.regCustNo, R1.custNickname, R1.custGubun, R1.regDt
-		ORDER BY R1.boardGrpNo DESC, R1.boardNo ASC 
+		ORDER BY R1.boardGrpNo DESC, R1.boardGrpOrd ASC 
 		) R2
 	    LIMIT #{startList}, #{listSize}
 	</select>
@@ -102,6 +109,9 @@
 		,		COUNT(WC.BOARD_NO) as visit
         ,		IFNULL(BF.BOARD_FILE_PATH, '') as boardFilePath
         ,		IFNULL(BF.BOARD_FILE_NAME, '') as boardFileName
+        ,		B.BOARD_GRP_NO as boardGrpNo
+        ,		B.BOARD_GRP_ORD as boardGrpOrd
+        ,		B.BOARD_GRP_DEPTH as boardGrpDepth
 		FROM	BOARD B
 			INNER JOIN WEB_LOG WC ON B.BOARD_NO = WC.BOARD_NO
 			LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
