@@ -241,7 +241,7 @@
 		});
 	}
 	
-	function directBuy() {
+	function directBuy(productNo) {
 		if(isNaN($("#amount").val()) == true) {
 			alert("숫자만 입력해주세요.");
 			$("#amount").focus();
@@ -254,7 +254,9 @@
 			return;
 		}
 		
-		$.ajax({
+		location.href = "/productBuy/" + productNo + "?amount=" + $("#amount").val();
+		
+		/*$.ajax({
 			url : "/productSell/insert",
 			type : "POST",
 			cache : false,
@@ -281,6 +283,6 @@
 				msg += +"내용 : " + request.responseText + "<br>" + error;
 				console.log(msg);
 			}
-		});
+		});*/
 	}
 </script>

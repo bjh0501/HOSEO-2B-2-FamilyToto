@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.creditShop.service.CreditShopService;
-import com.familytoto.familytotoProject.productsell.domain.ProductBuyVO;
-import com.familytoto.familytotoProject.productsell.service.ProductBuyService;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
+import com.familytoto.familytotoProject.productbuy.service.ProductBuyService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller

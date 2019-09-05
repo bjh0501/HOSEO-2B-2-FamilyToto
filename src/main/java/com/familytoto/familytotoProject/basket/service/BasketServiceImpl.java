@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.basket.dao.BasketDAO;
 import com.familytoto.familytotoProject.basket.domain.BasketVO;
-import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 
 @Service
 public class BasketServiceImpl implements BasketService{
@@ -16,7 +16,7 @@ public class BasketServiceImpl implements BasketService{
 	
 	@Override
 	public int insertBasket(BasketVO vo) {
-		if(basketDao.isChecvkBeforeBasket(vo) == false) {
+		if(basketDao.isCheckBeforeBasket(vo) == false) {
 			return basketDao.insertBasket(vo);			
 		} else {
 			return -95;
@@ -24,7 +24,7 @@ public class BasketServiceImpl implements BasketService{
 	}
 
 	@Override
-	public ProductVO checkProductAmount(BasketVO vo) {
+	public boolean checkProductAmount(ProductBuyVO vo) {
 		return basketDao.checkProductAmount(vo);
 	}
 

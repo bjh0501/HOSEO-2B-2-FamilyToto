@@ -1,4 +1,4 @@
-package com.familytoto.familytotoProject.productsell.domain;
+package com.familytoto.familytotoProject.productbuy.domain;
 
 import java.sql.Timestamp;
 
@@ -37,6 +37,28 @@ public class ProductBuyVO {
     private String useYn;
     
     private int productBuyGrpNo;
+
+    private String familyCustAddr;
+
+    private String familyCustAddrSi;
+
+    private String familyCustAddrGugun;
+
+    private String familyCustAddrDong;
+
+    private String zipCode1;
+
+    private String zipCode2;
+    
+    private int totalCredit;
+    
+	public int getTotalCredit() {
+		return totalCredit;
+	}
+
+	public void setTotalCredit(int totalCredit) {
+		this.totalCredit = totalCredit;
+	}
 
 	public int getProductBuyNo() {
 		return productBuyNo;
@@ -158,6 +180,54 @@ public class ProductBuyVO {
 		this.productBuyGrpNo = productBuyGrpNo;
 	}
 
+	public String getFamilyCustAddr() {
+		return familyCustAddr;
+	}
+
+	public void setFamilyCustAddr(String familyCustAddr) {
+		this.familyCustAddr = familyCustAddr;
+	}
+
+	public String getFamilyCustAddrSi() {
+		return familyCustAddrSi;
+	}
+
+	public void setFamilyCustAddrSi(String familyCustAddrSi) {
+		this.familyCustAddrSi = familyCustAddrSi;
+	}
+
+	public String getFamilyCustAddrGugun() {
+		return familyCustAddrGugun;
+	}
+
+	public void setFamilyCustAddrGugun(String familyCustAddrGugun) {
+		this.familyCustAddrGugun = familyCustAddrGugun;
+	}
+
+	public String getFamilyCustAddrDong() {
+		return familyCustAddrDong;
+	}
+
+	public void setFamilyCustAddrDong(String familyCustAddrDong) {
+		this.familyCustAddrDong = familyCustAddrDong;
+	}
+
+	public String getZipCode1() {
+		return zipCode1;
+	}
+
+	public void setZipCode1(String zipCode1) {
+		this.zipCode1 = zipCode1;
+	}
+
+	public String getZipCode2() {
+		return zipCode2;
+	}
+
+	public void setZipCode2(String zipCode2) {
+		this.zipCode2 = zipCode2;
+	}
+
 	@Override
 	public String toString() {
 		return "ProductBuyVO [productBuyNo=" + productBuyNo + ", familyCustNo=" + familyCustNo + ", productNo="
@@ -165,8 +235,10 @@ public class ProductBuyVO {
 				+ ", productBuyAmount=" + productBuyAmount + ", productBuyDelCredit=" + productBuyDelCredit
 				+ ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt=" + regDt + ", chgDt=" + chgDt
 				+ ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn + ", productBuyGrpNo=" + productBuyGrpNo
-				+ "]";
+				+ ", familyCustAddr=" + familyCustAddr + ", familyCustAddrSi=" + familyCustAddrSi
+				+ ", familyCustAddrGugun=" + familyCustAddrGugun + ", familyCustAddrDong=" + familyCustAddrDong
+				+ ", zipCode1=" + zipCode1 + ", zipCode2=" + zipCode2 + ", totalCredit=" + totalCredit + "]";
 	}
-    
-    
+	
+	
 }

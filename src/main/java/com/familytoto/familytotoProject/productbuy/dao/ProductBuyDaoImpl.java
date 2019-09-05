@@ -1,10 +1,12 @@
-package com.familytoto.familytotoProject.productsell.dao;
+package com.familytoto.familytotoProject.productbuy.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.familytoto.familytotoProject.productsell.domain.ProductBuyVO;
+import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
+import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 
 @Repository
 public class ProductBuyDaoImpl implements ProductBuyDao {
@@ -34,5 +36,25 @@ public class ProductBuyDaoImpl implements ProductBuyDao {
 	@Override
 	public int updateProductAmount(ProductBuyVO vo) {
 		return sqlSession.update("productBuy.updateProductAmount", vo);
+	}
+
+	@Override
+	public int insertMileage(MileageVO vo) {
+		return sqlSession.insert("mileage.insertMileage",vo);
+	}
+
+	@Override
+	public ProductVO getProductBuy(ProductBuyVO vo) {
+		return sqlSession.selectOne("productBuy.getProductBuy", vo);
+	}
+
+	@Override
+	public int getCustCredit(int familyCustNo) {
+		return sqlSession.selectOne("productBuy.getCustCreditInfo", familyCustNo);
+	}
+
+	@Override
+	public int getCustMileage(int familyCustNo) {
+		return sqlSession.selectOne("productBuy.getCustMileageInfo", familyCustNo);
 	}	
 }

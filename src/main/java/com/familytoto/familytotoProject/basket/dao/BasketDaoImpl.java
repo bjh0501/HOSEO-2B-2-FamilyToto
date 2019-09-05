@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.familytoto.familytotoProject.basket.domain.BasketVO;
-import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 
 @Repository
 public class BasketDaoImpl implements BasketDAO {
@@ -20,8 +20,8 @@ public class BasketDaoImpl implements BasketDAO {
 	}
 
 	@Override
-	public ProductVO checkProductAmount(BasketVO vo) {
-		return sqlSession.selectOne("creditShop.productAmountCheck", vo);
+	public boolean checkProductAmount(ProductBuyVO vo) {
+		return sqlSession.selectOne("productBuy.isProductAmount", vo);
 	}
 
 	@Override
@@ -30,8 +30,8 @@ public class BasketDaoImpl implements BasketDAO {
 	}
 
 	@Override
-	public boolean isChecvkBeforeBasket(BasketVO vo) {
-		return sqlSession.selectOne("basket.isChecvkBeforeBasket", vo);
+	public boolean isCheckBeforeBasket(BasketVO vo) {
+		return sqlSession.selectOne("basket.isCheckBeforeBasket", vo);
 	}
 	
 	

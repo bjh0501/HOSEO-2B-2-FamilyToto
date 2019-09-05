@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mileage">
+	<insert id="insertMileage" >
+		INSERT INTO CUSTOM_MILEAGE
+		    (FAMILY_CUST_NO,     MILEAGE_VALUE,     MILEAGE_STATE, 
+		    REG_CUST_NO,	     REG_DT,			REG_IP,
+		    USE_YN)
+		VALUES
+		    (#{familyCustNo}, 	 #{mileageValue},   #{mileageState}, 
+		    0,				  	 NOW(), 		    #{regIp}, 
+		    'Y');
+    </insert>
+</mapper>

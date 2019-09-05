@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.basket.service.BasketService;
-import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller
@@ -62,11 +62,10 @@ public class BasketController {
 		} else if(custVo.getFamilyCustNo() == 0) {
 			return "-98";								// 패밀리회원 아닌경우
 		} else {
-			ProductVO pVo = new ProductVO();
-			pVo = basketService.checkProductAmount(vo);
-			int nAmount = pVo.getProductAmount();
-			
-			if(nAmount < vo.getBasketAmount()) {
+			ProductBuyVO pbVo = new ProductBuyVO();
+			pbVo.setProductBuyAmount(vo.getBasketAmount());
+			pbVo.setProductNo(vo.getProductNo());
+			if(basketService.checkProductAmount(pbVo) == false) {
 				return "-97";							// 기존수량 < 장바구니수량 경우
 			}
 			

@@ -12,9 +12,9 @@ public class IndexController {
 	@Inject
 	WebLogService webLogService;
 	
-	@RequestMapping(value = { "index", "/" })
+	@RequestMapping(value = { "/index", "/" })
     public String index() {
-        return "index";
+        return "/index";
     }
 	
 	@RequestMapping(value = "/history")
@@ -27,30 +27,30 @@ public class IndexController {
         return "/etc/searchEngine/navereb68e2d272389e36f17ae3a3fe3d4437.html";
     }
 	
-	@RequestMapping("itemShop")
+	@RequestMapping("/itemShop")
     public String itemShop() {
-        return "shop/itemShop";
+        return "/shop/itemShop";
     }
 	
-	@RequestMapping("editor")
+	@RequestMapping("/editor")
     public String editor() {
-        return "border/editor/editor";
+        return "/border/editor/editor";
     }
 	
 	
 	
-	@RequestMapping("introduceTeam")
+	@RequestMapping("/introduceTeam")
     public String introduceTeam() {
-        return "aboutUs/introduceTeam";
+        return "/aboutUs/introduceTeam";
     }
 	
-	@RequestMapping("project")
+	@RequestMapping("/project")
     public String project() {
-        return "aboutUs/project";
+        return "/aboutUs/project";
     }
 	
-	@RequestMapping("productSellList")
+	@RequestMapping("/productSellList")
     public String productSellList() {
-        return "loginInfo/productSellList";
+        return "/loginInfo/productSellList";
     }
 }

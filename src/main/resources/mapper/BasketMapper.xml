@@ -23,8 +23,8 @@
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		B.USE_YN = 'Y'
 	</select>
-	<select id="isChecvkBeforeBasket" parameterType="int" resultType="boolean">
-	    SELECT	BASKET_NO as basketNo
+	<select id="isCheckBeforeBasket" parameterType="int" resultType="boolean">
+	    SELECT	COUNT(*) as basketNo
         FROM	BASKET
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		PRODUCT_NO = #{productNo}

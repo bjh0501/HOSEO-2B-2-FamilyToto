@@ -41,6 +41,16 @@ public class ProductVO {
     private String familyCustNickname;
     
     private String DeliveryName;
+    
+    private int totalCredit;
+    
+   	public int getTotalCredit() {
+		return totalCredit;
+	}
+
+	public void setTotalCredit(int totalCredit) {
+		this.totalCredit = totalCredit;
+	}
 
 	public int getProductNo() {
 		return productNo;
@@ -185,6 +195,8 @@ public class ProductVO {
 				+ productAmount + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt=" + regDt
 				+ ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn + ", deliveryNo="
 				+ deliveryNo + ", categoryName=" + categoryName + ", familyCustNickname=" + familyCustNickname
-				+ ", DeliveryName=" + DeliveryName + "]";
-	}    
+				+ ", DeliveryName=" + DeliveryName + ", totalCredit=" + totalCredit + "]";
+	}
+
+	
 }

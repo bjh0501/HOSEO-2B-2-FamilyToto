@@ -44,4 +44,26 @@
         WHERE	PRODUCT_NO = #{productNo}
         AND		USE_YN = 'Y'		
 	</update>
+	<select id="getProductBuy" resultType="ProductVO">
+		SELECT	PRODUCT_NO as productNo
+        ,		PRODUCT_NAME as productName
+        ,		PRODUCT_CREDIT as productCredit
+        ,		PRODUCT_AMOUNT as productAmount
+        ,		(PRODUCT_AMOUNT * PRODUCT_CREDIT) as totalCredit
+        FROM	PRODUCT
+        WHERE	PRODUCT_NO = #{productNo}
+        AND		USE_YN = 'Y'
+	</select>
+	<select id="getCustCreditInfo" resultType="int" parameterType="int">
+		SELECT	SUM(CREDIT_VALUE) as creditValue
+        FROM 	CUSTOM_CREDIT
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
+	</select>
+	<select id="getCustMileageInfo" resultType="int" parameterType="int">
+		SELECT	SUM(MILEAGE_VALUE) as mileageValue
+        FROM	CUSTOM_MILEAGE
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
+	</select>
 </mapper>

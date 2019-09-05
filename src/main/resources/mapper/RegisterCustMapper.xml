@@ -35,7 +35,7 @@
 		select	CUST_ID  as custId
 		,		FAMILY_CUST_NO as familyCustNo
 		from	CUSTOM
-		where	CUST_ID = '${custId}'
+		where	CUST_ID = #{custId}
 		and		USE_YN = 'Y'
 		limit 1; 
 	</select>	
@@ -46,7 +46,7 @@
 		    USE_YN)
 		VALUES
 		    (#{familyCustNo}, 	 2000, 			    'MIR', 
-		    0,				  	 NOW(), 		    '${regIp}', 
+		    0,				  	 NOW(), 		    #{regIp}, 
 		    'Y');
     </insert>
     
@@ -56,9 +56,9 @@
 		    REG_CUST_NO, 	     REG_DT,			REG_IP,			USE_YN,
 		    SC_CUST_NICK)
 		VALUES
-		    (null,		         '${scCustGubun}', '${scCustId}',	'${scCustEmail}', 
-		    0,     				NOW(), 			    '${regIp}', 	'Y',
-		    '${scCustNick}');
+		    (null,		         #{scCustGubun}, 	#{scCustId},	#{scCustEmail}, 
+		    0,     				NOW(), 			    #{regIp}, 		'Y',
+		    #{scCustNick});
     </insert>
     <insert id="insertAuthSocial" useGeneratedKeys="true" keyProperty="scCustNo">
     	INSERT INTO SOCIAL_CUSTOM
@@ -66,16 +66,16 @@
 		    REG_CUST_NO, 	     REG_DT,			REG_IP,			USE_YN,
 		    SC_CUST_NICK,		CHG_CUST_NO)
 		VALUES
-		    (${familyCustNo},	'${scCustGubun}', '${scCustId}',	'${scCustEmail}', 
-		    #{chgCustNo},     	NOW(), 			    '${regIp}', 	'Y',
-		    '${scCustNick}',	#{chgCustNo});
+		    (#{familyCustNo},	#{scCustGubun},		 #{scCustId},	#{scCustEmail}, 
+		    #{chgCustNo},     	NOW(), 				#{regIp}, 	'Y',
+		    #{scCustNick},		#{chgCustNo});
     </insert>
     <select id="checkSocial" resultType="map">
     	select	SC_CUST_NO as scCustNo
 		from	SOCIAL_CUSTOM
 		where	USE_YN = 'Y'
-		AND		SC_CUST_GUBUN = '${scCustGubun}'
-		AND		SC_CUST_ID = '${scCustId}'
+		AND		SC_CUST_GUBUN = #{scCustGubun}
+		AND		SC_CUST_ID = #{scCustId}
 		LIMIT 1;
     </select>
     <select id="listSido" resultType="ZipcodeVO">
