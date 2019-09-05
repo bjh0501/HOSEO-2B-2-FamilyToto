@@ -1,11 +1,7 @@
 package com.familytoto.familytotoProject.board.domain;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -15,8 +11,6 @@ public class BoardVO {
 
     // 10000001
     private int boardNo;
-
-    private int boardReplyNo;
     
     private int boardGrpNo;
 
@@ -58,6 +52,10 @@ public class BoardVO {
     private String boardFilePath;
     
     private String boardFileName;
+    
+    private int boardGrpOrd;
+    
+    private int boardGrpDepth;
 
 	public int getBoardNo() {
 		return boardNo;
@@ -65,14 +63,6 @@ public class BoardVO {
 
 	public void setBoardNo(int boardNo) {
 		this.boardNo = boardNo;
-	}
-
-	public int getBoardReplyNo() {
-		return boardReplyNo;
-	}
-
-	public void setBoardReplyNo(int boardReplyNo) {
-		this.boardReplyNo = boardReplyNo;
 	}
 
 	public int getBoardGrpNo() {
@@ -211,15 +201,33 @@ public class BoardVO {
 		this.boardFileName = boardFileName;
 	}
 
+	public int getBoardGrpOrd() {
+		return boardGrpOrd;
+	}
+
+	public void setBoardGrpOrd(int boardGrpOrd) {
+		this.boardGrpOrd = boardGrpOrd;
+	}
+
+	public int getBoardGrpDepth() {
+		return boardGrpDepth;
+	}
+
+	public void setBoardGrpDepth(int boardGrpDepth) {
+		this.boardGrpDepth = boardGrpDepth;
+	}
+
 	@Override
 	public String toString() {
-		return "BoardVO [boardNo=" + boardNo + ", boardReplyNo=" + boardReplyNo + ", boardGrpNo=" + boardGrpNo
-				+ ", boardTitle=" + boardTitle + ", boardContents=" + boardContents + ", boardAnnoId=" + boardAnnoId
-				+ ", boardAnnoPw=" + boardAnnoPw + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt="
-				+ regDt + ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn
-				+ ", custNickname=" + custNickname + ", custGubun=" + custGubun + ", visit=" + visit
-				+ ", boardFilePath=" + boardFilePath + ", boardFileName=" + boardFileName + "]";
+		return "BoardVO [boardNo=" + boardNo + ", boardGrpNo=" + boardGrpNo + ", boardTitle=" + boardTitle
+				+ ", boardContents=" + boardContents + ", boardAnnoId=" + boardAnnoId + ", boardAnnoPw=" + boardAnnoPw
+				+ ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt=" + regDt + ", chgDt=" + chgDt
+				+ ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn + ", custNickname=" + custNickname
+				+ ", custGubun=" + custGubun + ", visit=" + visit + ", boardFilePath=" + boardFilePath
+				+ ", boardFileName=" + boardFileName + ", boardGrpOrd=" + boardGrpOrd + ", boardGrpDepth="
+				+ boardGrpDepth + "]";
 	}
+    
     
     
 }

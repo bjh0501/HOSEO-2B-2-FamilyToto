@@ -135,10 +135,10 @@
 												onClick="javascript:clickModal('BD')">삭제</button>
 											</div>
 										</div>
-										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.boardReplyNo} == 0">		
+										<div class="col-xl-3 col-md-3 mb-3">		
 											<div class="input-group mb-3">
 												<button type="button" class="btn btn-secondary btn-lg btn-block"
-												style="min-width:74px;" th:onClick="|javascript:location.href='/registerBoard/${board.getBoardNo()}'|">답장</button>
+												style="min-width:74px;">답장</button>
 											</div>
 										</div>
 									</div>
@@ -273,22 +273,11 @@
 
   
 
-  <!-- Bootstrap core JavaScript-->
+   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-
   <!-- Custom scripts for all pages-->
   <script src="/js/sb-admin-2.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="/js/demo/chart-area-demo.js"></script>
-  <script src="/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

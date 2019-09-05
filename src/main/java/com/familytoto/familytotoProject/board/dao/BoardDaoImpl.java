@@ -24,11 +24,6 @@ public class BoardDaoImpl implements BoardDao {
 	public int insertAnnoBoard(BoardVO vo) {
 		return sqlSession.insert("board.insertAnnoBoard", vo);
 	}
-	
-	@Override
-	public int updateInsertCustBoard(BoardVO vo) {
-		return sqlSession.update("board.updateInsertCustBoard", vo);
-	}
 
 	@Override
 	public int updateDeleteBoard(BoardVO vo) {
@@ -83,5 +78,10 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public int updateFile(FileVO vo) {
 		return sqlSession.update("board.updateNotUseFile", vo);
+	}
+
+	@Override
+	public int updateBeforeBoardReply(BoardVO vo) {
+		return sqlSession.update("board.updateBeforeBoardReply", vo);
 	}
 }

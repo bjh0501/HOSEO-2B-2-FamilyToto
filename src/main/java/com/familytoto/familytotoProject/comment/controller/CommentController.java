@@ -1,7 +1,5 @@
  package com.familytoto.familytotoProject.comment.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -11,11 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.comment.service.CommentService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
-import com.google.gson.Gson;
 
 @Controller
 public class CommentController {
