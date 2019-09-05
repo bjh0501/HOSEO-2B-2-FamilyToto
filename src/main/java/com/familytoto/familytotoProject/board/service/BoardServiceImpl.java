@@ -28,33 +28,21 @@ public class BoardServiceImpl implements BoardService{
 			return -98;
 		}
 		
-		int nReplyResult = boardDao.insertCustBoard(vo);
-		
-		if(vo.getBoardReplyNo() == 0) {
-			if(vo.getBoardNo() >= 10000001) {
-				return boardDao.updateInsertCustBoard(vo);
-			} else { 
-				return -97;
-			}
-		} else {
-			return nReplyResult;
-		}
+		return 0;
 	}
 
 	public int insertAnnoBoard(BoardVO vo) {
 		CustVO cVo = new CustVO();
 		vo.setBoardAnnoPw(cVo.toEncodePassword(vo.getBoardAnnoPw()));
 		
+		boardDao.updateBeforeBoardReply(vo);
+		
 		int nReplyResult = boardDao.insertAnnoBoard(vo);
 		
-		if(vo.getBoardReplyNo() == 0) {
-			if(vo.getBoardNo() >= 10000001) {
-				return boardDao.updateInsertCustBoard(vo);
-			} else { 
-				return -97;
-			}
+		if(nReplyResult == 1) {
+			return 1;
 		} else {
-			return nReplyResult;
+			return -99;
 		}
 	}
 	

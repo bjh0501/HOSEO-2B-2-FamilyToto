@@ -5,42 +5,32 @@
 <mapper namespace="board">
 	<insert id="insertCustBoard" useGeneratedKeys="true" keyProperty="boardNo" parameterType="BoardVO">
 		INSERT INTO BOARD (   
-		    BOARD_REPLY_NO,	BOARD_GRP_NO, 	BOARD_TITLE,	BOARD_CONTENTS,	
-		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN
+		    BOARD_GRP_NO,	 	BOARD_TITLE,	BOARD_CONTENTS,	
+		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN,
+		    BOARD_GRP_ORD,		BOARD_GRP_DEPTH
 		) VALUES (
-		    <choose>
-			    <when test="boardReplyNo != null">
-				    #{boardReplyNo}, #{boardReplyNo}
-			    </when>
-			    <otherwise>
-			    	0, 0/* MAX(BOARD_GRP_NO)+1 수정해야함 */
-			    </otherwise>
-		    </choose>
-		    ,	#{boardTitle},#{boardContents}, 		    
-		    #{regCustNo},		now(), 			#{regIp},			'Y');
+		    0,					#{boardTitle},	#{boardContents}, 		    
+		    #{regCustNo},		now(), 			#{regIp},			'Y',
+		    0,					0);
 	</insert>
 	<insert id="insertAnnoBoard" useGeneratedKeys="true" keyProperty="boardNo"  parameterType="BoardVO">
 		INSERT INTO BOARD   
-		    (BOARD_REPLY_NO,	BOARD_GRP_NO,	BOARD_TITLE,	BOARD_CONTENTS,	
-		    BOARD_ANNO_ID,	    BOARD_ANNO_PW,	REG_DT,			REG_IP,			USE_YN)
+		    (BOARD_GRP_NO,		BOARD_TITLE,	BOARD_CONTENTS,	
+		    BOARD_ANNO_ID,	    BOARD_ANNO_PW,	REG_DT,			REG_IP,			USE_YN,
+		    BOARD_GRP_ORD,		BOARD_GRP_DEPTH)
 		VALUES
 		    (
-		    
-		    <choose>
-			    <when test="boardReplyNo != null">
-				    #{boardReplyNo}, #{boardReplyNo}
-			    </when>
-			    <otherwise>
-			    	0, 0
-			    </otherwise>
-		    </choose>
-		    				,#{boardTitle},#{boardContents}, 		    
-		    #{boardAnnoId},		#{boardAnnoPw},	now(), 			#{regIp},			'Y');
+			0,					#{boardTitle},	#{boardContents}, 		    
+		    #{boardAnnoId},		#{boardAnnoPw},	now(), 			#{regIp},			'Y',
+		    0,					0);
 	</insert>
-	<update id="updateInsertCustBoard">
-		update	BOARD
-		set		BOARD_GRP_NO = #{boardNo}
-		where	BOARD_NO = #{boardNo}
+	<update id="updateBeforeBoardReply">
+		<![CDATA[
+		UPDATE	BOARD
+		SET		BOARD_GRP_ORD = BOARD_GRP_ORD +1
+		WHERE	BOARD_GRP_NO = #{boardGrpNo}
+		AND		BOARD_GRP_ORD >= #{boardGrpOrd}
+		]]>
 	</update>
 	
 	
