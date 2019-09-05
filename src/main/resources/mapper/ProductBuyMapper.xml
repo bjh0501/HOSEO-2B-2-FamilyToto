@@ -55,13 +55,13 @@
         AND		USE_YN = 'Y'
 	</select>
 	<select id="getCustCreditInfo" resultType="int" parameterType="int">
-		SELECT	SUM(CREDIT_VALUE) as creditValue
+		SELECT	IFNULL(SUM(CREDIT_VALUE), 0) as creditValue
         FROM 	CUSTOM_CREDIT
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		USE_YN = 'Y'
 	</select>
 	<select id="getCustMileageInfo" resultType="int" parameterType="int">
-		SELECT	SUM(MILEAGE_VALUE) as mileageValue
+		SELECT	IFNULL(SUM(MILEAGE_VALUE), 0) as mileageValue
         FROM	CUSTOM_MILEAGE
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		USE_YN = 'Y'
