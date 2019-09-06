@@ -51,9 +51,9 @@
 			            	<div th:if="${replyNo != null}" class="input-group mb-3">
 						  		<div class="input-group-prepend">
 							 	  <span class="input-group-text">답장글번호</span>
-							 	  <input type="text" id="boardGrpNo" th:value="${grpNo}">
-							 	  <input type="text" id="boardGrpOrd" th:value="${grpOrd}">
-							 	  <input type="text" id="boardGrpDepth" th:value="${grpDepth}">
+							 	  <input type="hidden" id="boardGrpNo" th:value="${grpNo}">
+							 	  <input type="hidden" id="boardGrpOrd" th:value="${grpOrd}">
+							 	  <input type="hidden" id="boardGrpDepth" th:value="${grpDepth}">
 						  		</div>
 								<input type="text" class="form-control" th:value="${replyNo}"  id="reply" disabled>
 							</div>
@@ -124,11 +124,11 @@
   
 
   <!-- Bootstrap core JavaScript-->
-	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
-	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
 	<!-- Custom scripts for all pages-->
-	<script th:src="@{js/sb-admin-2.min.js}"></script>>
+	<script th:src="@{/js/sb-admin-2.min.js}"></script>>
 
 </body>
 

@@ -224,6 +224,8 @@ public class BoardController {
 			sGubun = "/img/social/icon/onesportsMiniIcon.jpg";
 		}
 
+		boardService.updateVisitLog(vo.getBoardNo());
+		
 		mv.addObject("cust", nCustNo);
 		mv.addObject("board", vo);
 		mv.addObject("custComment", custVo);

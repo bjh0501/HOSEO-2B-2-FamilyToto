@@ -43,5 +43,7 @@ public interface BoardService {
 	
 	// 파일수정
 	public int updateFile(FileVO vo);
-	
+
+	// 로그 추가
+	public int updateVisitLog(int boardNo);
 }

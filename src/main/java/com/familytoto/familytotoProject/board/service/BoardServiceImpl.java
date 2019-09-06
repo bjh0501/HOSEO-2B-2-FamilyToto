@@ -176,4 +176,9 @@ public class BoardServiceImpl implements BoardService{
 	public int updateFile(FileVO vo) {
 		return boardDao.updateFile(vo);
 	}
+
+	@Override
+	public int updateVisitLog(int boardNo) {
+		return boardDao.updateVisitLog(boardNo);
+	}
 }

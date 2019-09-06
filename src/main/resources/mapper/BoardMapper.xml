@@ -209,4 +209,10 @@
         WHERE	BOARD_NO = #{boardNo}
         AND		USE_YN = 'Y'
 	</update>
+	<update id="updateBoardLog" parameterType="int">
+		UPDATE	BOARD
+        SET		BOARD_VISIT = BOARD_VISIT + 1
+        WHERE	BOARD_NO = #{boardNo}
+        AND		USE_YN = 'Y'
+	</update>
 </mapper>

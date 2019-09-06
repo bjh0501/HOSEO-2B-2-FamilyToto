@@ -94,4 +94,9 @@ public class BoardDaoImpl implements BoardDao {
 	public int updateBeforeBoardReply(BoardVO vo) {
 		return sqlSession.update("board.updateBeforeBoardReply", vo);
 	}
+
+	@Override
+	public int updateVisitLog(int boardNo) {
+		return sqlSession.update("board.updateBoardLog", boardNo);
+	}
 }

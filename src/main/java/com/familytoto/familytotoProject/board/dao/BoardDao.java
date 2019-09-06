@@ -54,4 +54,7 @@ public interface BoardDao {
 	public int updateFile(FileVO vo);
 	
 	public int updateBeforeBoardReply(BoardVO vo);
+	
+	// 로그 추가
+	public int updateVisitLog(int boardNo);
 }
