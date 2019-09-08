@@ -13,4 +13,7 @@ public interface ProductBuyService {
 	ProductVO getProductBuy(ProductBuyVO vo);
 	
 	Map<String, Object> getCustInfo(int nFamilyNo);
+	
+	// 구입상품 그룹하기
+	int insertProductGrp(ProductBuyVO vo);
 }

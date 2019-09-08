@@ -88,6 +88,8 @@
 							<input th:if="${loginGubun == null}" type="hidden" id="annoGubun" value="Y">
 							<input th:if="${loginGubun != null}" type="hidden" id="annoGubun" value="N">
 							<input type="file" id="file" style="display: none;">
+							<input type="hidden" id="boardFilePath">
+							<input type="hidden" id="boardFileName">
 							<div th:include="/board/editor/editor"></div>
 			            
 				            <div class="row">
@@ -164,11 +166,8 @@
 					cache : false,
 					processData : false
 				}).done(function(data) {
-					if(data != 0) {
-						alert("파일에 문제가 있습니다.\n다시 업로드해주세요.");
-					} else {
-						
-					}
+					$("#boardFileName").val(data.boardFileName)
+					$("#boardFilePath").val(data.boardFilePath)
 				});
 			} else {
 				alert("3MB이하에 파일만 업로드할 수 있습니다.");

@@ -3,142 +3,164 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-	
-	<meta http-equiv='Content-type' content='text/html; charset=utf-8'>
-	<meta http-equiv="cache-control" content="no-cache, must-revalidate">
-	<meta http-equiv="pragma" content="no-cache">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<meta http-equiv='Content-type' content='text/html; charset=utf-8'>
+<meta http-equiv="cache-control" content="no-cache, must-revalidate">
+<meta http-equiv="pragma" content="no-cache">
 
-  <!-- Custom fonts for this template-->
-  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="/css/Nunito.css" rel="stylesheet">
+<title>One Sports</title>
 
-  <!-- Custom styles for this template-->
-  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="/css/Nunito.css" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
+	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
 		</ul>
-	
-	    <!-- Content Wrapper -->
+
+		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
-		
-		      <!-- Main Content -->
+
+			<!-- Main Content -->
 			<div id="content">
-		
-		        <!-- Topbar -->
-		        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
-		
-		
-		        </nav>
-		        <!-- End of Topbar -->
-		
-		        <!-- Begin Page Content -->
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">글보기</h2>
 					</div>
-					 <div class="card shadow mb-4">
-			            <div class="card-body">
+					<div class="card shadow mb-4">
+						<div class="card-body">
 							<div class="input-group mb-3">
-						  		<h1 th:text="${board.getBoardTitle()}">제목</h1>
+								<h1 th:text="${board.getBoardTitle()}">제목</h1>
 							</div>
 							<hr>
 							<div class="row">
 								<div class="col-xl-5 col-md-5 mb-2">
 									<div class="input-group">
-								  		<div class="input-group-prepend">
-									 	  <span class="input-group-text" id="basic-addon1">글작성자</span>
-								  		</div>
-										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getCustNickname()}" id="regNick">Admin</label>
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">글작성자</span>
+										</div>
+										<label style="padding-top: 8px; padding-left: 2px;"
+											th:text="${board.getCustNickname()}" id="regNick">Admin</label>
 									</div>
 								</div>
 								<div class="col-xl-7 col-md-7 mb-2">
 									<div class="input-group mb-2">
-								  		<div class="input-group-prepend">
-									 	  <span class="input-group-text" id="basic-addon1">작성일</span>
-								  		</div>
-										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getRegDt()}"></label>
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">작성일</span>
+										</div>
+										<label style="padding-top: 8px; padding-left: 2px;"
+											th:text="${board.getRegDt()}"></label>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xl-5 col-md-5 mb-2">
 									<div class="input-group">
-								  		<div class="input-group-prepend">
-									 	  <span class="input-group-text" id="basic-addon1">글번호</span>
-								  		</div>
-										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getBoardNo()}"></label>
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">글번호</span>
+										</div>
+										<label style="padding-top: 8px; padding-left: 2px;"
+											th:text="${board.getBoardNo()}"></label>
 									</div>
 								</div>
 								<div class="col-xl-7 col-md-7 mb-2">
 									<div class="input-group mb-2">
-								  		<div class="input-group-prepend">
-									 	  <span class="input-group-text" id="basic-addon1">조회수</span>
-								  		</div>
-										<label style="padding-top:8px; padding-left:2px;" th:text="${board.getVisit()}">0</label>
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">조회수</span>
+										</div>
+										<label style="padding-top: 8px; padding-left: 2px;"
+											th:text="${board.getVisit()}">0</label>
 									</div>
 								</div>
 							</div>
 							<div class="row" th:if="${board.getBoardFileName() != ''}">
 								<div class="col-xl-5 col-md-5 mb-2">
 									<div class="input-group">
-								  		<div class="input-group-prepend">
-									 	  <span class="input-group-text" id="basic-addon1">첨부파일</span>
-								  		</div>
-										<a style="padding-top:8px; padding-left:2px;" th:text="${board.getBoardFileName()}" href="#"></a>
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="basic-addon1">첨부파일</span>
+										</div>
+										<a style="padding-top: 8px; padding-left: 2px;"
+											th:text="${board.getBoardFileName()}" th:href="'/board/downloadFile/'+${board.getBoardNo()}"></a>
 									</div>
 								</div>
 							</div>
 							<hr>
 							<div class="row">
-								<textarea style="display:none;" id="contentsArea" th:text="${board.getBoardContents()}"></textarea>
-								<div class="col-xl-12 col-md-12 mb-2"  id="boardDiv">
-									
-								</div>
+								<textarea style="display: none;" id="contentsArea"
+									th:text="${board.getBoardContents()}"></textarea>
+								<div class="col-xl-12 col-md-12 mb-2" id="boardDiv"></div>
 							</div>
-			            
-				            <div class="row">
+
+							<div class="row">
 								<div class="col-xl-3 col-md-3 mb-3">
 									<div class="input-group mb-3">
-										<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="javascript:location.href='/boardList'"  style="min-width:114px;">목록으로</button>
+										<button type="button"
+											class="btn btn-secondary btn-lg btn-block"
+											onClick="javascript:location.href='/boardList'"
+											style="min-width: 114px;">목록으로</button>
 									</div>
 								</div>
 								<div class="col-xl-9 col-md-9 mb-9">
 									<div class="d-flex flex-row-reverse">
-										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.getRegCustNo() == 0}">
+										<div class="col-xl-3 col-md-3 mb-3"
+											th:if="${board.getRegCustNo() == 0}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;"
-												onClick="javascript:clickModal('BE')">수정</button>
+												<button type="button"
+													class="btn btn-secondary btn-lg btn-block"
+													style="min-width: 74px; background: #656565;"
+													onClick="javascript:clickModal('BE')">수정</button>
 											</div>
 										</div>
-										<div class="col-xl-3 col-md-3 mb-3" th:if="${board.getRegCustNo() == cust}">
+										<div class="col-xl-3 col-md-3 mb-3"
+											th:if="${board.getRegCustNo() == cust}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;" th:onClick="|javascript:location.href='/updateBoard/${board.getBoardNo()}'|">수정</button>
+												<button type="button"
+													class="btn btn-secondary btn-lg btn-block"
+													style="min-width: 74px; background: #656565;"
+													th:onClick="|javascript:location.href='/updateBoard/${board.getBoardNo()}'|">수정</button>
 											</div>
 										</div>
-										<div class="col-xl-3 col-md-3 mb-3"  th:if="${cust == board.getRegCustNo() || board.getRegCustNo() == 0}">		
+										<div class="col-xl-3 col-md-3 mb-3"
+											th:if="${cust == board.getRegCustNo() || board.getRegCustNo() == 0}">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" style="min-width:74px;"
-												onClick="javascript:clickModal('BD')">삭제</button>
+												<button type="button"
+													class="btn btn-secondary btn-lg btn-block"
+													style="min-width: 74px; background: #828282;"
+													onClick="javascript:clickModal('BD')">삭제</button>
 											</div>
 										</div>
-										<div class="col-xl-3 col-md-3 mb-3">		
+										<div class="col-xl-3 col-md-3 mb-3">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block"
-												style="min-width:74px;" th:onClick="|javascript:reply(${board.getBoardNo()});|">답장</button>
+												<button type="button"
+													class="btn btn-secondary btn-lg btn-block"
+													style="min-width: 74px; background: #bdbdbd;"
+													th:onClick="|javascript:reply(${board.getBoardNo()});|">답장</button>
 											</div>
 										</div>
 									</div>
@@ -148,136 +170,167 @@
 							<div class="row">
 								<div class="col-xl-12 col-md-12 mb-3">
 									<div class="input-group">
-										<h4>댓글<span style="color:orange" id="commentCnt" th:text="'('+${commentCnt}+')'">0</span></h4>
+										<h4>
+											댓글<span style="color: orange" id="commentCnt"
+												th:text="'('+${commentCnt}+')'">0</span>
+										</h4>
 									</div>
 								</div>
 							</div>
-							<div class="row" th:if="${cust != -1}"> 
+							<div class="row" th:if="${cust != -1}">
 								<div class="input-group">
-									<b><label style="padding-top:8px;padding-right:2px;" th:text="${custComment.getFamilyCustNick()}" id="custNick">이름</label></b>
-									<a class="navbar-brand" href="javascript:;" style="cursor:default;">
-								   		<img th:src="${socialImg}" width="30" height="30" alt="" th:if="${cust != 0}" id="socialImg">
-								 	</a>
-									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="inputComment"
-									onkeypress="if(event.keyCode==13) {$('#socialRegisterButton').trigger('click');}">
-									<button type="button" class="btn btn-secondary" style="margin-left:5px" th:onClick="|javascript:socialComment(${board.getBoardNo()});|" id="socialRegisterButton">등록</button>
+									<b><label style="padding-top: 8px; padding-right: 2px;"
+										th:text="${custComment.getFamilyCustNick()}" id="custNick">이름</label></b>
+									<a class="navbar-brand" href="javascript:;"
+										style="cursor: default;"> <img th:src="${socialImg}"
+										width="30" height="30" alt="" th:if="${cust != 0}"
+										id="socialImg">
+									</a> <input type="text" class="form-control" placeholder="Comment"
+										aria-describedby="basic-addon1" id="inputComment"
+										onkeypress="if(event.keyCode==13) {$('#socialRegisterButton').trigger('click');}">
+									<button type="button" class="btn btn-secondary"
+										style="margin-left: 5px"
+										th:onClick="|javascript:socialComment(${board.getBoardNo()});|"
+										id="socialRegisterButton">등록</button>
 								</div>
 							</div>
 							<div class="row" th:if="${cust == -1}" id="commentDiv">
 								<div class="col-xl-4 col-md-6 col-sm-6 mb-3">
 									<div class="input-group">
-										<label style="padding-top:8px;padding-right:2px;">아이디</label>
-										<input type="text" class="form-control" placeholder="id" aria-describedby="basic-addon1" id="annoId">
+										<label style="padding-top: 8px; padding-right: 2px;">아이디</label>
+										<input type="text" class="form-control" placeholder="id"
+											aria-describedby="basic-addon1" id="annoId">
 									</div>
 								</div>
 								<div class="col-xl-4 col-md-6 col-sm-6 mb-3">
 									<div class="input-group">
-										<label style="padding-top:8px;padding-right:2px;">비밀번호</label>
-										<input type="password" class="form-control" placeholder="passowrd" aria-describedby="basic-addon1" id="annoPw">
+										<label style="padding-top: 8px; padding-right: 2px;">비밀번호</label>
+										<input type="password" class="form-control"
+											placeholder="passowrd" aria-describedby="basic-addon1"
+											id="annoPw">
 									</div>
 								</div>
 								<div class="col-xl-12 col-md-12 col-sm-12">
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="annoComment"
-										onkeypress="if(event.keyCode==13) {$('#annoRegisterButton').trigger('click');}">
-										<button type="button" class="btn btn-secondary" style="margin-left:5px"
-										th:onClick="|javascript:registerComment(${board.getBoardNo()});|" id="annoRegisterButton">등록</button>
+										<input type="text" class="form-control" placeholder="Comment"
+											aria-describedby="basic-addon1" id="annoComment"
+											onkeypress="if(event.keyCode==13) {$('#annoRegisterButton').trigger('click');}">
+										<button type="button" class="btn btn-secondary"
+											style="margin-left: 5px"
+											th:onClick="|javascript:registerComment(${board.getBoardNo()});|"
+											id="annoRegisterButton">등록</button>
 									</div>
 								</div>
 							</div>
 							<hr id="commentHr">
-							<center class="empty" th:if="${commentCnt} < 1">댓글이 존재하지 않습니다.</center>
+							<center class="empty" th:if="${commentCnt} < 1">댓글이 존재하지
+								않습니다.</center>
 							<th:block th:each="com :${comment}">
 								<div class="row">
 									<div class="input-group d-flex">
 										<div class="p-1">
-											<th:block th:if="${com.getCommentGrpDepth() > 1}" th:each="num: ${#numbers.sequence(1, com.getCommentGrpDepth() -1)}">></th:block>
-											<b><label class="text-word-r" th:text="${com.getCommentAnnoId()}">이름</label></b>
-											 <a class="navbar-brand" href="javascript:;" style="cursor:default;">
-												<th:block th:if="${com.getScCustGubun()} == 'NA'" >
-											   		<img src="/img/social/icon/naverMiniIcon.jpg" width="30" height="30" alt="">
-											 	</th:block>
-											 	<th:block th:if="${com.getScCustGubun()} == 'KA'" >
-											   		<img src="/img/social/icon/kakaoMiniIcon.jpg" width="30" height="30" alt="">
-											 	</th:block>
-											 	<th:block th:if="${com.getScCustGubun()} == 'FA'" >
-											   		<img src="/img/social/icon/facebookMiniIcon.jpg" width="30" height="30" alt="">
-											 	</th:block>
-											 	<th:block th:if="${com.getScCustGubun()} == 'ON'" >
-											   		<img src="/img/social/icon/onesportsMiniIcon.jpg" width="30" height="30" alt="">
-										 		</th:block>
-										 	</a>
-									 	</div>
-									 	<div class="p-1 commentContents">
+											<th:block th:if="${com.getCommentGrpDepth() > 1}"
+												th:each="num: ${#numbers.sequence(1, com.getCommentGrpDepth() -1)}">></th:block>
+											<b><label class="text-word-r"
+												th:text="${com.getCommentAnnoId()}">이름</label></b> <a
+												class="navbar-brand" href="javascript:;"
+												style="cursor: default;"> <th:block
+													th:if="${com.getScCustGubun()} == 'NA'">
+													<img src="/img/social/icon/naverMiniIcon.jpg" width="30"
+														height="30" alt="">
+												</th:block> <th:block th:if="${com.getScCustGubun()} == 'KA'">
+													<img src="/img/social/icon/kakaoMiniIcon.jpg" width="30"
+														height="30" alt="">
+												</th:block> <th:block th:if="${com.getScCustGubun()} == 'FA'">
+													<img src="/img/social/icon/facebookMiniIcon.jpg" width="30"
+														height="30" alt="">
+												</th:block> <th:block th:if="${com.getScCustGubun()} == 'ON'">
+													<img src="/img/social/icon/onesportsMiniIcon.jpg"
+														width="30" height="30" alt="">
+												</th:block>
+											</a>
+										</div>
+										<div class="p-1 commentContents">
 											<p class="text-word-l" th:text="${com.getCommentContents()}">댓글</p>
 										</div>
 										<p class="ml-auto p-2 ">
 											<button type="button" class="btn btn-secondary"
-											th:onClick="|javascript:replyComment($(this), 
+												th:onClick="|javascript:replyComment($(this), 
 												${com.getCommentGrpNo()},
 												${com.getCommentGrpOrd()},
-												${com.getCommentGrpDepth()}+1);|" >답글쓰기</button>
-											
-												<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary"
+												${com.getCommentGrpDepth()}+1);|">답글쓰기</button>
+
+											<button
+												th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}"
+												type="button" class="btn btn-secondary"
 												th:data-commentno="${com.getCommentNo()}"
 												th:data-gubun="${com.getScCustGubun()}"
 												th:onClick="|javascript:updateComment($(this), this.getAttribute('data-commentno'), this.getAttribute('data-gubun'));|">수정</button>
-												
-											<button th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}" type="button" class="btn btn-secondary" th:data-gubun="${com.getScCustGubun()}" th:onClick="|javascript:deleteComment( ${com.getCommentNo()}, $(this), this.getAttribute('data-gubun'));|" >삭제</button>
+
+											<button
+												th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}"
+												type="button" class="btn btn-secondary"
+												style="background: #828282;"
+												th:data-gubun="${com.getScCustGubun()}"
+												th:onClick="|javascript:deleteComment( ${com.getCommentNo()}, $(this), this.getAttribute('data-gubun'));|">삭제</button>
 											<label class="text-word-l" th:text="${com.getRegDt()}">날짜</label>
 										</p>
 									</div>
 								</div>
 							</th:block>
 						</div>
-		          	</div>
+					</div>
 				</div>
-		        <!-- /.container-fluid -->
-		
-		</div>
-	      <!-- End of Main Content -->
-		<div class="modal fade" id="promptModal" tabindex="-1" role="dialog" aria-labelledby="promptModal" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">비밀번호 입력</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		          <input type="text" id="promptGubun" style="display:none;">
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		          <div class="form-group">
-		            <label for="recipient-name" class="col-form-label">비밀번호:</label>
-		            <input type="password" class="form-control" id="annoInputPw">
-		          </div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-		        <button type="button" class="btn btn-secondary" th:onClick="|javascript:chooseAction()|" id="promptButton">확인</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
+				<!-- /.container-fluid -->
 
-    </div>
-    <!-- End of Content Wrapper -->
+			</div>
+			<!-- End of Main Content -->
+			<div class="modal fade" id="promptModal" tabindex="-1" role="dialog"
+				aria-labelledby="promptModal" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">비밀번호 입력</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span> <input type="text"
+									id="promptGubun" style="display: none;">
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">비밀번호:</label>
+								<input type="password" class="form-control" id="annoInputPw">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-secondary"
+								th:onClick="|javascript:chooseAction()|" id="promptButton">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+			</footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
 	</div>
-  <!-- End of Page Wrapper -->
+	<!-- End of Page Wrapper -->
 
-  
 
-   <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

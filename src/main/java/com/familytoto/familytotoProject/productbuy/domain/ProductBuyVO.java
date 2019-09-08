@@ -1,8 +1,10 @@
 package com.familytoto.familytotoProject.productbuy.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 public class ProductBuyVO {
 	 // 60000001
@@ -16,7 +18,6 @@ public class ProductBuyVO {
 
     private int productBuyCredit;
 
-    @Min(1)
     private int productBuyAmount;
 
     private int productBuyDelCredit;
@@ -40,19 +41,23 @@ public class ProductBuyVO {
 
     private String familyCustAddr;
 
+    @NotBlank
     private String familyCustAddrSi;
 
+    @NotBlank
     private String familyCustAddrGugun;
 
+    @NotBlank
     private String familyCustAddrDong;
 
+    @NotBlank
     private String zipCode1;
 
     private String zipCode2;
     
     private int totalCredit;
     
-	public int getTotalCredit() {
+    public int getTotalCredit() {
 		return totalCredit;
 	}
 

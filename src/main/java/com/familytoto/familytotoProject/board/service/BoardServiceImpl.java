@@ -181,4 +181,9 @@ public class BoardServiceImpl implements BoardService{
 	public int updateVisitLog(int boardNo) {
 		return boardDao.updateVisitLog(boardNo);
 	}
+
+	@Override
+	public FileVO getUploadedFile(int boardNo) {
+		return boardDao.getUploadedFile(boardNo);
+	}
 }

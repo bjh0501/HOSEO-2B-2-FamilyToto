@@ -47,7 +47,7 @@ TrexConfig.addAttacher(
 		wysiwygonly: _TRUE,
 		objattr: {},
 		features: { left:250, top:65, width:797, height:644 },
-		popPageUrl: "#host#path/pages/trex/image.html"
+		popPageUrl: "/board/editor/image"
 	},
 	function(root){
 		var _config = TrexConfig.getAttacher("image", root);

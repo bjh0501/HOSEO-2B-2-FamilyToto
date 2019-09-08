@@ -3,24 +3,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="productBuy">
-	<insert id="insertProductBuy" useGeneratedKeys="true" keyProperty="productBuyNo">
+	<insert id="insertProductBuy">
 		INSERT INTO PRODUCT_BUY (
 			FAMILY_CUST_NO,			PRODUCT_NO,				DELIVERY_NO,	PRODUCT_BUY_CREDIT,
             PRODUCT_BUY_AMOUNT,		PRODUCT_BUY_DEL_CREDIT,	REG_CUST_NO,	REG_DT,
-            REG_IP,					USE_YN
+            REG_IP,					USE_YN,					PRODUCT_BUY_GRP_NO
         ) VALUES (
 			#{familyCustNo},		#{productNo},			#{deliveryNo},	#{productBuyCredit},
             #{productBuyAmount},	#{productBuyDelCredit},	#{regCustNo},	NOW(),
-            #{regIp},				'Y'
+            #{regIp},				'Y',					#{productBuyGrpNo}
         )
 	</insert>
-	<insert id="insertproductBuyGrp">
+	<insert id="insertProductBuyGrp"  useGeneratedKeys="true" keyProperty="productBuyGrpNo">
         INSERT INTO PRODUCT_BUY_GRP (
-			PRODUCT_BUY_NO,		REG_CUST_NO,		REG_DT,
-            REG_IP,				USE_YN
+			REG_CUST_NO,			REG_DT,
+            REG_IP,					USE_YN,
+            FAMILY_CUST_ADDR,		FAMILY_CUST_ADDR_SI,	FAMILY_CUST_ADDR_GUGUN,
+			FAMILY_CUST_ADDR_DONG,	ZIP_CODE1,				ZIP_CODE2
         ) VALUES (
-			#{productBuyNo},	#{regCustNo},		NOW(),
-            #{regIp},			'Y'
+			#{regCustNo},			NOW(),
+            #{regIp},				'Y',
+            #{familyCustAddr},		#{familyCustAddrSi},	#{familyCustAddrGugun},
+            #{familyCustAddrDong},	#{zipCode1},			#{zipCode2}
         )
 	</insert>
 	<select id="getCustCredit" parameterType="ProductBuyVO" resultType="boolean">

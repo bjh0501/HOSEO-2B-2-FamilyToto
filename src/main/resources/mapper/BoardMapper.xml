@@ -40,42 +40,44 @@
 		]]>
 	</update>		
 	<select  id="getBoardList" parameterType="BoardVO" resultType="BoardVO">
-		select R2.* FROM(
-			select	R1.*
-			,		COUNT(BOARD_NO) as visit
-				FROM(
-					SELECT	B.BOARD_NO as boardNo
-					,		B.BOARD_GRP_NO as boardGrpNo
-					,		B.BOARD_REPLY_NO as boardReplyNo
-					,		B.BOARD_TITLE as boardTitle
-					,		B.REG_CUST_NO as regCustNo
-					,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
-					,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun 
-					,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
-					,		B.BOARD_GRP_DEPTH as boardGrpDepth
-					,		B.BOARD_GRP_ORD as boardGrpOrd
-					FROM	BOARD B
-						LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
-						LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
-						LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
-					WHERE	B.USE_YN = 'Y'
-					AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
-	                <if test="searchType=='title' and keyword != null and keyword != ''">
-		    			AND		B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
-			    	</if>
-			    	<if test="searchType=='contents' and keyword != null and keyword != ''">
-			    		AND		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%')
-			    	</if>
-			    	<if test="searchType=='both' and keyword != null and keyword != ''">
-			    		AND		(B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
-		           		OR		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%'))
-			    	</if>
-				) R1
-			LEFT OUTER JOIN WEB_LOG WL ON WL.BOARD_NO = R1.boardNo
-		GROUP BY R1.boardNo, R1.boardReplyNo, R1.boardTitle, R1.regCustNo, R1.custNickname, R1.custGubun, R1.regDt
-		ORDER BY R1.boardGrpNo DESC, R1.boardGrpOrd ASC 
-		) R2
-	    LIMIT #{startList}, #{listSize}
+		select	R1.*
+		,COUNT(COM.COMMENT_NO) as commentCnt
+			FROM(
+				SELECT	B.BOARD_NO as boardNo
+				,		B.BOARD_GRP_NO as boardGrpNo
+				,		B.BOARD_REPLY_NO as boardReplyNo
+				,		B.BOARD_TITLE as boardTitle
+				,		B.REG_CUST_NO as regCustNo
+				,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
+				,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun 
+				,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+				,		B.BOARD_GRP_DEPTH as boardGrpDepth
+				,		B.BOARD_GRP_ORD as boardGrpOrd
+				,		B.BOARD_VISIT as visit
+				,		BF.BOARD_FILE_NAME as boardFileName
+				FROM	BOARD B
+					LEFT OUTER JOIN BOARD_FILE BF ON B.BOARD_NO = BF.BOARD_NO AND BF.USE_YN = 'Y'
+					LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
+					LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
+					LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
+				WHERE	B.USE_YN = 'Y'
+				AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
+                   <if test="searchType=='title' and keyword != null and keyword != ''">
+	    			AND		B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+		    	</if>
+		    	<if test="searchType=='contents' and keyword != null and keyword != ''">
+		    		AND		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%')
+		    	</if>
+		    	<if test="searchType=='both' and keyword != null and keyword != ''">
+		    		AND		(B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
+	           		OR		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%'))
+		    	</if>
+                   ORDER BY B.BOARD_GRP_NO DESC, B.BOARD_GRP_ORD ASC 
+			) R1
+            LEFT OUTER JOIN COMMENT COM ON R1.boardNo = COM.BOARD_NO AND COM.USE_YN = 'Y'
+            GROUP BY boardNo
+            ORDER BY R1.boardGrpNo DESC, R1.boardGrpOrd ASC
+		LIMIT #{startList}, #{listSize}
 	</select>
 	<select id="getBoardListCnt" resultType="int">
 		SELECT	COUNT(*)
@@ -97,7 +99,6 @@
     	</if>
 	</select>
 	<select id="getShowBoard" resultType="BoardVO">
-		
         SELECT	B.BOARD_NO as boardNo
 		,		B.BOARD_TITLE as boardTitle
 		,		B.BOARD_REPLY_NO as boardReplyNo
@@ -106,14 +107,13 @@
 		,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
 		,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun
 		,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
-		,		COUNT(WC.BOARD_NO) as visit
+		,		IFNULL(B.BOARD_VISIT, 0) as visit
         ,		IFNULL(BF.BOARD_FILE_PATH, '') as boardFilePath
         ,		IFNULL(BF.BOARD_FILE_NAME, '') as boardFileName
         ,		B.BOARD_GRP_NO as boardGrpNo
         ,		B.BOARD_GRP_ORD as boardGrpOrd
         ,		B.BOARD_GRP_DEPTH as boardGrpDepth
 		FROM	BOARD B
-			INNER JOIN WEB_LOG WC ON B.BOARD_NO = WC.BOARD_NO
 			LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
 			LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
 			LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
@@ -215,4 +215,11 @@
         WHERE	BOARD_NO = #{boardNo}
         AND		USE_YN = 'Y'
 	</update>
+	<select id="getUploadedFile" parameterType="int" resultType="FileVO">
+		SELECT	BOARD_FILE_PATH as boardFilePath
+        ,		BOARD_FILE_NAME as boardFileName
+        FROM	BOARD_FILE
+        WHERE	BOARD_NO = #{boardNo}
+        AND		USE_YN = 'Y'
+	</select>
 </mapper>

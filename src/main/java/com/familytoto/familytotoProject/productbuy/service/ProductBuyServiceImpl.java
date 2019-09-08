@@ -30,7 +30,7 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 	 * 돈 소모 >
 	 * 상품소모>
 	 * 마일리지 적립 >  
-	 * 상품 그룹으로 묶기 >
+	 * 상품 그룹으로 묶기(insert) >
 	 * 
 	 */
 	
@@ -66,7 +66,7 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 			productBuyDao.updateProductAmount(vo);
 			productBuyDao.insertMileage(mVo);
 			
-			return productBuyDao.insertProductBuyGrp(vo);
+			return 1;
 		} else {
 			return -1;
 		}
@@ -86,5 +86,10 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 		map.put("mileage", productBuyDao.getCustMileage(nFamilyCustNo));
 		
 		return map;
+	}
+
+	@Override
+	public int insertProductGrp(ProductBuyVO vo) {
+		return productBuyDao.insertProductBuyGrp(vo);
 	}
 }

@@ -5,14 +5,19 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.creditShop.service.CreditShopService;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 import com.familytoto.familytotoProject.productbuy.service.ProductBuyService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -21,6 +26,9 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 public class ProductBuyController {
 	@Autowired
 	ProductBuyService productBuyService;
+	
+	@Autowired
+	CreditShopService creditShopService;
 	
 	@RequestMapping("/productBuy/{productNo}")
     public ModelAndView productBuy(HttpSession session, HttpServletResponse response,
@@ -48,7 +56,8 @@ public class ProductBuyController {
 		
 		ProductVO pVo = productBuyService.getProductBuy(pbVo);
 		
-		if(sAmount != null) {
+		if(sAmount != null 
+				&& pVo.getProductAmount() >= Integer.parseInt(sAmount)) { // 장바구니에 담앗는데 누군가사서 없어질수도 
 			pVo.setProductAmount(Integer.parseInt(sAmount));
 		} else {
 			try {
@@ -76,4 +85,60 @@ public class ProductBuyController {
         
         return mv;
     }
+	
+	@RequestMapping("/productSell/insert")
+	@ResponseBody
+	@Transactional // 장바구니경우 필요
+	public int productSellInsert(HttpServletRequest request,
+			HttpSession session,
+			HttpServletResponse response,
+			@ModelAttribute @Valid ProductBuyVO vo) {
+		// 소셜 아이디
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		if(cVo == null) {
+			return -99;
+		}
+		
+		if(cVo.getFamilyCustNo() == 0) {
+			return -98;
+		}
+		
+		String sProductNo[] = request.getParameterValues("productNo");
+		String sProductBuAmount[] = request.getParameterValues("produtBuyAmount");
+		
+		for(int i = 0 ; i <sProductBuAmount.length; i++) {
+			int nProductAmount = Integer.parseInt(sProductBuAmount[i]);
+			
+			if(nProductAmount < 1) {
+				return -1;
+			}
+		}
+		
+		vo.setFamilyCustNo(cVo.getFamilyCustNo());
+		vo.setRegIp(request.getRemoteAddr());
+		
+		int nResult = 0;
+		
+		if(productBuyService.insertProductGrp(vo) == 1) {
+			for(int i = 0 ; i <sProductNo.length; i++) {
+				ProductVO pVo= new ProductVO();
+				pVo.setProductNo(Integer.parseInt(sProductNo[i]));
+				
+				pVo = creditShopService.getShowProduct(pVo);
+		
+				int nProductAmount = Integer.parseInt(sProductBuAmount[i]);
+				
+				vo.setProductNo(pVo.getProductNo());
+				vo.setDeliveryNo(pVo.getDeliveryNo());
+				vo.setProductBuyAmount(nProductAmount);
+				vo.setProductBuyCredit(pVo.getProductCredit() * nProductAmount);
+				vo.setRegCustNo(cVo.getCustNo());
+				
+				nResult += productBuyService.insertProductDirectBuy(vo);
+			}
+		}
+		
+		return (sProductNo.length == nResult) ? 1 :0;  
+	}
 }

@@ -56,6 +56,18 @@ public class BoardVO {
     private int boardGrpOrd;
     
     private int boardGrpDepth;
+    
+    private int commentCnt;
+    
+    
+
+	public int getCommentCnt() {
+		return commentCnt;
+	}
+
+	public void setCommentCnt(int commentCnt) {
+		this.commentCnt = commentCnt;
+	}
 
 	public int getBoardNo() {
 		return boardNo;

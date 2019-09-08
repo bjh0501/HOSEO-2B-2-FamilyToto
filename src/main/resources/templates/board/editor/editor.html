@@ -528,13 +528,24 @@
 		}
 	}
 
-	/* 예제용 함수 */
+	// 업데이트 함수
 	function updateContent(boardNo) {
 		var formData = new FormData();
 		var title = $("#title");
 		var contents = Editor.getContent();
+		var notUseFile = "";
+		
+		// 파일지운거 체크 Y면 파일지운거
+		if($("#originFile").val() == undefined) {
+			notUseFile = "Y"
+		}
+		
+		var boardFilePath = $("#boardFilePath").val();
+		var boardFileName = $("#boardFileName").val();
 		
 		// 익명
+		// 아직 안정함
+		
 		if(1==0) {
 			var pw = $("#annoPw");
 			
@@ -561,6 +572,19 @@
 		
 		formData.append("boardTitle", title.val());
 		formData.append("boardContents", contents);
+		formData.append("notUseFile", notUseFile);
+		
+		if($("#boardFilePath").val() != "") {
+			formData.append("boardFilePath", $("#boardFilePath").val());
+		} else {
+			formData.append("boardFilePath", "");
+		}
+		
+		if($("#boardFileName").val() != "") {
+			formData.append("boardFileName", $("#boardFileName").val());
+		} else {
+			formData.append("boardFileName", "");
+		}
 		
 		$.ajax({
 			url : "/updateBoard/" + boardNo + "/update",
@@ -596,6 +620,8 @@
 	 * @param {Object} editor - 에디터에서 넘겨주는 editor 객체
 	 * @returns {Boolean} 모든 데이터가 유효할 경우에 true
 	 */
+	 
+	 // 업로드
 	function validForm(editor) {
 		// Place your validation logic here
 
@@ -665,7 +691,7 @@
 		var i, input;
 		var form = editor.getForm();
 		var content = editor.getContent();
-
+		
 		// 본문 내용을 필드를 생성하여 값을 할당하는 부분
 		var textarea = document.createElement('textarea');
 		textarea.name = 'boardContents';
@@ -713,6 +739,29 @@
 			boardGrpDepth.value = $("#boardGrpDepth").val();
 			form.createField(boardGrpDepth);
 		}
+		
+		// 파일업로드 구분
+		if ($("#fileName").val() != undefined) {
+			
+			// 업데이트할때 필요
+			var filegubun = document.createElement('input');
+			filegubun.type = 'hidden';
+			filegubun.name = 'fileGubun';
+			filegubun.value = "Y"
+			form.createField(filegubun);
+			    
+			var boardFilePath = document.createElement('input');
+			boardFilePath.type = 'hidden';
+			boardFilePath.name = 'boardFilePath';
+			boardFilePath.value = $("#boardFilePath").val()
+			form.createField(boardFilePath);
+			
+			var boardFileName = document.createElement('input');
+			boardFileName.type = 'hidden';
+			boardFileName.name = 'boardFileName';
+			boardFileName.value = $("#boardFileName").val()
+			form.createField(boardFileName);
+		}
 
 		form.createField(textarea);
 		form.createField(title);
@@ -751,7 +800,7 @@
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 	<p style="text-align: center;">
 		<img src="http://cfile273.uf.daum.net/image/2064CD374EE1ACCB0F15C8" class="tx-daum-image" style="clear: none; float: none;"/>
-	</p>﻿
+	</p>
 	<p>
 		<a href="http://cfile297.uf.daum.net/attach/207C8C1B4AA4F5DC01A644"><img src="snapshot/images/icon/p_gif_s.gif"/> editor_bi.gif</a>
 	</p>
@@ -798,7 +847,7 @@
 </script>
 <!-- End: Loading Contents -->
 <script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
 </body>
 </html>
 

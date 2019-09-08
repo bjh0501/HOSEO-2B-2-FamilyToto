@@ -19,7 +19,14 @@
 
 <!-- Custom styles for this template-->
 <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+.naverButton{
 
+-webkit-filter: grayscale(100%);
+filter: gray;
+
+}
+</style>
 </head>
 
 <body id="page-top">
@@ -53,7 +60,9 @@
 					<div class="row">
 						<div class="col-xl-6 col-md-12 mb-6">
 							<div class="card shadow h-100 py-12">
-								<img src="/img/OneSports.png" width="100%" />
+								<center>
+									<img src="/img/OneSports.png" width="80%" style="margin-top:8%"/>
+								</center>
 							</div>
 						</div>
 
@@ -99,18 +108,23 @@
 											onClick="javascript:facebookLogin();">
 									</div>
 									<div class="input-group mb-3">
-										<img src="/img/social/button/naverButton.jpg"
-											style="width: 100%; cursor: pointer;"
-											onClick="javascript:naverLogin();"> <a
-											th:href="${naverLoginUrl}" style="display: none"
-											id="naverSocial">naver</a>
-									</div>
-									<div class="input-group mb-3">
 										<img src="/img/social/button/kakaoButton.jpg"
 											style="width: 100%; cursor: pointer;"
 											onClick="javascript:kakaoLogin();"> <a
 											th:href="${kakaoLoginUrl}" style="display: none"
 											id="kakaoSocial">kakao</a>
+									</div>
+									<div class="input-group mb-3">
+										<img 
+										src="/img/social/button/naverButton.jpg"
+											style="width: 100%; cursor: pointer; -webkit-filter: grayscale(100%); filter: gray;"
+											onClick="javascript:naverLogin();"> <a
+											th:href="${naverLoginUrl}" style="display: none"
+											id="naverSocial">naver</a> <span>*<u><a
+												href="http://www.law.go.kr/LSW//precInfoP.do?precSeq=186216"
+												target="_blank">관련 법</a></u>에 의하여 네이버 로그인이 중지되었습니다.<br>
+												<small>네이버 로그인을 하려면 운영자에게 문의줘야된다 맨이야.</small>
+										</span><br>
 									</div>
 									<p class="text-center">
 										<a href="/findID_PW">아이디/비밀번호 찾기</a>

@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/Nunito.css" rel="stylesheet">
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+  
+<meta http-equiv='Content-type' content='text/html; charset=utf-8'>
+<meta http-equiv="cache-control" content="no-cache, must-revalidate">
+<meta http-equiv="pragma" content="no-cache">
+<title>OneSports 게시글 - 이미지 첨부</title> 
+<script src="../../js/popup.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+// <![CDATA[
+	
+	
+	function done() {
+		if (typeof (execAttach) == 'undefined') { //Virtual Function
+			return;
+		}
+		
+		var formData = new FormData();
+ 		var fileLength = $("input[type='file']").length;
+ 		
+		for(n = 0; n < fileLength; n++) {
+			$.each($("input[type='file']")[n].files, function(i, file) {
+				if(file.size <= 1024*1024) {
+			    	formData.append('file', file);
+				}
+			});
+		}
+	
+		var _mockdata = new Array();
+		
+		$.ajax({
+			url : '/board/uploadImages',
+			type : 'POST',
+			enctype : 'multipart/form-data',
+			data: formData,
+			dataType: "json",
+			contentType : false,
+			cache : false,
+			async : false,
+			processData : false
+		}).done(function(data) {
+			for(i = 0; i < data.length; i++) {
+				_mockdata[i] = {
+					'imageurl' : data[i].imgUrl,
+					'filename' : data[i].originalFileName,
+					'filesize' : data[i].fileSize,
+					'imagealign' : 'C',
+					'originalurl' : data[i].imgUrl,
+					'thumburl' : data[i].imgUrl
+				};
+				
+				execAttach(_mockdata[i]);
+			}
+			closeWindow();
+		});
+	}
+	
+	var trIdx = 0;
+	var fileIdx = 0;
+	
+	function registerImg() {
+		$('#file' + fileIdx).trigger('click');
+
+		$('#file' + fileIdx).bind("change", function() {
+			readURL(this);
+		});
+
+		//$("input[id=file" + imgNo + "]").change(function() {
+			/*
+			var file  = this.files[0];
+			var _URL = window.URL || window.webkitURL;
+			var img = new Image();
+			
+			img.src = _URL.createObjectURL(file);
+			img.onload = function() {
+			    
+			    if(img.width != 720 || img.height != 270) {
+			        alert("이미지 가로 720px, 세로 270px로 맞춰서 올려주세요.");
+			        $("input[id=file" + imgNo + "]").val("");
+			    } 
+			}*/
+		//});
+
+	}
+	
+	function readURL(input) {
+		if (input.files != undefined) {		
+			
+			// 이미지 미리보기
+			i = 0;
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				alert("A")
+				/*if ($.inArray(ext, [ "gif", "jpg", "jpeg", "png", "bmp" ]) == -1) {
+					alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
+					$("input[id=file" + imgNo + "]").val("");
+					$("#" + trRowId).remove();
+					return;
+				}*/
+				
+				// 용량구하기
+				/*var fileSize = input.files[fileIdx].size; //
+				$("#" + tdSizeId).html((fileSize / 1024).toFixed(1) + "KB")
+				var maxSize = 1024 * 1024;
+				
+				if (fileSize > maxSize) {
+					$("#" + trRowId).remove();
+					alert("파일용량제한은 1024KB입니다.\n파일 : " + fileName + "의 용량은 "
+							+ (fileSize / 1024).toFixed(1) + "KB입니다.");
+				}*/
+				
+				
+			}
+			reader.readAsDataURL(input.files[fileIdx]);
+		}
+
+		fileIdx++;
+		$("#fileDiv").append("<input type='file' name='files' id='file" + fileIdx + "' multiple/>")
+	}
+</script>
+</head>
+<body>
+	<input type="button" class="btn btn-secondary" value="사진첨부" onClick="javascript:registerImg()"/>
+	<div id="fileDiv" >style="display:none;" 
+		<input type="file" id="file0" name="files" multiple/>
+	</div>
+	<div class="table-responsive">
+		<table class="table table-bordered" id="dataTable" width="100%"
+			cellspacing="0">
+			<thead>
+				<tr>
+					<th style="width: 40px; vertical-align: middle;"><input type="checkbox"/></th>
+					<th style="width: 200px; vertical-align: middle;">사진 이름</th>
+					<th style="width: 60px; vertical-align: middle;">사진 크기</th>
+					<th style="width: 100px; vertical-align: middle;">미리보기</th>
+				</tr>
+			</thead>
+			<tbody id="dynamicTb">
+				
+			</tbody>
+		</table>
+	</div>
+	<br>
+		<input type="button" class="btn btn-secondary" value="사진등록"
+		onClick="javascript:done()"/>
+	</br>
+</body>
+</html>
+
+<script src="/vendor/jquery/jquery.min.js"></script>
+
+

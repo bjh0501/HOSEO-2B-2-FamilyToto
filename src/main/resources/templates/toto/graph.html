@@ -57,8 +57,10 @@
                 <div class="card-header py-3">
                 </div>
                 <div class="card-body">
-                  <img class="img-fluid px-3 px-sm-1 mt-3 mb-5" style="width: 55rem;" src="/img/graph.png" alt=""><br>
-                  <input class="btn-secondary" type="button" value="멈추기" onclick="alert('그래프를 정지합니다.')" style="width:100%; height:45px; "></input>
+                  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+		<div id="getBetNum"></div>
+
+                  <input class="btn-secondary" type="button" value="멈추기" onclick="javascript:stopGraph();" style="width:100%; height:45px; "></input>
                 </div>
               </div>
             </div>
@@ -69,11 +71,11 @@
                 <div class="card-header py-3">
                 
                   <h6 class="m-0 font-weight-bold text-primary text-center" style="font-size:25px">배팅 리모콘</h6><hr>
-                  <h6 class="m-0 font-weight-bold text-primary text-center">현재금액</h6><br>
-                  <input type="text" style="width:350px"></input><hr>
-                  
-                  <h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6><br>
-                  <input type="text" style="width:350px"></input>
+                  <h6 class="m-0 font-weight-bold text-primary text-center">현재금액</h6>
+                  <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" disabled value="0">
+                  <br>
+                  <h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6>
+                  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                   
                 </div><hr>
                 <input class="btn-secondary" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:90%; margin:0 auto; height:45px"></input><br>
@@ -104,8 +106,6 @@
   <script src="/vendor/jquery/jquery.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="/js/sb-admin-2.min.js"></script>
@@ -116,12 +116,112 @@
   <!-- Page level custom scripts -->
   <script src="/js/demo/chart-area-demo.js"></script>
   <script src="/js/demo/chart-pie-demo.js"></script>
-
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 
 </html>
 <script>
 	function goCharge() {
 		location.href = "/charge"
+	}
+	
+	var refTime
+	
+	window.onload = function () {
+
+		var dps = []; // dataPoints
+		var chart = new CanvasJS.Chart("chartContainer", {
+			title :{
+				text: "그래프"
+			},
+			axisY: {
+				includeZero: false
+			,	minimum : 0
+			},      
+			data: [{
+				type: "line",
+				dataPoints: dps
+			}]
+		});
+
+		//var xVal = 1;
+		var yVal = 0; 
+		var updateInterval = 100;
+		var dataLength = 100; // number of dataPoints visible at any point
+
+		var updateChart = function (count) {
+
+			count = count || 1;
+
+			for (var j = 0; j < count; j++) {
+				yVal = yVal +  0.01;
+				dps.push({
+					//x: xVal,
+					y: yVal
+				});
+				//xVal+=0.01;
+				$("#getBetNum").html(yVal.toFixed(2))
+			}
+			
+			dataLength++
+			
+			if(dataLength>=120) {
+				// setTimeout(updateChart(), 70)
+				//updateInterval = 70;
+			} else if(dataLength>=300) {
+				updateInterval = 60
+			} else if(dataLength>=400) {
+				updateInterval = 50
+			} else if(dataLength>=500) {
+				updateInterval = 40
+			} else if(dataLength>=600) {
+				updateInterval = 30
+			} else if(dataLength>=750) {
+				updateInterval = 1
+			}
+			
+			if (dps.length > dataLength) {
+				dps.shift();
+			}
+
+			chart.render();
+		};
+
+		updateChart(dataLength);
+		refTime = setInterval(function() {
+			updateChart()
+		}, updateInterval);
+	}
+	
+	function stopGraph() {
+		 clearInterval(refTime)
+	}
+</script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCtC9POYgMdHFxZfXuszaU7kLYO49s2enI",
+    authDomain: "onesports-8620b.firebaseapp.com",
+    databaseURL: "https://onesports-8620b.firebaseio.com",
+    projectId: "onesports-8620b",
+    storageBucket: "onesports-8620b.appspot.com",
+    messagingSenderId: "939568817861",
+    appId: "1:939568817861:web:0e0f228c19c7f629f2b2ac"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  
+  var database = firebase.database();
+  
+  function join() {
+	  firebase.database().ref('Graph/').set({
+	    startDt: "2019-05-02 12:23:23"
+	  });
 	}
 </script>

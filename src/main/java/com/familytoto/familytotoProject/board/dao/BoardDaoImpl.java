@@ -99,4 +99,9 @@ public class BoardDaoImpl implements BoardDao {
 	public int updateVisitLog(int boardNo) {
 		return sqlSession.update("board.updateBoardLog", boardNo);
 	}
+
+	@Override
+	public FileVO getUploadedFile(int boardNo) {
+		return sqlSession.selectOne("board.getUploadedFile", boardNo);
+	}
 }

@@ -10,10 +10,8 @@ public class FileVO {
 
     private int boardNo;
 
-    @NotBlank
     private String boardFilePath;
 
-    @NotBlank
     private String boardFileName;
 
     private int regCustNo;

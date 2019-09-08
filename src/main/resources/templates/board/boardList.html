@@ -80,7 +80,12 @@
 												</th:block>
 												<span th:text="${list.boardNo}"></span>
 											</td>
-											<td th:text="${list.boardTitle}"></td>
+											<td>
+												<span  th:text="${list.boardTitle}"></span>
+												<font color="orange">(<span  th:text="${list.commentCnt}"></span>)</font>
+												
+												<i th:if="${list.boardFileName} != null" class="fas fa-file"></i>
+											</td>
 											<td><span th:text="${list.custNickname}"></span><img
 												th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
 												width=26 height=26></img></td>

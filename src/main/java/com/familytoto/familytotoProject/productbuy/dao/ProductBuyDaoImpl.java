@@ -20,7 +20,7 @@ public class ProductBuyDaoImpl implements ProductBuyDao {
 
 	@Override
 	public int insertProductBuyGrp(ProductBuyVO vo) {
-		return sqlSession.insert("productBuy.insertproductBuyGrp", vo);
+		return sqlSession.insert("productBuy.insertProductBuyGrp", vo);
 	}
 
 	@Override

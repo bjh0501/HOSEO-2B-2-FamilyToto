@@ -57,4 +57,6 @@ public interface BoardDao {
 	
 	// 로그 추가
 	public int updateVisitLog(int boardNo);
+	
+	public FileVO getUploadedFile(int boardNo);
 }
