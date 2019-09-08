@@ -33,6 +33,7 @@ build/
 
 ### OneSports
 *.properties
+/toto/src/main/java/com/familytoto/familytotoProject/board/service/AWSService.java
 
 ### Wrong Directory
 /OneSports
