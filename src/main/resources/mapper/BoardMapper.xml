@@ -174,7 +174,6 @@
 		UPDATE	BOARD
         SET		BOARD_TITLE = #{boardTitle}
         ,		BOARD_CONTENTS = #{boardContents}
-        ,		BOARD_ANNO_PW = #{boardAnnoPw}
         ,		CHG_DT = NOW()
         ,		CHG_IP = #{chgIp}
         WHERE	BOARD_NO = #{boardNo}

@@ -542,22 +542,7 @@
 		
 		var boardFilePath = $("#boardFilePath").val();
 		var boardFileName = $("#boardFileName").val();
-		
-		// 익명
-		// 아직 안정함
-		
-		if(1==0) {
-			var pw = $("#annoPw");
 			
-			if(pw.val() == "") {
-				alert("비밀번호를 입력해주세요.");
-				pw.focus();
-				return;
-			}
-			
-			formData.append("boardAnnoPw", pw.val());
-		}
-		
 		if(title.val().trim() == "") {
 			alert("제목를 입력해주세요.");
 			title.focus();
@@ -582,8 +567,6 @@
 		
 		if($("#boardFileName").val() != "") {
 			formData.append("boardFileName", $("#boardFileName").val());
-		} else {
-			formData.append("boardFileName", "");
 		}
 		
 		$.ajax({
@@ -741,7 +724,7 @@
 		}
 		
 		// 파일업로드 구분
-		if ($("#fileName").val() != undefined) {
+		if ($("#fileName").val() != undefined && $("#fileName").val().trim() != "") {
 			
 			// 업데이트할때 필요
 			var filegubun = document.createElement('input');
@@ -762,7 +745,7 @@
 			boardFileName.value = $("#boardFileName").val()
 			form.createField(boardFileName);
 		}
-
+		
 		form.createField(textarea);
 		form.createField(title);
 

@@ -2,6 +2,7 @@ package com.familytoto.familytotoProject.board.service;
 
 import java.io.File;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.AmazonServiceException;
@@ -16,9 +17,14 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 
 @Service
 public class AWSService {
-	private String BUCKET_NAME = "*";
-	private String ACCESS_KEY = "*";
-	private String SECRET_KEY = "*";
+	@Value("${aws.s3.bucketName}")
+	private String BUCKET_NAME = "onesports";
+	
+	@Value("${aws.s3.accessKey}")
+	private String ACCESS_KEY = "AKIA2DAXGIER6Q77KTA6";
+	
+	@Value("${aws.s3.secretKey}")
+	private String SECRET_KEY = "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";
 	private AmazonS3 amazonS3;
 
 	public AWSService() {

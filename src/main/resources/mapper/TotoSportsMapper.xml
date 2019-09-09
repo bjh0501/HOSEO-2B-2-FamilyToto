@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="totoSports">
+	<insert id="insertSportsToto">
+	INSERT INTO TOTO_SPORTS(
+		SPORTS_GUBUN,		SPORTS_LEAGUE_NAME,		SPORTS_TEAM1,		SPORTS_TEAM2,
+	    SPORTS_SCHEDULE,	SPORTS_WIN_BET,			SPORTS_DRAW_BET,	SPORTS_LOSE_BET,
+	    REG_CUST_NO,		REG_DT,					REG_IP,				USE_YN
+	) VALUES (
+		#{sportsGubun},		#{sportsLeagueName},	#{sportsTeam1},		#{sportsTeam2},
+		#{sportsSchedule},	#{sportsWinBet},		#{sportsDrawBet},	#{sportsLoseBet},
+	    #{regCustNo},		NOW(),					#{regIp},			'Y'
+	)
+	</insert>
+</mapper>

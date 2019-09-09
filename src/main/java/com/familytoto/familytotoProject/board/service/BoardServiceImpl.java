@@ -81,8 +81,6 @@ public class BoardServiceImpl implements BoardService{
 		// 익명
 		if(vo.getBoardAnnoId() == null) {
 			CustVO cVo = new CustVO();
-			String sPass = cVo.toEncodePassword(vo.getBoardAnnoPw());
-			vo.setBoardAnnoPw(sPass);
 					
 			return boardDao.updateBoard(vo);
 		} else {

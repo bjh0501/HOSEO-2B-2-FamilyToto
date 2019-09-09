@@ -9,29 +9,42 @@
 <meta http-equiv="cache-control" content="no-cache, must-revalidate">
 <meta http-equiv="pragma" content="no-cache">
 <title>OneSports 게시글 - 이미지 첨부</title> 
-<script src="../../js/popup.js" type="text/javascript" charset="utf-8"></script>
+<script src="/daumeditor/js/popup.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-// <![CDATA[
-	
-	
+
 	function done() {
-		if (typeof (execAttach) == 'undefined') { //Virtual Function
-			return;
-		}
+// 		if (typeof (execAttach) == 'undefined') { //Virtual Function
+// 			return;
+// 		}
 		
 		var formData = new FormData();
  		var fileLength = $("input[type='file']").length;
+ 		var checkFile = false;
+ 		var checkFileSize = 0;
  		
 		for(n = 0; n < fileLength; n++) {
 			$.each($("input[type='file']")[n].files, function(i, file) {
-				if(file.size <= 1024*1024) {
+				// 삭제한사진은 no append
+				if($("[for=" + n + "][each=" + i + "]").html() != undefined) {
 			    	formData.append('file', file);
+			    	checkFile = true;
+			    	checkFileSize += file.size;
 				}
 			});
 		}
+		
+		if(checkFileSize > 1024*1024*3) {
+			alert("총 용량은 3MB이하여야합니다.");
+			return;
+		}
+		
+		if(checkFile == false) {
+			alert("등록할 사진을 첨부해주세요.")
+			return;
+		}
 	
 		var _mockdata = new Array();
-		
+
 		$.ajax({
 			url : '/board/uploadImages',
 			type : 'POST',
@@ -40,7 +53,6 @@
 			dataType: "json",
 			contentType : false,
 			cache : false,
-			async : false,
 			processData : false
 		}).done(function(data) {
 			for(i = 0; i < data.length; i++) {
@@ -59,14 +71,19 @@
 		});
 	}
 	
-	var trIdx = 0;
-	var fileIdx = 0;
+	var imgNo = 0;
+	
+	// 이미지 미리보기
+	var previewNo = 0;
+	var previewShowNo = 0;
 	
 	function registerImg() {
-		$('#file' + fileIdx).trigger('click');
+		$('#file' + imgNo).trigger('click');
 
-		$('#file' + fileIdx).bind("change", function() {
-			readURL(this);
+		$('#file' + imgNo).bind("change", function() {
+			if($('#file' + imgNo).length > 0) {
+				readURL(this);
+			}
 		});
 
 		//$("input[id=file" + imgNo + "]").change(function() {
@@ -86,46 +103,108 @@
 		//});
 
 	}
+
+	
 	
 	function readURL(input) {
-		if (input.files != undefined) {		
-			
-			// 이미지 미리보기
-			i = 0;
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				alert("A")
-				/*if ($.inArray(ext, [ "gif", "jpg", "jpeg", "png", "bmp" ]) == -1) {
-					alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
-					$("input[id=file" + imgNo + "]").val("");
-					$("#" + trRowId).remove();
-					return;
-				}*/
+		var imgStartNo ;
+		var imgEndNo ;
+		
+		// 이미지 미리보기를 위해 필요
+		previewShowNo = previewNo;		
+		
+		if (input.files != undefined) {
+			imgStartNo = previewNo;
+			for(i = 0; i < input.files.length; i++) {
+				var tdImgId = "img" + previewNo;
+				var tdNameId = "name" + previewNo;
+				var tdSizeId = "size" + previewNo;
+				var trRowId = "row" + previewNo;
 				
-				// 용량구하기
-				/*var fileSize = input.files[fileIdx].size; //
-				$("#" + tdSizeId).html((fileSize / 1024).toFixed(1) + "KB")
-				var maxSize = 1024 * 1024;
+				// 파일명구하기
+				var fileValue = document.getElementById("file" + imgNo).files[i].name.split("\\");
+				var fileName = fileValue[fileValue.length - 1]; // 파일명
 				
-				if (fileSize > maxSize) {
-					$("#" + trRowId).remove();
-					alert("파일용량제한은 1024KB입니다.\n파일 : " + fileName + "의 용량은 "
-							+ (fileSize / 1024).toFixed(1) + "KB입니다.");
-				}*/
-				
-				
+				if(fileName) {
+					appendStr = "";
+					appendStr += "<tr class='boardrow' for='" + imgNo + "' each='" + i + "'  id='" + trRowId + "'>";
+					appendStr += "	<td style='vertical-align: middle;'><input class='remove' type='checkbox' removeFor='" + imgNo + "' removeEach='" + i + "'/></td>";
+					appendStr += "	<td style='vertical-align: middle;' id='" + tdNameId + "'></td>";
+					appendStr += "	<td style='vertical-align: middle;' id='" + tdSizeId + "'></td>";
+					appendStr += '	<td style="vertical-align: middle;"><center><img id="' + tdImgId + '" width="230px" alt="얘! 파일 첨부도중에 취소되거나 최소를 하면\n보안상 미리보기가 안된단다."/></center></td>';
+					appendStr += "</tr>";
+					$("#dynamicTb").append(appendStr);
+					
+					$("#" + tdNameId).html(fileName);
+	
+					var ext = $(input).val().split(".").pop().toLowerCase();
+	
+					if ($.inArray(ext, [ "gif", "jpg", "jpeg", "png", "bmp" ]) == -1) {
+						alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
+						$("input[id=file" + imgNo + "]").val("");
+						$("#" + trRowId).remove();
+						return;
+					}
+	
+					
+					// 1메가
+					imgEndNo = previewNo;
+					
+					var fileSize = input.files[i].size;
+					$("#" + tdSizeId).html((fileSize / 1024).toFixed(1) + "KB")
+					var maxSize = 1024 * 1024;
+					
+					if (fileSize > maxSize) {
+						$("#" + trRowId).remove();
+						alert("파일용량제한은 1024KB입니다.\n파일 : " + fileName + "의 용량은 "
+								+ (fileSize / 1024).toFixed(1) + "KB입니다.");
+					}
+					else {
+						// 이미지 미리보기
+						var reader = new FileReader();
+						reader.readAsDataURL(input.files[i]);
+						reader.onload = function(e) {
+							$("#img" + previewShowNo).attr('src', e.target.result);
+							previewShowNo++;
+						}
+					}
+					
+					previewNo++;
+				}
 			}
-			reader.readAsDataURL(input.files[fileIdx]);
 		}
 
-		fileIdx++;
-		$("#fileDiv").append("<input type='file' name='files' id='file" + fileIdx + "' multiple/>")
+		imgNo++;
+
+		$("#fileDiv").append("<input type='file' name='files' id='file" + imgNo + "' multiple/>")
+	}
+	
+	function initUploader() {
+		var _opener = PopupUtil.getOpener();
+		if (!_opener) {
+			alert('잘못된 경로로 접근하셨습니다.');
+			return;
+		}
+
+		var _attacher = getAttacher('image', _opener);
+		registerAction(_attacher);
+	}
+	
+	function removeImgePreview() {
+		if ($("input[class='remove']").is(":checked")) {
+			for(var i=$("input[class='remove']:checked").length-1; i>-1; i--) {
+				$("input[class='remove']:checked").eq(i).closest("tr").remove();
+			}﻿
+		} else {
+﻿            alert("선택된 사진이없습니다.");
+		}﻿ 
 	}
 </script>
 </head>
-<body>
+<body onload="initUploader();">
 	<input type="button" class="btn btn-secondary" value="사진첨부" onClick="javascript:registerImg()"/>
-	<div id="fileDiv" >style="display:none;" 
+	<input type="button" class="btn btn-secondary" value="사진삭제" onClick="javascript:removeImgePreview()"/>
+	<div id="fileDiv" style="display: none;"> 
 		<input type="file" id="file0" name="files" multiple/>
 	</div>
 	<div class="table-responsive">
@@ -133,10 +212,10 @@
 			cellspacing="0">
 			<thead>
 				<tr>
-					<th style="width: 40px; vertical-align: middle;"><input type="checkbox"/></th>
-					<th style="width: 200px; vertical-align: middle;">사진 이름</th>
-					<th style="width: 60px; vertical-align: middle;">사진 크기</th>
-					<th style="width: 100px; vertical-align: middle;">미리보기</th>
+					<th style="width: 10%; vertical-align: middle;"><input type="checkbox"/></th>
+					<th style="width: 20%; vertical-align: middle;">사진 이름</th>
+					<th style="width: 20%; vertical-align: middle;">사진 크기</th>
+					<th style="width: 50%; vertical-align: middle;">미리보기</th>
 				</tr>
 			</thead>
 			<tbody id="dynamicTb">
@@ -152,5 +231,3 @@
 </html>
 
 <script src="/vendor/jquery/jquery.min.js"></script>
-
-

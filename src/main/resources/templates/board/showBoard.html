@@ -367,8 +367,12 @@
 					htmlStr += '	</div>';
 					htmlStr += '	<div class="col-xl-12 col-md-12 col-sm-12">';
 					htmlStr += '		<div class="input-group">';
-					htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="' + comment +  '">';
-					htmlStr += '			<button type="button" class="btn btn-secondary" style="margin-left:5px"';
+					
+					var buttonName = "replyButton" + currentReplyNo;
+					var onKeyEvent = "if(event.keyCode==13) {$(\'#" + buttonName + "\').trigger(\'click\');}";
+					
+					htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="' + comment +  '" onKeypress="' + onKeyEvent + '">';					
+					htmlStr += '			<button type="button" id="' + buttonName + '" class="btn btn-secondary" style="margin-left:5px"';
 					htmlStr += '			onclick="javascript:registerReplyComment(' + currentReplyNo + ', '+grp+', '+ord+', '+depth+');">등록</button>';
 					htmlStr += '		</div>';
 					htmlStr += '	</div>';
@@ -380,8 +384,12 @@
 					htmlStr += '		<a class="navbar-brand" href="javascript:;" style="cursor:default;">';
 					htmlStr += '			<img src="' + $("#socialImg").attr("src") + '" width="30" height="30" alt="">';
 					htmlStr += '		</a>';
-					htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="' + comment +  '">';
-					htmlStr += '			<button type="button" class="btn btn-secondary" style="margin-left:5px"';
+					
+					var buttonName = "replyButton" + currentReplyNo;
+					var onKeyEvent = "if(event.keyCode==13) {$(\'#" + buttonName + "\').trigger(\'click\');}";
+					
+					htmlStr += '			<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1" id="' + comment +  '" onKeypress="' + onKeyEvent + '">';					
+					htmlStr += '			<button type="button" id="' + buttonName + '" class="btn btn-secondary" style="margin-left:5px"';
 					htmlStr += '			onclick="javascript:registerReplyComment(' + currentReplyNo + ', '+grp+', '+ord+', '+depth+');">등록</button>';
 					htmlStr += '	</div>';
 					htmlStr += '</div>';
@@ -549,7 +557,7 @@
 			deleteBoard([[ ${board.getBoardNo()} ]], [[ ${cust} ]])
 		} else if(gubun == "BE") {
 			goUpdate([[ ${cust} ]], [[ ${board.getBoardNo()} ]])
-		}
+		} 
 	}
 	
 	function clickModal(gubun) {
@@ -659,6 +667,10 @@
 	function deleteComment(no, obj, gubun) {
 		if(gubun == "AN") {
 			var pass = prompt("비밀번호를 입력해주세요.");
+
+			if(pass==null){
+				return;
+			 }
 			
 			
 			$.ajax({
@@ -722,30 +734,34 @@
 	
 	function updateComment(obj, commentNo, gubun) {		
 		obj.attr("style", "display: none");
+		obj.parent().parent().children(".commentContents").addClass("w-100")
 		var contents = obj.parent().parent().children(".commentContents").children().html()
-		var input = '<input type="text" class="form-control" placeholder="Comment" value="' + contents + '">';
+		var input = '내용<input type="text" class="form-control" placeholder="Comment" value="' + contents + '">';
+		var passInput = '비밀번호<input type="password" class="form-control" placeholder="Passowrd">';
 		var button = "";
 		
 		var button = '<button type="button" class="btn btn-secondary" onclick="javascript:updateComment2(' + commentNo + ', $(this), \'' + gubun + '\')">수정하기</button>'
 		var cancelButton = "<button type='button' class='btn btn-secondary' onclick=\"javascript:cancelComment('"  + contents + "', $(this))\">수정취소</button>";
 
-		obj.parent().parent().children(".commentContents").children().html(input + button + cancelButton);
+		obj.parent().parent().children(".commentContents").children().html(input + passInput + button + cancelButton);
 	}
 	
 	function cancelComment(contents, obj) {
+		obj.parent().parent().removeClass("w-100")
  		obj.parent().parent().parent().children(".p-2").children("button").attr("style", "")
 		
 		htmlCon = '<p class="text-word-l">' + contents + '</p>';
-		obj.parent().parent().html(htmlCon);		
+		obj.parent().parent().html(htmlCon);
+		
 	}
 	
 	function updateComment2(commentNo, obj, gubun) {	
-		var contents = obj.prev().val();
+		var contents = obj.prev().prev().val();
 		var dataStr = "";
 		
 		if(contents.trim() == "") {
 			alert("댓글을 입력해주세요.");
-			$("#annoComment").focus();
+			obj.prev().prev().focus();
 			return ;
 		}
 		
@@ -754,15 +770,17 @@
 			return ;
 		}
 		
-		if(gubun == "AN") {			
-			pass = prompt("비밀번호를 입력해주세요")
-			dataStr = "commentNo=" + commentNo
-			+"&commentContents=" + contents
-			+"&commentAnnoPw=" + pass
-		} else {
-			dataStr = "commentNo=" + commentNo
-			+"&commentContents=" + contents
+		var pass = obj.prev().val();
+		
+		if(pass.trim() == "") {
+			alert("비밀번호를 입력해주세요.");
+			obj.prev().focus();
+			return ;
 		}
+		
+		dataStr = "commentNo=" + commentNo
+		+"&commentContents=" + contents
+		+"&commentAnnoPw=" + pass
 		
 		$.ajax({
 			url : "/board/updateComment",
@@ -772,6 +790,7 @@
 			data : dataStr,
 			success : function(data) {
 				if(data == 1) {
+					obj.parent().parent().removeClass("w-100")
 					obj.parent().parent().parent().children(".p-2").children("button").attr("style", "")
 					htmlCon = '<p class="text-word-l">' + contents + '</p>';
 					

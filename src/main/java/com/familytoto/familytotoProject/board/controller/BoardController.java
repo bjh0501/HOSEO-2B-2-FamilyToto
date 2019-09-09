@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -125,10 +126,12 @@ public class BoardController {
 			}
 
 			if (fileVo != null) {
-				fileVo.setRegIp(request.getRemoteAddr());
-				fileVo.setBoardNo(vo.getBoardNo());
-				fileVo.setRegCustNo(cVo.getCustNo());
-				boardService.insertFile(fileVo);
+				if(fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {  
+					fileVo.setRegIp(request.getRemoteAddr());
+					fileVo.setBoardNo(vo.getBoardNo());
+					fileVo.setRegCustNo(cVo.getCustNo());
+					boardService.insertFile(fileVo);
+				}
 			}
 
 			if (nResult == 1) {
@@ -162,10 +165,12 @@ public class BoardController {
 			}
 
 			if (fileVo != null) {
-				fileVo.setRegIp(request.getRemoteAddr());
-				fileVo.setBoardNo(vo.getBoardNo());
-				fileVo.setRegCustNo(0);
-				boardService.insertFile(fileVo);
+				if(fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {
+					fileVo.setRegIp(request.getRemoteAddr());
+					fileVo.setBoardNo(vo.getBoardNo());
+					fileVo.setRegCustNo(0);
+					boardService.insertFile(fileVo);
+				}
 			}
 
 			if (nResult >= 1) {
@@ -319,12 +324,14 @@ public class BoardController {
 		}
 
 		// 업로드한 파일 있을경우
-		if (fileVo.getBoardFilePath() != null) {
-			fileVo.setRegIp(request.getRemoteAddr());
-			fileVo.setBoardNo(bVo.getBoardNo());
-			fileVo.setChgIp(request.getRemoteAddr());
-			boardService.updateFile(fileVo); // 기존에있는 파일 삭제
-			boardService.insertFile(fileVo);
+		if (fileVo != null) {
+			if(fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {
+				fileVo.setRegIp(request.getRemoteAddr());
+				fileVo.setBoardNo(bVo.getBoardNo());
+				fileVo.setChgIp(request.getRemoteAddr());
+				boardService.updateFile(fileVo); // 기존에있는 파일 삭제
+				boardService.insertFile(fileVo);
+			}
 		}
 
 		return boardService.updateBoard(bVo, session);
@@ -364,14 +371,15 @@ public class BoardController {
 
 			if (fileSize <= 1024 * 1024 * 3) { // 3메가 제한
 				long lTime = System.currentTimeMillis();
-				String localFullPathFile = path + lTime + "_" + originFileName;
+				UUID uuid =UUID.randomUUID();
+				String localFullPathFile = path + lTime + "_" + uuid + "_" + originFileName;
 
 				String sAwsFilePath = "img/board/" + "" + sFolderName[0] + "/" + sFolderName[1] + "/" + sFolderName[2];
 
 				Map<String, Object> map = new HashMap<String, Object>();
 
 				map.put("imgUrl", GlobalVariable.AWS_S3_LINK + "/img/board/" + "" + sFolderName[0] + "/"
-						+ sFolderName[1] + "/" + sFolderName[2] + "/" + lTime + "_" + originFileName);
+						+ sFolderName[1] + "/" + sFolderName[2] + "/" + lTime + "_" + uuid + "_" + originFileName);
 				map.put("originalFileName", originFileName);
 				map.put("fileSize", fileSize);
 				list.add(map);

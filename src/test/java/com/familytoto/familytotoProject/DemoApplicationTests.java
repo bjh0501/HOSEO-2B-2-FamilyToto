@@ -9,6 +9,7 @@ import java.util.Date;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,12 +19,13 @@ import com.familytoto.familytotoProject.board.service.AWSService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemoApplicationTests {
-	@Autowired
-	AWSService awsService;
+	
+	@Value("${aws.s3.bucketName}")
+	private String bucket;
 	
 	@Test
 	public void contextLoads() {
-		
+		System.out.println(bucket);
 	}
 	
 	@Test
