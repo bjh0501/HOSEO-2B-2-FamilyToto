@@ -60,7 +60,16 @@ public class CustVO {
 	@NotBlank
 	private String familyCustNick;
 	
+	private String custOperatorGubun;
 	
+	public String getCustOperatorGubun() {
+		return custOperatorGubun;
+	}
+
+	public void setCustOperatorGubun(String custOperatorGubun) {
+		this.custOperatorGubun = custOperatorGubun;
+	}
+
 	public String getFamilyCustNick() {
 		return familyCustNick;
 	}

@@ -21,10 +21,10 @@ public class AWSService {
 	private String BUCKET_NAME = "onesports";
 	
 	@Value("${aws.s3.accessKey}")
-	private String ACCESS_KEY = "AKIA2DAXGIER6Q77KTA6";
+	private String ACCESS_KEY = "AKIA2DAXGIER3LQLDF4S";
 	
 	@Value("${aws.s3.secretKey}")
-	private String SECRET_KEY = "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";
+	private String SECRET_KEY = "XllFNxBr5M/LWkrfBp0WpEehaWMVSiWj/4PFnkVd";
 	private AmazonS3 amazonS3;
 
 	public AWSService() {

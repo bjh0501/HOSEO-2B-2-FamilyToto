@@ -114,6 +114,7 @@ public class SocialLoginController {
 		
 		//페북은 이름 = 닉네임
 		cVo.setFamilyCustNick(vo.getScCustNick());
+		cVo.setCustOperatorGubun("N");
 		session.setAttribute("cust", cVo); // 세션 생성
 		
 		session.setAttribute("custSocial", vo); // 세션 생성

@@ -3,120 +3,132 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="/css/Nunito.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="/css/Nunito.css" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
-	</ul>
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+			<!-- Main Content -->
+			<div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
 
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
 
-        </nav>
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-          <!-- Page Heading -->
-          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+					<!-- Page Heading -->
+					<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div> -->
 
-         <!-- 사다리 페이지 -->
-          <div class="row">
-            <div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9 " >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                </div>
-                <div class="card-body">
-                  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-		<div id="getBetNum"></div>
+					<!-- 사다리 페이지 -->
+					<div class="row">
+						<div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9 ">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3"></div>
+								<div class="card-body">
+									<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+									<div id="getBetNum"></div>
 
-                  <input class="btn-secondary" type="button" value="멈추기" onclick="javascript:stopGraph();" style="width:100%; height:45px; "></input>
-                </div>
-              </div>
-            </div>
-            
-            <!-- 배팅리모콘 -->
-            <div class="col-xl-3 col-lg-3 .col-md-3 .col-sm-3" >
-              <div class="card shadow mb-4" style="align:center">
-                <div class="card-header py-3">
-                
-                  <h6 class="m-0 font-weight-bold text-primary text-center" style="font-size:25px">배팅 리모콘</h6><hr>
-                  <h6 class="m-0 font-weight-bold text-primary text-center">현재금액</h6>
-                  <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" disabled value="0">
-                  <br>
-                  <h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6>
-                  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                  
-                </div><hr>
-                <input class="btn-secondary" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:90%; margin:0 auto; height:45px"></input><br>
-                </div>
-            </div>
-          </div>
+									<input id="startStopButton" class="btn-secondary" type="button"
+										value="시작하기" onclick="javascript:stopGraph();"
+										style="width: 100%; height: 45px;"></input>
+								</div>
+							</div>
+						</div>
 
+						<!-- 배팅리모콘 -->
+						<div class="col-xl-3 col-lg-3 .col-md-3 .col-sm-3">
+							<div class="card shadow mb-4" style="align: center">
+								<div class="card-header py-3">
+									<input class="btn-secondary" type="button" value="게임방법"
+									onclick="alert('게임설명')" style="width:100%"/>
+									<h6 class="m-0 font-weight-bold text-primary text-center"
+										style="font-size: 25px">배팅 리모콘</h6>
+									<hr>
+									<h6 class="m-0 font-weight-bold text-primary text-center">현재금액</h6>
+									<input type="text" class="form-control" aria-label="Username"
+										aria-describedby="basic-addon1" disabled value="0"
+										th:value="${creditInfo.getCreditValue()}"> <br>
+									<h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6>
+									<input type="text" class="form-control" placeholder="Username"
+										aria-label="Username" aria-describedby="basic-addon1">
 
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
-
- <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+								</div>
+								<hr>
+								<input class="btn-secondary" type="button" value="배팅하기"
+									onclick="alert('배팅을시작합니다.')"
+									style="width: 90%; margin: 0 auto; height: 45px"></input><br>
+							</div>
+						</div>
+					</div>
 
 
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
+				</div>
+				<!-- /.container-fluid -->
 
-  <!-- Page level plugins -->
-  <script src="/vendor/chart.js/Chart.min.js"></script>
+			</div>
+			<!-- End of Main Content -->
 
-  <!-- Page level custom scripts -->
-  <script src="/js/demo/chart-area-demo.js"></script>
-  <script src="/js/demo/chart-pie-demo.js"></script>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+			</footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="/vendor/chart.js/Chart.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="/js/demo/chart-area-demo.js"></script>
+	<script src="/js/demo/chart-pie-demo.js"></script>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 
 </html>
@@ -125,103 +137,78 @@
 		location.href = "/charge"
 	}
 	
-	var refTime
+	var dps = []; // dataPoints
+	var chart = new CanvasJS.Chart("chartContainer", {
+		title :{
+			text: "그래프"
+		},
+		axisY: {
+			includeZero: false
+		,	minimum : 0
+		},      
+		data: [{
+			type: "line",
+			dataPoints: dps
+		}]
+	});
 	
-	window.onload = function () {
+	var refTime
+	var updateInterval = 100;
+	
+	var yVal = 0;
+	var dataLength = 100; // number of dataPoints visible at any point
+	var refTime;
+	
+	var updateChart = function (count) {
 
-		var dps = []; // dataPoints
-		var chart = new CanvasJS.Chart("chartContainer", {
-			title :{
-				text: "그래프"
-			},
-			axisY: {
-				includeZero: false
-			,	minimum : 0
-			},      
-			data: [{
-				type: "line",
-				dataPoints: dps
-			}]
-		});
+		count = count || 1;
 
-		//var xVal = 1;
-		var yVal = 0; 
-		var updateInterval = 100;
-		var dataLength = 100; // number of dataPoints visible at any point
+		for (var j = 0; j < count; j++) {
+			yVal = yVal +  0.01;
+			dps.push({
+				//x: xVal,
+				y: yVal
+			});
+			//xVal+=0.01;
+			$("#getBetNum").html(yVal.toFixed(2))
+		}
+		
+		dataLength++
+		
+		if(dataLength>=120) {
+			// setTimeout(updateChart(), 70)
+			//updateInterval = 70;
+		} else if(dataLength>=300) {
+			updateInterval = 60
+		} else if(dataLength>=400) {
+			updateInterval = 50
+		} else if(dataLength>=500) {
+			updateInterval = 40
+		} else if(dataLength>=600) {
+			updateInterval = 30
+		} else if(dataLength>=750) {
+			updateInterval = 1
+		}
+		
+		if (dps.length > dataLength) {
+			dps.shift();
+		}
 
-		var updateChart = function (count) {
-
-			count = count || 1;
-
-			for (var j = 0; j < count; j++) {
-				yVal = yVal +  0.01;
-				dps.push({
-					//x: xVal,
-					y: yVal
-				});
-				//xVal+=0.01;
-				$("#getBetNum").html(yVal.toFixed(2))
-			}
-			
-			dataLength++
-			
-			if(dataLength>=120) {
-				// setTimeout(updateChart(), 70)
-				//updateInterval = 70;
-			} else if(dataLength>=300) {
-				updateInterval = 60
-			} else if(dataLength>=400) {
-				updateInterval = 50
-			} else if(dataLength>=500) {
-				updateInterval = 40
-			} else if(dataLength>=600) {
-				updateInterval = 30
-			} else if(dataLength>=750) {
-				updateInterval = 1
-			}
-			
-			if (dps.length > dataLength) {
-				dps.shift();
-			}
-
-			chart.render();
-		};
-
-		updateChart(dataLength);
-		refTime = setInterval(function() {
-			updateChart()
-		}, updateInterval);
-	}
+		chart.render();
+	};
+	
+	updateChart(dataLength);
 	
 	function stopGraph() {
-		 clearInterval(refTime)
-	}
-</script>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#config-web-app -->
-<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyCtC9POYgMdHFxZfXuszaU7kLYO49s2enI",
-    authDomain: "onesports-8620b.firebaseapp.com",
-    databaseURL: "https://onesports-8620b.firebaseio.com",
-    projectId: "onesports-8620b",
-    storageBucket: "onesports-8620b.appspot.com",
-    messagingSenderId: "939568817861",
-    appId: "1:939568817861:web:0e0f228c19c7f629f2b2ac"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  
-  var database = firebase.database();
-  
-  function join() {
-	  firebase.database().ref('Graph/').set({
-	    startDt: "2019-05-02 12:23:23"
-	  });
+		if($("#startStopButton").val() == "시작하기") {
+			$("#startStopButton").val("멈추기");
+			refTime = setInterval(function() {
+				updateChart()
+			}, updateInterval);
+			
+		} else {
+			$("#startStopButton").val("시작하기")
+			clearInterval(refTime)			
+		}
 	}
 </script>

@@ -70,4 +70,51 @@
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		USE_YN = 'Y'
 	</select>
+	<select id="listProductBuy" resultType="ProductVO" parameterType="int">
+		SELECT	P.PRODUCT_NO as productNo
+		,		P.PRODUCT_NAME as productName
+		,		P.PRODUCT_CREDIT as productCredit
+		,		B.BASKET_AMOUNT as productAmount
+		,		P.PRODUCT_CREDIT * P.PRODUCT_AMOUNT as totalCredit
+		,		B.BASKET_NO as basketNo
+		FROM	BASKET B
+			INNER JOIN PRODUCT P ON B.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'
+		WHERE	B.FAMILY_CUST_NO = #{familyCustNo}
+		AND		B.USE_YN = 'Y'
+	</select>
+	<update id="updateDeleteBasket" parameterType="BasketVO">
+		UPDATE	BASKET
+		SET		USE_YN = 'N'
+		,		CHG_DT = NOW()
+		,		CHG_CUST_NO = #{chgCustNo}
+		WHERE	BASKET_NO = #{basketNo}
+		AND		FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+	</update>
+	<update id="updateUsedBasket" parameterType="BasketVO">
+		UPDATE	BASKET
+		SET		USE_YN = 'N'
+		,		CHG_DT = NOW()
+		,		CHG_CUST_NO = #{chgCustNo}
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		BASKET_NO = #{basketNo}
+		AND		USE_YN = 'Y'
+	</update>
+	<insert id="insertUseMileage">
+		INSERT INTO  CUSTOM_MILEAGE (
+			FAMILY_CUST_NO,		MILEAGE_VALUE,		MILEAGE_STATE,		REG_CUST_NO,
+		    REG_DT,				REG_IP,				USE_YN
+		) VALUES ( 
+			#{familyCustNo},	#{mileageValue},	'PDS',				#{regCustNo},
+			NOW(),				#{regIp},			'Y'
+		)
+	</insert>
+	<select id="getCustMileage" parameterType="ProductBuyVO" resultType="boolean">
+		SELECT	COUNT(*) as familyCustNo
+		FROM	CUSTOM_MILEAGE CG
+			INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CG.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+		AND		CG.USE_YN = 'Y'
+		HAVING SUM(MILEAGE_VALUE) >= #{productBuyCredit}
+	</select>
 </mapper>

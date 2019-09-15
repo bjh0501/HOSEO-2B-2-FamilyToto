@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.changeCust.service.ChangeCustAuthService;
-import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.config.SecretGlobalVariable;
 import com.familytoto.familytotoProject.login.domain.SocialVO;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -34,15 +34,15 @@ public class KakaoLoginVO {
 	@Autowired
 	SocalLoginService socalLoginService;
 	private final String REST_API = "e051b552544132d23d2ce1fc5898963c";
-	private final String REDIRECT_URI = GlobalVariable.DOMAIN_URL + "/login/social/kakao";
-	private final String REDIRECT_URI_AUTH =  GlobalVariable.DOMAIN_URL + "/login/social/kakao/auth";
+	private final String REDIRECT_URI = SecretGlobalVariable.DOMAIN_URL + "/login/social/kakao";
+	private final String REDIRECT_URI_AUTH =  SecretGlobalVariable.DOMAIN_URL + "/login/social/kakao/auth";
 	
 	public String getKakaoLink() {
-		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+GlobalVariable.DOMAIN_URL+"/login/social/kakao&response_type=code";
+		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+SecretGlobalVariable.DOMAIN_URL+"/login/social/kakao&response_type=code";
 	}
 	
 	public String getKakaoAuthLink() {
-		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+GlobalVariable.DOMAIN_URL+"/login/social/kakao/auth&response_type=code";
+		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+SecretGlobalVariable.DOMAIN_URL+"/login/social/kakao/auth&response_type=code";
 	}
 	
     public String getAccessToken (String authorize_code, String sParam) {
@@ -176,10 +176,12 @@ public class KakaoLoginVO {
     				CustVO cVo2 = new CustVO();
     				cVo2.setCustNo(nScCustNo);
     				cVo2.setFamilyCustNick(nickname);
+    				cVo2.setCustOperatorGubun("N");
     				session.setAttribute("cust", cVo2); // 세션 생성
     			} else {
     				cVo.setFamilyCustNick(nickname);
     				cVo.setCustNo(nScCustNo);
+    				cVo.setCustOperatorGubun("N");
     				session.setAttribute("cust", cVo); // 세션 생성
     			}
     			

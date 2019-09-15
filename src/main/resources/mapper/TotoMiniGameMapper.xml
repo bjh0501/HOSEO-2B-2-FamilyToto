@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="totoMiniGame">
+	<select id="getCustCredit" resultType="CreditVO" parameterType="CustVO">
+		SELECT	SUM(CREDIT_VALUE) as creditValue
+        FROM	CUSTOM_CREDIT
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
+	</select>
+</mapper>

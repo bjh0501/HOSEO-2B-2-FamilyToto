@@ -16,7 +16,6 @@ public class CreditVO {
 
     // 타컬럼연결X
     @Min(0)
-    @Max(10000)
     @NotNull
     private int creditValue;
 

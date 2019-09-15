@@ -1,5 +1,8 @@
 package com.familytoto.familytotoProject.productbuy.dao;
 
+import java.util.List;
+
+import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
@@ -10,6 +13,9 @@ public interface ProductBuyDao {
 	
 	// 구입할 재고있는지 체크
 	boolean isProductAmount(ProductBuyVO vo);
+	
+	// 구입할 상품들보기
+	List<ProductVO> listProductBuy(int familyCustNo);
 	
 	// 상품개수 줄이기
 	int updateProductAmount(ProductBuyVO vo);
@@ -31,4 +37,16 @@ public interface ProductBuyDao {
 	
 	// 사용자 총 마일리지가져오기
 	int getCustMileage(int familyCustNo);
+	
+	// 장바구니 삭제
+	int updateDeleteBasket(BasketVO vo);
+	
+	// 장바구니로 구입한거 장바구니 삭제
+	int updateUsedBasket(BasketVO vo);
+	
+	// 마일리지 사용
+	int insertUseMileage(MileageVO vo);
+	
+	// 마일리지 사용
+	boolean isCustMileage(ProductBuyVO vo);
 }

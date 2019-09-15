@@ -48,7 +48,7 @@ public class ChangeCustController {
 	
 	private String sCurrentPassword = ""; 
 	
-	@RequestMapping("changeCust")
+	@RequestMapping("/changeCust")
     public ModelAndView changeCust(ModelAndView mv, HttpSession session, HttpServletResponse response, Model model) {
 		
 		// 소셜 아이디
@@ -79,10 +79,10 @@ public class ChangeCustController {
         return mv;
     }
 	
-	@RequestMapping("changeCust/change")
+	@RequestMapping("/changeCust/change")
 	@ResponseBody
     public int change(ModelAndView mv, HttpSession session, 
-    		@Valid @ModelAttribute CustVO cVo,@Valid @ModelAttribute RegisterCustVO rVo,
+    		@ModelAttribute CustVO cVo,@ModelAttribute RegisterCustVO rVo,
     		HttpServletRequest request) {
 			String sFrontCurrentPass = request.getParameter("currentPassword");
 			String sFrontNewPass = request.getParameter("newPassword");
@@ -112,7 +112,7 @@ public class ChangeCustController {
 		}
 	}
 	
-	@RequestMapping("changeCust/dropCust")
+	@RequestMapping("/changeCust/dropCust")
 	@ResponseBody
     public int change(HttpSession session, @ModelAttribute CustVO vo, HttpServletRequest request) {
 		CustVO sessionVo = (CustVO) session.getAttribute("cust");
@@ -142,7 +142,7 @@ public class ChangeCustController {
 		return 0;
 	}
 	
-	@RequestMapping("login/social/naver/auth")
+	@RequestMapping("/login/social/naver/auth")
 	@ResponseBody
 	public int callbackAuth(HttpServletRequest request, Model model, @RequestParam String state, HttpSession session, HttpServletResponse response)
 			throws IOException, ParseException {
@@ -180,7 +180,7 @@ public class ChangeCustController {
 		return nResult;
 	}
 	
-	@RequestMapping("changeCust/social/naver/unAuth")
+	@RequestMapping("/changeCust/social/naver/unAuth")
 	@ResponseBody
     public int unAuthNaver(HttpSession session, HttpServletRequest request) {
 		if(session.getAttribute("social") != null) {
@@ -200,7 +200,7 @@ public class ChangeCustController {
 		return changeCustAuthService.updateUnAuthSocial(vo);
 	}
 	
-	@RequestMapping("login/social/kakao/auth")
+	@RequestMapping("/login/social/kakao/auth")
 	@ResponseBody
 	public int kakaoAuth(@RequestParam("code") String code, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
 		int nResult = 0;
@@ -245,7 +245,7 @@ public class ChangeCustController {
 		return nResult;
 	}
 	
-	@RequestMapping("changeCust/social/kakao/unAuth")
+	@RequestMapping("/changeCust/social/kakao/unAuth")
 	@ResponseBody
     public int unAuthKakao(HttpSession session, HttpServletRequest request) {
 		if(session.getAttribute("social") != null) {
@@ -265,7 +265,7 @@ public class ChangeCustController {
 		return changeCustAuthService.updateUnAuthSocial(vo);
 	}
 	
-	@RequestMapping("login/social/facebook/auth")
+	@RequestMapping("/login/social/facebook/auth")
 	@ResponseBody
 	public int facebookAuth(@ModelAttribute SocialVO sVo, HttpSession session, HttpServletRequest request) throws IOException {
 		int nResult = 0;
@@ -288,7 +288,7 @@ public class ChangeCustController {
 		}
 	}
 	
-	@RequestMapping("changeCust/social/facebook/unAuth")
+	@RequestMapping("/changeCust/social/facebook/unAuth")
 	@ResponseBody
     public int unAuthFacebook(HttpSession session, HttpServletRequest request) {
 		if(session.getAttribute("social") != null) {

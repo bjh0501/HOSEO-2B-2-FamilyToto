@@ -3,209 +3,208 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
-
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+.boardrow:hover {
+	background: black;
+	color: white;
+	cursor: pointer;
+}
+</style>
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
-	</ul>
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+			<!-- Main Content -->
+			<div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
 
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
 
-        </nav>
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-          <!-- Page Heading -->
-          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+					<!-- Page Heading -->
+					<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div> -->
 
-          <!-- 광고, 공지사항Row -->
+					<!-- 광고, 공지사항Row -->
 
-          <div class="row">
-            <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12" >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">광고</h6> 토순이를 고용했습니다.<hr>
-                </div>
-                  <img class="img-fluid px-3 px-sm-3 mt-2 mb-3" src="/img/character/tosoon.png" alt="">
-              </div>
-            </div>
-            <div class="col-xl-5 col-lg-5 .col-md-12 .col-sm-12" >
-              <div class="card shadow mb-4">
-                <div class="card-header py-4">
-                  <h6 class="m-0 font-weight-bold text-primary">공지사항</h6><hr>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
-                          <th width="15%">글 번호</th>
-                          <th width="*">제목</th>
-                          <th width="15%">작성자</th>
-                          <th width="15%">작성일</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>100001</td>
-                          <td>OneSports 제 1회 충전이벤트</td>
-                          <td>GM죠팍</td>
-                          <td>19.07.21</td>
-                        </tr>
-                        <tr>
-                          <td>100002</td>
-                          <td>마일리지 한정상품 판매 시작 08.21~09.01</td>
-                          <td>GM핫산</td>
-                          <td>19.07.21</td>
-                        </tr>
-                        <tr>
-                          <td>100003</td>
-                          <td>OneSports VVIP회원 한정 특전</td>
-                          <td>GM핫산</td>
-                          <td>19.08.13</td>
-                        </tr>
-                        <tr>
-                          <td>100004</td>
-                          <td>OneSports 대박을 노려라!</td>
-                          <td>GM핫산</td>
-                          <td>19.08.17</td>
-                        </tr>
-                        <tr>
-                          <td>100005</td>
-                          <td>OneSports PayBack이벤트!</td>
-                          <td>GM핫산</td>
-                          <td>19.08.19</td>
-                        </tr>
-                        <tr>
-                          <td>100006</td>
-                          <td>친구와 같이하는 원스포츠! 친구초대 이벤트</td>
-                          <td>GM기로</td>
-                          <td>19.08.21</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+					<div class="row">
+						<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">광고</h6>
+									 리지를 고용했습니다.
+									<hr>
+								</div>
+								<img class="img-fluid px-3 px-sm-3 mt-2 mb-3"
+									src="/img/character/leage.jpg" width="100%" alt="">
+							</div>
+						</div>
+						<div class="col-xl-5 col-lg-5 .col-md-12 .col-sm-12">
+							<div class="card shadow mb-4">
+								<div class="card-header py-4">
+									<h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
+									<hr>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-bordered" id="dataTable"
+											width="100%" cellspacing="0">
+											<thead>
+												<tr>
+													<th width="15%">글 번호</th>
+													<th width="*">제목</th>
+													<th width="15%">작성자</th>
+													<th width="15%">작성일</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr class="boardrow" th:each="list : ${notice}" th:onClick="|javascript:clickBoard( ${ list.boardNo } );|">
+													<td th:text="${list.getBoardNo()}"></td>
+													<td th:text="${list.getBoardTitle()}"></td>
+													<td th:text="${list.getCustNickname()}"></td>
+													<td th:text="${list.getRegDt()}"></td>
+												</tr>
 
-          <!-- 광고, 공지사항Row -->
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-          <!-- 충전, 환급Row -->
-          <div class="row">
-            <div class="col-xl-6 col-lg-6 .col-md-6 .col-sm-6 " >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">충전</h6><hr>
-                </div>
-                <div class="card-body" onClick="javascript:goCharge();" style="cursor:pointer;">
-                  <img class="img-fluid px-3 px-sm-2 mt-3 mb-2" style="width: 30rem;" src="img/charge.png" alt="">
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-6 col-lg-6 .col-md-6 .col-sm-6" >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">환급</h6><hr>
-                </div>
-                <div class="card-body" onClick="javascript:alert('환급을 할 수 없습니다.');" style="cursor:pointer;">
-                  <img class="img-fluid px-3 px-sm-2 mt-3 mb-2" style="width: 30rem;" src="img/exchange.png" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 충전, 환급Row -->
+					<!-- 광고, 공지사항Row -->
 
-          <!-- 사다리, 홀짝, 배팅Row -->
-          <div class="row">
-            <div class="col-xl-4 col-lg-4 .col-md-4 .col-sm-4" >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">사다리</h6><hr>
-                </div>
-                <div class="card-body">
-                  <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/ladder.png" alt="" align="middle">
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 .col-md-4 .col-sm-4" >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">홀짝</h6><hr>
-                </div>
-                <div class="card-body">
-                  <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/dice2.png" alt="">
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 .col-md-4 .col-sm-4" >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">배팅</h6><hr>
-                </div>
-                <div class="card-body">
-                  <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/betting.png" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 사다리, 홀짝, 배팅Row -->
-        </div>
-        <!-- /.container-fluid -->
+					<!-- 충전, 환급Row -->
+					<div class="row">
+						<div class="col-xl-6 col-lg-6 .col-md-6 .col-sm-6 ">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">충전</h6>
+									<hr>
+								</div>
+								<div class="card-body" onClick="javascript:goCharge();"
+									style="cursor: pointer;">
+									<img class="img-fluid px-3 px-sm-2 mt-3 mb-2"
+										style="width: 30rem;" src="img/charge.png" alt="">
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 .col-md-6 .col-sm-6">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">환급</h6>
+									<hr>
+								</div>
+								<div class="card-body"
+									onClick="javascript:alert('환급을 할 수 없습니다.');"
+									style="cursor: pointer;">
+									<img class="img-fluid px-3 px-sm-2 mt-3 mb-2"
+										style="width: 30rem;" src="img/exchange.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 충전, 환급Row -->
 
-      </div>
-      <!-- End of Main Content -->
+					<!-- 사다리, 홀짝, 배팅Row -->
+					<div class="row">
+						<div class="col-xl-4 col-lg-4 .col-md-4 .col-sm-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">사다리</h6>
+									<hr>
+								</div>
+								<div class="card-body">
+									<img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+										style="width: 25rem;" src="img/ladder.png" alt=""
+										align="middle">
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-lg-4 .col-md-4 .col-sm-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">홀짝</h6>
+									<hr>
+								</div>
+								<div class="card-body">
+									<img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+										style="width: 25rem;" src="img/dice2.png" alt="">
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-lg-4 .col-md-4 .col-sm-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">배팅</h6>
+									<hr>
+								</div>
+								<div class="card-body">
+									<img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+										style="width: 25rem;" src="img/betting.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 사다리, 홀짝, 배팅Row -->
+				</div>
+				<!-- /.container-fluid -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
+			</div>
+			<!-- End of Main Content -->
 
-    </div>
-    <!-- End of Content Wrapper -->
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
 
-  </div>
-  <!-- End of Page Wrapper -->
+			</footer>
+			<!-- End of Footer -->
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
 
 </body>
 
@@ -213,5 +212,9 @@
 <script>
 	function goCharge() {
 		location.href = "/charge"
+	}
+	
+	function clickBoard(no) {
+		location.href= "/showBoard/" + no;
 	}
 </script>

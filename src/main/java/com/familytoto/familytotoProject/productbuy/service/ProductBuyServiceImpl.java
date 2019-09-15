@@ -1,12 +1,15 @@
 package com.familytoto.familytotoProject.productbuy.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.charge.dao.ChargeDao;
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
@@ -25,49 +28,90 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 	/**
 	 * 
 	 * 상품 재고있는지 확인 >
-	 * 돈있는지 확인 >
+	 * 돈있는지 확인 >			or 마일리지 확인
 	 * 상품구입 >
-	 * 돈 소모 >
 	 * 상품소모>
-	 * 마일리지 적립 >  
+	 * 돈 소모 >				or 마일리지 소모
+	 * 마일리지 적립 >  			or 마일리지 소모
 	 * 상품 그룹으로 묶기(insert) >
+	 * 장바구니 목록 N으로 변경
 	 * 
 	 */
 	
 	@Transactional
-	public int insertProductDirectBuy(ProductBuyVO vo) {
+	public int insertProductDirectBuy(ProductBuyVO vo, String gubun) {
 		if(productBuyDao.isProductAmount(vo) == false) {	// 상품재고초과한경우
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return -96;
 		}
 		
-		if(productBuyDao.isCustCredit(vo) == false) {		// 돈없는경우
-			return -97;
+		if(gubun.equals("CREDIT")) {
+			if(productBuyDao.isCustCredit(vo) == false) {		// 돈없는경우
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -97;
+			}
+		} else {
+			if(productBuyDao.isCustMileage(vo) == false) {		// 마일리지 없는경우
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -97;
+			}
 		}
+		
+		MileageVO mVo = new MileageVO();
+		mVo.setFamilyCustNo(vo.getFamilyCustNo());
+		mVo.setRegCustNo(vo.getRegCustNo());
+		mVo.setRegIp(vo.getRegIp());
 		
 		if(productBuyDao.insertProductBuy(vo) == 1) {
 			CreditVO creditVo = new CreditVO();
-			MileageVO mVo = new MileageVO();
+			BasketVO bVo = new BasketVO();
 			
-			creditVo.setCreditValue(vo.getProductBuyCredit()*-1);
-			creditVo.setCreditState("PDB");
-			creditVo.setRegCustNo(vo.getRegCustNo());
-			creditVo.setFamilyCustNo(vo.getFamilyCustNo());
-			creditVo.setRegIp(vo.getRegIp());
+			bVo.setChgCustNo(vo.getRegCustNo());
+			bVo.setFamilyCustNo(vo.getFamilyCustNo());
+			bVo.setBasketNo(vo.getBasketNo());
 			
-			// 10퍼센트적립
-			int nMileageAccum = (int) (vo.getProductBuyCredit() / 10);
+			if(productBuyDao.updateProductAmount(vo) == 0) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -5;
+			}
 			
-			mVo.setFamilyCustNo(vo.getFamilyCustNo());
-			mVo.setMileageValue(nMileageAccum);
-			mVo.setMileageState("MIP");
-			mVo.setRegIp(vo.getRegIp());
+			if(gubun.equals("CREDIT")) {	// 크레딧으로 구입	
+				creditVo.setCreditValue(vo.getProductBuyCredit()*-1);
+				creditVo.setCreditState("PDB");
+				creditVo.setRegCustNo(vo.getRegCustNo());
+				creditVo.setFamilyCustNo(vo.getFamilyCustNo());
+				creditVo.setRegIp(vo.getRegIp());
+				
+				if(chargeDao.doCharge(creditVo) < 1) {
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					return -2;
+				}
+				
+				// 10퍼센트적립
+				int nMileageAccum = (int) (vo.getProductBuyCredit() / 10);
+				
+				mVo.setMileageValue(nMileageAccum);
+				mVo.setMileageState("MIP");
+	
+				if(productBuyDao.insertMileage(mVo) < 1) {
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					return -3;
+				}
+			} else {						// 마일리지로 구입
+				mVo.setMileageValue(vo.getProductBuyCredit()*-1);
+				mVo.setMileageState("PDS");
+				
+				productBuyDao.insertUseMileage(mVo);
+			}
 			
-			chargeDao.doCharge(creditVo);
-			productBuyDao.updateProductAmount(vo);
-			productBuyDao.insertMileage(mVo);
+			if(productBuyDao.updateUsedBasket(bVo) < 1) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -4;
+			}
 			
 			return 1;
 		} else {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return -1;
 		}
 		
@@ -91,5 +135,22 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 	@Override
 	public int insertProductGrp(ProductBuyVO vo) {
 		return productBuyDao.insertProductBuyGrp(vo);
+	}
+
+	@Override
+	public List<ProductVO> listProductBuy(int familyCustNo) {
+		return productBuyDao.listProductBuy(familyCustNo);
+	}
+
+	@Override
+	public int updateDeleteBasket(BasketVO vo) {
+		String[] sBasketNo = vo.getBasketNoStr().split(",");
+		
+		for(int i = 0; i < sBasketNo.length; i++) {
+			vo.setBasketNo(Integer.parseInt(sBasketNo[i]));
+			productBuyDao.updateDeleteBasket(vo);
+		}
+		
+		return 1;
 	}
 }

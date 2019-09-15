@@ -3,15 +3,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
+	<select id="listNotice" resultType="BoardVO">
+		SELECT	B.BOARD_NO as boardNo
+        ,		B.BOARD_TITLE as boardTitle
+        ,		FC.FAMILY_CUST_NICKNAME as custNickname
+		,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+		FROM	BOARD B
+			INNER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO
+				AND			C.USE_YN = 'Y'
+				AND			C.CUST_OPERATOR_GUBUN = 'Y'
+			INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		WHERE	B.USE_YN = 'Y'
+		AND		B.BOARD_NOTICE = 'Y'
+		LIMIT 5
+	</select>
 	<insert id="insertCustBoard" useGeneratedKeys="true" keyProperty="boardNo" parameterType="BoardVO">
 		INSERT INTO BOARD (   
-		    BOARD_GRP_NO,	 	BOARD_TITLE,	BOARD_CONTENTS,	
-		    REG_CUST_NO,	    REG_DT,			REG_IP,			USE_YN,
-		    BOARD_GRP_ORD,		BOARD_GRP_DEPTH
+		    BOARD_GRP_NO,	 	BOARD_TITLE,		BOARD_CONTENTS,	
+		    REG_CUST_NO,	    REG_DT,				REG_IP,			USE_YN,
+		    BOARD_GRP_ORD,		BOARD_GRP_DEPTH,	BOARD_NOTICE
 		) VALUES (
 		    #{boardGrpNo},		#{boardTitle},	#{boardContents}, 		    
 		    #{regCustNo},		now(), 			#{regIp},		'Y',
-		    #{boardGrpOrd},		#{boardGrpDepth});
+		    #{boardGrpOrd},		#{boardGrpDepth},	#{boardNotice});
 	</insert>
 	<insert id="insertAnnoBoard" useGeneratedKeys="true" keyProperty="boardNo"  parameterType="BoardVO">
 		INSERT INTO BOARD   
@@ -61,6 +75,7 @@
 					LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
 					LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
 				WHERE	B.USE_YN = 'Y'
+				AND		B.BOARD_NOTICE = 'N'
 				AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
                    <if test="searchType=='title' and keyword != null and keyword != ''">
 	    			AND		B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
@@ -113,6 +128,7 @@
         ,		B.BOARD_GRP_NO as boardGrpNo
         ,		B.BOARD_GRP_ORD as boardGrpOrd
         ,		B.BOARD_GRP_DEPTH as boardGrpDepth
+        ,		B.BOARD_NOTICE as boardNotice
 		FROM	BOARD B
 			LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
 			LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
@@ -220,5 +236,29 @@
         FROM	BOARD_FILE
         WHERE	BOARD_NO = #{boardNo}
         AND		USE_YN = 'Y'
+	</select>
+	<select id="listReplyBoard" parameterType="int" resultType="BoardVO">
+		SELECT	B.BOARD_NO as boardNo
+		,		B.BOARD_GRP_NO as boardGrpNo
+		,		B.BOARD_REPLY_NO as boardReplyNo
+		,		B.BOARD_TITLE as boardTitle
+		,		B.REG_CUST_NO as regCustNo
+		,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
+		,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun 
+		,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+		,		B.BOARD_GRP_DEPTH as boardGrpDepth
+		,		B.BOARD_GRP_ORD as boardGrpOrd
+		,		B.BOARD_VISIT as visit
+		,		BF.BOARD_FILE_NAME as boardFileName
+		FROM	BOARD B
+			LEFT OUTER JOIN BOARD_FILE BF ON B.BOARD_NO = BF.BOARD_NO AND BF.USE_YN = 'Y'
+			LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
+			LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
+			LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
+		WHERE	B.USE_YN = 'Y'
+		AND		B.BOARD_NOTICE = 'N'
+		AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
+        AND		BOARD_GRP_NO = #{boardGrpNo}
+	   ORDER BY B.BOARD_GRP_NO DESC, B.BOARD_GRP_ORD ASC 
 	</select>
 </mapper>

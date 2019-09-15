@@ -85,7 +85,7 @@ public class CommentServiceImpl implements CommentService{
 		
 		//비밃번호틀림
 		if(vo2 == null) {
-			return -99;
+			return -98;
 		}
 		
 		String sHashPass = vo2.getCommentAnnoPw();
@@ -101,7 +101,7 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public int updateComment(CommentVO vo) {
 		// 비회원
-		if(vo.getCommentAnnoPw() != null) {
+		if(vo.getCommentAnnoPw() != null ) {
 			CustVO cVo = new CustVO();
 			CommentVO vo2 = commentDao.checkAnnoCommentPass(vo);
 			

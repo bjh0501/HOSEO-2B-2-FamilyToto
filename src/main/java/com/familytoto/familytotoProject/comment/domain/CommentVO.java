@@ -24,7 +24,7 @@ public class CommentVO {
     @Min(0)
     private int commentGrpOrd;
 
-    @Max(4)
+    @Max(6)
     @Min(0)
     private int commentGrpDepth;
 
@@ -54,6 +54,16 @@ public class CommentVO {
     // 게시글페이지
     private String scCustGubun;
     
+    private String regDtStr;
+    
+	public String getRegDtStr() {
+		return regDtStr;
+	}
+
+	public void setRegDtStr(String regDtStr) {
+		this.regDtStr = regDtStr;
+	}
+
 	public String getScCustGubun() {
 		return scCustGubun;
 	}

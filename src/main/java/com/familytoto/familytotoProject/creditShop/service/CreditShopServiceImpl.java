@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.creditShop.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,10 @@ public class CreditShopServiceImpl implements CreditShopService {
 	@Override
 	public ProductVO getShowProduct(ProductVO vo) {
 		return creditShopDao.getShowProduct(vo);
+	}
+
+	@Override
+	public List<ProductVO> listCreditShop() {
+		return creditShopDao.listCreditShop();
 	}
 }

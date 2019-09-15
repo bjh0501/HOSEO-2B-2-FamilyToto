@@ -41,11 +41,34 @@ public class QnaController {
 	@ResponseBody
     public int qnaRegister(@Valid @ModelAttribute QnaVO vo, HttpSession session, HttpServletRequest request) {
 		CustVO cVo = (CustVO)session.getAttribute("cust");
-		System.out.println(vo.toString());
+
 		if(cVo == null) {
 			return qnaService.insertAnnoQna(vo,request);
 		} else {
 			return qnaService.insertCustQna(vo, session, request);
 		}
+    }
+	
+	@RequestMapping("/qna/answer")
+	@ResponseBody
+    public int qnaAnswer(@ModelAttribute QnaVO vo,
+    		HttpSession session,
+    		HttpServletRequest request) {
+		CustVO cVo = (CustVO)session.getAttribute("cust");
+
+		if(cVo == null) {
+			return -99;
+		} else if(cVo.getCustOperatorGubun().equals("N")) {
+			return -98;
+		}
+		
+		if(vo.getQnaAdminContents().trim().equals("")) {
+			return -97;
+		}
+		
+		vo.setQnaAdminNo(cVo.getCustNo());
+		vo.setQnaAdminIp(request.getRemoteAddr());
+		
+		return qnaService.updateAnswerQna(vo);
     }
 }

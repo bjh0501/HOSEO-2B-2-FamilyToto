@@ -33,6 +33,14 @@ public class BasketDaoImpl implements BasketDAO {
 	public boolean isCheckBeforeBasket(BasketVO vo) {
 		return sqlSession.selectOne("basket.isCheckBeforeBasket", vo);
 	}
-	
-	
+
+	@Override
+	public int updateChooseBuyBasket(BasketVO vo) {
+		return sqlSession.update("basket.updateChooseBuyBasket", vo);
+	}
+
+	@Override
+	public int updateOriginBasket(int familyCustNo) {
+		return sqlSession.update("basket.updateOriginBasket", familyCustNo);
+	}
 }

@@ -2,6 +2,8 @@ package com.familytoto.familytotoProject.board.domain;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -55,11 +57,31 @@ public class BoardVO {
     
     private int boardGrpOrd;
     
+    @Max(4)
+    @Min(0)
     private int boardGrpDepth;
     
     private int commentCnt;
     
+    private String boardNotice;
     
+    private String regDtStr;
+
+	public String getRegDtStr() {
+		return regDtStr;
+	}
+
+	public void setRegDtStr(String regDtStr) {
+		this.regDtStr = regDtStr;
+	}
+
+	public String getBoardNotice() {
+		return boardNotice;
+	}
+
+	public void setBoardNotice(String boardNotice) {
+		this.boardNotice = boardNotice;
+	}
 
 	public int getCommentCnt() {
 		return commentCnt;

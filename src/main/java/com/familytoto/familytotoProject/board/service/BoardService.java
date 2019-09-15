@@ -48,4 +48,10 @@ public interface BoardService {
 	public int updateVisitLog(int boardNo);
 	
 	public FileVO getUploadedFile(int boardNo);
+	
+	// 공지사항보기
+	public List<BoardVO> listNotice();
+	
+	// 게시글 답장 리스트보기
+	List<BoardVO> listReplyBoard(int boardGrpNo);
 }

@@ -2,7 +2,7 @@ package com.familytoto.familytotoProject.login.service.facebook;
 
 import org.springframework.stereotype.Component;
 
-import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.config.SecretGlobalVariable;
 
 @Component
 public class FacebookLoginVO {
@@ -11,6 +11,6 @@ public class FacebookLoginVO {
 	
 	public String getLoginLink() {
 		return "http://www.facebook.com/dialog/oauth?client_id=" +
-			APP_KEY+"&redirect_uri=" + GlobalVariable.DOMAIN_URL + "/login/social/facebook&scope=publish_stream,offline_access";
+			APP_KEY+"&redirect_uri=" + SecretGlobalVariable.DOMAIN_URL + "/login/social/facebook&scope=publish_stream,offline_access";
 	}
 }

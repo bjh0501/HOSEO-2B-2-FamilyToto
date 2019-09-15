@@ -746,6 +746,14 @@
 			form.createField(boardFileName);
 		}
 		
+		if($("input:checkbox[id='notice']").is(":checked") == true) {
+			var notice = document.createElement('input');
+			notice.type = 'hidden';
+			notice.name = 'boardNotice';
+			notice.value = 'Y'
+			form.createField(notice);
+		}
+		
 		form.createField(textarea);
 		form.createField(title);
 

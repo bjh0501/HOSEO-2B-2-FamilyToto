@@ -77,33 +77,19 @@ public class LoginController {
 		}
 	}
 	
-	// 아래처럼 구현해야하는데 오류
-//	@RequestMapping("logout")
-//    public void logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		session.removeAttribute("cust");
-//		response.setContentType("text/html; charset=UTF-8");
-//        PrintWriter out = response.getWriter();
-//        out.println("<script>document.referrer ? location.replace(document.referrer) : location.href='/';</script>");
-//        out.flush();
-//    }
-	
-	
 	// 원스포츠 회원전용
 	@RequestMapping("login/custLogin")
 	@ResponseBody
 	public int custLogin(@ModelAttribute CustVO vo, HttpServletRequest request) {
-		Map<String, Object> login = custLoginService.login(vo);
+		CustVO login = custLoginService.login(vo);
 		int nReuslt = 0;
 		
 		if(login != null) { // 로그인성공
 			HttpSession session = request.getSession();
-			vo.setFamilyCustNo(Integer.parseInt(login.get("familyCustNo").toString()));
-			vo.setCustNo(Integer.parseInt(login.get("custNo").toString()));
-			vo.setFamilyCustEmail(login.get("familyCustEmail").toString());
-			vo.setFamilyCustNick(login.get("familyCustNickname").toString());
-			vo.setCustPassword("");
 			
-			session.setAttribute("cust", vo);
+			login.setCustPassword("");
+			
+			session.setAttribute("cust", login);
 			session.setAttribute("social", "ON"); // 세션 생성
 			nReuslt = 0;
 		} else {

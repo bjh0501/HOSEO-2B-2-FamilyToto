@@ -33,6 +33,7 @@
 		,		QNA_ADMIN_CONTENTS as qnaAdminContents
 		,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), QNA_QUESTION_ANNO_ID)  AS familyCustNickname
 		,		IFNULL(Q.QNA_QUESTION_ANNO_ID, IFNULL(SC.SC_CUST_GUBUN, 'ON')) as gubun
+		,		QNA_NO as qnaNo
 		FROM	QNA Q
 			LEFT OUTER JOIN CUSTOM C ON Q.QNA_QUESTION_REG_CUST_NO = C.CUST_NO AND C.USE_YN = 'Y'    
 		    LEFT OUTER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
@@ -43,4 +44,13 @@
 		WHERE	Q.USE_YN = 'Y'
 		ORDER BY QNA_NO DESC;
 	</select>
+	<update id="updateAnswerQna">
+		UPDATE	QNA
+		SET		QNA_ADMIN_NO = #{qnaAdminNo}
+		,		QNA_ADMIN_CONTENTS  = #{qnaAdminContents}
+		,		QNA_ADMIN_DT = NOW()
+		,		QNA_ADMIN_IP = #{qnaAdminIp}
+		WHERE	QNA_NO = #{qnaNo}
+		AND		USE_YN = 'Y'
+	</update>
 </mapper>

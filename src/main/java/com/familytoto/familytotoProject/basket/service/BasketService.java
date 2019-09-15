@@ -14,4 +14,10 @@ public interface BasketService {
 	
 	// 장바구니 리스트 보기
 	List<BasketVO> listBasket(int familyCustNo);
+	
+	// 장바구니 선택 구매, 선택안된건 대기
+	int updateChooseBuyBasket(BasketVO vo);
+	
+	// 장바구니 상태 대기 > 원상태
+	int updateOriginBasket(int familyCustNo);
 }

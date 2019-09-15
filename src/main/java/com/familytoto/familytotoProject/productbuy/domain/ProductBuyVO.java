@@ -47,7 +47,6 @@ public class ProductBuyVO {
     @NotBlank
     private String familyCustAddrGugun;
 
-    @NotBlank
     private String familyCustAddrDong;
 
     @NotBlank
@@ -56,6 +55,16 @@ public class ProductBuyVO {
     private String zipCode2;
     
     private int totalCredit;
+    
+    private int basketNo;    
+    
+   	public int getBasketNo() {
+		return basketNo;
+	}
+
+	public void setBasketNo(int basketNo) {
+		this.basketNo = basketNo;
+	}
     
     public int getTotalCredit() {
 		return totalCredit;

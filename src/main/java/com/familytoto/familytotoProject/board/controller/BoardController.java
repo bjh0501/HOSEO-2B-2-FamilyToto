@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +42,7 @@ import com.familytoto.familytotoProject.board.service.BoardService;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.comment.service.CommentService;
 import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.config.SecretGlobalVariable;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.google.gson.Gson;
 
@@ -111,7 +113,16 @@ public class BoardController {
 			vo.setRegCustNo(cVo.getCustNo());
 
 			int nResult = 0;
-
+			
+			if(vo.getBoardNotice() == null) {
+				vo.setBoardNotice("N");
+			}
+			
+			if(cVo.getCustOperatorGubun().equals("N") &&
+					vo.getBoardNotice().equals("Y")) {
+				return  "-1";
+			}
+			
 			if (vo.getBoardGrpNo() != 0) { // 답장
 				vo.setBoardGrpNo(vo.getBoardGrpNo());
 				vo.setBoardGrpDepth(vo.getBoardGrpDepth() + 1);
@@ -188,7 +199,10 @@ public class BoardController {
 	}
 
 	@RequestMapping("/showBoard/{boardNo}")
-	public ModelAndView showBoard(HttpSession session, @PathVariable("boardNo") String sBoardNo, ModelAndView mv) {
+	public ModelAndView showBoard(HttpSession session,
+			@PathVariable("boardNo") String sBoardNo,
+			ModelAndView mv,
+			HttpServletRequest request) {
 		BoardVO vo = new BoardVO();
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
 		CustVO custVo = (CustVO) session.getAttribute("cust");
@@ -204,6 +218,22 @@ public class BoardController {
 
 		List<CommentVO> listCommentVo = commentService.getListComment(vo);
 
+		for(int i = 0; i < listCommentVo.size(); i++) {
+			
+			String sDateStr = GlobalVariable.formatTimeString(listCommentVo.get(i).getRegDt());
+			
+			if(sDateStr.equals("출력")) {
+				Timestamp ts = listCommentVo.get(i).getRegDt();
+				Date date = new Date();
+				date.setTime(ts.getTime());
+				String formattedDate = new SimpleDateFormat("yyyy. MM. dd. hh:mm").format(date);
+				
+				listCommentVo.get(i).setRegDtStr(formattedDate);
+			} else {
+				listCommentVo.get(i).setRegDtStr(sDateStr);
+			}
+		}
+		
 		String sGubun = (String) session.getAttribute("social");
 
 		if (sGubun != null) {
@@ -228,7 +258,17 @@ public class BoardController {
 		mv.addObject("comment", listCommentVo);
 		mv.addObject("socialImg", sGubun);
 		mv.addObject("commentCnt", nCommentCnt);
-
+		mv.addObject("replyBoardList", boardService.listReplyBoard(vo.getBoardGrpNo()));
+		
+		String sLink = "";
+		if(request.getHeader("referer") == null || request.getHeader("referer").indexOf("boardList") == -1) {
+			sLink = "/boardList";
+		} else {
+			sLink = request.getHeader("referer");
+		}
+		
+		mv.addObject("listLink", sLink);
+		
 		mv.setViewName("/board/showBoard");
 
 		return mv;
@@ -378,7 +418,7 @@ public class BoardController {
 
 				Map<String, Object> map = new HashMap<String, Object>();
 
-				map.put("imgUrl", GlobalVariable.AWS_S3_LINK + "/img/board/" + "" + sFolderName[0] + "/"
+				map.put("imgUrl", SecretGlobalVariable.AWS_S3_LINK + "/img/board/" + "" + sFolderName[0] + "/"
 						+ sFolderName[1] + "/" + sFolderName[2] + "/" + lTime + "_" + uuid + "_" + originFileName);
 				map.put("originalFileName", originFileName);
 				map.put("fileSize", fileSize);
@@ -444,7 +484,7 @@ public class BoardController {
 				long lTime = System.currentTimeMillis();
 				String localFullPathFile = path + lTime + "_" + originFileName;
 				String sFileName = lTime + "_" + originFileName;
-				String sDBFilePath = GlobalVariable.AWS_S3_LINK + "/file/board/" + "" + sFolderName[0] + "/"
+				String sDBFilePath = SecretGlobalVariable.AWS_S3_LINK + "/file/board/" + "" + sFolderName[0] + "/"
 						+ sFolderName[1] + "/" + sFolderName[2] + "/" + sFileName;
 
 				String sAwsFilePath = "file/board/" + "" + sFolderName[0] + "/" + sFolderName[1] + "/" + sFolderName[2];
@@ -489,7 +529,7 @@ public class BoardController {
 		AWSService awsService = new AWSService();
 		FileVO fVo = boardService.getUploadedFile(nBoardNo);
 		
-		String key = fVo.getBoardFilePath().replace(GlobalVariable.AWS_S3_LINK+"/", "");
+		String key = fVo.getBoardFilePath().replace(SecretGlobalVariable.AWS_S3_LINK+"/", "");
         
 		S3ObjectInputStream inputStream = awsService.downloadFIle(key, fVo.getBoardFileName());
 		

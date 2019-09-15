@@ -27,4 +27,9 @@ public class QnaDaoImpl implements QnaDao {
 	public int insertAnnoQna(QnaVO vo) {
 		return sqlSession.insert("qna.insertQnaAnno",vo);
 	}
+
+	@Override
+	public int updateAnswerQna(QnaVO vo) {
+		return sqlSession.update("qna.updateAnswerQna", vo);
+	}
 }

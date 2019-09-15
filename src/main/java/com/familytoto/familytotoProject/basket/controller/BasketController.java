@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.basket.service.BasketService;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
+import com.familytoto.familytotoProject.productbuy.service.ProductBuyService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.scheduler.serivce.SportsTotoSchedulerService;
 
@@ -27,14 +28,17 @@ public class BasketController {
 	BasketService basketService;
 	
 	@Autowired
-	SportsTotoSchedulerService test;
+	ProductBuyService productBuyService;
 	
-	@RequestMapping("/scheduleTest")
-	@ResponseBody
-	public String test() {
-		test.inSoccer();
-		return "test";
-	}
+//	@Autowired
+//	SportsTotoSchedulerService test;
+//	
+//	@RequestMapping("/scheduleTest")
+//	@ResponseBody
+//	public String test() {
+//		test.inSoccer();
+//		return "test";
+//	}
 	
 	@RequestMapping("/basket")
     public ModelAndView basket(HttpSession session, HttpServletResponse response) {
@@ -53,6 +57,8 @@ public class BasketController {
 			} catch(Exception e) {}
 		}
 		
+		
+		basketService.updateOriginBasket(vo.getFamilyCustNo());
 		List<BasketVO> list = basketService.listBasket(vo.getFamilyCustNo());
 		
 		mv.addObject("basket", list);
@@ -93,6 +99,44 @@ public class BasketController {
 			} else {
 				return "-96";
 			}
+		}
+    }
+	
+	@RequestMapping("/basket/delete")
+	@ResponseBody
+    public int deleteBasket(HttpSession session,
+    		@ModelAttribute BasketVO vo,
+    		HttpServletRequest request) {
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+			
+		if (custVo == null) {
+			return -99;								// 로그인 안한경우
+		} else if(custVo.getFamilyCustNo() == 0) {
+			return -98;								// 패밀리회원 아닌경우
+		} else {			
+			vo.setChgCustNo(custVo.getCustNo());
+			vo.setFamilyCustNo(custVo.getFamilyCustNo());
+			
+			return productBuyService.updateDeleteBasket(vo); 
+		}
+    }
+	
+	@RequestMapping("/basket/chooseBuy")
+	@ResponseBody
+    public int chooseBuyBasket(HttpSession session,
+    		@ModelAttribute BasketVO vo,
+    		HttpServletRequest request) {
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+			
+		if (custVo == null) {
+			return -99;								// 로그인 안한경우
+		} else if(custVo.getFamilyCustNo() == 0) {
+			return -98;								// 패밀리회원 아닌경우
+		} else {			
+			vo.setChgCustNo(custVo.getCustNo());
+			vo.setFamilyCustNo(custVo.getFamilyCustNo());
+			
+			return basketService.updateChooseBuyBasket(vo); 
 		}
     }
 }

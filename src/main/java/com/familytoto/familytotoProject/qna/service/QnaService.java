@@ -13,4 +13,7 @@ public interface QnaService {
 	List<QnaVO> listQna(QnaVO vo);
 	
 	int insertAnnoQna(QnaVO vo, HttpServletRequest request);
+	
+	// 운영자 답변
+	int updateAnswerQna(QnaVO vo);
 }

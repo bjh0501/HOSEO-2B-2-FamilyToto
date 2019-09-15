@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>One Sports</title>
+
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="/css/Nunito.css" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<style>
+.list-group {
+	max-height: 300px;
+	margin-bottom: 10px;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+</style>
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<div class="row">
+						<h2 class="text-title">상품 구매</h2>
+					</div>
+					<div class="row">
+						<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="input-group mb-3">
+										<h3>보유 크레딧</h3>
+										<a href="#">크레딧 충전하기</a>
+									</div>
+									<div class="ml-auto p-2 bd-highlight">
+										<h5 class="text-word-l">
+											보유 크레딧 : <span th:credit="${custInfo.credit}" id="hadCredit">Loading...</span>
+										</h5>
+									</div>
+									<div class="ml-auto p-2 bd-highlight">
+										<h5 class="text-word-l">
+											보유 마일리지 : ‭<span th:credit="${custInfo.mileage}"
+												id="hadMileage">Loading...</span>
+										</h5>
+									</div>
+									<hr>
+									<h3>구매할 상품들</h3>
+									<div class="table-responsive">
+										<table class="table table-bordered" id="productTable"
+											width="100%" cellspacing="0">
+											<thead>
+												<tr>
+													<th style="width: 100px;">상품번호</th>
+													<th style="width: 500px;">상품명</th>
+													<th style="width: 100px;">가격</th>
+													<th style="width: 110px;">개수</th>
+													<th style="width: 150px;">총가격</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="pro : ${product}">
+													<input name="basketNo" type="hidden" th:value="${pro.getBasketNo()}">
+													<td class="productNo" th:text="${pro.getProductNo()}"></td>
+													<td class="productName" th:text="${pro.getProductName()}"></td>
+													<td class="productPrice"
+														th:text="${pro.getProductCredit()}"></td>
+													<td class="productAmount"
+														th:text="${pro.getProductAmount()}"></td>
+													<td class="totalCredit" th:text="${pro.getTotalCredit()}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<hr>
+
+									<br>
+									<div class="row">
+										<div class="col-xl-12 col-md-12 mb-12">
+											<div class="card shadow h-100 py-12">
+												<div style="padding: 20px;">
+													<div class="row">
+														<h3>배송지</h3>
+													</div>
+													<hr>
+													<div class="custom-control custom-checkbox">
+														<h4>
+															<label>주소</label>
+														</h4>
+														<input type="checkbox" class="custom-control-input"
+															id="defaultZip"> <label
+															class="custom-control-label" for="defaultZip">기본
+															배송지</label>
+													</div>
+													<div class="row">
+														<div class="col-xl-4 col-md-4 mb-4">
+															<span>시</span>
+															<div class="input-group mb-3">
+																<select class="custom-select" id="sido"
+																	onChange="getGugun();">
+																	<option selected="">시</option>
+																</select>
+															</div>
+														</div>
+														<div class="col-xl-4 col-md-4 mb-4">
+															<span>구/군</span> <select class="custom-select" id="gugun"
+																onChange="javascript:getDong();">
+																<option selected="">구/군</option>
+															</select>
+														</div>
+														<div class="col-xl-4 col-md-4 mb-4">
+															<span>동</span> <select class="custom-select" id="dong"
+																onChange="javascript:getZipList();">
+																<option selected="">동</option>
+															</select>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-xl-12 col-lg-12 col-md-12 mb-6">
+															<div class="input-group mb-3" onChange="getZipList();">
+																<span class="text-word-r">상세주소</span> <input type="text"
+																	class="form-control" placeholder="Address"
+																	aria-label="Address" id="addr">
+															</div>
+														</div>
+														<div class="col-xl-12 col-lg-12 col-md-12 mb-6">
+															<div
+																class="custom-control custom-radio custom-control-inline"
+																onClick="radioChange('gu');">
+																<input type="radio" id="guCheck" name="zipRadio"
+																	class="custom-control-input" value="gu"> <label
+																	class="custom-control-label" for="guCheck">구주소
+																	우편번호</label>
+															</div>
+															<div
+																class="custom-control custom-radio custom-control-inline"
+																onClick="radioChange('new');">
+																<input type="radio" id="newCheck" name="zipRadio"
+																	class="custom-control-input" value="new" checked>
+																<label class="custom-control-label" for="newCheck">도로명
+																	우편번호</label>
+															</div>
+															<div class="input-group mb-3" id="zipArea">
+																<span class="text-word-r">우편번호</span> <input type="text"
+																	class="form-control" placeholder="Zip Code"
+																	aria-label="zipcode1" id="zipcode1">
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-12">
+															<nav id="navbar-example2"
+																class="navbar navbar-light bg-light">
+																<h4>상세주소 리스트</h4>
+															</nav>
+															<div data-spy="scroll" data-target="#navbar-example2"
+																data-offset="0">
+																<div class="list-group" id="list-tab" role="tablist">
+																	주소를 선택해주세요.</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br>
+
+
+
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<h4>
+										상품크레딧 : <span id="buyProductCredit">Loading...</span>
+									</h4>
+									<h4>
+										배송크레딧 : <span id="buyDeliveryCredit">2500</span>
+									</h4>
+									<h4>
+										총 크레딧 : <span id="buyTotalCredit">Loading...</span>
+									</h4>
+									<hr>
+									<h4>
+										결제 후 크레딧 : <span id="buyAfterCredit">Loading...</span>
+									</h4>
+									<hr>
+									<h4>
+										적립예정 마일리지 : <span id="buyAccumMileage">Loading...</span>
+									</h4>
+									<h4>
+										적립후 마일리지 : <span id="buyAccumAfterMileage">Loading...</span>
+									</h4>
+									<hr>
+									<div class="d-flex justify-content-center">
+										<div class="input-group mb-3">
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input"
+													id="onlyMileage"><label
+													class="custom-control-label" for="onlyMileage">마일리지로
+													결제</label>
+											</div>
+										</div>
+									</div>
+									<button type="button" class="btn btn-secondary btn-block"
+										onClick="javascript:pay();">결제하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+			</footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+	</div>
+	<!-- End of Page Wrapper -->
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
+<script>
+	$(function() {
+		$("#hadCredit").html(comma([[${custInfo.credit}]]));			// 보유 크레딧
+		$("#hadMileage").html(comma([[${custInfo.mileage}]]));			// 보유 마일리지
+		
+		var totalProductCredit = 0;										// 상품 총가격
+		$(".totalCredit").each(function() {
+			totalProductCredit  += parseInt($(".totalCredit").html())
+		})
+		
+		$("#buyProductCredit").attr("credit",totalProductCredit );
+		$("#buyProductCredit").html(comma(totalProductCredit  ));
+		
+		var deliveryCredit = 2500										// 택배비		
+		$("#buyDeliveryCredit").attr("credit", deliveryCredit);
+		$("#buyDeliveryCredit").html(comma(deliveryCredit));
+		
+		var  totalCredit = totalProductCredit+ deliveryCredit			// 총 크레딧 
+		$("#buyTotalCredit").attr("credit", totalCredit);
+		$("#buyTotalCredit").html(comma(totalCredit));
+		
+		var afterCredit = [[${custInfo.credit}]] - totalCredit			// 결제 후 크레딧
+		$("#buyAfterCredit").attr("credit", afterCredit);
+		$("#buyAfterCredit").html(comma(afterCredit));
+		
+		var accumMileage = Math.floor(totalProductCredit / 10)
+		
+		$("#buyAccumMileage").html(comma(accumMileage))
+		
+		afterMileage = accumMileage + [[${custInfo.mileage}]]
+		$("#buyAccumAfterMileage").html(comma(afterMileage));
+		getSido();
+	});
+
+
+	function getSido() {
+		$.ajax({
+			url : "/zipcode/getSido",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			success : function(data) {
+				var sStr = "";
+
+				for (var i = 0; i < data.length; i++) {
+					var sSido = data[i].sido;
+					sStr += "<option value='" + sSido + "'>" + sSido
+							+ "</option>";
+				}
+
+				$("#sido").html(sStr);
+				getGugun();
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+
+	function getGugun() {
+		$.ajax({
+			url : "/zipcode/getGugun",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "sido=" + $("#sido").val(),
+			success : function(data) {
+				var sStr = "";
+
+				for (var i = 0; i < data.length; i++) {
+					var sData = data[i].gugun;
+					sStr += "<option value='" + sData + "'>" + sData
+							+ "</option>";
+				}
+
+				$("#gugun").html(sStr);
+				getDong();
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+
+	function getDong() {
+		$.ajax({
+			url : "/zipcode/getDong",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "sido=" + $("#sido").val() + "&gugun=" + $("#gugun").val(),
+			success : function(data) {
+				var sStr = "";
+
+				for (var i = 0; i < data.length; i++) {
+					var sData = data[i].dong;
+					sStr += "<option value='" + sData + "'>" + sData
+							+ "</option>";
+				}
+
+				$("#dong").html(sStr);
+				getZipList();
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+
+	function getZipList() {
+		$.ajax({
+			url : "/zipcode/getZip",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			data : "sido=" + $("#sido").val() + "&gugun="
+					+ $("#gugun").val() + "&dong=" + $("#dong").val(),
+			success : function(data) {
+				var sStr = "";
+				var sListLi = "";
+
+				if (data.length > 0) {
+					for (var i = 0; i < data.length; i++) {
+						var sRi = data[i].ri;
+						var zip1 = data[i].zipCode1;
+						var zip2 = data[i].zipCode2;
+
+						var gubun = "구주소";
+
+						if (zip1 == undefined) {
+							zip1 = "";
+							gubun = "도로명주소";
+						}
+
+						if (zip2 == undefined) {
+							zip2 = "";
+						}
+
+						var sListData = "";
+
+						sListData += "<a class='list-group-item list-group-item-action '";
+						sListData += " data-toggle='list' href='javascript:;' ri='"
+								+ sRi
+								+ "' zipcode1='"
+								+ zip1
+								+ "' zipcode2='" + zip2 + "'";
+						sListData += " onClick='javascript:chooseZip($(this));'";
+						sListData += "role='tab' >" + sRi + "<sup><b>"
+								+ gubun + "</b></sup></a>";
+
+						sListLi += sListData;
+					}
+				} else {
+					sListLi = "<center>상세주소가 존재하지 않습니다.</center>"
+				}
+
+				$("#addr").val("");
+				$("#zipcode1").val("");
+				$("#zipcode2").val("");
+
+				$("#list-tab").html(sListLi);
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+
+	function chooseZip(obj) {
+		$("#addr").val(obj.attr("ri"));
+		$("#zipcode1").val(obj.attr("zipcode1"));
+		$("#zipcode2").val(obj.attr("zipcode2"));
+
+		if (obj.attr("zipcode1") == "") {
+			$("input:radio[id='newCheck']").prop('checked', true);
+			radioChange("new")
+		} else {
+			$("input:radio[id='guCheck']").prop('checked', true);
+			radioChange("gu")
+		}
+	}
+
+	function radioChange(radioValue) {
+		var sStr = "";
+
+		if (radioValue == "gu") {
+			sStr += '<span class="text-word-r">우편번호</span>';
+			sStr += '<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode1" id="zipcode1">';
+			sStr += '<span style="margin-top: 6px;">-</span>';
+			sStr += '<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode2" id="zipcode2">';
+		} else {
+			sStr += '<span class="text-word-r">우편번호</span>';
+			sStr += '<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode1" id="zipcode1">';
+		}
+
+		$("#zipArea").html(sStr);
+	}
+	
+	function comma(num){
+	    var len, point, str; 
+	       
+	    num = num + ""; 
+	    point = num.length % 3 ;
+	    len = num.length; 
+	   
+	    str = num.substring(0, point); 
+	    while (point < len) { 
+	        if (str != "") str += ","; 
+	        str += num.substring(point, point + 3); 
+	        point += 3; 
+	    } 
+	     
+	    return str;
+	 
+	}
+	
+	// 컴마제거
+	function numberWithCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	function pay() {
+		var productNo = new Array();
+		var produtBuyAmount = new Array();
+		var basketNo = new Array();
+		
+		if($("#addr").val().trim() == "") {
+			alert("상세주소를 입력해주세요.");
+			$("#addr").focus();
+			return;
+		}
+		
+		if($("input:checkbox[id='guCheck']").is(":checked") == true) {
+			if($("#zipcode1").val().trim() == "") {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode1").focus();
+				return;
+			} else {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode2").focus();
+			}
+		} else {
+			if($("#zipcode1").val().trim() == "") {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode1").focus();
+				return;
+			}
+		}
+		
+		for(i = 0; i < $(".productNo").length; i++) {
+			productNo.push($(".productNo").eq(i).html());
+			produtBuyAmount.push($(".productAmount").eq(i).html());
+			basketNo.push($("input[name=basketNo]").eq(i).val());
+		}
+		
+		if($("input:checkbox[id='onlyMileage']").is(":checked") == true) {
+			gubun = "MILEAGE"
+		} else {
+			gubun = "CREDIT"
+		}
+		
+		$.ajax({
+			url : "/productSell/insert?gubun=" + gubun,
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			traditional : true,
+			data : {
+		        'productNo' : productNo
+			,	'produtBuyAmount' : produtBuyAmount
+			,	'basketNo' : basketNo
+			,	'zipCode1' : $("#zipcode1").val()
+			,	'zipCode2' : $("#zipcode2").val()
+			,	'familyCustAddrSi' : $("#sido").val()
+			,	'familyCustAddrGugun' : $("#gugun").val()
+			,	'familyCustAddrDong' : $("#dong").val()
+		    },
+			success : function(data) {
+				if(data.trim() == 1) {
+					alert("상품을 구입했습니다.");
+					location.replace("/");
+				} else if(data.trim() == -99) {
+					alert("로그인을 해야 구입을 할 수 있습니다.");
+				} else if(data.trim() == -98) {
+					alert("패밀리 회원만 구입을 할 수 있습니다.");
+				} else if(data.trim() == -97) {
+					alert("얘! 구입할 크레딧이 없단다.\n토토하러 가렴.");
+				} else if(data.trim() == -96) {
+					alert("얘! 그만큼의 재고가 없단다.\n누가먼저산듯");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+</script>

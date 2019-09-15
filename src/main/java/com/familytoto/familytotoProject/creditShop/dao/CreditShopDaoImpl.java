@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.creditShop.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,11 @@ public class CreditShopDaoImpl implements CreditShopDao {
 	@Override
 	public ProductVO getShowProduct(ProductVO vo) {
 		return sqlSession.selectOne("creditShop.showProduct", vo);
+	}
+
+	@Override
+	public List<ProductVO> listCreditShop() {
+		return sqlSession.selectList("creditShop.listCreditShop");
 	}
 	
 }

@@ -36,6 +36,16 @@ public class BasketVO {
     
     private int totalCredit;
 
+    private String basketNoStr;
+    
+	public String getBasketNoStr() {
+		return basketNoStr;
+	}
+
+	public void setBasketNoStr(String basketNoStr) {
+		this.basketNoStr = basketNoStr;
+	}
+
 	public int getBasketNo() {
 		return basketNo;
 	}

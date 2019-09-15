@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.familytoto.familytotoProject.basket.dao.BasketDAO;
 import com.familytoto.familytotoProject.basket.domain.BasketVO;
@@ -31,5 +32,25 @@ public class BasketServiceImpl implements BasketService{
 	@Override
 	public List<BasketVO> listBasket(int familyCustNo) {
 		return basketDao.listBasket(familyCustNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateChooseBuyBasket(BasketVO vo) {
+		String[] sBasketNo = vo.getBasketNoStr().split(",");
+		
+		for(int i = 0; i < sBasketNo.length; i++) {
+			if(!sBasketNo[i].equals("")) {
+				vo.setBasketNo(Integer.parseInt(sBasketNo[i]));
+				basketDao.updateChooseBuyBasket(vo);
+			}
+		}
+		
+		return 1;
+	}
+
+	@Override
+	public int updateOriginBasket(int familyCustNo) {
+		return basketDao.updateOriginBasket(familyCustNo);
 	}
 }

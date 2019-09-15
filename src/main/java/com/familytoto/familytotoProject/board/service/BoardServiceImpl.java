@@ -1,5 +1,8 @@
 package com.familytoto.familytotoProject.board.service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +16,7 @@ import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
+import com.familytoto.familytotoProject.config.GlobalVariable;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
@@ -80,8 +84,6 @@ public class BoardServiceImpl implements BoardService{
 	public int updateBoard(BoardVO vo, HttpSession session) {
 		// 익명
 		if(vo.getBoardAnnoId() == null) {
-			CustVO cVo = new CustVO();
-					
 			return boardDao.updateBoard(vo);
 		} else {
 			CustVO sessionVo = (CustVO) session.getAttribute("cust");
@@ -113,6 +115,17 @@ public class BoardServiceImpl implements BoardService{
 				vo.setCustGubun("/img/social/icon/onesportsMiniIcon.jpg");
 			}  else {
 				vo.setCustGubun("");
+			}
+			
+			vo.setRegDtStr(GlobalVariable.formatTimeString(vo.getRegDt()));
+			
+			if(vo.getRegDtStr().equals("출력")) {
+				Timestamp ts = vo.getRegDt();
+				Date date = new Date();
+				date.setTime(ts.getTime());
+				String formattedDate = new SimpleDateFormat("yyyy. MM. dd. hh:mm").format(date);
+				
+				vo.setRegDtStr(formattedDate);
 			}
 			
 			list.set(i, vo);
@@ -184,4 +197,49 @@ public class BoardServiceImpl implements BoardService{
 	public FileVO getUploadedFile(int boardNo) {
 		return boardDao.getUploadedFile(boardNo);
 	}
+
+	@Override
+	public List<BoardVO> listNotice() {
+		return boardDao.listNotice();
+	}
+
+	@Override
+	public List<BoardVO> listReplyBoard(int boardGrpNo) {
+		List<BoardVO> list = boardDao.listReplyBoard(boardGrpNo);
+		
+		int i = 0;
+		
+		for(BoardVO vo :list) {
+			if(vo.getRegCustNo() == 0) {
+				vo.setCustGubun("");
+			} else if(vo.getCustGubun().equals("NA")) {
+				vo.setCustGubun("/img/social/icon/naverMiniIcon.jpg");
+			} else if(vo.getCustGubun().equals("KA")) {
+				vo.setCustGubun("/img/social/icon/kakaoMiniIcon.jpg");
+			} else if(vo.getCustGubun().equals("FA")) {
+				vo.setCustGubun("/img/social/icon/facebookMiniIcon.jpg");
+			} else if(vo.getCustGubun().equals("ON")) {
+				vo.setCustGubun("/img/social/icon/onesportsMiniIcon.jpg");
+			}  else {
+				vo.setCustGubun("");
+			}
+			
+			vo.setRegDtStr(GlobalVariable.formatTimeString(vo.getRegDt()));
+			
+			if(vo.getRegDtStr().equals("출력")) {
+				Timestamp ts = vo.getRegDt();
+				Date date = new Date();
+				date.setTime(ts.getTime());
+				String formattedDate = new SimpleDateFormat("yyyy. MM. dd. hh:mm").format(date);
+				
+				vo.setRegDtStr(formattedDate);
+			}
+			
+			list.set(i, vo);
+			i++;
+		}
+		
+		return list;
+	}
 }
+

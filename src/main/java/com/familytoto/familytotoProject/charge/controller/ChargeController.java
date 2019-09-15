@@ -29,7 +29,7 @@ public class ChargeController {
 	private int nFamilyCustNo = 0;
 	private String sEmail = ""; 
 	
-	@RequestMapping("charge")
+	@RequestMapping("/charge")
     public ModelAndView charge(ModelAndView mv, HttpSession session, HttpServletResponse response) {
 		// 소셜 아이디
 		CustVO vo = (CustVO) session.getAttribute("cust");
@@ -59,7 +59,7 @@ public class ChargeController {
         return mv;
     }
 	
-	@RequestMapping(value="charge/doCharge",method = RequestMethod.POST)
+	@RequestMapping(value="/charge/doCharge",method = RequestMethod.POST)
 	@ResponseBody
 	public int doCharge(@Valid @ModelAttribute CreditVO vo, HttpServletRequest request) {
 		vo.setRegCustNo(nCustNo);

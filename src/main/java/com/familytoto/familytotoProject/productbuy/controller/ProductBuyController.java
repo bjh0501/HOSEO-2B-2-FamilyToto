@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class ProductBuyController {
 			try {
 				response.setContentType("text/html; charset=UTF-8");
 	            PrintWriter out = response.getWriter();
-	            out.println("<script>alert('연동이 안된 소셜아이디는 개인정보를 수정할 수 없습니다. "
+	            out.println("<script>alert('연동이 안된 소셜아이디는 구입할 수 없습니다. "
 	            		+ "원스포츠 아이디로 연동해주세요.');location.replace('/');</script>");
 	            out.flush();	            
 			} catch(Exception e) {}
@@ -86,6 +87,29 @@ public class ProductBuyController {
         return mv;
     }
 	
+	@RequestMapping("/basketBuy")
+    public ModelAndView basketBuy(HttpSession session, HttpServletResponse response,
+    		HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/loginInfo/productBuyByBasket");
+		// 소셜 아이디
+		CustVO vo = (CustVO) session.getAttribute("cust");
+		
+		if(vo.getFamilyCustNo() == 0) {
+			try {
+				response.setContentType("text/html; charset=UTF-8");
+	            PrintWriter out = response.getWriter();
+	            out.println("<script>alert('연동이 안된 소셜아이디는 구입할 수 없습니다. "
+	            		+ "원스포츠 아이디로 연동해주세요.');location.replace('/');</script>");
+	            out.flush();	            
+			} catch(Exception e) {}
+		}
+				
+		mv.addObject("custInfo", productBuyService.getCustInfo(vo.getFamilyCustNo()));
+		mv.addObject("product", productBuyService.listProductBuy(vo.getFamilyCustNo()));
+        return mv;
+    }
+	
 	@RequestMapping("/productSell/insert")
 	@ResponseBody
 	@Transactional // 장바구니경우 필요
@@ -106,12 +130,18 @@ public class ProductBuyController {
 		
 		String sProductNo[] = request.getParameterValues("productNo");
 		String sProductBuAmount[] = request.getParameterValues("produtBuyAmount");
+		String sBasketNo[] = request.getParameterValues("basketNo");
 		
 		for(int i = 0 ; i <sProductBuAmount.length; i++) {
 			int nProductAmount = Integer.parseInt(sProductBuAmount[i]);
+			int nBasketNo = Integer.parseInt(sBasketNo[i]);
 			
 			if(nProductAmount < 1) {
 				return -1;
+			}
+			
+			if(nBasketNo < 1) {
+				return -2;
 			}
 		}
 		
@@ -120,25 +150,38 @@ public class ProductBuyController {
 		
 		int nResult = 0;
 		
+		String sGubun = request.getParameter("gubun");
+		
 		if(productBuyService.insertProductGrp(vo) == 1) {
+			ProductVO pVo= new ProductVO();
+			
 			for(int i = 0 ; i <sProductNo.length; i++) {
-				ProductVO pVo= new ProductVO();
 				pVo.setProductNo(Integer.parseInt(sProductNo[i]));
 				
 				pVo = creditShopService.getShowProduct(pVo);
 		
 				int nProductAmount = Integer.parseInt(sProductBuAmount[i]);
+				int nBasketNo = Integer.parseInt(sBasketNo[i]);
 				
 				vo.setProductNo(pVo.getProductNo());
 				vo.setDeliveryNo(pVo.getDeliveryNo());
 				vo.setProductBuyAmount(nProductAmount);
+				vo.setBasketNo(nBasketNo);
 				vo.setProductBuyCredit(pVo.getProductCredit() * nProductAmount);
 				vo.setRegCustNo(cVo.getCustNo());
 				
-				nResult += productBuyService.insertProductDirectBuy(vo);
+				nResult = productBuyService.insertProductDirectBuy(vo, sGubun);
+				
+				if(nResult != 1) {
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					return -2;
+				}
+				
 			}
+			
+			pVo = null;
 		}
 		
-		return (sProductNo.length == nResult) ? 1 :0;  
+		return 1;  
 	}
 }

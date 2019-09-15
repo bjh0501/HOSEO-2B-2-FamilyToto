@@ -48,7 +48,7 @@
 				<!-- End of Topbar -->
 
 				<!-- Begin Page Content -->
-				<div class="container-fluid" style="display:none;">
+				<div class="container-fluid" style="display: none;">
 					<div class="row">
 						<h2 class="text-title">Q&A</h2>
 					</div>
@@ -63,29 +63,34 @@
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow mb-4">
 								<div class="card-body">
-									<div id="accordion" >
+									<div id="accordion">
 										<th:block th:each="list : ${qnaList}">
 											<h3>
-												<span th:text="${list.getQnaQuestionContents()}"></span>
-												<br>
-												<span style="float:right" >
-													
-													<img src="/img/social/icon/facebookMiniIcon.jpg" width=24px
-													th:if="${list.getGubun()=='FA'}">
-													<img src="/img/social/icon/naverMiniIcon.jpg" width=24px
-													th:if="${list.getGubun()=='NA'}">
-													<img src="/img/social/icon/kakaoMiniIcon.jpg" width=24px
-													th:if="${list.getGubun()=='KA'}">
-													<img src="/img/social/icon/onesportsMiniIcon.jpg" width=24px
-													th:if="${list.getGubun()=='ON'}">
-													<span th:text="${list.getFamilyCustNickname()}"></span>
+												<span th:if="${list.getQnaAdminContents() == '아직 답변이 달리지 않았습니다.'}" style="color:orange;">[답변 대기중]</span>
+												<span th:text="${list.getQnaQuestionContents()}"></span> <br>
+												<span style="float: right"> <img
+													src="/img/social/icon/facebookMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='FA'}"> <img
+													src="/img/social/icon/naverMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='NA'}"> <img
+													src="/img/social/icon/kakaoMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='KA'}"> <img
+													src="/img/social/icon/onesportsMiniIcon.jpg" width=24px
+													th:if="${list.getGubun()=='ON'}"> <span
+													th:text="${list.getFamilyCustNickname()}"></span>
 												</span>
 											</h3>
 											<div>
 												<p>
-													<span th:text="${list.getQnaAdminContents()}">아직 답변이 달리지 않았습니다.</span>
-													<br>
-													<span style="float:right" th:text="${list.getFamilyCustAdminNickname()}"> wkrtjdwk</span>
+													<span th:text="${list.getQnaAdminContents()}">아직 답변이
+														달리지 않았습니다.</span> <br> <span style="float: right"
+														th:text="${list.getFamilyCustAdminNickname()}">
+														wkrtjdwk</span>
+												</p>
+												<p th:if="${cust != null && cust.custOperatorGubun == 'Y' && list.getQnaAdminContents() == '아직 답변이 달리지 않았습니다.' }">
+													<textarea style="width: 100%"></textarea>
+													<button type="button" class="btn btn-secondary btn-block"
+														th:onClick="|javascript:answer($(this), ${list.getQnaNo()});|">답변달기</button>
 												</p>
 											</div>
 										</th:block>
@@ -191,11 +196,9 @@
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">닫기</button>
 					<button type="button" class="btn btn-secondary"
-						onClick="javascript:question();"
-						th:if="${annoGubun} == 'N'">문의하기</button>
+						onClick="javascript:question();" th:if="${annoGubun} == 'N'">문의하기</button>
 					<button type="button" class="btn btn-secondary"
-						onClick="javascript:annoQuestion();"
-						th:if="${annoGubun} == 'Y'">문의하기</button>
+						onClick="javascript:annoQuestion();" th:if="${annoGubun} == 'Y'">문의하기</button>
 				</div>
 			</div>
 		</div>
@@ -203,11 +206,11 @@
 
 	<!-- 메시지박스-->
 
-	 <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
 
 	<!--jquery ui -->
 	<script src="/js/jquery-ui.min.js"></script>
@@ -219,7 +222,8 @@
 <script>
 $(document).ready(function(){
 	$("#accordion").accordion({
-		collapsible : true
+		collapsible : false
+	,	active: true
 	});
 	
 	$(".container-fluid").fadeIn();
@@ -273,6 +277,14 @@ function annoQuestion() {
 		return;
 	}
 	
+	var reg_hanengnum = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$/;
+
+	if (!reg_hanengnum.test($("#nickname").val())) {
+        alert("닉네임은 한글, 영문, 숫자만 입력 가능합니다.");
+        $("#nickname").focus();
+        return;
+	}
+	
 	if($("#password").val() == "") {
 		alert("패스워드를 입력해주세요.");
 		$("#password").focus();
@@ -306,6 +318,34 @@ function annoQuestion() {
 		success : function(data) {
 			if(data == 1) {
 				alert("문의가 등록되었습니다.");
+				location.reload();
+			} else {
+				alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+			}
+		},
+		error : function(request, status, error) {
+			alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+		}
+	});
+}
+
+function answer(obj, qnaNo)  {
+	if($(obj).prev().val().trim() == "") {
+		alert("답변을 입력해주세요.");
+		$(obj).prev().focus();
+		return;
+	}
+
+	$.ajax({
+		url : "/qna/answer",
+		type : "POST",
+		cache : false,
+		dataType : "json",
+		data : "qnaNo=" + qnaNo
+				+"&qnaAdminContents=" + $(obj).prev().val(),
+		success : function(data) {
+			if(data == 1) {
+				alert("답변이 등록되었습니다.");
 				location.reload();
 			} else {
 				alert("알수 없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");

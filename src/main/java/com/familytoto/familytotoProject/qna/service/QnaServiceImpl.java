@@ -68,4 +68,9 @@ public class QnaServiceImpl implements QnaService {
 		
 		return qnaDao.insertAnnoQna(vo);
 	}
+
+	@Override
+	public int updateAnswerQna(QnaVO vo) {
+		return qnaDao.updateAnswerQna(vo);
+	}
 }

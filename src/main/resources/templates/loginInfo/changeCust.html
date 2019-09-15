@@ -76,7 +76,7 @@
 										</div>
 										<div class="col-xl-6 col-md-6 mb-6">
 											<div>
-												<label style="padding-top: 6px;">*닉네임은 <a href="#">닉네임
+												<label style="padding-top: 6px;">*닉네임은 <a href="/itemShop">닉네임
 														변경권</a>으로만 변경이 가능합니다.
 												</label>
 											</div>
@@ -287,14 +287,15 @@ $("#addr").val("[[ ${list.familyCustAddr} ]]");
 
 // 도로명주소 
 if("[[ ${list.zipCode2} ]]" == "") {
-	$("#zipcode1").val("[[ ${list.zipCode1} ]]");
 	$("input:radio[id='newCheck']").prop('checked', true);
 	radioChange("new")
-} else {
 	$("#zipcode1").val("[[ ${list.zipCode1} ]]");
-	$("#zipcode2").val("[[ ${list.zipCode2} ]]");
+} else {
 	$("input:radio[id='guCheck']").prop('checked', true);
 	radioChange("gu")
+	
+	$("#zipcode1").val("[[ ${list.zipCode1} ]]");
+	$("#zipcode2").val("[[ ${list.zipCode2} ]]");
 }
 
 function getSido(getData) {

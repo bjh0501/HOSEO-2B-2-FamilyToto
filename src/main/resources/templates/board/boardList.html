@@ -89,7 +89,7 @@
 											<td><span th:text="${list.custNickname}"></span><img
 												th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
 												width=26 height=26></img></td>
-											<td th:text="${list.regDt}"></td>
+											<td th:text="${list.regDtStr}"></td>
 											<td th:text="${list.visit}"></td>
 										</tr>
 									</tbody>
@@ -234,7 +234,7 @@
 	}
 	
 	function clickBoard(no) {
-		location.href= "showBoard/" + no;
+		location.href= "/showBoard/" + no;
 	}
 
 	$("#keyword").keyup(function(e){if(e.keyCode == 13)  fn_search(); });

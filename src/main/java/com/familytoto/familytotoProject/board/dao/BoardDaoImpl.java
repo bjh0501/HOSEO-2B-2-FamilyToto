@@ -104,4 +104,14 @@ public class BoardDaoImpl implements BoardDao {
 	public FileVO getUploadedFile(int boardNo) {
 		return sqlSession.selectOne("board.getUploadedFile", boardNo);
 	}
+
+	@Override
+	public List<BoardVO> listNotice() {
+		return sqlSession.selectList("board.listNotice");
+	}
+
+	@Override
+	public List<BoardVO> listReplyBoard(int boardGrpNo) {
+		return sqlSession.selectList("board.listReplyBoard", boardGrpNo);
+	}
 }

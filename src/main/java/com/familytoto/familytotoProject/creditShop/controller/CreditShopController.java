@@ -20,6 +20,8 @@ public class CreditShopController {
 	
 	@RequestMapping("/creditShop")
     public String creditShop(Model model) {
+		model.addAttribute("list", creditShopService.listCreditShop());
+		
 		return "/shop/creditShop/creditShop";
     }
 	

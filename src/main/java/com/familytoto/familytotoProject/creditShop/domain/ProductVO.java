@@ -44,7 +44,27 @@ public class ProductVO {
     
     private int totalCredit;
     
-   	public int getTotalCredit() {
+    private String productImgUrl;
+    
+    private int basketNo;    
+    
+   	public int getBasketNo() {
+		return basketNo;
+	}
+
+	public void setBasketNo(int basketNo) {
+		this.basketNo = basketNo;
+	}
+
+	public String getProductImgUrl() {
+		return productImgUrl;
+	}
+
+	public void setProductImgUrl(String productImgUrl) {
+		this.productImgUrl = productImgUrl;
+	}
+
+	public int getTotalCredit() {
 		return totalCredit;
 	}
 

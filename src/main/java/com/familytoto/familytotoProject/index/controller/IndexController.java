@@ -1,19 +1,22 @@
 package com.familytoto.familytotoProject.index.controller;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.familytoto.familytotoProject.webLog.service.WebLogService;
+import com.familytoto.familytotoProject.board.service.BoardService;
 
 @Controller
 public class IndexController {
-	@Inject
-	WebLogService webLogService;
+
+	@Autowired
+	BoardService boardService;
 	
 	@RequestMapping(value = { "/index", "/" })
-    public String index() {
+    public String index(Model model) {
+		model.addAttribute("notice", boardService.listNotice());
+	
         return "/index";
     }
 	
@@ -25,11 +28,6 @@ public class IndexController {
 	@RequestMapping(value ="/navereb68e2d272389e36f17ae3a3fe3d4437.html")
     public String naverSearchEngine() {
         return "/etc/searchEngine/navereb68e2d272389e36f17ae3a3fe3d4437.html";
-    }
-	
-	@RequestMapping("/itemShop")
-    public String itemShop() {
-        return "/shop/itemShop";
     }
 	
 	@RequestMapping("/editor")

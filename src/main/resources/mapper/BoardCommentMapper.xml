@@ -99,4 +99,5 @@
         WHERE	COMMENT_NO = #{commentNo}
         AND		USE_YN = 'Y'
 	</update>
+	
 </mapper>

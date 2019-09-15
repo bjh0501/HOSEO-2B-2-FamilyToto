@@ -4,15 +4,16 @@
 
 <mapper namespace="login">
 	
-	<select id="custLogin" resultType="map">
+	<select id="custLogin" resultType="CustVO">
 			
 		SELECT	C.CUST_NO as custNo
 		,		C.FAMILY_CUST_NO as familyCustNo
 		,		C.CUST_PASSWORD as custPassword
 	    ,		FC.FAMILY_CUST_EMAIL AS familyCustEmail
-	    ,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
+	    ,		FC.FAMILY_CUST_NICKNAME as familyCustNick
+	   	,		C.CUST_OPERATOR_GUBUN as custOperatorGubun
 		FROM	CUSTOM C
-	    inner join	FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
+	    	inner join	FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
 	    AND			C.USE_YN = 'Y'
 	    AND			FC.USE_YN = 'Y'
 		where	CUST_ID = #{custId}

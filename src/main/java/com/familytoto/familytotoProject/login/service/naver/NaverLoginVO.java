@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.changeCust.service.ChangeCustAuthService;
-import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.config.SecretGlobalVariable;
 import com.familytoto.familytotoProject.login.domain.SocialVO;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -54,8 +54,8 @@ public class NaverLoginVO {
 	
 	private final static String CLIENT_ID = "Za6kr7wC2cVLJ3c1qVvu";
 	private final static String CLIENT_SECRET = "rFm3tqGBfo";
-	private final static String REDIRECT_URI = GlobalVariable.DOMAIN_URL + "/login/social/naver";
-	private final static String REDIRECT_URI2 = GlobalVariable.DOMAIN_URL + "/login/social/naver/auth";
+	private final static String REDIRECT_URI = SecretGlobalVariable.DOMAIN_URL + "/login/social/naver";
+	private final static String REDIRECT_URI2 = SecretGlobalVariable.DOMAIN_URL + "/login/social/naver/auth";
 	private final static String SESSION_STATE = "social_cust";
 	/* 프로필 조회 API URL */
 	private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
@@ -228,10 +228,12 @@ public class NaverLoginVO {
 				CustVO cVo2 = new CustVO();
 				cVo2.setCustNo(nScCustNo);
 				cVo2.setFamilyCustNick(nickname);
+				cVo2.setCustOperatorGubun("N");
 				session.setAttribute("cust", cVo2); // 세션 생성
 			} else {
 				cVo.setFamilyCustNick(nickname);
 				cVo.setCustNo(nScCustNo);
+				cVo.setCustOperatorGubun("N");
 				session.setAttribute("cust", cVo); // 세션 생성
 			}
 			

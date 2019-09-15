@@ -3,45 +3,62 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-  <link th:href="@{css/Nunito.css}" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+.card:hover {
+	background: black;
+	color: white;
+	cursor: pointer;
+	border: 1px solid white;
+}
 
+.card:active {
+	background: #bdbdbd;
+	color: white;
+	cursor: pointer;
+	border: 1px solid white;
+}
+</style>
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
+	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
 		</ul>
-	
-	    <!-- Content Wrapper -->
+
+		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
-		
-		      <!-- Main Content -->
+
+			<!-- Main Content -->
 			<div id="content">
-		
-		        <!-- Topbar -->
-		        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
-		
-		
-		        </nav>
-		        <!-- End of Topbar -->
-		
-		        <!-- Begin Page Content -->
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">아이템 상점</h2>
@@ -49,7 +66,7 @@
 					<div class="row">
 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow h-100 py-12">
-								<div style="padding:20px;">
+								<div style="padding: 20px;">
 									<div class="input-group">
 										<h2>VIP권</h2>
 									</div>
@@ -58,27 +75,28 @@
 									</div>
 									<div class="input-group">
 										<div class="btn-group btn-group-toggle" data-toggle="buttons">
-											<label class="btn btn-secondary active">
-										  		<input type="radio" name="options" id="option1" autocomplete="off" checked> 1일
+											<label class="btn btn-secondary active"> <input
+												type="radio" name="options" id="option1" autocomplete="off"
+												checked> 1일
+											</label> <label class="btn btn-secondary"> <input
+												type="radio" name="options" id="option2" autocomplete="off">
+												7일
+											</label> <label class="btn btn-secondary"> <input
+												type="radio" name="options" id="option3" autocomplete="off">
+												30일
 											</label>
-											<label class="btn btn-secondary">
-										  		<input type="radio" name="options" id="option2" autocomplete="off"> 7일
-										 	</label>
-										 	<label class="btn btn-secondary">
-										   		<input type="radio" name="options" id="option3" autocomplete="off"> 30일
-										  	</label>
 										</div>
 									</div>
 									<div class="input-group">
 										<h3>10,000크레딧</h3>
 									</div>
-									
+
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
-							<div class="card shadow h-100 py-12">
-								<div style="padding:20px;">
+							<div class="card shadow h-100 py-12" >
+								<div style="padding: 20px;">
 									<div class="input-group">
 										<h2>랜덤박스</h2>
 									</div>
@@ -86,7 +104,8 @@
 										<h6>모든아이템중 하나가 랜덤으로 나옵니다.</h6>
 									</div>
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="직접입력"><div style="padding-top:8px;">&nbsp;개</div>
+										<input type="text" class="form-control" placeholder="직접입력">
+										<div style="padding-top: 8px;">&nbsp;개</div>
 									</div>
 									<div class="input-group">
 										<h3>30,000크레딧</h3>
@@ -96,7 +115,7 @@
 						</div>
 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow h-100 py-12">
-								<div style="padding:20px;">
+								<div style="padding: 20px;">
 									<div class="input-group">
 										<h2>무르기권</h2>
 									</div>
@@ -104,7 +123,8 @@
 										<h6>경기시작전 30분전까지 사용하여 배팅취소를 할 수 있습니다.</h6>
 									</div>
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="직접입력"><div style="padding-top:8px;">&nbsp;개</div>
+										<input type="text" class="form-control" placeholder="직접입력">
+										<div style="padding-top: 8px;">&nbsp;개</div>
 									</div>
 									<div class="input-group">
 										<h3>3,000크레딧</h3>
@@ -114,12 +134,12 @@
 						</div>
 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow h-100 py-12">
-								<div style="padding:20px;">
+								<div style="padding: 20px;"  ondblclick="javascript:buyNickChange();">
 									<div class="input-group">
 										<h2>닉네임 변경권</h2>
 									</div>
 									<div class="input-group">
-										<h6>구입즉시 닉네임을 변경할 수  있습니다. (중복닉네임 제외)</h6>
+										<h6>구입즉시 닉네임을 변경할 수 있습니다. (중복닉네임 제외)</h6>
 									</div>
 									<div class="input-group">
 										<h3>1,000크레딧</h3>
@@ -127,32 +147,67 @@
 								</div>
 							</div>
 						</div>
-					</div>		
+					</div>
 				</div>
-		        <!-- /.container-fluid -->
-		
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+			</footer>
+			<!-- End of Footer -->
+
 		</div>
-	      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
+		<!-- End of Content Wrapper -->
 	</div>
-  <!-- End of Page Wrapper -->
+	<!-- End of Page Wrapper -->
 
-  
 
- <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
 
 </body>
 
 </html>
+<script>
+	function buyNickChange() {
+		var nick = prompt("변경할 닉네임");
+		if(nick == null) {
+			return;
+		} 
+		
+		if(nick.length > 8 || nick.length < 2) {
+			alert("닉네임은 2~8글자만 가능합니다.");
+		}
+		
+		$.ajax({
+			url : "/itemShop/buyNickname?nickname=" + nick,
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			success : function(data) {
+				if(data == 0) {
+					alert("닉네임을 변경하였습니다.");
+				} else if(data == -98) {
+					alert("크레딧이 부족합니다.");
+				} else if(data == -97) {
+					alert("이미 존재하는 닉네임입니다.");
+				} else {
+					alert("새로고침후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+</script>

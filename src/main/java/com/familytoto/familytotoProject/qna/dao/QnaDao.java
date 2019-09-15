@@ -10,4 +10,7 @@ public interface QnaDao {
 	List<QnaVO> listQna(QnaVO vo);
 	
 	int insertAnnoQna(QnaVO vo);
+	
+	// 운영자 답변
+	int updateAnswerQna(QnaVO vo);
 }
