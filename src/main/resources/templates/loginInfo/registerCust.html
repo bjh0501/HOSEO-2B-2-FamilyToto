@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
@@ -776,6 +776,14 @@
 			$("#email2").focus();
 			return;
 		}
+		
+		var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+		
+		if(exptext.test(email)==false){
+			alert("이메일형식이 올바르지 않습니다.");
+			$("#email1").focus();
+			return false;
+		}
 
 		if (captcha.val().trim() == "") {
 			alert("자동 가입 방지 문자를 입력해주세요.");
@@ -795,8 +803,32 @@
 		var zipCode1 = $("#zipcode1").val();
 		var zipCode2 = $("#zipcode2").val();
 		
+		if(zipCode1.trim() == "") {
+			alert("우편번호를 입력해주세요.");
+			$("#zipcode1").focus();
+			return
+		}
+		
+		if(zipcode1.length > 3) {
+			alert("우편번호가 잘못되었습니다.");
+			$("#zipcode1").focus();
+			return
+		}
+		
 		if(zipCode2 == undefined) {
 			zipCode2 = "";
+		} else {
+			if(zipCode2.trim() == "") {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode2").focus();
+				return
+			}
+			
+			if(zipcode2.length > 3) {
+				alert("우편번호가 잘못되었습니다.");
+				$("#zipcode2").focus();
+				return
+			}
 		}
 
 		$.ajax({

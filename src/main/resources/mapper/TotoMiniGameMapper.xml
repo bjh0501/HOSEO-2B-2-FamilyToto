@@ -4,7 +4,7 @@
 
 <mapper namespace="totoMiniGame">
 	<select id="getCustCredit" resultType="CreditVO" parameterType="CustVO">
-		SELECT	SUM(CREDIT_VALUE) as creditValue
+		SELECT	IFNULL(SUM(CREDIT_VALUE), 0) as creditValue
         FROM	CUSTOM_CREDIT
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		USE_YN = 'Y'

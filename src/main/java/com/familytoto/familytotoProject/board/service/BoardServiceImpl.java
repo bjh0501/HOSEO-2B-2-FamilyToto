@@ -143,17 +143,40 @@ public class BoardServiceImpl implements BoardService{
 		return bVo;
 	}
 
-	public int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request) {
-		BoardVO vo = new BoardVO();
+	@Transactional
+	public int updateDeleteBoard(String sNo,
+			BoardVO vo,
+			HttpSession session,
+			HttpServletRequest request) {
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 	
 		vo.setBoardNo(Integer.parseInt(sNo));
 		vo.setChgCustNo(cVo.getCustNo());
 		vo.setChgIp(request.getRemoteAddr());
 		
-		return boardDao.updateDeleteBoard(vo);	
+		if(boardDao.isDeleteGrpBoard(vo) == true) { // 하위에 답장이 있는경우
+			vo.setUseYn("W");
+			boardDao.updateDeleteBoard(vo);
+			
+			if(boardDao.isAssertWAndGrpNo(vo.getBoardGrpNo()) == true) {
+				return boardDao.updateIfAllWThenN(vo); // 전부다 삭제된경우 N으로					
+			} else {
+				return 1;
+			}
+		} else {  // 일반삭제
+			vo.setUseYn("N");
+			boardDao.updateDeleteBoard(vo);
+			
+			if(boardDao.isAssertWAndGrpNo(vo.getBoardGrpNo()) == true) {
+				return boardDao.updateIfAllWThenN(vo); // 전부다 삭제된경우 N으로					
+			} else {
+				return 1;
+			}
+		}
+		
 	}
 	
+	@Transactional
 	public int updateDeleteAnnoBoard(String sNo, HttpServletRequest request, BoardVO vo) {
 		CustVO cVo = new CustVO();
 		vo.setBoardNo(Integer.parseInt(sNo));
@@ -163,7 +186,27 @@ public class BoardServiceImpl implements BoardService{
 		String sPass = boardDao.checkAnnoBoardPass(vo);
 		
 		if(cVo.isDecodePassword(cVo, sPass)==true) {
-			return boardDao.updateDeleteAnnoBoard(vo);
+			if(boardDao.isDeleteGrpBoard(vo) == true) { // 하위에 답장이 있는경우
+				vo.setUseYn("W");
+				boardDao.updateDeleteAnnoBoard(vo);
+				
+				if(boardDao.isAssertWAndGrpNo(vo.getBoardGrpNo()) == true) {
+					return boardDao.updateIfAllWThenN(vo); // 전부다 삭제된경우 N으로					
+				} else {
+					return 1;
+				}
+			} else {  // 일반삭제
+				vo.setUseYn("N");
+				boardDao.updateDeleteAnnoBoard(vo);
+				
+				if(boardDao.isAssertWAndGrpNo(vo.getBoardGrpNo()) == true) {
+					return boardDao.updateIfAllWThenN(vo); // 전부다 삭제된경우 N으로					
+				} else {
+					return 1;
+				}
+			}
+			
+			
 		} else { // 비밀번호틀림
 			return -99;
 		}

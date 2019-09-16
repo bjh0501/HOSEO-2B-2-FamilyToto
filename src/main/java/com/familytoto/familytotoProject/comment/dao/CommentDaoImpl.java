@@ -57,4 +57,9 @@ public class CommentDaoImpl implements CommentDao {
 	public int updateComment(CommentVO vo) {
 		return sqlSession.update("boardComment.updateComment", vo);
 	}
+
+	@Override
+	public boolean isDeleteGrpComment(CommentVO vo) {
+		return sqlSession.selectOne("boardComment.isDeleteGrpComment", vo);
+	}
 }

@@ -203,23 +203,36 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr th:each="list: ${replyBoardList}"
-													class="boardrow"
-													th:onClick="|javascript:clickBoard( ${ list.boardNo } );|">
-													<td><th:block th:if="${list.boardGrpDepth} > 0"
-															th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
-															>
-														</th:block> <span th:text="${list.boardNo}"></span></td>
-													<td><span th:text="${list.boardTitle}"></span> <font
-														color="orange">(<span th:text="${list.commentCnt}"></span>)
-													</font> <i th:if="${list.boardFileName} != null"
-														class="fas fa-file"></i></td>
-													<td><span th:text="${list.custNickname}"></span><img
-														th:if="${list.custGubun != ''}"
-														th:src="${list.custGubun}" width=26 height=26></img></td>
-													<td th:text="${list.regDtStr}"></td>
-													<td th:text="${list.visit}"></td>
-												</tr>
+												<th:block th:each="list: ${replyBoardList}">
+													<tr class="boardrow"
+														th:onClick="|javascript:clickBoard( ${ list.boardNo } );|"
+														th:if="${list.useYn=='Y'}">
+														<td>
+														 	<th:block
+														 	 th:if="${list.boardGrpDepth} > 0"
+														 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
+																>
+															</th:block>
+															<span th:text="${list.boardNo}"></span>
+														</td>
+														<td>
+															<span  th:text="${list.boardTitle}"></span>
+															<font color="orange">(<span  th:text="${list.commentCnt}"></span>)</font>
+															
+															<i th:if="${list.boardFileName} != null" class="fas fa-file"></i>
+														</td>
+														<td><span th:text="${list.custNickname}"></span><img
+															th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
+															width=26 height=26></img></td>
+														<td th:text="${list.regDtStr}"></td>
+														<td th:text="${list.visit}"></td>
+													</tr>
+													<tr th:if="${list.useYn=='W'}">
+														<td colspan=5>
+														<center style="color: gray">삭제된 게시글입니다.</center>
+														</td>
+													</tr>
+												</th:block>
 											</tbody>
 										</table>
 									</div>
@@ -310,9 +323,10 @@
 											</a>
 										</div>
 										<div class="p-1 commentContents">
-											<p class="text-word-l" th:text="${com.getCommentContents()}">댓글</p>
+											<p class="text-word-l" th:text="${com.getCommentContents()}" th:if="${com.getUseYn()=='Y'}">댓글</p>
+											<p class="text-word-l" th:if="${com.getUseYn()=='N'}" style="color:gray;">삭제된 댓글입니다.</p>
 										</div>
-										<p class="ml-auto p-2 ">
+										<p class="ml-auto p-2" th:if="${com.getUseYn()=='Y'}">
 											<button type="button" class="btn btn-secondary"
 												th:onClick="|javascript:replyComment($(this), 
 												${com.getCommentGrpNo()},
@@ -329,9 +343,13 @@
 											<button
 												th:if="${com.getRegCustNo() == cust || com.getRegCustNo() == 0}"
 												type="button" class="btn btn-secondary"
-												style="background: #828282;"
 												th:data-gubun="${com.getScCustGubun()}"
-												th:onClick="|javascript:deleteComment( ${com.getCommentNo()}, $(this), this.getAttribute('data-gubun'));|">삭제</button>
+												th:data-grpord="${com.getCommentGrpOrd()}"
+												th:data-grpno="${com.getCommentGrpNo()}"
+												th:onClick="|javascript:deleteComment( ${com.getCommentNo()}, $(this),
+												this.getAttribute('data-gubun'),
+												this.getAttribute('data-grpOrd'),
+												this.getAttribute('data-grpNo'),);|">삭제</button>
 											<label class="text-word-l" th:text="${com.getRegDtStr()}">날짜</label>
 										</p>
 									</div>
@@ -394,7 +412,9 @@
 
 </html>
 <script>
-	var annoDeleteCommentNo;	
+	var annoDeleteCommentNo;
+	var annoDeleteCommentGrpOrd;
+	var annoDeleteCommentGrpNo;
 	$( document ).ready(function() {
 		$("#boardDiv").html($("#contentsArea").val());
 		
@@ -554,7 +574,10 @@
 			var con = confirm("정말로 삭제하시겠습니까?");
 			
 			if(con == true) {
-				location.replace("/deleteBoard/" + no);
+				str = "";
+				str += "?boardGrpOrd=" + [[ ${board.getBoardGrpOrd()} ]]
+				str += "&boardGrpNo=" + [[ ${board.getBoardGrpNo()} ]]
+				location.replace("/deleteBoard/" + no + str);
 			}
 		} else {
 			if($("#annoInputPw").val() == "") {
@@ -563,12 +586,15 @@
 				return;
 			}
 			
+			
 			$.ajax({
 				url : "/deleteAnnoBoard/" + no,
 				type : "POST",
 				cache : false,
 				dataType : "json",
-				data : "boardAnnoPw=" + $("#annoInputPw").val(),
+				data : "boardAnnoPw=" + $("#annoInputPw").val()
+				+ "&boardGrpOrd=" + [[ ${board.getBoardGrpOrd()} ]]
+				+ "&boardGrpNo=" + [[ ${board.getBoardGrpNo()} ]],
 				success : function(data) {
 					if(data == 0) {
 						location.replace("/boardList");
@@ -630,7 +656,7 @@
 		} else if(gubun == "BE") {
 			goUpdate([[ ${cust} ]], [[ ${board.getBoardNo()} ]])
 		} else if(gubun == "CD") {
-			deleteComment2(annoDeleteCommentNo, $("#annoInputPw").val())
+			deleteComment2(annoDeleteCommentNo, $("#annoInputPw").val(), annoDeleteCommentGrpOrd, annoDeleteCommentGrpNo)
 		}
 	}
 	
@@ -738,20 +764,22 @@
 		});
 	}
 	
-	function deleteComment2(no, pass) {
+	function deleteComment2(no, pass, grpOrd, grpNo) {
 		if(pass == "") {
 			alert("비밀번호를 입력해주세요.");
 			$("#annoInputPw").focus();
 			return;
 		}
-		
+
 		$.ajax({
 			url : "/board/deleteComment",
 			type : "POST",
 			cache : false,
 			dataType : "json",
 			data : "commentNo=" + no
-			+ "&commentAnnoPw=" + pass,				
+			+ "&commentAnnoPw=" + pass
+			+ "&commentGrpOrd=" + grpOrd
+			+ "&commentGrpNo=" + grpNo,				
 			success : function(data) {
 				if(data == 1) {
 					alert("댓글이 삭제되었습니다.");
@@ -770,10 +798,12 @@
 		});
 	}
 	
-	function deleteComment(no, obj, gubun) {
+	function deleteComment(no, obj, gubun, grpOrd, grpNo) {
 		if(gubun == "AN") {
 			clickModal("CD");
 			annoDeleteCommentNo = no;
+			annoDeleteCommentGrpOrd = grpOrd;
+			annoDeleteCommentGrpNo = grpNo;
 		} else {
 			var con = confirm("정말로 삭제하시겠습니까?");
 			
@@ -783,7 +813,9 @@
 					type : "POST",
 					cache : false,
 					dataType : "json",
-					data : "commentNo=" + no,
+					data : "commentNo=" + no
+					+ "&commentGrpOrd=" + grpOrd
+					+ "&commentGrpNo=" + grpNo,
 					success : function(data) {
 						if(data == 1) {
 							deleteResultComment(obj);

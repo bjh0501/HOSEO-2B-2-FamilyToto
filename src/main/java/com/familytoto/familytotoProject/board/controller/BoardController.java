@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.ibatis.annotations.Param;
+import org.hibernate.validator.constraints.SafeHtml.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -263,7 +264,9 @@ public class BoardController {
 		String sLink = "";
 		if(request.getHeader("referer") == null || request.getHeader("referer").indexOf("boardList") == -1) {
 			sLink = "/boardList";
-		} else {
+		}
+		
+		else {
 			sLink = request.getHeader("referer");
 		}
 		
@@ -275,8 +278,11 @@ public class BoardController {
 	}
 
 	@RequestMapping("/deleteBoard/{boardNo}")
-	public String deleteBoard(HttpSession session, @PathVariable("boardNo") String sNo, HttpServletRequest request) {
-		if (boardService.updateDeleteBoard(sNo, session, request) == 1) {
+	public String deleteBoard(HttpSession session,
+			@PathVariable("boardNo") String sNo,
+			HttpServletRequest request,
+			@ModelAttribute BoardVO vo) {
+		if (boardService.updateDeleteBoard(sNo, vo, session, request) == 1) {
 			return "redirect:/boardList";
 		} else {
 			return null;

@@ -14,7 +14,7 @@ public interface BoardService {
 	int insertCustBoard(BoardVO vo, int nGubun);
 	
 	// 삭제하기
-	int updateDeleteBoard(String sNo, HttpSession session, HttpServletRequest request);
+	int updateDeleteBoard(String sNo, BoardVO vo, HttpSession session, HttpServletRequest request);
 	
 	// 수정하기
 	int updateBoard(BoardVO vo, HttpSession session);

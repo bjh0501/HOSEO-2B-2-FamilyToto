@@ -56,6 +56,16 @@ public class CommentVO {
     
     private String regDtStr;
     
+    private String useYn;
+    
+	public String getUseYn() {
+		return useYn;
+	}
+
+	public void setUseYn(String useYn) {
+		this.useYn = useYn;
+	}
+
 	public String getRegDtStr() {
 		return regDtStr;
 	}

@@ -65,4 +65,13 @@ public interface BoardDao {
 	
 	// 게시글 답장 리스트보기
 	List<BoardVO> listReplyBoard(int boardGrpNo);
+
+	// 답글있는경우 W로
+	boolean isDeleteGrpBoard(BoardVO vo);
+	
+	// 전부다 삭제된 게시물인지 확인
+	boolean isAssertWAndGrpNo(int boardGrpNo);
+	
+	// 전부다 W일경우 N으로
+	int updateIfAllWThenN(BoardVO vo);
 }

@@ -70,28 +70,36 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="list: ${boardList}" class="boardrow"
-											th:onClick="|javascript:clickBoard( ${ list.boardNo } );|">
-											<td>
-											 	<th:block
-											 	 th:if="${list.boardGrpDepth} > 0"
-											 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
-													>
-												</th:block>
-												<span th:text="${list.boardNo}"></span>
-											</td>
-											<td>
-												<span  th:text="${list.boardTitle}"></span>
-												<font color="orange">(<span  th:text="${list.commentCnt}"></span>)</font>
-												
-												<i th:if="${list.boardFileName} != null" class="fas fa-file"></i>
-											</td>
-											<td><span th:text="${list.custNickname}"></span><img
-												th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
-												width=26 height=26></img></td>
-											<td th:text="${list.regDtStr}"></td>
-											<td th:text="${list.visit}"></td>
-										</tr>
+										<th:block th:each="list: ${boardList}">
+											<tr class="boardrow"
+												th:onClick="|javascript:clickBoard( ${ list.boardNo } );|"
+												th:if="${list.useYn=='Y'}">
+												<td>
+												 	<th:block
+												 	 th:if="${list.boardGrpDepth} > 0"
+												 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
+														>
+													</th:block>
+													<span th:text="${list.boardNo}"></span>
+												</td>
+												<td>
+													<span  th:text="${list.boardTitle}"></span>
+													<font color="orange">(<span  th:text="${list.commentCnt}"></span>)</font>
+													
+													<i th:if="${list.boardFileName} != null" class="fas fa-file"></i>
+												</td>
+												<td><span th:text="${list.custNickname}"></span><img
+													th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
+													width=26 height=26></img></td>
+												<td th:text="${list.regDtStr}"></td>
+												<td th:text="${list.visit}"></td>
+											</tr>
+											<tr th:if="${list.useYn=='W'}">
+												<td colspan=5>
+												<center style="color: gray">삭제된 게시글입니다.</center>
+												</td>
+											</tr>
+										</th:block>
 									</tbody>
 								</table>
 							</div>

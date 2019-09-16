@@ -59,7 +59,6 @@
 			FROM(
 				SELECT	B.BOARD_NO as boardNo
 				,		B.BOARD_GRP_NO as boardGrpNo
-				,		B.BOARD_REPLY_NO as boardReplyNo
 				,		B.BOARD_TITLE as boardTitle
 				,		B.REG_CUST_NO as regCustNo
 				,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
@@ -69,12 +68,13 @@
 				,		B.BOARD_GRP_ORD as boardGrpOrd
 				,		B.BOARD_VISIT as visit
 				,		BF.BOARD_FILE_NAME as boardFileName
+				,		B.USE_YN as useYn
 				FROM	BOARD B
 					LEFT OUTER JOIN BOARD_FILE BF ON B.BOARD_NO = BF.BOARD_NO AND BF.USE_YN = 'Y'
 					LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
 					LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
 					LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
-				WHERE	B.USE_YN = 'Y'
+				WHERE	B.USE_YN IN ('Y','W')
 				AND		B.BOARD_NOTICE = 'N'
 				AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
                    <if test="searchType=='title' and keyword != null and keyword != ''">
@@ -116,7 +116,6 @@
 	<select id="getShowBoard" resultType="BoardVO">
         SELECT	B.BOARD_NO as boardNo
 		,		B.BOARD_TITLE as boardTitle
-		,		B.BOARD_REPLY_NO as boardReplyNo
 		,		IFNULL(B.REG_CUST_NO, 0) as  regCustNo
 	    ,		B.BOARD_CONTENTS as boardContents
 		,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
@@ -139,7 +138,7 @@
 	</select>
 	<update id="updateDeleteBoard">
 		UPDATE	BOARD
-		SET		USE_YN = 'N'
+		SET		USE_YN = #{useYn}
 		,		CHG_DT = NOW()
 		,		CHG_IP = #{chgIp}
 		,		CHG_CUST_NO = #{chgCustNo}
@@ -149,7 +148,7 @@
 	</update>
 	<update id="updateDeleteAnnoBoard">
 		UPDATE	BOARD
-		SET		USE_YN = 'N'
+		SET		USE_YN = #{useYn}
 		,		CHG_DT = NOW()
 		,		CHG_IP = #{chgIp}
 		WHERE	BOARD_NO = #{boardNo}
@@ -167,7 +166,7 @@
         FROM	BOARD B
 			LEFT OUTER JOIN BOARD_FILE BF ON B.BOARD_NO = BF.BOARD_NO AND BF.USE_YN = 'Y'
         WHERE	B.BOARD_NO = #{boardNo}
-        AND		B.USE_YN = 'Y'
+        AND		B.USE_YN IN ('Y','W')
 	</select>
 	<select id="commentCnt" resultType="int">
 		SELECT	COUNT(*) as commentCnt
@@ -240,7 +239,6 @@
 	<select id="listReplyBoard" parameterType="int" resultType="BoardVO">
 		SELECT	B.BOARD_NO as boardNo
 		,		B.BOARD_GRP_NO as boardGrpNo
-		,		B.BOARD_REPLY_NO as boardReplyNo
 		,		B.BOARD_TITLE as boardTitle
 		,		B.REG_CUST_NO as regCustNo
 		,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
@@ -250,15 +248,41 @@
 		,		B.BOARD_GRP_ORD as boardGrpOrd
 		,		B.BOARD_VISIT as visit
 		,		BF.BOARD_FILE_NAME as boardFileName
+		,		B.USE_YN as useYn
 		FROM	BOARD B
 			LEFT OUTER JOIN BOARD_FILE BF ON B.BOARD_NO = BF.BOARD_NO AND BF.USE_YN = 'Y'
 			LEFT OUTER JOIN CUSTOM C ON C.CUST_NO = B.REG_CUST_NO AND C.USE_YN = 'Y'
 			LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = B.REG_CUST_NO AND SC.USE_YN ='Y'
 			LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = C.FAMILY_CUST_NO AND FC.USE_YN ='Y'
-		WHERE	B.USE_YN = 'Y'
+		WHERE	B.USE_YN IN ('Y','W')
 		AND		B.BOARD_NOTICE = 'N'
 		AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) IS NOT NULL
         AND		BOARD_GRP_NO = #{boardGrpNo}
 	   ORDER BY B.BOARD_GRP_NO DESC, B.BOARD_GRP_ORD ASC 
 	</select>
+	<select id="isDeleteGrpBoard" parameterType="BoardVO" resultType="boolean">
+		SELECT	COUNT(*)
+        FROM	BOARD
+        WHERE	BOARD_GRP_NO = #{boardGrpNo}
+        AND		BOARD_GRP_ORD > #{boardGrpOrd}
+        AND		USE_YN = 'Y'
+	</select>
+	<select id="isAssertWAndGrpNo" parameterType="int" resultType="boolean" >
+		SELECT IF(
+            (SELECT	COUNT(*)
+            FROM	BOARD
+            WHERE	USE_YN IN('N','W')
+            AND		BOARD_GRP_NO = #{boardGrpNo})
+            = 
+            (SELECT	COUNT(*)
+            FROM	BOARD
+            WHERE	BOARD_GRP_NO = #{boardGrpNo}
+            AND		USE_YN IN ('N','W', 'Y') ), 1,0) as booleanValue
+	</select> 
+	<update id="updateIfAllWThenN">
+		UPDATE	BOARD
+          SET		USE_YN = 'N'
+          WHERE	BOARD_GRP_NO = #{boardGrpNo}
+          AND		USE_YN = 'W'
+	</update>
 </mapper>

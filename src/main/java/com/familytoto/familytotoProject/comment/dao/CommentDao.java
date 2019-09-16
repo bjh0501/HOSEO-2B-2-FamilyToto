@@ -32,4 +32,7 @@ public interface CommentDao {
 	
 	// 비회원, 회원 댓글 업데이트
 	int updateComment(CommentVO vo);
+	
+	// 답장된거 삭제할경우 체크
+	boolean isDeleteGrpComment(CommentVO vo);
 }

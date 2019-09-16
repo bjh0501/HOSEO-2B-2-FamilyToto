@@ -56,19 +56,20 @@
 		,		COMMENT_GRP_NO as commentGrpNo
 		,		COMMENT_GRP_ORD as commentGrpOrd
 		,		COMMENT_GRP_DEPTH as commentGrpDepth
+		,		C.USE_YN as useYn
 		FROM	COMMENT C
 			INNER JOIN BOARD B ON B.BOARD_NO = C.BOARD_NO AND B.USE_YN = 'Y' 
 			LEFT OUTER JOIN SOCIAL_CUSTOM SC ON SC.SC_CUST_NO = C.REG_CUST_NO AND SC.USE_YN ='Y'
 			LEFT OUTER JOIN CUSTOM CUST ON CUST.CUST_NO = C.REG_CUST_NO AND CUST.USE_YN ='Y' 
 			LEFT OUTER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CUST.FAMILY_CUST_NO AND FC.USE_YN ='Y'
-		WHERE	C.USE_YN = 'Y'
+		WHERE	C.USE_YN IN ('Y', 'N')		
 		AND		B.BOARD_NO = #{boardNo}
 	    AND		IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) IS NOT NULL
 		ORDER BY COMMENT_GRP_NO DESC, COMMENT_GRP_ORD ASC;
 	</select>	
 	<update id="deleteComment">
 		UPDATE	COMMENT
-	    SET		USE_YN = 'N'
+	    SET		USE_YN = #{useYn}
 	    ,		CHG_IP = #{chgIp} 
 	    ,		CHG_DT = NOW()
 	    ,		CHG_CUST_NO = #{chgCustNo}
@@ -78,7 +79,7 @@
 	</update>
 	<update id="deleteAnnoComment">
 		UPDATE	COMMENT
-	    SET		USE_YN = 'N'
+	    SET		USE_YN = #{useYn}
 	    ,		CHG_DT = NOW()
 	    ,		CHG_IP = #{chgIp}
 	    WHERE	USE_YN = 'Y'
@@ -99,5 +100,11 @@
         WHERE	COMMENT_NO = #{commentNo}
         AND		USE_YN = 'Y'
 	</update>
-	
+	<select id="isDeleteGrpComment" parameterType="CommentVO" resultType="boolean">
+		SELECT	COUNT(*)
+        FROM	COMMENT
+        WHERE	COMMENT_GRP_NO = #{commentGrpNo}
+        AND		COMMENT_GRP_ORD > #{commentGrpOrd}
+        AND		USE_YN = 'Y'
+	</select>
 </mapper>

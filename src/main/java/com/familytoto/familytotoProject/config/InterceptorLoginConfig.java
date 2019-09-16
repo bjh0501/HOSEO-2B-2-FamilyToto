@@ -24,6 +24,6 @@ public class InterceptorLoginConfig extends WebMvcConfigurerAdapter{
         		.addPathPatterns("/productBuy/**/")
         		.addPathPatterns("/toto/**/")
         		.addPathPatterns("/basketBuy/**/")
-        		.addPathPatterns("/basket");
+        		.addPathPatterns("/basket/**/");
     }
 }

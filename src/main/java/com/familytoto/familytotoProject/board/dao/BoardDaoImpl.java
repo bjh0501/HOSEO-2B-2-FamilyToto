@@ -114,4 +114,19 @@ public class BoardDaoImpl implements BoardDao {
 	public List<BoardVO> listReplyBoard(int boardGrpNo) {
 		return sqlSession.selectList("board.listReplyBoard", boardGrpNo);
 	}
+
+	@Override
+	public boolean isDeleteGrpBoard(BoardVO vo) {
+		return sqlSession.selectOne("board.isDeleteGrpBoard", vo);
+	}
+
+	@Override
+	public int updateIfAllWThenN(BoardVO vo) {
+		return sqlSession.update("board.updateIfAllWThenN", vo);
+	}
+
+	@Override
+	public boolean isAssertWAndGrpNo(int boardGrpNo) {
+		return sqlSession.selectOne("board.isAssertWAndGrpNo", boardGrpNo);
+	}
 }
