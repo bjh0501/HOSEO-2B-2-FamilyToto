@@ -14,17 +14,16 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.familytoto.familytotoProject.config.SecretGlobalVariable;
 
 @Service
 public class AWSService {
-	@Value("${aws.s3.bucketName}")
-	private String BUCKET_NAME = "onesports";
+	private String BUCKET_NAME = SecretGlobalVariable.AWS_BUCKET_NAME;
 	
-	@Value("${aws.s3.accessKey}")
-	private String ACCESS_KEY = "AKIA2DAXGIER3LQLDF4S";
+	private String ACCESS_KEY = SecretGlobalVariable.AWS_ACCESS_KEY;
 	
-	@Value("${aws.s3.secretKey}")
-	private String SECRET_KEY = "XllFNxBr5M/LWkrfBp0WpEehaWMVSiWj/4PFnkVd";
+	private String SECRET_KEY = SecretGlobalVariable.AWS_SECRET_KEY;
+			
 	private AmazonS3 amazonS3;
 
 	public AWSService() {

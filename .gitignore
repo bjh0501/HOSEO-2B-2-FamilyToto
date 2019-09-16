@@ -33,7 +33,8 @@ build/
 
 ### OneSports
 *.properties
-/toto/src/main/java/com/familytoto/familytotoProject/board/service/AWSService.java
+src/main/java/com/familytoto/familytotoProject/config/SecretGlobalVariable.java
+
 
 ### Wrong Directory
 /OneSports
