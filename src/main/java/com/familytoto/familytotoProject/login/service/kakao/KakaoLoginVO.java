@@ -33,16 +33,16 @@ public class KakaoLoginVO {
 	
 	@Autowired
 	SocalLoginService socalLoginService;
-	private final String REST_API = "e051b552544132d23d2ce1fc5898963c";
+	private final String REST_API = SecretGlobalVariable.KAKAO_REST_API;
 	private final String REDIRECT_URI = SecretGlobalVariable.DOMAIN_URL + "/login/social/kakao";
 	private final String REDIRECT_URI_AUTH =  SecretGlobalVariable.DOMAIN_URL + "/login/social/kakao/auth";
 	
 	public String getKakaoLink() {
-		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+SecretGlobalVariable.DOMAIN_URL+"/login/social/kakao&response_type=code";
+		return "https://kauth.kakao.com/oauth/authorize?client_id=" + REST_API + "&redirect_uri="+SecretGlobalVariable.DOMAIN_URL+"/login/social/kakao&response_type=code";
 	}
 	
 	public String getKakaoAuthLink() {
-		return "https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&redirect_uri="+SecretGlobalVariable.DOMAIN_URL+"/login/social/kakao/auth&response_type=code";
+		return "https://kauth.kakao.com/oauth/authorize?client_id=" + REST_API + "&redirect_uri="+SecretGlobalVariable.DOMAIN_URL+"/login/social/kakao/auth&response_type=code";
 	}
 	
     public String getAccessToken (String authorize_code, String sParam) {

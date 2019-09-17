@@ -168,7 +168,9 @@ public class BoardServiceImpl implements BoardService{
 			boardDao.updateDeleteBoard(vo);
 			
 			if(boardDao.isAssertWAndGrpNo(vo.getBoardGrpNo()) == true) {
-				return boardDao.updateIfAllWThenN(vo); // 전부다 삭제된경우 N으로					
+				boardDao.updateIfAllWThenN(vo);
+				
+				return 1; // 전부다 삭제된경우 N으로
 			} else {
 				return 1;
 			}

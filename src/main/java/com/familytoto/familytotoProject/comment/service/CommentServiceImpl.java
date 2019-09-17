@@ -75,13 +75,13 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	public int updateDeleteComment(CommentVO vo) {
-		if(commentDao.isDeleteGrpComment(vo)) { // 하위에 답장이 있는경우
-			vo.setUseYn("W");
-			return commentDao.updateDeleteComment(vo);
-		}  else {
+		//if(commentDao.isDeleteGrpComment(vo)) { // 하위에 답장이 있는경우
+			//vo.setUseYn("W");
+			//return commentDao.updateDeleteComment(vo);
+		//}  else {
 			vo.setUseYn("N");
 			return commentDao.updateDeleteComment(vo);
-		}
+		//}
 	}
 
 	@Override

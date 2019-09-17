@@ -52,8 +52,8 @@ public class NaverLoginVO {
 	@Autowired
 	ChangeCustAuthService changeCustAuthService;
 	
-	private final static String CLIENT_ID = "Za6kr7wC2cVLJ3c1qVvu";
-	private final static String CLIENT_SECRET = "rFm3tqGBfo";
+	private final static String CLIENT_ID = SecretGlobalVariable.NAVER_CLIENT_ID;
+	private final static String CLIENT_SECRET = SecretGlobalVariable.NAVER_CLIENT_SECRET;
 	private final static String REDIRECT_URI = SecretGlobalVariable.DOMAIN_URL + "/login/social/naver";
 	private final static String REDIRECT_URI2 = SecretGlobalVariable.DOMAIN_URL + "/login/social/naver/auth";
 	private final static String SESSION_STATE = "social_cust";
