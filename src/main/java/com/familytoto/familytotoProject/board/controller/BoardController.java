@@ -282,7 +282,7 @@ public class BoardController {
 			HttpServletRequest request,
 			@ModelAttribute BoardVO vo) {
 		if (boardService.updateDeleteBoard(sNo, vo, session, request) == 1) {
-			return "redirect:/boardList";
+			return "/boardList";
 		} else {
 			return null;
 		}
