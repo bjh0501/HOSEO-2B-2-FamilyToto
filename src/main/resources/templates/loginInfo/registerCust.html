@@ -147,24 +147,10 @@
 											</div>
 										</div>
 										<div class="col-xl-6 col-lg-12 col-md-12 mb-6">
-											<div
-												class="custom-control custom-radio custom-control-inline"  onClick="radioChange('gu');">
-												<input type="radio" id="guCheck"
-													name="zipRadio" class="custom-control-input" value="gu">
-												<label class="custom-control-label"
-													for="guCheck">구주소 우편번호</label>
-											</div>
-											<div
-												class="custom-control custom-radio custom-control-inline" onClick="radioChange('new');">
-												<input type="radio" id="newCheck"
-													name="zipRadio" class="custom-control-input" value="new" checked>
-												<label class="custom-control-label"
-													for="newCheck">도로명 우편번호</label>
-											</div>
 											<div class="input-group mb-3" id="zipArea">
 												<span class="text-word-r">우편번호</span>
 												<input type="text" class="form-control"
-													placeholder="Zip Code" aria-label="zipcode1" id="zipcode1">
+													placeholder="Zip Code" aria-label="zipcode" id="zipcode">
 											</div>
 										</div>
 									</div>
@@ -602,7 +588,6 @@
 					for(var i = 0;i < data.length; i++) {
 						var sRi = data[i].ri;
 						var zip1 = data[i].zipCode1;
-						var zip2 = data[i].zipCode2;
 						
 						var gubun = "구주소";
 						
@@ -610,17 +595,13 @@
 						if(zip1 == undefined) {
 							zip1 = "";
 							gubun = "도로명주소";
-						} 
-						 
-						if(zip2 == undefined) {
-							zip2 = "";
 						}
 						
 						var sListData = "";
 	
 						sListData += "<a class='list-group-item list-group-item-action '";
-						sListData += " data-toggle='list' href='javascript:;' ri='" + sRi + "' zipcode1='" + zip1 +"' zipcode2='" + zip2 +"'";
-						sListData += " onClick='javascript:chooseZip($(this));'";						
+						sListData += " data-toggle='list' href='javascript:;' ri='" + sRi + "' zipcode1='" + zip1 + "'";
+						sListData += " onClick='javascript:chooseZip($(this));'";
 						sListData += "role='tab' >" + sRi + "<sup><b>" + gubun + "</b></sup></a>";
 						
 						sListLi += sListData; 
@@ -630,8 +611,7 @@
 				}
 				
 				$("#addr").val("");
-				$("#zipcode1").val("");
-				$("#zipcode2").val("");
+				$("#zipcode").val("");
 				
 				
 				$("#list-tab").html(sListLi);				
@@ -642,37 +622,13 @@
 			}
 		});
 	}
+
 	
 	function chooseZip(obj) {
 		$("#addr").val(obj.attr("ri"));
-		$("#zipcode1").val(obj.attr("zipcode1"));
-		$("#zipcode2").val(obj.attr("zipcode2"));
-		
-		if(obj.attr("zipcode1") == "") {
-			$("input:radio[id='newCheck']").prop('checked', true);
-			radioChange("new")
-		} else {
-			$("input:radio[id='guCheck']").prop('checked', true);
-			radioChange("gu")
-		}
+		$("#zipcode").val(obj.attr("zipcode1"));
 	}
 	
-	function radioChange(radioValue) {
-		var sStr = "";
-
-		if(radioValue == "gu") {
-			sStr+='<span class="text-word-r">우편번호</span>';
-			sStr+='<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode1" id="zipcode1">';
-			sStr+='<span style="margin-top: 6px;">-</span>';
-			sStr+='<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode2" id="zipcode2">';
-		} else {
-			sStr+='<span class="text-word-r">우편번호</span>';
-			sStr+='<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode1" id="zipcode1">';
-		}
-		
-		$("#zipArea").html(sStr);
-	}
-
 	function chooseEmail() {
 		ec = $("#emailChoose").val()
 		email2 = $("#email2")
@@ -800,50 +756,20 @@
 			return;
 		}
 		
-		var zipCode1 = $("#zipcode1").val();
-		var zipCode2 = $("#zipcode2").val();
+		var zipCode = $("#zipcode").val();
 		
-		if(zipCode1.trim() == "") {
+		if(zipCode.trim() == "") {
 			alert("우편번호를 입력해주세요.");
-			$("#zipcode1").focus();
+			$("#zipcode").focus();
 			return false;
 		}
 		
-		// 도로명 선택경우
-		if(zipCode2 == undefined) {
-			if($("#zipcode1").val().length != 5) {
-				alert("우편번호를 5글자로 해주세요.");
-				$("#zipcode1").focus();
-				return false;
-			}
-			
-			zipCode2 = "";
-		} else {
-			if(zipCode1.trim() == "") {
-				alert("우편번호를 입력해주세요.");
-				$("#zipcode1").focus();
-				return false;
-			}
-			
-			if(zipCode1.length != 3) {
-				alert("우편번호를 3글자로 해주세요.");
-				$("#zipcode1").focus();
-				return false;
-			}
-			
-			if(zipCode2.trim() == "") {
-				alert("우편번호를 입력해주세요.");
-				$("#zipcode2").focus();
-				return false;
-			}
-			
-			if(zipCode2.length != 3) {
-				alert("우편번호를 3글자로 해주세요.");
-				$("#zipcode2").focus();
-				return false;
-			}
+		if(zipCode.length != 5) {
+			alert("우편번호를 5글자로 해주세요.");
+			$("#zipcode").focus();
+			return false;
 		}
-
+		
 		$.ajax({
 			url : "/registerCust/register",
 			type : "POST",
@@ -855,8 +781,8 @@
 					+ "&familyCustNickname=" + familyCustNickname.val()
 					+ "&familyCustEmail=" + email
 					+ "&familyCustAddr=" + addr.val()
- 					+ "&zipCode1=" + zipCode1
-					+ "&zipCode2=" + zipCode2
+ 					+ "&zipCode1=" + zipCode
+					+ "&zipCode2="
 					+ "&familyCustAddrSi=" + $("#sido").val()
 					+ "&familyCustAddrGugun=" + $("#gugun").val()
 					+ "&familyCustAddrDong=" + $("#dong").val()

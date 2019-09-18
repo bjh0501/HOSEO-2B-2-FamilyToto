@@ -118,6 +118,7 @@ public class ProductBuyController {
 			HttpServletResponse response,
 			@ModelAttribute @Valid ProductBuyVO vo) {
 		// 소셜 아이디
+
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 		
 		if(cVo == null) {
@@ -130,18 +131,28 @@ public class ProductBuyController {
 		
 		String sProductNo[] = request.getParameterValues("productNo");
 		String sProductBuAmount[] = request.getParameterValues("produtBuyAmount");
-		String sBasketNo[] = request.getParameterValues("basketNo");
+		String sBasketNo[] = null;
+		
+		// 장바구니 경우
+		if(request.getParameterValues("basketNo") != null) {
+			sBasketNo = request.getParameterValues("basketNo");
+		}
 		
 		for(int i = 0 ; i <sProductBuAmount.length; i++) {
 			int nProductAmount = Integer.parseInt(sProductBuAmount[i]);
-			int nBasketNo = Integer.parseInt(sBasketNo[i]);
+			int nBasketNo = 0;
+			
+			// 장바구니 경우
+			if(request.getParameterValues("basketNo") != null) {
+				nBasketNo = Integer.parseInt(sBasketNo[i]);
+				
+				if(nBasketNo < 1) {
+					return -2;
+				}
+			}
 			
 			if(nProductAmount < 1) {
 				return -1;
-			}
-			
-			if(nBasketNo < 1) {
-				return -2;
 			}
 		}
 		
@@ -161,12 +172,16 @@ public class ProductBuyController {
 				pVo = creditShopService.getShowProduct(pVo);
 		
 				int nProductAmount = Integer.parseInt(sProductBuAmount[i]);
-				int nBasketNo = Integer.parseInt(sBasketNo[i]);
+				
+				// 장바구니 경우
+				if(sBasketNo != null && sBasketNo[i] != null) {
+					int nBasketNo = Integer.parseInt(sBasketNo[i]);
+					vo.setBasketNo(nBasketNo);
+				}
 				
 				vo.setProductNo(pVo.getProductNo());
 				vo.setDeliveryNo(pVo.getDeliveryNo());
 				vo.setProductBuyAmount(nProductAmount);
-				vo.setBasketNo(nBasketNo);
 				vo.setProductBuyCredit(pVo.getProductCredit() * nProductAmount);
 				vo.setRegCustNo(cVo.getCustNo());
 				
@@ -174,7 +189,7 @@ public class ProductBuyController {
 				
 				if(nResult != 1) {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return -2;
+					return nResult;
 				}
 				
 			}

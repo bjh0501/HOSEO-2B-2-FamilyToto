@@ -148,10 +148,9 @@
 													</div>
 													<div class="row">
 														<div class="col-xl-12 col-lg-12 col-md-12 mb-6">
-															<div class="input-group mb-3" onChange="getZipList();">
+															<div class="input-group mb-3">
 																<span class="text-word-r">상세주소</span> <input type="text"
-																	class="form-control" placeholder="Address"
-																	aria-label="Address" id="addr">
+																	class="form-control" placeholder="Address" id="addr">
 															</div>
 														</div>
 														<div class="col-xl-12 col-lg-12 col-md-12 mb-6">
@@ -209,7 +208,7 @@
 										상품크레딧 : <span id="buyProductCredit">Loading...</span>
 									</h4>
 									<h4>
-										배송크레딧 : <span id="buyDeliveryCredit">2500</span>
+										배송크레딧 : <span id="buyDeliveryCredit">Loading...</span>
 									</h4>
 									<h4>
 										총 크레딧 : <span id="buyTotalCredit">Loading...</span>
@@ -282,7 +281,7 @@
 		$("#buyProductCredit").attr("credit",totalProductCredit );
 		$("#buyProductCredit").html(comma(totalProductCredit  ));
 		
-		var deliveryCredit = 2500										// 택배비		
+		var deliveryCredit = 0										// 택배비		
 		$("#buyDeliveryCredit").attr("credit", deliveryCredit);
 		$("#buyDeliveryCredit").html(comma(deliveryCredit));
 		
@@ -570,6 +569,8 @@
 					alert("얘! 구입할 크레딧이 없단다.\n토토하러 가렴.");
 				} else if(data.trim() == -96) {
 					alert("얘! 그만큼의 재고가 없단다.\n누가먼저산듯");
+				} else if(data.trim() == -95) {
+					alert("얘! 구입할 마일리지가 없단다.\n상품좀 사렴.");
 				} else {
 					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
 				}
