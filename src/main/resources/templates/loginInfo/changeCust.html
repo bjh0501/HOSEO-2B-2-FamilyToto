@@ -560,8 +560,45 @@ function getZipList() {
 		var zipCode1 = $("#zipcode1").val();
 		var zipCode2 = $("#zipcode2").val();
 		
+		if(zipCode1.trim() == "") {
+			alert("우편번호를 입력해주세요.");
+			$("#zipcode1").focus();
+			return false;
+		}
+		
+		// 도로명 선택경우
 		if(zipCode2 == undefined) {
+			if($("#zipcode1").val().length != 5) {
+				alert("우편번호를 5글자로 해주세요.");
+				$("#zipcode1").focus();
+				return false;
+			}
+			
 			zipCode2 = "";
+		} else {
+			if(zipCode1.trim() == "") {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode1").focus();
+				return false;
+			}
+			
+			if(zipCode1.length != 3) {
+				alert("우편번호를 3글자로 해주세요.");
+				$("#zipcode1").focus();
+				return false;
+			}
+			
+			if(zipCode2.trim() == "") {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode2").focus();
+				return false;
+			}
+			
+			if(zipCode2.length != 3) {
+				alert("우편번호를 3글자로 해주세요.");
+				$("#zipcode2").focus();
+				return false;
+			}
 		}
 		
 		$.ajax({

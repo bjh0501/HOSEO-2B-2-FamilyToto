@@ -108,7 +108,8 @@ public class KakaoLoginVO {
         return access_Token;
     }
     
-    public SocialVO getKakaoLogin (String access_Token, HttpSession session) {
+    public SocialVO getKakaoLogin (String access_Token, HttpSession session,
+    		HttpServletRequest request) {
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         SocialVO vo = new SocialVO();
         
@@ -165,6 +166,8 @@ public class KakaoLoginVO {
             	vo.setScCustEmail(email);
             	vo.setScCustGubun("KA");
             	vo.setScCustId(id);
+            	vo.setRegIp(request.getRemoteAddr());
+            	// vo.setRegIp(Equ);
             	
             	// 소셜 부분 
     			CustVO cVo = socalLoginService.getSocialFamilyNo(vo);

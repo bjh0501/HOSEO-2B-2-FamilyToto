@@ -69,10 +69,13 @@ public class SocialLoginController {
 	 
 	@RequestMapping("login/social/kakao")
 	@ResponseBody
-	public int kakaoAuth(@RequestParam("code") String code, HttpSession session, HttpServletResponse response) {
+	public int kakaoAuth(@RequestParam("code") String code,
+			HttpSession session,
+			HttpServletResponse response,
+			HttpServletRequest request) {
 		String access_Token = kakaoLoginVO.getAccessToken(code, "login");
 		
-		SocialVO vo = kakaoLoginVO.getKakaoLogin(access_Token, session);
+		SocialVO vo = kakaoLoginVO.getKakaoLogin(access_Token, session, request);
 		
 		try {
 			response.setContentType("text/html; charset=UTF-8");
@@ -80,7 +83,7 @@ public class SocialLoginController {
 			
 			if(vo != null) {
 				if(vo.getScCustId().equals("-99")) {
-					out.println("<script>alert('제공 항목을 전부 체크해주세요.'); window.close();</script>");
+					out.println("<script>alert('제공 항목을 전부 체크해주세요. 제공항목을 전부 체크했다면 카카오계정 > 프로필관리에서 생년월일 정보를 입력해주세요.'); window.close();</script>");
 				} else if(vo.getScCustId().equals("-98")) { 
 					out.println("<script>alert('20세 미만은 가입할 수 없습니다.'); window.close();</script>");
 				} else {
@@ -98,8 +101,11 @@ public class SocialLoginController {
 	
 	@RequestMapping("/login/social/facebook")
 	@ResponseBody
-	public int facebookAuth(@ModelAttribute SocialVO vo, HttpSession session) {
+	public int facebookAuth(@ModelAttribute SocialVO vo,
+			HttpSession session,
+			HttpServletRequest request) {
 		// 소셜 부분 
+		vo.setRegIp(request.getRemoteAddr());
 		CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 		
 		int nScCustNo = socalLoginService.insertSocialId(vo);

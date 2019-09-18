@@ -217,7 +217,6 @@ public class NaverLoginVO {
 			vo.setRegIp(request.getRemoteAddr());
 			vo.setScCustNick(nickname);
 			vo.setScCustGubun("NA");
-			
 			// 소셜 부분 
 			CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 			

@@ -96,7 +96,14 @@
 											</tr>
 											<tr th:if="${list.useYn=='W'}">
 												<td colspan=5>
-												<center style="color: gray">삭제된 게시글입니다.</center>
+												<center style="color: gray">
+												<th:block
+												 	 th:if="${list.boardGrpDepth} > 0"
+												 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
+														>
+													</th:block>
+												삭제된 게시글입니다.
+												</center>
 												</td>
 											</tr>
 										</th:block>

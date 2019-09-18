@@ -32,7 +32,7 @@
 
 .boardactive {
 	background: gray;
-    font-weight: bold;
+	font-weight: bold;
 }
 </style>
 </head>
@@ -188,18 +188,18 @@
 							</div>
 							<div class="row" th:if="${replyBoardList.size()} > 1">
 								<div class="col-xl-12 col-md-12 mb-3">
-								<hr>
+									<hr>
 									<div class="input-group">
 										<h4>답장 게시글 목록</h4>
 										<table class="table table-bordered" id="dataTable"
 											width="100%" cellspacing="0">
 											<thead>
 												<tr>
-													<th style="width: 80px;">글번호</th>
-													<th style="width: 250px;">제목</th>
-													<th style="width: 100px;">글쓴이</th>
-													<th>작성일</th>
-													<th>조회수</th>
+													<th style="width: 15%">글번호</th>
+													<th style="width: 40%">제목</th>
+													<th style="width: 20%">글쓴이</th>
+													<th style="width: 15%">작성일</th>
+													<th style="width: 10%">조회수</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -207,29 +207,29 @@
 													<tr class="boardrow"
 														th:onClick="|javascript:clickBoard( ${ list.boardNo } );|"
 														th:if="${list.useYn=='Y'}">
-														<td>
-														 	<th:block
-														 	 th:if="${list.boardGrpDepth} > 0"
-														 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
+														<td><th:block th:if="${list.boardGrpDepth} > 0"
+																th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
 																>
-															</th:block>
-															<span th:text="${list.boardNo}"></span>
-														</td>
-														<td>
-															<span  th:text="${list.boardTitle}"></span>
-															<font color="orange">(<span  th:text="${list.commentCnt}"></span>)</font>
-															
-															<i th:if="${list.boardFileName} != null" class="fas fa-file"></i>
-														</td>
+															</th:block> <span th:text="${list.boardNo}"></span></td>
+														<td><span th:text="${list.boardTitle}"></span> <font
+															color="orange">(<span th:text="${list.commentCnt}"></span>)
+														</font> <i th:if="${list.boardFileName} != null"
+															class="fas fa-file"></i></td>
 														<td><span th:text="${list.custNickname}"></span><img
-															th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
-															width=26 height=26></img></td>
+															th:if="${list.custGubun != ''}"
+															th:src="${list.custGubun}" width=26 height=26></img></td>
 														<td th:text="${list.regDtStr}"></td>
 														<td th:text="${list.visit}"></td>
 													</tr>
 													<tr th:if="${list.useYn=='W'}">
 														<td colspan=5>
-														<center style="color: gray">삭제된 게시글입니다.</center>
+															<center style="color: gray">
+																<th:block th:if="${list.boardGrpDepth} > 0"
+																	th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
+																		>
+																</th:block>
+																삭제된 게시글입니다.
+															</center>
 														</td>
 													</tr>
 												</th:block>
@@ -323,8 +323,10 @@
 											</a>
 										</div>
 										<div class="p-1 commentContents">
-											<p class="text-word-l" th:text="${com.getCommentContents()}" th:if="${com.getUseYn()=='Y'}">댓글</p>
-											<p class="text-word-l" th:if="${com.getUseYn()=='N'}" style="color:gray;">삭제된 댓글입니다.</p>
+											<p class="text-word-l" th:text="${com.getCommentContents()}"
+												th:if="${com.getUseYn()=='Y'}">댓글</p>
+											<p class="text-word-l" th:if="${com.getUseYn()=='N'}"
+												style="color: gray;">삭제된 댓글입니다.</p>
 										</div>
 										<p class="ml-auto p-2" th:if="${com.getUseYn()=='Y'}">
 											<button type="button" class="btn btn-secondary"
