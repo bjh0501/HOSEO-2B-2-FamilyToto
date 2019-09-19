@@ -28,12 +28,14 @@
         )
 	</insert>
 	<select id="getCustCredit" parameterType="ProductBuyVO" resultType="boolean">
-		SELECT	COUNT(*) as familyCustNo
-        FROM	CUSTOM_CREDIT CC
-			INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
-		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
-        AND		CC.USE_YN = 'Y'
-        HAVING SUM(CREDIT_VALUE) >= #{productBuyCredit}
+        SELECT EXISTS(
+			SELECT	CREDIT_ID
+	        FROM	CUSTOM_CREDIT CC
+				INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+			WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+	        AND		CC.USE_YN = 'Y'
+	        GROUP BY CREDIT_VALUE
+        HAVING SUM(CREDIT_VALUE) >= #{productBuyCredit}) as cnt
 	</select>
 	<select id="isProductAmount"  parameterType="ProductBuyVO" resultType="boolean">
 		SELECT	COUNT(*) as productNo
@@ -110,11 +112,11 @@
 		)
 	</insert>
 	<select id="getCustMileage" parameterType="ProductBuyVO" resultType="boolean">
-		SELECT	COUNT(*) as familyCustNo
+		SELECT EXISTS(SELECT	MILEAGE_VALUE
 		FROM	CUSTOM_MILEAGE CG
 			INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CG.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
 		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
 		AND		CG.USE_YN = 'Y'
-		HAVING SUM(MILEAGE_VALUE) >= #{productBuyCredit}
+		HAVING SUM(MILEAGE_VALUE) >= #{productBuyCredit}) as cnt
 	</select>
 </mapper>

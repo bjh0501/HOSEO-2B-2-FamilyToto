@@ -3,38 +3,64 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="/css/Nunito.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="/css/Nunito.css" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
+<style>
+.rate-base-layer {
+	color: #aaa;
+}
+
+.rate-hover-layer {
+	color: orange;
+}
+
+.rate2 {
+	font-size: 35px;
+}
+
+.rate2 .rate-hover-layer {
+	color: orange;
+}
+
+.rate2 .rate-select-layer {
+	color: orange;
+}
+</style>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
+	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
 		</ul>
-	
-	    <!-- Content Wrapper -->
+
+		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
-		
-		      <!-- Main Content -->
+
+			<!-- Main Content -->
 			<div id="content">
 				<!-- Topbar -->
-				<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
-				</nav>
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
 				<!-- End of Topbar -->
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
@@ -48,14 +74,17 @@
 							</div>
 							<div class="row">
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-									<img src="http://gdimg.gmarket.co.kr/982212715/still/600?ver=1532747867" width=100%>
+									<img
+										src="http://gdimg.gmarket.co.kr/982212715/still/600?ver=1532747867"
+										width=100%>
 								</div>
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
 											<span class="input-group-text" id="basic-addon1">가격</span>
 										</div>
-										<label class="text-word-l" th:text="${product.productCredit}+'크레딧'">0</label>
+										<label class="text-word-l"
+											th:text="${product.productCredit}+'크레딧'">0</label>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
@@ -79,24 +108,31 @@
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon1">남은 재고</span>
+												<span class="input-group-text" id="basic-addon1">남은
+													재고</span>
 											</div>
-											<input type="text" class="form-control" th:value="${product.productAmount}" disabled>
+											<input type="text" class="form-control"
+												th:value="${product.productAmount}" disabled>
 										</div>
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
 												<span class="input-group-text" id="basic-addon1">개수</span>
 											</div>
-											<input type="text" class="form-control" placeholder="Amount" id="amount">
+											<input type="text" class="form-control" placeholder="Amount"
+												id="amount">
 										</div>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="col-6">
-												<button type="button" class="btn btn-secondary btn-block btn-lg" th:onClick="|javascript:basket(${product.productNo});|">장바구니</button>
+												<button type="button"
+													class="btn btn-secondary btn-block btn-lg"
+													th:onClick="|javascript:basket(${product.productNo});|">장바구니</button>
 											</div>
 											<div class="col-6">
-												<button type="button" class="btn btn-secondary btn-block btn-lg" th:onClick="|javascript:directBuy(${product.productNo});|">즉시구매</button>
+												<button type="button"
+													class="btn btn-secondary btn-block btn-lg"
+													th:onClick="|javascript:directBuy(${product.productNo});|">즉시구매</button>
 											</div>
 										</div>
 									</div>
@@ -106,31 +142,35 @@
 							<div class="row">
 								<div class="col-xl-12 col-md-12 mb-3">
 									<div class="input-group mb-3">
-										<h4>상품 평<span style="color:orange">(2)</span></h4>
+										<h4>
+											상품 평<span style="color: orange">(2)</span>
+										</h4>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="input-group mb-3">
-									<label style="padding-top:8px;padding-right:2px;">KakaoAd</label>
-									<a class="navbar-brand" href="#">
-									<img src="#" width="30" height="30" alt="">
-									</a>
-									<input type="text" class="form-control" placeholder="Comment" aria-describedby="basic-addon1">
-									<button type="button" class="btn btn-secondary" style="margin-left:5px">등록</button>
+									<label style="padding-top: 8px; padding-right: 2px;">KakaoAd</label>
+									<div style="margin-top: -11px;" class="rate2" data-rate-value=2.5></div>
+									<input type="text" id="ratingValue">
+									<a class="navbar-brand" href="#"> <img src="#" width="30"
+										height="30" alt="">
+									</a> <input type="text" class="form-control" placeholder="Comment" id="comment"
+										aria-describedby="basic-addon1">
+									<button type="button" class="btn btn-secondary"
+										style="margin-left: 5px" onClick="javascript:comment();">등록</button>
 								</div>
 							</div>
 							<div class="row">
 								<div class="input-group d-flex">
 									<div class="p-1">
-										<label class="text-word-r">구매자1</label>
-										<a class="navbar-brand" href="#">
-										<img src="img/social/naver.jpg" width="30" height="30" alt="">
+										<label class="text-word-r">구매자1</label> <a
+											class="navbar-brand" href="#"> <img
+											src="img/social/naver.jpg" width="30" height="30" alt="">
 										</a>
 									</div>
 									<div class="p-1">
-										<span>★★★★☆</span><br>
-										<span>내용</span>
+										<span>★★★★☆</span><br> <span>내용</span>
 									</div>
 									<p class="ml-auto p-2 ">
 										<label class="text-word-l">2015. 12. 12 12:25:33</label>
@@ -140,14 +180,13 @@
 							<div class="row">
 								<div class="input-group d-flex">
 									<div class="p-1">
-										<label class="text-word-r">KakaoAd</label>
-										<a class="navbar-brand" href="#">
-										<img src="img/social/naver.jpg" width="30" height="30" alt="">
+										<label class="text-word-r">KakaoAd</label> <a
+											class="navbar-brand" href="#"> <img
+											src="img/social/naver.jpg" width="30" height="30" alt="">
 										</a>
 									</div>
 									<div class="p-1">
-										<span>★★★★★</span><br>
-										<span>좋네</span>
+										<span>★★★★★</span><br> <span>좋네</span>
 									</div>
 									<p class="ml-auto p-2 ">
 										<button type="button" class="btn btn-secondary">수정</button>
@@ -160,63 +199,88 @@
 					</div>
 				</div>
 			</div>
-	        <!-- /.container-fluid -->
-	
-			</div>
+			<!-- /.container-fluid -->
+
 		</div>
-	      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
 	</div>
-  <!-- End of Page Wrapper -->
+	<!-- End of Main Content -->
 
-  
+	<!-- Footer -->
+	<footer class="sticky-footer bg-white" th:include="/footer/footer">
 
-    <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
+	</footer>
+	<!-- End of Footer -->
+
+	</div>
+	<!-- End of Content Wrapper -->
+	</div>
+	<!-- End of Page Wrapper -->
+
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+	<script src="/js/rater.js"></script>
 </body>
+
 </html>
 <script>
+    $(document).ready(function(){
+        var options = {
+            max_value: 5,
+            step_size: 0.5,
+            initial_value: 3,
+            update_input_field_name: $("#ratingValue"),
+        }
+        
+        $(".rate2").rate(options);
+        $(".rate2").on("change", function(ev, data){
+            console.log(data.from, data.to);
+        });
+        $(".rate2").on("updateError", function(ev, jxhr, msg, err){
+            console.log("This is a custom error event");
+        });
+        $(".rate2").rate("setAdditionalData", {id: 42});
+        $(".rate2").on("updateSuccess", function(ev, data){
+            console.log(data);
+        });
+    });
+</script>
+<script>
+	
 	function basket(productNo) {
-		if(isNaN($("#amount").val()) == true) {
+		if (isNaN($("#amount").val()) == true) {
 			alert("숫자만 입력해주세요.");
 			$("#amount").focus();
 			return;
 		}
-		
-		if($("#amount").val() < 1) {
+
+		if ($("#amount").val() < 1) {
 			alert("수량은 1개이상 써주세요.");
 			$("#amount").focus();
 			return;
 		}
-		
+
 		$.ajax({
 			url : "/basket/insert",
 			type : "POST",
 			cache : false,
 			dataType : "html",
-			data : "productNo=" + productNo 
-					+ "&basketAmount=" + $("#amount").val(),
+			data : "productNo=" + productNo + "&basketAmount="
+					+ $("#amount").val(),
 			success : function(data) {
-				if(data.trim() == 0) {
+				if (data.trim() == 0) {
 					alert("장바구니에 담았습니다.\n누군가 전부 구입하기전에 먼저 구입해주세요!");
-				} else if(data.trim() == -99) {
+				} else if (data.trim() == -99) {
 					alert("로그인을 해야 장바구니에 담을 수 있습니다.");
-				} else if(data.trim() == -98) {
+				} else if (data.trim() == -98) {
 					alert("패밀리 회원만 장바구니에 담을 수 있습니다.");
-				} else if(data.trim() == -97) {
+				} else if (data.trim() == -97) {
 					alert("장바구니 수량을 상품 수량보다 적게 입력해주세요.");
-				} else if(data.trim() == -95) {
+				} else if (data.trim() == -95) {
 					alert("이미 장바구니에 담은 상품입니다.");
 				} else {
 					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
@@ -229,20 +293,61 @@
 			}
 		});
 	}
-	
+
 	function directBuy(productNo) {
-		if(isNaN($("#amount").val()) == true) {
+		if (isNaN($("#amount").val()) == true) {
 			alert("숫자만 입력해주세요.");
 			$("#amount").focus();
 			return;
 		}
-		
-		if($("#amount").val() < 1) {
+
+		if ($("#amount").val() < 1) {
 			alert("수량은 1개이상 써주세요.");
 			$("#amount").focus();
 			return;
 		}
+
+		location.href = "/productBuy/" + productNo + "?amount="
+				+ $("#amount").val();
+	}
+	
+	function comment() {
+		if($("#comment").val().trim() == "") {
+			alert("상품평을 입력해주세요.");
+			return false;
+		}
 		
-		location.href = "/productBuy/" + productNo + "?amount=" + $("#amount").val();
+		if(confirm("상품평을 한번 입력하면 수정, 삭제를 할 수 없습니다.\n계속하시겠습니까?") == false) {
+			return false;
+		}
+		
+		$.ajax({
+			url : "/showProduct/comment",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : "productNo=" + [[ ${product.getProductNo()} ]]
+			+ "&productCommentContents=" + $("#comment").val()
+			+ "&productCommentRating=" + $("#ratingValue").val(),
+			success : function(data) {
+				if (data.trim() == 1) {
+					alert("상품평을 등록하였습니다.")
+					location.reload();
+				} else if (data.trim() == -99) {
+					alert("상품을 구입한 후에 상품평을 등록할 수 있습니다.")
+				} else if (data.trim() == -98) {
+					alert("상품평은 한번만 등록할 수 있습니다.");
+				} else if (data.trim() == -97) {
+					alert("로그인을 해주세요.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 </script>

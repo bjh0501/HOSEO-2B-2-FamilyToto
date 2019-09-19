@@ -32,4 +32,37 @@
 		WHERE	P.USE_YN = 'Y'
 		LIMIT 20
 	</select>
+	
+	<insert id="insertProductComment">
+		 INSERT INTO PRODUCT_COMMENT (
+			PRODUCT_NO,		PRODUCT_COMMENT_CONTENTS,		PRODUCT_COMMENT_RATING,
+		    REG_CUST_NO,	REG_DT,							REG_IP,
+		    USE_YN,			FAMILY_CUST_NO
+		 ) VALUES (
+			#{productNo},	#{productCommentContents},		#{productCommentRating},
+			#{regCustNo},	NOW(),							#{regIp},
+			'Y'	,			#{familyCustNo}
+		 )
+	</insert>
+	<!-- 상품이 N으로 될수도있으니  useyn체크 x-->
+	<select id="isBoughtProduct" resultType="boolean" parameterType="ProductCommentVO">
+		select EXISTS(SELECT PRODUCT_NO
+		 FROM	PRODUCT_BUY
+		 WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		 AND	PRODUCT_NO = #{productNo}) AS existsCheck
+	</select>
+	<select id="isDupleProductComment" resultType="boolean" parameterType="ProductCommentVO">
+		SELECT EXISTS (SELECT PRODUCT_NO
+		 FROM 	PRODUCT_COMMENT
+		 WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		 AND	PRODUCT_NO = #{productNo}
+		 AND	USE_YN = 'Y') AS existsCheck
+	</select>
+	<select id="isDupleProductComment" resultType="boolean" parameterType="ProductCommentVO">
+		SELECT EXISTS (SELECT PRODUCT_NO
+		 FROM 	PRODUCT_COMMENT
+		 WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		 AND	PRODUCT_NO = #{productNo}
+		 AND	USE_YN = 'Y') AS existsCheck
+	</select>
 </mapper>

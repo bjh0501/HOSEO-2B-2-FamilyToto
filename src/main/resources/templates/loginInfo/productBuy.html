@@ -62,7 +62,7 @@
 								<div style="padding: 20px;">
 									<div class="input-group mb-3">
 										<h3>보유 크레딧</h3>
-										<a href="#">크레딧 충전하기</a>
+										<a href="/charge" target="_blank">크레딧 충전하기</a>
 									</div>
 									<div class="ml-auto p-2 bd-highlight">
 										<h5 class="text-word-l">
@@ -94,10 +94,11 @@
 													<td class="productNo" th:text="${pro.getProductNo()}"></td>
 													<td class="productName" th:text="${pro.getProductName()}"></td>
 													<td class="productPrice"
-														th:text="${pro.getProductCredit()}"></td>
+														th:value="${pro.getProductCredit()}"
+														th:text="${#numbers.formatInteger(pro.getProductCredit(), 0, 'COMMA')}"></td>
 													<td class="productAmount"
 														th:text="${pro.getProductAmount()}"></td>
-													<td class="totalCredit" th:text="${pro.getTotalCredit()}"></td>
+													<td class="totalCredit" th:value="${pro.getTotalCredit()}" th:text="${#numbers.formatInteger(pro.getTotalCredit(), 0, 'COMMA')}"></td>
 												</tr>
 											</tbody>
 										</table>
@@ -208,7 +209,7 @@
 										상품크레딧 : <span id="buyProductCredit">Loading...</span>
 									</h4>
 									<h4>
-										배송크레딧 : <span id="buyDeliveryCredit">2500</span>
+										배송크레딧 : <span id="buyDeliveryCredit">Loading...</span>
 									</h4>
 									<h4>
 										총 크레딧 : <span id="buyTotalCredit">Loading...</span>
@@ -275,13 +276,13 @@
 		
 		var totalProductCredit = 0;										// 상품 총가격
 		$(".totalCredit").each(function() {
-			totalProductCredit  += parseInt($(".totalCredit").html())
+			totalProductCredit += parseInt($(".totalCredit").attr("value"))
 		})
 		
 		$("#buyProductCredit").attr("credit",totalProductCredit );
-		$("#buyProductCredit").html(comma(totalProductCredit  ));
+		$("#buyProductCredit").html(comma(totalProductCredit));
 		
-		var deliveryCredit = 2500										// 택배비		
+		var deliveryCredit = 0										// 택배비		
 		$("#buyDeliveryCredit").attr("credit", deliveryCredit);
 		$("#buyDeliveryCredit").html(comma(deliveryCredit));
 		
@@ -290,8 +291,15 @@
 		$("#buyTotalCredit").html(comma(totalCredit));
 		
 		var afterCredit = [[${custInfo.credit}]] - totalCredit			// 결제 후 크레딧
+		
+		// -인 경우
+		if(afterCredit < 0) {
+			$("#buyAfterCredit").html("-"+comma(afterCredit*-1));
+		} else {
+			$("#buyAfterCredit").html(comma(afterCredit));
+		}
+		
 		$("#buyAfterCredit").attr("credit", afterCredit);
-		$("#buyAfterCredit").html(comma(afterCredit));
 		
 		var accumMileage = Math.floor(totalProductCredit / 10)
 		
@@ -504,13 +512,42 @@
 		var productNo = new Array();
 		var produtBuyAmount = new Array();
 		
+		if($("#addr").val().trim() == "") {
+			alert("상세주소를 입력해주세요.");
+			$("#addr").focus();
+			return;
+		}
+		
+		if($("input:checkbox[id='guCheck']").is(":checked") == true) {
+			if($("#zipcode1").val().trim() == "") {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode1").focus();
+				return;
+			} else {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode2").focus();
+			}
+		} else {
+			if($("#zipcode1").val().trim() == "") {
+				alert("우편번호를 입력해주세요.");
+				$("#zipcode1").focus();
+				return;
+			}
+		}
+		
 		$(".productNo").each(function(){
 			productNo.push($(this).html());
 			produtBuyAmount.push($(".productAmount").html());
 		});
 		
+		if($("input:checkbox[id='onlyMileage']").is(":checked") == true) {
+			gubun = "MILEAGE"
+		} else {
+			gubun = "CREDIT"
+		}
+		
 		$.ajax({
-			url : "/productSell/insert",
+			url : "/productSell/insert?gubun=" + gubun,
 			type : "POST",
 			cache : false,
 			dataType : "html",
@@ -536,6 +573,8 @@
 					alert("얘! 구입할 크레딧이 없단다.\n토토하러 가렴.");
 				} else if(data.trim() == -96) {
 					alert("얘! 그만큼의 재고가 없단다.\n누가먼저산듯");
+				} else if(data.trim() == -95) {
+					alert("얘! 구입할 마일리지가 없단다.\n상품좀 사렴.");
 				} else {
 					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
 				}

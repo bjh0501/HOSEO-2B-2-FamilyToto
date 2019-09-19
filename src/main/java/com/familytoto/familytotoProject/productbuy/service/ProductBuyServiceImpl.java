@@ -53,7 +53,7 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 		} else {
 			if(productBuyDao.isCustMileage(vo) == false) {		// 마일리지 없는경우
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				return -97;
+				return -95;
 			}
 		}
 		
@@ -104,9 +104,12 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 				productBuyDao.insertUseMileage(mVo);
 			}
 			
-			if(productBuyDao.updateUsedBasket(bVo) < 1) {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				return -4;
+			// 장박구니 경우
+			if(bVo.getBasketNo() != 0) {
+				if(productBuyDao.updateUsedBasket(bVo) < 1) {
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					return -4;
+				}
 			}
 			
 			return 1;

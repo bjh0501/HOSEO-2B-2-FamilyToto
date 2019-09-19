@@ -51,7 +51,7 @@
 					<div class="row">
 						<div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
 							<div class="input-group mb-3">
-								<select class="custom-select" id="inputGroupSelect01">
+								<select class="custom-select">
 									<option selected>전체보기</option>
 									<option value="1">카드</option>
 									<option value="2">술</option>
@@ -73,33 +73,12 @@
 					<br>
 
 					<!-- 따라다니는 광고 레이어 시작-->
-					<div class="fixed-bottom-right">
-						<img src="img/add/nomoney.png">
-					</div>
+<!-- 					<div class="fixed-bottom-right"> -->
+<!-- 						<img src="img/add/nomoney.png"> -->
+<!-- 					</div> -->
 					<!-- 따라다니는 광고 레이어 마지막 -->
 
-					<div class="container">
-						<!-- 1번 레일  -->
-						<th:block th:each="list, index : ${list}">
-							<div class="card col-lg-3 col-md-3 col-sm-6  col-xs-12">
-								<img th:src="${list.productImgUrl}" class="card-img-top"
-									alt="..." style="height: 180px"
-									onerror="this.src='img/error/notFound.jpg'">
-								<div class="card-body">
-									<hr>
-									<h5 class="card-title">
-										<span th:text="${list.productName}">양주 패키지</span><span style="float: right"> <input
-											class="btn-secondary" type="button" value="상세보기"
-											th:onclick="|javascript:location.href='/showProduct/${list.getProductNo()}'|" />
-										</span>
-									</h5>
-									<p class="card-text">
-										<span  th:text="${#numbers.formatInteger(list.productCredit, 0, 'COMMA')}">500,000</span>크레딧<span style="float: right"><input
-											class="btn-secondary" type="button" value="장바구니">
-									</p>
-								</div>
-							</div>
-						</th:block>
+					<div class="container" id="creditMain" style="display: none;">
 					</div>
 					<!-- /.container-fluid -->
 
@@ -124,3 +103,90 @@
 		<script src="/js/sb-admin-2.min.js"></script>
 </body>
 </html>
+<script>
+	$(function(){
+		$.ajax({
+			url : "/creditShop/list",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				str = "";
+				
+				var i = 0;
+				var num = data.length;
+				
+				if(num > 20) {
+					num = 20;
+				}
+				
+				while(i <= num) {
+					str += "<div class='row'>";
+					
+					for(var j = 0 ; j < 4; j++) {
+						var img = data[i].productImgUrl;
+						var productName = data[i].productName;
+						var productNo = data[i].productNo;
+						var productCredit = comma(data[i].productCredit);
+						
+						str += "	<div class='card col-lg-3 col-md-3 col-sm-6  col-xs-12'>";
+						str += "		<img class='card-img-top' alt=''...' style='height: 180px'";
+						str += "			src='" + img + "'";
+						str += "			onerror=this.src='/img/error/notFound.jpg'>";
+						str += "		<div class='card-body'>";
+						str += "			<hr>";
+						str += "			<h5 class='card-title'>";
+						str += "				<span>" + productName + "</span><span style='float: right'> <input";
+						str += "					class='btn-secondary' type='button' value='상세보기'";
+						str += "					onclick=javascript:location.href='/showProduct/" + productNo + "/'>";
+						str += "				</span>";
+						str += "			</h5>";
+						str += "			<p class='card-text'>";
+						str += "				<span>" + productCredit + "</span>크레딧<span style='float: right'><input";
+						str += "					class='btn-secondary' type='button' value='장바구니'>";
+						str += "			</p>";
+						str += "		</div>";
+						str += "	</div>";
+						
+						if(i >= num) {
+							break;
+						}
+						
+						i++;
+					}
+					
+					str += "</div>";
+					
+					i++;
+				}
+				
+				$("#creditMain").html(str);
+				$("#creditMain").slideDown(200);
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+		
+	});
+	
+	function comma(num){
+	    var len, point, str; 
+	       
+	    num = num + ""; 
+	    point = num.length % 3 ;
+	    len = num.length; 
+	   
+	    str = num.substring(0, point); 
+	    while (point < len) { 
+	        if (str != "") str += ","; 
+	        str += num.substring(point, point + 3); 
+	        point += 3; 
+	    } 
+	     
+	    return str;
+	}
+</script>
+
