@@ -12,13 +12,19 @@
 
 <title>One Sports</title>
 
+
+
 <!-- Custom fonts for this template-->
 <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
 	type="text/css">
 <link href="/css/Nunito.css" rel="stylesheet">
 
+
 <!-- Custom styles for this template-->
+
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+
 </head>
 <style>
 .rate-base-layer {
@@ -40,6 +46,139 @@
 .rate2 .rate-select-layer {
 	color: orange;
 }
+
+{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+body {
+  background: #3f4c6b;
+  font-family: Arial, sans-serif;
+}
+
+#container {
+  width: 720px;
+  overflow: hidden;
+  margin: 150px auto;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.thumbs {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.thumbs li, .thumbs li a {
+  width: 98px;
+  height: 55px;
+}
+
+.thumbs a {
+  /*display: block;*/
+  position: relative;
+  font: bold 12px/25px Arial, sans-serif;
+  color: #515151;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.25), inset 1px 1px 0px rgba(0, 0, 0, 0.15);
+}
+
+.thumbs li a img {
+  width: 90px;
+  height: 45px;
+  border: 2px solid gray;
+}
+
+.thumbs li a:hover span {
+  position: absolute;
+  z-index: 101;
+  bottom: -30px;
+  display: block;
+  width: 98px;
+  height: 25px;
+  text-align: center;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+  -o-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+  -ms-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+  background: #fff;
+  background: -webkit-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+  background: -moz-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+  background: -o-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+  background: -ms-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+  background: linear-gradient(top, #fff 0%, #bcbcbc 100%);
+}
+
+.thumbs li a:hover span::before {
+  width: 0;
+  height: 0;
+  border-bottom: 5px solid white;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 44px;
+}
+
+.slide {
+  overflow: hidden;
+  /*border: 4px solid #E74C3C;*/
+  border: 2px solid gray;
+}
+
+.slide, .slide li, .slide img {
+  width: 712px;
+  height: 350px;
+  position: relative;
+}
+
+.slide li {
+  position: absolute;
+  z-index: 50;
+}
+
+/*Animation For Slider*/
+@-webkit-keyframes 
+slider {  0% {
+left: -500px;
+}
+ 100% {
+left: 0;
+}
+}
+
+.slide li:target {
+  z-index: 100;
+  -webkit-animation: slider 1s 1;
+}
+
+/*Not Target*/
+@-webkit-keyframes 
+noTarget {  0% {
+z-index: 75;
+}
+ 100% {
+z-index: 75;
+}
+}
+
+.slide li:not(:target) { -webkit-animation: noTarget 1s 1; }
+
+ul, li{
+   list-style:none;
+   padding-left:0px;
+   }
+
 </style>
 
 <body id="page-top">
@@ -74,9 +213,20 @@
 							</div>
 							<div class="row">
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-									<img
-										src="http://gdimg.gmarket.co.kr/982212715/still/600?ver=1532747867"
-										width=100%>
+									<div class="container">
+									    <ul class="thumbs">
+							                <li><a href="#slide-1"><img src="/img/ak47.jpg"><span></span></a></li>
+							                <li><a href="#slide-2"><img src="/img/ak47.jpg"><span></span></a></li>
+							                <li><a href="#slide-3"><img src="/img/ak47.jpg"><span></span></a></li>
+
+							            </ul>
+										<ul class="slide">
+							                <li class="first" id="slide-1"><img src="/img/ak47.jpg" alt=""></li>
+							                <li id="slide-2"><img src="/img/ak47.jpg" alt=""></li>
+							                <li id="slide-3"><img src="/img/ak47.jpg" alt=""></li>
+
+							            </ul>
+									</div>
 								</div>
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 									<div class="input-group mb-3">
@@ -224,9 +374,19 @@
 	<!-- Custom scripts for all pages-->
 	<script src="/js/sb-admin-2.min.js"></script>
 	<script src="/js/rater.js"></script>
+
+	
 </body>
 
 </html>
+
+
+<!-- 슬라이드 애니메이션 이미지파일 -->
+<script>
+
+</script>
+
+
 <script>
     $(document).ready(function(){
         var options = {

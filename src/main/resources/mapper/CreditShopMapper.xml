@@ -58,11 +58,11 @@
 		 AND	PRODUCT_NO = #{productNo}
 		 AND	USE_YN = 'Y') AS existsCheck
 	</select>
-	<select id="isDupleProductComment" resultType="boolean" parameterType="ProductCommentVO">
-		SELECT EXISTS (SELECT PRODUCT_NO
-		 FROM 	PRODUCT_COMMENT
-		 WHERE	FAMILY_CUST_NO = #{familyCustNo}
-		 AND	PRODUCT_NO = #{productNo}
-		 AND	USE_YN = 'Y') AS existsCheck
-	</select>
+<!-- 	<select id="isDupleProductComment" resultType="boolean" parameterType="ProductCommentVO"> -->
+<!-- 		SELECT EXISTS (SELECT PRODUCT_NO -->
+<!-- 		 FROM 	PRODUCT_COMMENT -->
+<!-- 		 WHERE	FAMILY_CUST_NO = #{familyCustNo} -->
+<!-- 		 AND	PRODUCT_NO = #{productNo} -->
+<!-- 		 AND	USE_YN = 'Y') AS existsCheck -->
+<!-- 	</select> -->
 </mapper>
