@@ -73,12 +73,13 @@
 					<br>
 
 					<!-- 따라다니는 광고 레이어 시작-->
-<!-- 					<div class="fixed-bottom-right"> -->
-<!-- 						<img src="img/add/nomoney.png"> -->
-<!-- 					</div> -->
+					<!-- 					<div class="fixed-bottom-right"> -->
+					<!-- 						<img src="img/add/nomoney.png"> -->
+					<!-- 					</div> -->
 					<!-- 따라다니는 광고 레이어 마지막 -->
 
-					<div class="container" id="creditMain" style="display: none;">
+					<div class="container" id="creditMain">
+
 					</div>
 					<!-- /.container-fluid -->
 
@@ -104,63 +105,105 @@
 </body>
 </html>
 <script>
-	$(function(){
+	function comma(num) {
+		var len, point, str;
+
+		num = num + "";
+		point = num.length % 3;
+		len = num.length;
+
+		str = num.substring(0, point);
+		while (point < len) {
+			if (str != "")
+				str += ",";
+			str += num.substring(point, point + 3);
+			point += 3;
+		}
+
+		return str;
+	}
+
+	var page = 0; //페이징과 같은 방식이라고 생각하면 된다. 
+
+	$(function() { //페이지가 로드되면 데이터를 가져오고 page를 증가시킨다.
+		getList(page);
+	});
+
+	$(window).scroll(
+		function() { //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
+			if ($(window).scrollTop() >= $(document).height()
+				- $(window).height()) {
+			getList(page);
+		}
+	});
+
+	function getList(page) {
 		$.ajax({
-			url : "/creditShop/list",
+			url : "/creditShop/list?pageParameter=" + page,
 			type : "POST",
 			cache : false,
 			dataType : "json",
 			success : function(data) {
 				str = "";
-				
+
 				var i = 0;
 				var num = data.length;
-				
-				if(num > 20) {
+
+				if (num > 20) {
 					num = 20;
 				}
-				
-				while(i <= num) {
+
+				while (i < num) {
 					str += "<div class='row'>";
-					
-					for(var j = 0 ; j < 4; j++) {
-						var img = data[i].productImgUrl;
-						var productName = data[i].productName;
-						var productNo = data[i].productNo;
-						var productCredit = comma(data[i].productCredit);
-						
-						str += "	<div class='card col-lg-3 col-md-3 col-sm-6  col-xs-12'>";
-						str += "		<img class='card-img-top' alt=''...' style='height: 180px'";
-						str += "			src='" + img + "'";
-						str += "			onerror=this.src='/img/error/notFound.jpg'>";
-						str += "		<div class='card-body'>";
-						str += "			<hr>";
-						str += "			<h5 class='card-title'>";
-						str += "				<span>" + productName + "</span><span style='float: right'> <input";
-						str += "					class='btn-secondary' type='button' value='상세보기'";
-						str += "					onclick=javascript:location.href='/showProduct/" + productNo + "/'>";
-						str += "				</span>";
-						str += "			</h5>";
-						str += "			<p class='card-text'>";
-						str += "				<span>" + productCredit + "</span>크레딧<span style='float: right'><input";
-						str += "					class='btn-secondary' type='button' value='장바구니'>";
-						str += "			</p>";
-						str += "		</div>";
-						str += "	</div>";
-						
-						if(i >= num) {
-							break;
+
+					for (var j = 0; j < 4; j++) {
+						if (data[i] != undefined) {
+							var img = "";
+
+							if (data[i].productImgUrl != undefined) {
+								img = data[i].productImgUrl;
+							}
+
+							var productName = data[i].productName;
+							var productNo = data[i].productNo;
+							var productCredit = comma(data[i].productCredit);
+
+							str += "	<div class='card col-lg-3 col-md-3 col-sm-6  col-xs-12'>";
+							str += "		<img class='card-img-top' alt=''...' style='height: 180px'";
+							str += "			src='" + img + "'";
+							str += "			onerror=this.src='/img/error/notFound.jpg'>";
+							str += "		<div class='card-body'>";
+							str += "			<hr>";
+							str += "			<h5 class='card-title'>";
+							str += "				<span>"
+									+ productName
+									+ "</span><span style='float: right'> <input";
+							str += "					class='btn-secondary' type='button' value='상세보기'";
+							str += "					onclick=javascript:location.href='/showProduct/" + productNo + "/'>";
+							str += "				</span>";
+							str += "			</h5>";
+							str += "			<p class='card-text'>";
+							str += "				<span>"
+									+ productCredit
+									+ "</span>크레딧<span style='float: right'><input";
+							str += "					class='btn-secondary' type='button' value='장바구니'>";
+							str += "			</p>";
+							str += "		</div>";
+							str += "	</div>";
+
+							if (i >= num) {
+								break;
+							}
+
+							i++;
 						}
-						
-						i++;
 					}
-					
+
 					str += "</div>";
-					
-					i++;
 				}
-				
-				$("#creditMain").html(str);
+
+				page+=10;
+				$("#creditMain").append(str);
 				$("#creditMain").slideDown(200);
 			},
 			error : function(request, status, error) {
@@ -169,24 +212,6 @@
 				console.log(msg);
 			}
 		});
-		
-	});
-	
-	function comma(num){
-	    var len, point, str; 
-	       
-	    num = num + ""; 
-	    point = num.length % 3 ;
-	    len = num.length; 
-	   
-	    str = num.substring(0, point); 
-	    while (point < len) { 
-	        if (str != "") str += ","; 
-	        str += num.substring(point, point + 3); 
-	        point += 3; 
-	    } 
-	     
-	    return str;
-	}
+	};
 </script>
 

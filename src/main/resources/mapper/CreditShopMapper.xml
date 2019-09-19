@@ -22,7 +22,7 @@
 		AND		P.USE_YN = 'Y'
 	</select>
 	
-	<select id="listCreditShop" resultType="ProductVO">
+	<select id="listCreditShop" resultType="ProductVO" parameterType="int">
 		SELECT	P.PRODUCT_NO as productNo
 		,		P.PRODUCT_NAME as productName
 		,		P.PRODUCT_CREDIT as productCredit
@@ -30,7 +30,7 @@
 		FROM	PRODUCT P
 			INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y' AND PI.PRODUCT_IMG_PRIMARY = 'Y'
 		WHERE	P.USE_YN = 'Y'
-		LIMIT 20
+		LIMIT #{nParameter}, 10
 	</select>
 	
 	<insert id="insertProductComment">
@@ -58,11 +58,22 @@
 		 AND	PRODUCT_NO = #{productNo}
 		 AND	USE_YN = 'Y') AS existsCheck
 	</select>
-<!-- 	<select id="isDupleProductComment" resultType="boolean" parameterType="ProductCommentVO"> -->
-<!-- 		SELECT EXISTS (SELECT PRODUCT_NO -->
-<!-- 		 FROM 	PRODUCT_COMMENT -->
-<!-- 		 WHERE	FAMILY_CUST_NO = #{familyCustNo} -->
-<!-- 		 AND	PRODUCT_NO = #{productNo} -->
-<!-- 		 AND	USE_YN = 'Y') AS existsCheck -->
-<!-- 	</select> -->
+	<select id="listProductComment" resultType="ProductCommentVO" parameterType="ProductVO">
+		SELECT	PRODUCT_COMMENT_NO as productCommentNo
+		,		PRODUCT_COMMENT_CONTENTS as productCommentContents
+		,		PRODUCT_COMMENT_RATING as productCommentRating
+		,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
+		,		IFNULL(PC.CHG_DT, PC.REG_DT) as regDt
+		FROM 	PRODUCT_COMMENT PC
+			INNER JOIN FAMILY_CUSTOM FC ON PC.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		WHERE	PC.USE_YN = 'Y'
+		AND		PC.PRODUCT_NO = #{productNo}
+	</select>
+	<select id="productCommentCnt" resultType="int" parameterType="ProductVO">
+		SELECT	COUNT(*) as cnt
+		FROM 	PRODUCT_COMMENT PC
+			INNER JOIN FAMILY_CUSTOM FC ON PC.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		WHERE	PC.USE_YN = 'Y'
+		AND		PC.PRODUCT_NO = #{productNo}
+	</select>
 </mapper>

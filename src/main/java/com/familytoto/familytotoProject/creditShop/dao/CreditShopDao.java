@@ -10,7 +10,7 @@ public interface CreditShopDao {
 	ProductVO getShowProduct(ProductVO vo);
 	
 	// 상품리스트
-	List<ProductVO> listCreditShop();
+	List<ProductVO> listCreditShop(int nParameter);
 	
 	// 상품평달기
 	int insertProductComment(ProductCommentVO vo);
@@ -20,4 +20,10 @@ public interface CreditShopDao {
 	
 	// 상품평 중복체크
 	boolean isDupleProductComment(ProductCommentVO vo);
+	
+	// 상품평 리스트
+	List<ProductCommentVO> listProductComment(ProductVO vo);
+	
+	// 상품평 갯수
+	int productCommentCnt(ProductVO vo);
 }

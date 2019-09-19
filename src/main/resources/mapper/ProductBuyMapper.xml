@@ -77,7 +77,7 @@
 		,		P.PRODUCT_NAME as productName
 		,		P.PRODUCT_CREDIT as productCredit
 		,		B.BASKET_AMOUNT as productAmount
-		,		P.PRODUCT_CREDIT * P.PRODUCT_AMOUNT as totalCredit
+		,		P.PRODUCT_CREDIT * B.BASKET_AMOUNT as totalCredit
 		,		B.BASKET_NO as basketNo
 		FROM	BASKET B
 			INNER JOIN PRODUCT P ON B.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'

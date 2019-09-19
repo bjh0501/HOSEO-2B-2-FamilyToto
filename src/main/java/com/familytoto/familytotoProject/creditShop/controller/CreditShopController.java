@@ -17,6 +17,7 @@ import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.creditShop.service.CreditShopService;
 import com.familytoto.familytotoProject.productbuy.service.ProductBuyService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.google.api.client.http.HttpRequest;
 import com.google.gson.Gson;
 
 @Controller
@@ -34,19 +35,26 @@ public class CreditShopController {
 	
 	@RequestMapping("/creditShop/list")
 	@ResponseBody
-    public String creditShopList(Model model) {
+    public String creditShopList(Model model, HttpServletRequest request) {
+		String sPageParameter = request.getParameter("pageParameter");
+		int nParameter = Integer.parseInt(sPageParameter);
+		
 		Gson gson = new Gson();
-		String json = gson.toJson(creditShopService.listCreditShop());
+		String json = gson.toJson(creditShopService.listCreditShop(nParameter));
 		return json;
     }
 	
 	
 	@RequestMapping("/showProduct/{productNo}")
     public String showProduct(ProductVO vo, Model model, @PathVariable("productNo") int nProductNo) {
-		ProductVO pVo= new ProductVO();
 		vo.setProductNo(nProductNo);
+		
+		ProductVO pVo= new ProductVO();
 		pVo = creditShopService.getShowProduct(vo);
+		
 		model.addAttribute("product", pVo);
+		model.addAttribute("listComment", creditShopService.listProductComment(vo));
+		model.addAttribute("commentCnt", creditShopService.productCommentCnt(vo));
 		
 		return "/shop/creditShop/showProduct";
     }

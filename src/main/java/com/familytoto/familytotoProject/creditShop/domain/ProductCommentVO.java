@@ -38,7 +38,17 @@ public class ProductCommentVO {
     // Y,N,B
     private String useYn;
 
-    private int familyCustNo;
+    private String familyCustNickname;
+    
+    public String getFamilyCustNickname() {
+		return familyCustNickname;
+	}
+
+	public void setFamilyCustNickname(String familyCustNickname) {
+		this.familyCustNickname = familyCustNickname;
+	}
+
+	private int familyCustNo;
     
 	public int getFamilyCustNo() {
 		return familyCustNo;

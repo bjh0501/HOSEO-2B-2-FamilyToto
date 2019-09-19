@@ -293,16 +293,16 @@ ul, li{
 								<div class="col-xl-12 col-md-12 mb-3">
 									<div class="input-group mb-3">
 										<h4>
-											상품 평<span style="color: orange">(2)</span>
+											상품 평<span style="color: orange">(<span th:text="${commentCnt}">0</span>)</span>
 										</h4>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="input-group mb-3">
-									<label style="padding-top: 8px; padding-right: 2px;">KakaoAd</label>
+									<label style="padding-top: 8px; padding-right: 2px;"><b>로그인필요!</b></label>
 									<div style="margin-top: -11px;" class="rate2" data-rate-value=2.5></div>
-									<input type="text" id="ratingValue">
+									<input type="hidden" id="ratingValue">
 									<a class="navbar-brand" href="#"> <img src="#" width="30"
 										height="30" alt="">
 									</a> <input type="text" class="form-control" placeholder="Comment" id="comment"
@@ -311,40 +311,41 @@ ul, li{
 										style="margin-left: 5px" onClick="javascript:comment();">등록</button>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" th:each="list : ${listComment}">
 								<div class="input-group d-flex">
 									<div class="p-1">
-										<label class="text-word-r">구매자1</label> <a
+										<label class="text-word-r" th:text="${list.getFamilyCustNickname()}"></label> <a
 											class="navbar-brand" href="#"> <img
 											src="img/social/naver.jpg" width="30" height="30" alt="">
 										</a>
 									</div>
 									<div class="p-1">
-										<span>★★★★☆</span><br> <span>내용</span>
+										<span th:text="${list.getProductCommentRating()}">★★★★☆</span><br>
+										<span th:text="${list.getProductCommentContents()}">내용</span>
 									</div>
 									<p class="ml-auto p-2 ">
-										<label class="text-word-l">2015. 12. 12 12:25:33</label>
+										<label class="text-word-l" th:text="${list.getRegDt()}">2015. 12. 12 12:25:33</label>
 									</p>
 								</div>
 							</div>
-							<div class="row">
-								<div class="input-group d-flex">
-									<div class="p-1">
-										<label class="text-word-r">KakaoAd</label> <a
-											class="navbar-brand" href="#"> <img
-											src="img/social/naver.jpg" width="30" height="30" alt="">
-										</a>
-									</div>
-									<div class="p-1">
-										<span>★★★★★</span><br> <span>좋네</span>
-									</div>
-									<p class="ml-auto p-2 ">
-										<button type="button" class="btn btn-secondary">수정</button>
-										<button type="button" class="btn btn-secondary">삭제</button>
-										<label class="text-word-l">2010. 05. 02 12:23:23</label>
-									</p>
-								</div>
-							</div>
+<!-- 							<div class="row"> -->
+<!-- 								<div class="input-group d-flex"> -->
+<!-- 									<div class="p-1"> -->
+<!-- 										<label class="text-word-r">KakaoAd</label> <a -->
+<!-- 											class="navbar-brand" href="#"> <img -->
+<!-- 											src="img/social/naver.jpg" width="30" height="30" alt=""> -->
+<!-- 										</a> -->
+<!-- 									</div> -->
+<!-- 									<div class="p-1"> -->
+<!-- 										<span>★★★★★</span><br> <span>좋네</span> -->
+<!-- 									</div> -->
+<!-- 									<p class="ml-auto p-2 "> -->
+<!-- 										<button type="button" class="btn btn-secondary">수정</button> -->
+<!-- 										<button type="button" class="btn btn-secondary">삭제</button> -->
+<!-- 										<label class="text-word-l">2010. 05. 02 12:23:23</label> -->
+<!-- 									</p> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 						</div>
 					</div>
 				</div>

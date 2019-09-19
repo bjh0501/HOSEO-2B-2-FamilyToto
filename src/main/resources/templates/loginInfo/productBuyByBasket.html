@@ -82,23 +82,26 @@
 											width="100%" cellspacing="0">
 											<thead>
 												<tr>
-													<th style="width: 100px;">상품번호</th>
-													<th style="width: 500px;">상품명</th>
-													<th style="width: 100px;">가격</th>
-													<th style="width: 110px;">개수</th>
-													<th style="width: 150px;">총가격</th>
+													<th style="width: 10%;">상품번호</th>
+													<th style="width: 50%;">상품명</th>
+													<th style="width: 15%;">가격</th>
+													<th style="width: 10%;">개수</th>
+													<th style="width: 15%;">총가격</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr th:each="pro : ${product}">
-													<input name="basketNo" type="hidden" th:value="${pro.getBasketNo()}">
+													<input name="basketNo" type="hidden"
+														th:value="${pro.getBasketNo()}">
 													<td class="productNo" th:text="${pro.getProductNo()}"></td>
 													<td class="productName" th:text="${pro.getProductName()}"></td>
 													<td class="productPrice"
-														th:text="${pro.getProductCredit()}"></td>
+														th:value="${pro.getProductCredit()}"
+														th:text="${#numbers.formatInteger(pro.getProductCredit(), 0, 'COMMA')}"></td>
 													<td class="productAmount"
 														th:text="${pro.getProductAmount()}"></td>
-													<td class="totalCredit" th:text="${pro.getTotalCredit()}"></td>
+													<td class="totalCredit" th:value="${pro.getTotalCredit()}"
+														th:text="${#numbers.formatInteger(pro.getTotalCredit(), 0, 'COMMA')}"></td>
 												</tr>
 											</tbody>
 										</table>
@@ -274,9 +277,10 @@
 		$("#hadMileage").html(comma([[${custInfo.mileage}]]));			// 보유 마일리지
 		
 		var totalProductCredit = 0;										// 상품 총가격
-		$(".totalCredit").each(function() {
-			totalProductCredit  += parseInt($(".totalCredit").html())
-		})
+		
+		for(i = 0; i < $(".totalCredit").length; i++) {
+			totalProductCredit  += parseInt($(".totalCredit").eq(i).attr("value"))
+		}
 		
 		$("#buyProductCredit").attr("credit",totalProductCredit );
 		$("#buyProductCredit").html(comma(totalProductCredit  ));

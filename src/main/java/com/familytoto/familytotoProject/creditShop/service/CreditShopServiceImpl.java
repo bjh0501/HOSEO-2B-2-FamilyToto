@@ -20,8 +20,8 @@ public class CreditShopServiceImpl implements CreditShopService {
 	}
 
 	@Override
-	public List<ProductVO> listCreditShop() {
-		return creditShopDao.listCreditShop();
+	public List<ProductVO> listCreditShop(int nParameter) {
+		return creditShopDao.listCreditShop(nParameter);
 	}
 
 	@Override
@@ -35,5 +35,15 @@ public class CreditShopServiceImpl implements CreditShopService {
 		}
 		
 		return creditShopDao.insertProductComment(vo);
+	}
+
+	@Override
+	public List<ProductCommentVO> listProductComment(ProductVO vo) {
+		return creditShopDao.listProductComment(vo);
+	}
+
+	@Override
+	public int productCommentCnt(ProductVO vo) {
+		return creditShopDao.productCommentCnt(vo);
 	}
 }

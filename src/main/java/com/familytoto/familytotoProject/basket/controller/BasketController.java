@@ -20,7 +20,6 @@ import com.familytoto.familytotoProject.basket.service.BasketService;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 import com.familytoto.familytotoProject.productbuy.service.ProductBuyService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
-import com.familytoto.familytotoProject.scheduler.serivce.SportsTotoSchedulerService;
 
 @Controller
 public class BasketController {

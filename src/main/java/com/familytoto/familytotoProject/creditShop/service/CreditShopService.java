@@ -10,8 +10,14 @@ public interface CreditShopService {
 	ProductVO getShowProduct(ProductVO vo);
 	
 	// 상품리스트
-	List<ProductVO> listCreditShop();
+	List<ProductVO> listCreditShop(int nParameter);
 	
 	// 상품평달기
 	int insertProductComment(ProductCommentVO vo);
+	
+	// 상품평 리스트
+	List<ProductCommentVO> listProductComment(ProductVO vo);
+	
+	// 상품평 갯수
+	int productCommentCnt(ProductVO vo);
 }

@@ -20,8 +20,8 @@ public class CreditShopDaoImpl implements CreditShopDao {
 	}
 
 	@Override
-	public List<ProductVO> listCreditShop() {
-		return sqlSession.selectList("creditShop.listCreditShop");
+	public List<ProductVO> listCreditShop(int nParameter) {
+		return sqlSession.selectList("creditShop.listCreditShop", nParameter);
 	}
 
 	@Override
@@ -37,5 +37,15 @@ public class CreditShopDaoImpl implements CreditShopDao {
 	@Override
 	public boolean isDupleProductComment(ProductCommentVO vo) {
 		return sqlSession.selectOne("creditShop.isDupleProductComment", vo);
+	}
+
+	@Override
+	public List<ProductCommentVO> listProductComment(ProductVO vo) {
+		return sqlSession.selectList("creditShop.listProductComment", vo);
+	}
+
+	@Override
+	public int productCommentCnt(ProductVO vo) {
+		return sqlSession.selectOne("creditShop.productCommentCnt", vo);
 	}
 }
