@@ -48,7 +48,27 @@ public class ProductVO {
     
     private int basketNo;    
     
-   	public int getBasketNo() {
+    private String productImgPrimary;
+    
+    private double ratingAvg;
+    
+   	public double getRatingAvg() {
+		return ratingAvg;
+	}
+
+	public void setRatingAvg(double ratingAvg) {
+		this.ratingAvg = ratingAvg;
+	}
+
+	public String getProductImgPrimary() {
+		return productImgPrimary;
+	}
+
+	public void setProductImgPrimary(String productImgPrimary) {
+		this.productImgPrimary = productImgPrimary;
+	}
+
+	public int getBasketNo() {
 		return basketNo;
 	}
 

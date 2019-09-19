@@ -24,6 +24,8 @@ public class InterceptorLoginConfig extends WebMvcConfigurerAdapter{
         		.addPathPatterns("/productBuy/**/")
         		.addPathPatterns("/toto/**/")
         		.addPathPatterns("/basketBuy/**/")
-        		.addPathPatterns("/basket/**/");
+        		// 바스켓 페이지는 비회원도 접속해서 장바구니 클릭할수 있으니 페이지만 예외처리
+        		.addPathPatterns("/basket")
+        		.addPathPatterns("/productBuyList/**/"); 
     }
 }

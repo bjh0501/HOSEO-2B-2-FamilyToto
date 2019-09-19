@@ -34,6 +34,10 @@
 	background: gray;
     font-weight: bold;
 }
+
+.input-group-text {
+	border-radius: initial;
+}
 </style>
 </head>
 
@@ -101,7 +105,7 @@
 								<div class="col-xl-5 col-md-5 mb-2">
 									<div class="input-group">
 										<div class="input-group-prepend">
-											<span class="input-group-text" id="basic-addon1">글번호</span>
+											<span class="input-group-text" id="basic-addon1" style="width: 91px">글번호</span>
 										</div>
 										<label style="padding-top: 8px; padding-left: 2px;"
 											th:text="${board.getBoardNo()}"></label>

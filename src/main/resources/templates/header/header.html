@@ -29,7 +29,13 @@
 		</li>
 	</ul>	
 	<ul th:if="${session.cust != null}" class="navbar-nav ml-auto">
-	<li class="nav-item dropdown no-arrow mx-1">
+		<li class="nav-item dropdown no-arrow mx-1">
+			<a class="nav-link dropdown-toggle" href="/productBuyList" role="button">
+				<i class="fas fa-shopping-cart"></i>
+				<span class="header-word">구입한상품들</span>
+			</a>
+		</li>
+		<li class="nav-item dropdown no-arrow mx-1">
 			<a class="nav-link dropdown-toggle" href="/basket" role="button">
 				<i class="fas fa-shopping-cart"></i>
 				<span class="header-word">장바구니</span>

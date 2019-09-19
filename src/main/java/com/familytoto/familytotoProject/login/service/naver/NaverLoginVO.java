@@ -219,20 +219,20 @@ public class NaverLoginVO {
 			vo.setScCustGubun("NA");
 			
 			// 소셜 부분 
+			vo.setRegIp(request.getRemoteAddr());
 			CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 			
 			int nScCustNo = socalLoginService.insertSocialId(vo);
-			vo.setScCustNo(nScCustNo);
 			
 			if(cVo == null) {
 				CustVO cVo2 = new CustVO();
-				cVo2.setCustNo(nScCustNo);
+				cVo2.setCustNo(vo.getScCustNo());
 				cVo2.setFamilyCustNick(nickname);
 				cVo2.setCustOperatorGubun("N");
 				session.setAttribute("cust", cVo2); // 세션 생성
 			} else {
-				cVo.setFamilyCustNick(nickname);
 				cVo.setCustNo(nScCustNo);
+				cVo.setFamilyCustNick(nickname);
 				cVo.setCustOperatorGubun("N");
 				session.setAttribute("cust", cVo); // 세션 생성
 			}

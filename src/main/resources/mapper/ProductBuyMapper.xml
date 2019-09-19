@@ -119,4 +119,19 @@
 		AND		CG.USE_YN = 'Y'
 		HAVING SUM(MILEAGE_VALUE) >= #{productBuyCredit}) as cnt
 	</select>
+	<select id="listBoughtProduct" parameterType="ProductBuyVO" resultType="ProductBuyVO">
+		 SELECT	PBG.PRODUCT_BUY_GRP_NO as productBuyGrpNo
+        ,		PBG.REG_DT as regDt
+        ,		P.PRODUCT_NAME as productName
+        ,		P.PRODUCT_NO as productNo
+        ,		PB.PRODUCT_BUY_CREDIT as productBuyCredit
+        ,		PB.PRODUCT_BUY_AMOUNT as productBuyAmount
+        ,		PB.PRODUCT_BUY_DEL_CREDIT as productBuyDelCredit
+        ,		PB.PRODUCT_BUY_CREDIT * PB.PRODUCT_BUY_AMOUNT as totalCredit
+        FROM	PRODUCT_BUY_GRP PBG
+			INNER JOIN PRODUCT_BUY PB ON PBG.PRODUCT_BUY_GRP_NO = PB.PRODUCT_BUY_GRP_NO AND PB.USE_YN = 'Y'
+            INNER JOIN PRODUCT P ON PB.PRODUCT_NO = P.PRODUCT_NO
+		WHERE	PB.FAMILY_CUST_NO = #{familyCustNo}
+        AND		PB.USE_YN = 'Y'
+	</select>
 </mapper>

@@ -108,8 +108,9 @@ public class KakaoLoginVO {
         return access_Token;
     }
     
-    public SocialVO getKakaoLogin (String access_Token, HttpSession session) {
+    public SocialVO getKakaoLogin (String access_Token, HttpSession session, HttpServletRequest request) {
         String reqURL = "https://kapi.kakao.com/v2/user/me";
+        /// v1/user/unlink
         SocialVO vo = new SocialVO();
         
         try {
@@ -166,30 +167,32 @@ public class KakaoLoginVO {
             	vo.setScCustGubun("KA");
             	vo.setScCustId(id);
             	
-            	// 소셜 부분 
+            	// 소셜 부분
+            	// 소셜정보, 패밀리정보 가져옴
+            	vo.setRegIp(request.getRemoteAddr());
     			CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
     			
     			int nScCustNo = socalLoginService.insertSocialId(vo);
-    			vo.setScCustNo(nScCustNo);
     			
+    			//소셜정보, 패밀리정보 가져왔는데도 널인경우
     			if(cVo == null) {
     				CustVO cVo2 = new CustVO();
-    				cVo2.setCustNo(nScCustNo);
+    				cVo2.setCustNo(vo.getScCustNo());
     				cVo2.setFamilyCustNick(nickname);
     				cVo2.setCustOperatorGubun("N");
     				session.setAttribute("cust", cVo2); // 세션 생성
     			} else {
-    				cVo.setFamilyCustNick(nickname);
     				cVo.setCustNo(nScCustNo);
+    				cVo.setFamilyCustNick(nickname);
     				cVo.setCustOperatorGubun("N");
     				session.setAttribute("cust", cVo); // 세션 생성
     			}
     			
     			session.setAttribute("custSocial", vo); // 세션 생성
     			session.setAttribute("social", "KA"); // 세션 생성
+    			
+    			
     			// 소셜 부분
-    			
-    			
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block

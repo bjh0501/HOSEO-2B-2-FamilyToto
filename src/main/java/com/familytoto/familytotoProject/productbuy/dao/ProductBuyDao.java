@@ -49,4 +49,7 @@ public interface ProductBuyDao {
 	
 	// 마일리지 사용
 	boolean isCustMileage(ProductBuyVO vo);
+	
+	// 구입한상품 리스트
+	List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo);
 }

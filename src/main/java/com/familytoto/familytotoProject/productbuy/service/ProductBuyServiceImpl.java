@@ -156,4 +156,9 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 		
 		return 1;
 	}
+
+	@Override
+	public List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo) {
+		return productBuyDao.listBoughtProduct(vo);
+	}
 }

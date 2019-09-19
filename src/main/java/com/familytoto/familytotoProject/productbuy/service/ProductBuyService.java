@@ -26,4 +26,7 @@ public interface ProductBuyService {
 	
 	// 장바구니 삭제
 	int updateDeleteBasket(BasketVO vo);
+	
+	// 구입한상품 리스트
+	List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo);
 }

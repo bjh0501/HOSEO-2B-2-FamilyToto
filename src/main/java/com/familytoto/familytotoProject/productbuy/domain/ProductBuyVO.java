@@ -56,9 +56,19 @@ public class ProductBuyVO {
     
     private int totalCredit;
     
-    private int basketNo;    
+    private int basketNo;
     
-   	public int getBasketNo() {
+    private String productName;
+    
+   	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public int getBasketNo() {
 		return basketNo;
 	}
 

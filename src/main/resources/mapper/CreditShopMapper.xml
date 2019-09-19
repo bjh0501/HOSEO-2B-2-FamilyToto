@@ -4,7 +4,7 @@
 
 <mapper namespace="creditShop">
 	<select id="showProduct" resultType="ProductVO">
-		SELECT	PRODUCT_NO as productNo
+		SELECT	P.PRODUCT_NO as productNo
 		,		PC.CATEGORY_NAME as categoryName
 		,		PRODUCT_NAME as productName
 		,		PRODUCT_DESC as productDesc
@@ -13,13 +13,15 @@
 		,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
 		,		D.DELIVERY_NAME as deliveryName
 		,		P.DELIVERY_NO as deliveryNo
+        ,		AVG(PCO.PRODUCT_COMMENT_RATING) as ratingAvg
 		FROM	PRODUCT P
+			LEFT OUTER JOIN PRODUCT_COMMENT PCO ON P.PRODUCT_NO = PCO.PRODUCT_NO AND PCO.USE_YN = 'Y'
 			INNER JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_NO = PC.CATEGORY_NO AND PC.USE_YN = 'Y'
 			INNER JOIN DELIVERY D ON P.DELIVERY_NO = D.DELIVERY_NO AND D.USE_YN = 'Y'
 		    INNER JOIN CUSTOM C ON P.REG_CUST_NO = C.CUST_NO AND C.USE_YN = 'Y'
 		    INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
-		WHERE	P.PRODUCT_NO = #{productNo}		
-		AND		P.USE_YN = 'Y'
+		WHERE	P.PRODUCT_NO = #{productNo}
+		AND		P.USE_YN = 'Y';
 	</select>
 	
 	<select id="listCreditShop" resultType="ProductVO" parameterType="int">
@@ -30,7 +32,8 @@
 		FROM	PRODUCT P
 			INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y' AND PI.PRODUCT_IMG_PRIMARY = 'Y'
 		WHERE	P.USE_YN = 'Y'
-		LIMIT #{nParameter}, 10
+		ORDER BY P.PRODUCT_NO DESC
+		LIMIT #{nParameter}, 20
 	</select>
 	
 	<insert id="insertProductComment">
@@ -75,5 +78,21 @@
 			INNER JOIN FAMILY_CUSTOM FC ON PC.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
 		WHERE	PC.USE_YN = 'Y'
 		AND		PC.PRODUCT_NO = #{productNo}
+	</select>
+	<select id="listProductImgs" resultType="ProductVO" parameterType="ProductVO">
+		SELECT	PRODUCT_IMG_URL as productImgUrl
+		,		PRODUCT_IMAGE_NO as productNo
+        ,		PRODUCT_IMG_PRIMARY as productImgPrimary
+        FROM	PRODUCT P
+			INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y'
+        WHERE	P.PRODUCT_NO = #{productNo}
+        AND		P.USE_YN = 'Y'
+        ORDER BY PRODUCT_IMG_PRIMARY DESC
+	</select>
+	<select id="listProductCategory" resultType="CategoryVO">
+		SELECT	CATEGORY_NAME as categoryName
+		,		CATEGORY_NO as categoryNo
+		FROM	PRODUCT_CATEGORY
+		WHERE	USE_YN = 'Y'
 	</select>
 </mapper>

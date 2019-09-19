@@ -50,7 +50,7 @@
 		    'Y');
     </insert>
     
-    <insert id="insertSocial" useGeneratedKeys="true" keyProperty="scCustNo">
+    <insert id="insertSocial" parameterType="SocialVO" useGeneratedKeys="true" keyProperty="scCustNo">
     	INSERT INTO SOCIAL_CUSTOM
 		    (FAMILY_CUST_NO,     SC_CUST_GUBUN,     SC_CUST_ID,     SC_CUST_EMAIL, 
 		    REG_CUST_NO, 	     REG_DT,			REG_IP,			USE_YN,
@@ -60,7 +60,7 @@
 		    0,     				NOW(), 			    #{regIp}, 		'Y',
 		    #{scCustNick});
     </insert>
-    <insert id="insertAuthSocial" useGeneratedKeys="true" keyProperty="scCustNo">
+    <insert id="insertAuthSocial"  useGeneratedKeys="true" keyProperty="scCustNo">
     	INSERT INTO SOCIAL_CUSTOM
 		    (FAMILY_CUST_NO,     SC_CUST_GUBUN,     SC_CUST_ID,     SC_CUST_EMAIL, 
 		    REG_CUST_NO, 	     REG_DT,			REG_IP,			USE_YN,

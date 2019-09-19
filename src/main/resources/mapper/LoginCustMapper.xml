@@ -26,16 +26,16 @@
 		FROM	SOCIAL_CUSTOM SC
 			INNER JOIN CUSTOM C ON SC.FAMILY_CUST_NO = C.FAMILY_CUST_NO
 			AND		C.USE_YN = 'Y'
-		WHERE	SC_CUST_ID = '${scCustId}'
-		AND		SC_CUST_GUBUN = '${scCustGubun}'
+		WHERE	SC_CUST_ID = #{scCustId}
+		AND		SC_CUST_GUBUN = #{scCustGubun}
 		AND		SC.USE_YN = 'Y'	
 	</select>
 	
 	<select id="socialLoginNoFamilyNo" resultType="CustVO">
 		select	SC_CUST_NO as custNo
 		from	SOCIAL_CUSTOM
-		WHERE	SC_CUST_ID = '${scCustId}'
-		AND		SC_CUST_GUBUN = '${scCustGubun}'
+		WHERE	SC_CUST_ID = #{scCustId}
+		AND		SC_CUST_GUBUN = #{scCustGubun}
 		AND		USE_YN = 'Y'
 	</select>
 </mapper>

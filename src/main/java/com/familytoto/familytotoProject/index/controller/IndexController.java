@@ -46,9 +46,4 @@ public class IndexController {
     public String project() {
         return "/aboutUs/project";
     }
-	
-	@RequestMapping("/productSellList")
-    public String productSellList() {
-        return "/loginInfo/productSellList";
-    }
 }

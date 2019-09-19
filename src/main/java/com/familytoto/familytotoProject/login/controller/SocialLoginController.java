@@ -69,10 +69,10 @@ public class SocialLoginController {
 	 
 	@RequestMapping("login/social/kakao")
 	@ResponseBody
-	public int kakaoAuth(@RequestParam("code") String code, HttpSession session, HttpServletResponse response) {
+	public int kakaoAuth(@RequestParam("code") String code, HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 		String access_Token = kakaoLoginVO.getAccessToken(code, "login");
 		
-		SocialVO vo = kakaoLoginVO.getKakaoLogin(access_Token, session);
+		SocialVO vo = kakaoLoginVO.getKakaoLogin(access_Token, session, request);
 		
 		try {
 			response.setContentType("text/html; charset=UTF-8");

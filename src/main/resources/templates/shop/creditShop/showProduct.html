@@ -5,8 +5,8 @@
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- <meta name="viewport" -->
+<!-- 	content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -47,38 +47,17 @@
 	color: orange;
 }
 
-{
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-body {
-  background: #3f4c6b;
-  font-family: Arial, sans-serif;
-}
-
-#container {
-  width: 720px;
-  overflow: hidden;
-  margin: 150px auto;
-}
-
-h1 {
-  color: white;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
 .thumbs {
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .thumbs li, .thumbs li a {
-  width: 98px;
-  height: 55px;
+    width: 98px;
+    height: 55px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .thumbs a {
@@ -91,8 +70,8 @@ h1 {
 }
 
 .thumbs li a img {
-  width: 90px;
-  height: 45px;
+  width: 100%;
+  height: 100%;
   border: 2px solid gray;
 }
 
@@ -137,7 +116,7 @@ h1 {
 }
 
 .slide, .slide li, .slide img {
-  width: 712px;
+  width: 100%;
   height: 350px;
   position: relative;
 }
@@ -148,13 +127,14 @@ h1 {
 }
 
 /*Animation For Slider*/
-@-webkit-keyframes 
-slider {  0% {
-left: -500px;
-}
- 100% {
-left: 0;
-}
+@-webkit-keyframes slider {
+	0% {
+		left: -500px;
+	}
+	
+	100% {
+		left: 0;
+	}
 }
 
 .slide li:target {
@@ -164,20 +144,24 @@ left: 0;
 
 /*Not Target*/
 @-webkit-keyframes 
-noTarget {  0% {
-z-index: 75;
-}
- 100% {
-z-index: 75;
-}
+noTarget {
+	0% {
+		z-index: 75;
+	}
+ 	
+ 	100% {
+		z-index: 75;
+	}
 }
 
-.slide li:not(:target) { -webkit-animation: noTarget 1s 1; }
+.slide li:not(:target) {
+	-webkit-animation: noTarget 1s 1;
+}
 
 ul, li{
    list-style:none;
    padding-left:0px;
-   }
+}
 
 </style>
 
@@ -214,34 +198,35 @@ ul, li{
 							<div class="row">
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 									<div class="container">
-									    <ul class="thumbs">
-							                <li><a href="#slide-1"><img src="/img/ak47.jpg"><span></span></a></li>
-							                <li><a href="#slide-2"><img src="/img/ak47.jpg"><span></span></a></li>
-							                <li><a href="#slide-3"><img src="/img/ak47.jpg"><span></span></a></li>
-
-							            </ul>
 										<ul class="slide">
-							                <li class="first" id="slide-1"><img src="/img/ak47.jpg" alt=""></li>
-							                <li id="slide-2"><img src="/img/ak47.jpg" alt=""></li>
-							                <li id="slide-3"><img src="/img/ak47.jpg" alt=""></li>
-
+							                <li class="first" id="slide-1">
+							                	<img id="mainImg" th:src="${listImgs[0].getProductImgUrl()}" alt="">
+							                </li>
+							            </ul>
+							            <ul class="thumbs">
+							                <li th:each="list : ${listImgs}">
+							                	<a href="javascript:;"
+							                	th:onClick="|javascript:clickThumb('thumbImg'+${list.getProductNo()});|">
+							                		<img th:src="${list.getProductImgUrl()}" th:id="'thumbImg' + ${list.getProductNo()}" >
+							                	</a>
+						                	</li>
 							            </ul>
 									</div>
 								</div>
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
-											<span class="input-group-text" id="basic-addon1">가격</span>
+											<span class="input-group-text" id="basic-addon1" style="width:73.6px">가격</span>
 										</div>
 										<label class="text-word-l"
-											th:text="${product.productCredit}+'크레딧'">0</label>
+											th:text="${#numbers.formatInteger(product.productCredit, 0, 'COMMA')}+'크레딧'">0</label>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
 												<span class="input-group-text" id="basic-addon1">상품평</span>
 											</div>
-											<label class="text-word-l">★★★☆☆</label>
+											<label class="text-word-l" th:text="${product.ratingAvg}">★★★☆☆</label>
 										</div>
 									</div>
 									<div class="input-group mb-2">
@@ -266,7 +251,7 @@ ul, li{
 										</div>
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon1">개수</span>
+												<span class="input-group-text" id="basic-addon1" style="width: 95.2px;">개수</span>
 											</div>
 											<input type="text" class="form-control" placeholder="Amount"
 												id="amount">
@@ -284,6 +269,10 @@ ul, li{
 													class="btn btn-secondary btn-block btn-lg"
 													th:onClick="|javascript:directBuy(${product.productNo});|">즉시구매</button>
 											</div>
+											<div class="col-12">
+												<button type="button"
+													class="btn btn-secondary btn-block btn-lg" onClick="javascript:location.href='/creditShop'">크레딧샵</button>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -300,7 +289,7 @@ ul, li{
 							</div>
 							<div class="row">
 								<div class="input-group mb-3">
-									<label style="padding-top: 8px; padding-right: 2px;"><b>로그인필요!</b></label>
+									<label style="padding-top: 8px; padding-right: 2px;"></label>
 									<div style="margin-top: -11px;" class="rate2" data-rate-value=2.5></div>
 									<input type="hidden" id="ratingValue">
 									<a class="navbar-brand" href="#"> <img src="#" width="30"
@@ -328,24 +317,6 @@ ul, li{
 									</p>
 								</div>
 							</div>
-<!-- 							<div class="row"> -->
-<!-- 								<div class="input-group d-flex"> -->
-<!-- 									<div class="p-1"> -->
-<!-- 										<label class="text-word-r">KakaoAd</label> <a -->
-<!-- 											class="navbar-brand" href="#"> <img -->
-<!-- 											src="img/social/naver.jpg" width="30" height="30" alt=""> -->
-<!-- 										</a> -->
-<!-- 									</div> -->
-<!-- 									<div class="p-1"> -->
-<!-- 										<span>★★★★★</span><br> <span>좋네</span> -->
-<!-- 									</div> -->
-<!-- 									<p class="ml-auto p-2 "> -->
-<!-- 										<button type="button" class="btn btn-secondary">수정</button> -->
-<!-- 										<button type="button" class="btn btn-secondary">삭제</button> -->
-<!-- 										<label class="text-word-l">2010. 05. 02 12:23:23</label> -->
-<!-- 									</p> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
 						</div>
 					</div>
 				</div>
@@ -491,8 +462,8 @@ ul, li{
 			+ "&productCommentContents=" + $("#comment").val()
 			+ "&productCommentRating=" + $("#ratingValue").val(),
 			success : function(data) {
-				if (data.trim() == 1) {
-					alert("상품평을 등록하였습니다.")
+				if (data.trim() >= 100) {
+					alert("상품평을 등록하였습니다\n얻은 랜덤마일리지 : " + data.trim());
 					location.reload();
 				} else if (data.trim() == -99) {
 					alert("상품을 구입한 후에 상품평을 등록할 수 있습니다.")
@@ -511,4 +482,14 @@ ul, li{
 			}
 		});
 	}
+	
+	function clickThumb(tuhmb) {
+		$("#mainImg").fadeOut('fast', function(){
+			var thumbImg = $("#" + tuhmb).attr("src");
+			$("#mainImg").attr("src", thumbImg);
+			$("#mainImg").fadeIn()
+		})
+	}
+	
+	$("#comment").keyup(function(e){if(e.keyCode == 13)  comment(); });
 </script>

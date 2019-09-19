@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -198,5 +199,29 @@ public class ProductBuyController {
 		}
 		
 		return 1;  
+	}
+	
+	@RequestMapping("/productBuyList")
+	public String productBuyList(Model model,
+			HttpSession session,
+			HttpServletResponse response) {
+		CustVO vo = (CustVO) session.getAttribute("cust");
+		
+		if(vo.getFamilyCustNo() == 0) {
+			try {
+				response.setContentType("text/html; charset=UTF-8");
+	            PrintWriter out = response.getWriter();
+	            out.println("<script>alert('연동이 안된 소셜아이디는 볼 수 없습니다. "
+	            		+ "원스포츠 아이디로 연동해주세요.');location.replace('/');</script>");
+	            out.flush();	            
+			} catch(Exception e) {}
+		}
+		
+		ProductBuyVO pbVo = new ProductBuyVO();
+		pbVo.setFamilyCustNo(vo.getFamilyCustNo());
+		
+		model.addAttribute("productList", productBuyService.listBoughtProduct(pbVo));
+		
+		return "/loginInfo/productBuyList";
 	}
 }

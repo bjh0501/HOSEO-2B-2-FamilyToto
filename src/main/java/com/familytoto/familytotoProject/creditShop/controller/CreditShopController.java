@@ -30,6 +30,7 @@ public class CreditShopController {
 	
 	@RequestMapping("/creditShop")
     public String creditShop(Model model) {
+		model.addAttribute("categoryList", creditShopService.listProductCategory());
 		return "/shop/creditShop/creditShop";
     }
 	
@@ -55,6 +56,7 @@ public class CreditShopController {
 		model.addAttribute("product", pVo);
 		model.addAttribute("listComment", creditShopService.listProductComment(vo));
 		model.addAttribute("commentCnt", creditShopService.productCommentCnt(vo));
+		model.addAttribute("listImgs", creditShopService.listProductImgs(vo));
 		
 		return "/shop/creditShop/showProduct";
     }
@@ -74,6 +76,6 @@ public class CreditShopController {
 		vo.setRegCustNo(cVo.getCustNo());
 		vo.setRegIp(request.getRemoteAddr());
 		
-		return creditShopService.insertProductComment(vo);
+		return creditShopService.insertProductComment(vo, cVo, request);
     }
 }

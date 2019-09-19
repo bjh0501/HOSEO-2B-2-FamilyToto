@@ -10,7 +10,7 @@
 		    USE_YN)
 		VALUES
 		    (#{familyCustNo}, 	 #{mileageValue},   #{mileageState}, 
-		    0,				  	 NOW(), 		    #{regIp}, 
+		    #{regCustNo},	  	 NOW(), 		    #{regIp}, 
 		    'Y');
     </insert>
 </mapper>

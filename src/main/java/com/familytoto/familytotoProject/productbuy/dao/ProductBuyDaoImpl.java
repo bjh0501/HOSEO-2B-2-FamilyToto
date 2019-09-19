@@ -84,5 +84,10 @@ public class ProductBuyDaoImpl implements ProductBuyDao {
 	@Override
 	public boolean isCustMileage(ProductBuyVO vo) {
 		return sqlSession.selectOne("productBuy.getCustMileage", vo);
+	}
+
+	@Override
+	public List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo) {
+		return sqlSession.selectList("productBuy.listBoughtProduct", vo);
 	}	
 }
