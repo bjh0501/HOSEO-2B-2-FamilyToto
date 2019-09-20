@@ -1,56 +1,100 @@
 <!DOCTYPE html>
-  <meta charset="utf-8">
-
-	<!-- Sidebar Toggle (Topbar) -->
-	<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-		<i class="fa fa-bars"></i>
-	</button>
+<meta charset="utf-8">
 
 
-	        <!-- Topbar Navbar -->
-	<ul th:if="${session.cust == null}" class="navbar-nav ml-auto">
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="/login" role="button">
-				<i class="fas fa-sign-in-alt"></i>
-				<span class="header-word">로그인</span>
+<!-- Topbar Navbar -->
+<!-- 	<ul th:if="${session.cust == null}" class="navbar-nav ml-auto"> -->
+<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
+<!-- 			<a class="nav-link dropdown-toggle" href="/login" role="button"> -->
+<!-- 				<i class="fas fa-sign-in-alt"></i> -->
+<!-- 				<span class="header-word">로그인</span> -->
+<!-- 			</a> -->
+<!-- 		</li> -->
+<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
+<!-- 			<a class="nav-link dropdown-toggle" href="/findID_PW" role="button"> -->
+<!-- 				<i class="fas fa-lock-open"></i> -->
+<!-- 				<span class="header-word">ID/PW 찾기</span> -->
+<!-- 			</a> -->
+<!-- 		</li> -->
+<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
+<!-- 			<a class="nav-link dropdown-toggle" href="/registerCust" role="button" > -->
+<!-- 				<i class="fas fa-user-plus"></i> -->
+<!-- 				<span class="header-word">회원가입</span> -->
+<!-- 			</a> -->
+<!-- 		</li> -->
+<!-- 	</ul>	 -->
+<!-- 	<ul th:if="${session.cust != null}" class="navbar-nav ml-auto"> -->
+<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
+<!-- 			<a class="nav-link dropdown-toggle" href="/productBuyList" role="button"> -->
+<!-- 				<i class="fas fa-shopping-cart"></i> -->
+<!-- 				<span class="header-word">구입한상품들</span> -->
+<!-- 			</a> -->
+<!-- 		</li> -->
+<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
+<!-- 			<a class="nav-link dropdown-toggle" href="/basket" role="button"> -->
+<!-- 				<i class="fas fa-shopping-cart"></i> -->
+<!-- 				<span class="header-word">장바구니</span> -->
+<!-- 			</a> -->
+<!-- 		</li> -->
+<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
+<!-- 			<a class="nav-link dropdown-toggle" href="/changeCust" role="button" > -->
+<!-- 				<i class="fas fa-user-edit"></i> -->
+<!-- 				<span class="header-word">내정보보기</span> -->
+<!-- 			</a> -->
+<!-- 		</li> -->
+<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
+<!-- 			<a class="nav-link dropdown-toggle" href="/logout" role="button" > -->
+<!-- 				<i class="fas fa-sign-out-alt"></i> -->
+<!-- 				<span class="header-word">로그아웃</span> -->
+<!-- 			</a> -->
+<!-- 		</li> -->
+<!-- 	</ul> -->
+
+<!-- Topbar Navbar -->
+<ul class="navbar-nav ml-auto">
+	<!-- Nav Item - Alerts -->
+
+	<!-- Nav Item - Messages -->
+	<li class="nav-item dropdown no-arrow mx-1">
+		<a	class="nav-link dropdown-toggle" href="#" id="messagesDropdown"
+			role="button" data-toggle="dropdown" aria-haspopup="true"
+			aria-expanded="false">
+				<i class="fas fa-dollar-sign"></i> <!-- Counter - Messages -->
+				<span class="badge badge-danger badge-counter">7</span>
+		</a> <!-- Dropdown - Messages -->
+	</li>
+
+	<div class="topbar-divider d-none d-sm-block"></div>
+
+	<!-- Nav Item - User Information -->
+	<li class="nav-item dropdown no-arrow">
+		<a	class="nav-link dropdown-toggle" href="#" id="userDropdown"
+			role="button" data-toggle="dropdown" aria-haspopup="true"
+			aria-expanded="false">
+			<span class="mr-2 d-none d-lg-inline text-gray-600 small">회원닉네임</span>
+			<img class="img-profile rounded-circle"
+			src="/img/social/icon/onesportsMiniIcon.jpg">
+		</a> <!-- Dropdown - User Information -->
+		<div
+			class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+			aria-labelledby="userDropdown">
+			<a class="dropdown-item" href="#"> <i class="fas fa-user-edit"></i>
+				내정보보기
 			</a>
-		</li>
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="/findID_PW" role="button">
-				<i class="fas fa-lock-open"></i>
-				<span class="header-word">ID/PW 찾기</span>
-			</a>
-		</li>
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="/registerCust" role="button" >
-				<i class="fas fa-user-plus"></i>
-				<span class="header-word">회원가입</span>
-			</a>
-		</li>
-	</ul>	
-	<ul th:if="${session.cust != null}" class="navbar-nav ml-auto">
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="/productBuyList" role="button">
+			<a class="dropdown-item" href="#">
 				<i class="fas fa-shopping-cart"></i>
-				<span class="header-word">구입한상품들</span>
+				장바구니
 			</a>
-		</li>
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="/basket" role="button">
-				<i class="fas fa-shopping-cart"></i>
-				<span class="header-word">장바구니</span>
+			<a class="dropdown-item" href="#">
+				<i class="fas fa-book-open"></i>
+				활동로그보기
 			</a>
-		</li>
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="/changeCust" role="button" >
-				<i class="fas fa-user-edit"></i>
-				<span class="header-word">내정보보기</span>
-			</a>
-		</li>
-		<li class="nav-item dropdown no-arrow mx-1">
-			<a class="nav-link dropdown-toggle" href="/logout" role="button" >
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="#" data-toggle="modal"
+				data-target="#logoutModal">
 				<i class="fas fa-sign-out-alt"></i>
-				<span class="header-word">로그아웃</span>
+				로그아웃
 			</a>
-		</li>
-	</ul>
+		</div>
+	</li>
+</ul>
