@@ -56,23 +56,23 @@
 									cellspacing="0">
 									<thead>
 										<tr>
-											<th>
+											<th style="width:2%;">
 												<div class="custom-control custom-checkbox">
 <!-- 													<input type="checkbox" class="custom-control-input" -->
 <!-- 														id="customCheck1"> <label -->
 <!-- 														class="custom-control-label" for="customCheck1"></label> -->
 												</div>
 											</th>
-											<th style="width: 100px;">상품번호</th>
-											<th style="width: 500px;">상품명</th>
-											<th style="width: 100px;">가격</th>
-											<th style="width: 110px;">개수</th>
-											<th>총가격</th>
+											<th style="width:10%;">상품번호</th>
+											<th style="width:58%;">상품명</th>
+											<th style="width:10%;">가격</th>
+											<th style="width:10%;">개수</th>
+											<th style="width:10%;">총가격</th>
 										</tr>
 									</thead>
 									<tbody id="basketTbody">
 										<tr th:each="ba : ${basket}" >
-											<td>
+											<td style="text-align: center;">
 												<div class="custom-control custom-checkbox">
 													<input type="checkbox" class="custom-control-input"
 														th:basketNo="${ba.getBasketNo()}"
@@ -85,14 +85,14 @@
 											<td><a target="_blank"
 												th:href="'/showProduct/'+${ba.getProductNo()}"
 												th:text="${ba.getProductName()}"></a></td>
-											<td th:text="${#numbers.formatInteger(ba.getProductCredit(), 0, 'COMMA')}"></td>
-											<td>
+											<td th:text="${#numbers.formatInteger(ba.getProductCredit(), 0, 'COMMA')}" style="text-align: right;"></td>
+											<td class="text-middle">
 												<input type="text" class="form-control"
 												placeholder="Amount" id="amount"
 												th:value="${ba.getBasketAmount()}"
 												onKeyup="javascript:updateCredit($(this));">
 											</td>
-											<td th:text="${#numbers.formatInteger(ba.getTotalCredit(), 0, 'COMMA')}" class="totalCredit"></td>
+											<td th:text="${#numbers.formatInteger(ba.getTotalCredit(), 0, 'COMMA')}" class="totalCredit" style="text-align: right;"></td>
 										</tr>
 									</tbody>
 								</table>

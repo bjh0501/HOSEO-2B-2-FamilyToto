@@ -7,7 +7,7 @@ public class GraphVO {
     private int graphNo;
 
     // 배팅
-    private float graphMax;
+    private double graphMax;
 
     private Timestamp graphStartDt;
 
@@ -26,6 +26,26 @@ public class GraphVO {
     private String chgIp;
 
     private String useYn;
+    
+    private double graphStopBet;
+
+    private int familyCustNo;
+
+	public double getGraphStopBet() {
+		return graphStopBet;
+	}
+
+	public void setGraphStopBet(double graphStopBet) {
+		this.graphStopBet = graphStopBet;
+	}
+
+	public int getFamilyCustNo() {
+		return familyCustNo;
+	}
+
+	public void setFamilyCustNo(int familyCustNo) {
+		this.familyCustNo = familyCustNo;
+	}
 
 	public int getGraphNo() {
 		return graphNo;
@@ -35,11 +55,11 @@ public class GraphVO {
 		this.graphNo = graphNo;
 	}
 
-	public float getGraphMax() {
+	public double getGraphMax() {
 		return graphMax;
 	}
 
-	public void setGraphMax(float graphMax) {
+	public void setGraphMax(double graphMax) {
 		this.graphMax = graphMax;
 	}
 

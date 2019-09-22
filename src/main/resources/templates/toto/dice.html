@@ -3,130 +3,357 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 
-  <title>One Sports</title>
+<title>One Sports</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="/css/Nunito.css" rel="stylesheet">
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="/css/Nunito.css" rel="stylesheet">
 
-  <!-- Custom styles for this template-->
-  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
 
-	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
-	</ul>
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
-      <div id="content">
+			<!-- Main Content -->
+			<div id="content">
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
 
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
 
-        </nav>
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-          <!-- Page Heading -->
-          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+					<!-- Page Heading -->
+					<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div> -->
 
-         <!-- 사다리 페이지 -->
-          <div class="row">
-            <div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9 " >
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                </div>
-                <div class="card-body">
-                  <img class="img-fluid px-3 px-sm-1 mt-3 mb-5" style="width: 55rem;" src="/img/dice2.png" alt="">
-                </div>
-              </div>
-            </div>
-            
-            <!-- 배팅리모콘 -->
-            <div class="col-xl-3 col-lg-3 .col-md-3 .col-sm-3" >
-              <div class="card shadow mb-4" style="align:center">
-                <div class="card-header py-3">
-                
-                  <h6 class="m-0 font-weight-bold text-primary text-center" style="font-size:25px">배팅 리모콘</h6><hr>
-                  <h6 class="m-0 font-weight-bold text-primary text-center">현재금액</h6><br>
-                  <input type="text" style="width:350px"></input><hr>
-                  
-                  <h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6><br>
-                  <input type="text" style="width:350px"></input><hr>
-                  
-                  <h6 class="m-0 font-weight-bold text-primary text-center">홀짝 배팅</h6><br>
-                  <h6 class="m-0 font-weight-bold text-primary text-center">&nbsp홀 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 짝&nbsp&nbsp&nbsp&nbsp&nbsp 더블</h6>
-                  <div class="text-center">&nbsp&nbsp&nbsp&nbsp&nbsp<input type ="radio" name="ladder" style="width:30px; height:30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-                  <input type ="radio" name="ladder" style="width:30px; height:30px" >&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-                  <input type ="radio" name="ladder" style="width:30px; height:30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input></input>
-                  </div>
-                </div><hr>
-                <input class="btn-secondary" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:90%; margin:0 auto; height:45px"></input><br>
-                </div>
-            </div>
-          </div>
+					<!-- 사다리 페이지 -->
+					<div class="row">
+						<div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9 ">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3"></div>
+								<div class="card-body" style="min-height: 492px;">
+									<canvas id="myCanvas" style="width:100%; height:100%; background: #068e06;"></canvas>
+									<br>
+									<h2 id="result" style="display: none;">결과 : <span id="resultText"></span></h2>
+								</div>
+							</div>
+						</div>
+ 
+						<!-- 배팅리모콘 -->
+						<div class="col-xl-3 col-lg-3 .col-md-3 .col-sm-3">
+							<div class="card shadow mb-4" style="align: center">
+								<div class="card-header py-3">
+
+									<h6 class="m-0 font-weight-bold text-primary text-center"
+										style="font-size: 25px">배팅 리모콘</h6>
+									<hr>
+									<h6 class="m-0 font-weight-bold text-primary text-center" >보유
+										크레딧</h6>
+									<br> <input type="text" class="form-control"
+										 aria-describedby="basic-addon1" id="haveCredit"
+										th:value="${#numbers.formatInteger(creditInfo.getCreditValue(), 0, 'COMMA')}" disabled>
+									<hr>
+
+									<h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6>
+									<br> <input type="text" class="form-control"
+										placeholder="Betting" id="credit"
+										aria-describedby="basic-addon1">
+									<hr>
+
+									<h6 class="m-0 font-weight-bold text-primary text-center">홀짝
+										배팅</h6>
+									<br>
+									<h6 class="m-0 font-weight-bold text-primary text-center">&nbsp홀
+										&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 짝&nbsp&nbsp&nbsp&nbsp&nbsp
+										더블</h6>
+									<div class="text-center">
+										&nbsp&nbsp&nbsp&nbsp&nbsp<input type="radio" name="option"
+											style="width: 30px; height: 30px" value="H">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
+										<input type="radio" name="option" value="J"
+											style="width: 30px; height: 30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
+										<input type="radio" name="option" value="D"
+											style="width: 30px; height: 30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input></input>
+									</div>
+								</div>
+								<hr>
+								<input class="btn-secondary" id="betButton" type="button" value="배팅하기"
+									onclick="javascript:bet();"
+									style="width: 90%; margin: 0 auto; height: 45px"></input><br>
+							</div>
+						</div>
+					</div>
 
 
-        </div>
-        <!-- /.container-fluid -->
+				</div>
+				<!-- /.container-fluid -->
 
-      </div>
-      <!-- End of Main Content -->
+			</div>
+			<!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white" th:include="/footer/footer">
-      
-      </footer>
-      <!-- End of Footer -->
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
 
-    </div>
-    <!-- End of Content Wrapper -->
+			</footer>
+			<!-- End of Footer -->
 
-  </div>
-  <!-- End of Page Wrapper -->
+		</div>
+		<!-- End of Content Wrapper -->
 
- <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	</div>
+	<!-- End of Page Wrapper -->
 
-  <!-- Core plugin JavaScript-->
-  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="/vendor/chart.js/Chart.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="/js/demo/chart-area-demo.js"></script>
-  <script src="/js/demo/chart-pie-demo.js"></script>
-
+	<!-- Page level plugins -->
+	<script src="/js/common.js"></script>
 </body>
 
 </html>
 <script>
+	var diceResult1 = "";
+	var diceResult2 = "";
+	var timeRef;
+	
 	function goCharge() {
 		location.href = "/charge"
+	}
+
+	function bet() {
+		if($("#credit").val().trim() == "") {
+			alert("크레딧을 입력해주세요.");
+			$("#credit").focus();
+			return false;
+		}
+		
+		if($("#credit").val() < 1000) {
+			alert("1,000크레딧 이상만 배팅할 수 있습니다.");
+			$("#credit").focus();
+			return false;
+		}
+		
+		var radioVal = $('input[name="option"]:checked').val();
+
+		if( radioVal == undefined) {
+			alert("배팅 옵션을 선택해주세요.");
+			return false;
+		}
+
+		$.ajax({
+			url : "/toto/dice/bet",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "creditValue=" + $("#credit").val() 
+			+ "&diceCustBetOption=" + radioVal,
+			success : function(data) {
+				if(data.error==-99) {
+					alert("배팅할 크레딧이 부족합니다.");
+					return;
+				}
+				
+				$("#credit").attr("disabled", true);
+				$('input[name="option"]').attr("disabled",true)
+				 
+				var currentCredit = removeComma($("#haveCredit").val())-$("#credit").val() ;
+				$("#haveCredit").val(numberWithCommas(currentCredit));
+				$("#credit").val(numberWithCommas($("#credit").val()));
+				
+				if(data.dice1 == 1) {
+			    	diceResult1="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
+			    } else if(data.dice1 == 2) {
+			    	diceResult1="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
+			    } else if(data.dice1 == 3) {
+			    	diceResult1="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
+			    } else if(data.dice1 == 4) {
+			    	diceResult1="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
+			    } else if(data.dice1 == 5) {
+			    	diceResult1="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
+			    } else if(data.dice1 == 6) {
+			    	diceResult1="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
+			    }
+				
+				if(data.dice2 == 1) {
+			    	diceResult2="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
+			    } else if(data.dice2 == 2) {
+			    	diceResult2="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
+			    } else if(data.dice2 == 3) {
+			    	diceResult2="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
+			    } else if(data.dice2 == 4) {
+			    	diceResult2="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
+			    } else if(data.dice2 == 5) {
+			    	diceResult2="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
+			    } else if(data.dice2 == 6) {
+			    	diceResult2="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
+			    }
+				
+				$("#resultText").html(data.dice1 + ", " + data.dice2 );
+				
+				timeRef = setInterval(function(){
+					draw(data.error, data.getCredit);
+				}, 10);
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	var size = 50;
+	var canvas = document.getElementById("myCanvas");
+	
+	var ballRadius = size;
+	
+	var ctx1 = canvas.getContext("2d");
+	var ctx2 = canvas.getContext("2d");
+	
+	var x1 = canvas.width/2;
+	var y1 = canvas.height-size;
+	
+	var x2 = canvas.width/2;
+	var y2 = canvas.height-size;
+	
+	var dx1 = getRandomArbitrary(-10, 10);
+	var dy1 = getRandomArbitrary(-10, 10);
+	
+	var dx2 = getRandomArbitrary(-10, 10);
+	var dy2 = getRandomArbitrary(-10, 10);
+	
+	var imgClo1 = new Image(); 
+	var imgClo2 = new Image();
+	
+	var n=0;
+	var turnTime = 30;
+	
+	function drawBall() {	    
+	    var random = Math.floor(6 * Math.random()) + 1;
+	    
+	    n++;
+	    if(n >= turnTime) {
+		    if(random == 1) {
+		    	imgClo1.src="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
+		    	imgClo2.src="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
+		    } else if(random == 2) {
+		    	imgClo1.src="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
+		    	imgClo2.src="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
+		    } else if(random == 3) {
+		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
+		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
+		    } else if(random == 4) {
+		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
+		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
+		    } else if(random == 5) {
+		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
+		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
+		    } else if(random == 6) {
+		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
+		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
+		    }
+		    
+		    n = 1;
+		    turnTime += 10;
+	    }
+	}
+	
+	function draw(result, credit) {
+		if(turnTime >= 100) {
+			
+			clearInterval(timeRef);
+			
+			imgClo1.src = diceResult1;
+			imgClo2.src = diceResult2;
+			
+		    ctx2.drawImage( imgClo2, x2, y2, ballRadius, ballRadius);
+		    ctx1.drawImage( imgClo1, x1, y1, ballRadius, ballRadius);
+		    
+		    if(result == 0) {
+		    	alert("돈을 얻었습니다.");
+		    	
+		    	var haveCredit = removeComma($("#haveCredit").val());
+    			var result = haveCredit + credit;
+    			
+    			$("#haveCredit").val(numberWithCommas(result));
+		    } else if(result == 1) { 
+		    	alert("돈을 잃었습니다.");
+		    }
+		    
+		    $("#result").attr("style", "");
+		    
+		    $("#betButton").val("다시하기");
+		    $("#betButton").attr("onclick", "location.reload()");
+			
+			return false;
+		} else {
+			ctx1.clearRect(0, 0, canvas.width, canvas.height);
+		    
+			////
+			    if(x1 + dx1 > canvas.width-ballRadius || x1+ dx1 < ballRadius-size) {
+			        dx1 = -dx1;
+			    }
+			    if(y1 + dy1 > canvas.height-ballRadius || y1 + dy1 < ballRadius-size) {
+			        dy1 = -dy1;
+			    }
+			    
+			    x1 += dx1;
+			    y1 += dy1;
+		    
+		    ////		    
+			    if(x2 + dx2 > canvas.width-ballRadius || x2+ dx2 < ballRadius-size) {
+			        dx2 = -dx2;
+			    }
+			    if(y2 + dy2 > canvas.height-ballRadius || y2 + dy2 < ballRadius-size) {
+			        dy2 = -dy2;
+			    }
+			    
+			    x2 += dx2;
+			    y2 += dy2;
+			    
+		    ////
+		    
+		    drawBall();
+		    
+		    ctx2.drawImage( imgClo2, x2, y2, ballRadius, ballRadius);
+		    ctx1.drawImage( imgClo1, x1, y1, ballRadius, ballRadius);
+		}
+	}
+	
+	function getRandomArbitrary(min, max) {
+		var randomVal = (Math.random() * (max - min) + min);
+		return randomVal == 0 ? getRandomArbitrary(min, max) : randomVal;
+					
 	}
 </script>

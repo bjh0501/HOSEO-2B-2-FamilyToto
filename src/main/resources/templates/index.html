@@ -98,12 +98,11 @@
 											</thead>
 											<tbody>
 												<tr class="boardrow" th:each="list : ${notice}" th:onClick="|javascript:clickBoard( ${ list.boardNo } );|">
-													<td th:text="${list.getBoardNo()}"></td>
+													<td th:text="${list.getBoardNo()}" style="text-align:center;"></td>
 													<td th:text="${list.getBoardTitle()}"></td>
-													<td th:text="${list.getCustNickname()}"></td>
-													<td th:text="${list.getRegDt()}"></td>
+													<td th:text="${list.getCustNickname()}" style="text-align:center;"></td>
+													<td th:text="${list.getRegDt()}" style="text-align:center;"></td>
 												</tr>
-
 											</tbody>
 										</table>
 									</div>

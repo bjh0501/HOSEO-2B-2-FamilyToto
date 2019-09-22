@@ -9,4 +9,7 @@ public interface ChargeService {
 	Map<String, Object> getCreditInfo(CustVO vo);
 	int doCharge(CreditVO vo);
 	void sendHistoryEmail(String to, int credit);
+	
+	// 현재 보유 크레딧 보기
+	int getCurrentCredit(int familyCustNo);
 }

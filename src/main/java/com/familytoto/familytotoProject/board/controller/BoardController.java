@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -113,16 +114,15 @@ public class BoardController {
 			vo.setRegCustNo(cVo.getCustNo());
 
 			int nResult = 0;
-			
-			if(vo.getBoardNotice() == null) {
+
+			if (vo.getBoardNotice() == null) {
 				vo.setBoardNotice("N");
 			}
-			
-			if(cVo.getCustOperatorGubun().equals("N") &&
-					vo.getBoardNotice().equals("Y")) {
-				return  "-1";
+
+			if (cVo.getCustOperatorGubun().equals("N") && vo.getBoardNotice().equals("Y")) {
+				return "-1";
 			}
-			
+
 			if (vo.getBoardGrpNo() != 0) { // 답장
 				vo.setBoardGrpNo(vo.getBoardGrpNo());
 				vo.setBoardGrpDepth(vo.getBoardGrpDepth() + 1);
@@ -137,7 +137,7 @@ public class BoardController {
 			}
 
 			if (fileVo != null) {
-				if(fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {  
+				if (fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {
 					fileVo.setRegIp(request.getRemoteAddr());
 					fileVo.setBoardNo(vo.getBoardNo());
 					fileVo.setRegCustNo(cVo.getCustNo());
@@ -176,7 +176,7 @@ public class BoardController {
 			}
 
 			if (fileVo != null) {
-				if(fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {
+				if (fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {
 					fileVo.setRegIp(request.getRemoteAddr());
 					fileVo.setBoardNo(vo.getBoardNo());
 					fileVo.setRegCustNo(0);
@@ -199,10 +199,8 @@ public class BoardController {
 	}
 
 	@RequestMapping("/showBoard/{boardNo}")
-	public ModelAndView showBoard(HttpSession session,
-			@PathVariable("boardNo") String sBoardNo,
-			ModelAndView mv,
-			HttpServletRequest request) {
+	public ModelAndView showBoard(HttpSession session, @PathVariable("boardNo") String sBoardNo, ModelAndView mv,
+			HttpServletRequest request, HttpServletResponse response) {
 		BoardVO vo = new BoardVO();
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
 		CustVO custVo = (CustVO) session.getAttribute("cust");
@@ -212,28 +210,42 @@ public class BoardController {
 		vo.setBoardNo(Integer.parseInt(sBoardNo));
 		vo = boardService.getShowBoard(vo);
 
+		if (vo == null) {
+			try {
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out;
+				out = response.getWriter();
+				out.println("<script>alert('존재하지 않는 게시글입니다.'); location.replace('/boardList');</script>");
+				out.flush();
+				return null;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		if (custVo != null) {
 			nCustNo = custVo.getCustNo();
 		}
 
 		List<CommentVO> listCommentVo = commentService.getListComment(vo);
 
-		for(int i = 0; i < listCommentVo.size(); i++) {
-			
+		for (int i = 0; i < listCommentVo.size(); i++) {
+
 			String sDateStr = GlobalVariable.formatTimeString(listCommentVo.get(i).getRegDt());
-			
-			if(sDateStr.equals("출력")) {
+
+			if (sDateStr.equals("출력")) {
 				Timestamp ts = listCommentVo.get(i).getRegDt();
 				Date date = new Date();
 				date.setTime(ts.getTime());
 				String formattedDate = new SimpleDateFormat("yyyy. MM. dd. hh:mm").format(date);
-				
+
 				listCommentVo.get(i).setRegDtStr(formattedDate);
 			} else {
 				listCommentVo.get(i).setRegDtStr(sDateStr);
 			}
 		}
-		
+
 		String sGubun = (String) session.getAttribute("social");
 
 		if (sGubun != null) {
@@ -250,7 +262,27 @@ public class BoardController {
 			sGubun = "/img/social/icon/onesportsMiniIcon.jpg";
 		}
 
-		boardService.updateVisitLog(vo.getBoardNo());
+		Cookie[] getCookie = request.getCookies();
+		
+		String cName = "";
+		String cValue = "";
+		
+		if (getCookie != null) {
+			for (int i = 0; i < getCookie.length; i++) {
+				Cookie c = getCookie[i];
+				
+				cName = c.getName(); // 쿠키 이름 가져오기
+				
+				if(cName.equals("boardVisit" + sBoardNo)) {
+					cValue = c.getValue(); // 쿠키 값 가져오기
+					break;
+				}
+			}
+		}
+		
+		if(!cName.equals("boardVisit" + sBoardNo) && !cValue.equals("true")) {
+			boardService.updateVisitLog(vo.getBoardNo());
+		}
 
 		mv.addObject("cust", nCustNo);
 		mv.addObject("board", vo);
@@ -259,27 +291,25 @@ public class BoardController {
 		mv.addObject("socialImg", sGubun);
 		mv.addObject("commentCnt", nCommentCnt);
 		mv.addObject("replyBoardList", boardService.listReplyBoard(vo.getBoardGrpNo()));
-		
+
 		String sLink = "";
-		if(request.getHeader("referer") == null || request.getHeader("referer").indexOf("boardList") == -1) {
+		if (request.getHeader("referer") == null || request.getHeader("referer").indexOf("boardList") == -1) {
 			sLink = "/boardList";
 		}
-		
+
 		else {
 			sLink = request.getHeader("referer");
 		}
-		
+
 		mv.addObject("listLink", sLink);
-		
+
 		mv.setViewName("/board/showBoard");
 
 		return mv;
 	}
 
 	@RequestMapping("/deleteBoard/{boardNo}")
-	public String deleteBoard(HttpSession session,
-			@PathVariable("boardNo") String sNo,
-			HttpServletRequest request,
+	public String deleteBoard(HttpSession session, @PathVariable("boardNo") String sNo, HttpServletRequest request,
 			@ModelAttribute BoardVO vo) {
 		if (boardService.updateDeleteBoard(sNo, vo, session, request) == 1) {
 			return "redirect:/boardList";
@@ -370,7 +400,7 @@ public class BoardController {
 
 		// 업로드한 파일 있을경우
 		if (fileVo != null) {
-			if(fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {
+			if (fileVo.getBoardFileName() != null && fileVo.getBoardFilePath() != null) {
 				fileVo.setRegIp(request.getRemoteAddr());
 				fileVo.setBoardNo(bVo.getBoardNo());
 				fileVo.setChgIp(request.getRemoteAddr());
@@ -416,7 +446,7 @@ public class BoardController {
 
 			if (fileSize <= 1024 * 1024 * 3) { // 3메가 제한
 				long lTime = System.currentTimeMillis();
-				UUID uuid =UUID.randomUUID();
+				UUID uuid = UUID.randomUUID();
 				String localFullPathFile = path + lTime + "_" + uuid + "_" + originFileName;
 
 				String sAwsFilePath = "img/board/" + "" + sFolderName[0] + "/" + sFolderName[1] + "/" + sFolderName[2];
@@ -525,49 +555,50 @@ public class BoardController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/board/downloadFile/{boardNo}")	
-	public String downloadFile(String filePath,
-			HttpServletResponse response,
-			HttpServletRequest request,
+	@RequestMapping("/board/downloadFile/{boardNo}")
+	public String downloadFile(String filePath, HttpServletResponse response, HttpServletRequest request,
 			@PathVariable("boardNo") int nBoardNo) throws IOException {
-		
+
 		AWSService awsService = new AWSService();
 		FileVO fVo = boardService.getUploadedFile(nBoardNo);
-		
-		String key = fVo.getBoardFilePath().replace(SecretGlobalVariable.AWS_S3_LINK+"/", "");
-        
+
+		String key = fVo.getBoardFilePath().replace(SecretGlobalVariable.AWS_S3_LINK + "/", "");
+
 		S3ObjectInputStream inputStream = awsService.downloadFIle(key, fVo.getBoardFileName());
-		
+
 		// 여기부터 파일 다운 부분
 		String client = request.getHeader("User-Agent");
-	   
-        // 파일 다운로드 헤더 지정
-        response.reset() ;
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Description", "JSP Generated Data");
-        
-        String orgfilename = fVo.getBoardFileName();
-		
-        // IE
-        if(client.indexOf("MSIE") != -1){
-            response.setHeader ("Content-Disposition", "attachment; filename="+new String(orgfilename.getBytes("KSC5601"),"ISO8859_1"));
- 
-            }else{
-                // 한글 파일명 처리
-            orgfilename = new String(orgfilename.getBytes("utf-8"),"iso-8859-1");
- 
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + orgfilename + "\"");
-            response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
-        }
-        
-        try (BufferedOutputStream os = new BufferedOutputStream(response.getOutputStream())) {
-            int leng = 0;
-            byte b[] = new byte[1024*3];
-            while( (leng = inputStream.read(b)) > 0 ){
-                os.write(b, 0, leng);
-            }
-        } catch(Exception e) {System.out.println(e);}
-	
+
+		// 파일 다운로드 헤더 지정
+		response.reset();
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Description", "JSP Generated Data");
+
+		String orgfilename = fVo.getBoardFileName();
+
+		// IE
+		if (client.indexOf("MSIE") != -1) {
+			response.setHeader("Content-Disposition",
+					"attachment; filename=" + new String(orgfilename.getBytes("KSC5601"), "ISO8859_1"));
+
+		} else {
+			// 한글 파일명 처리
+			orgfilename = new String(orgfilename.getBytes("utf-8"), "iso-8859-1");
+
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + orgfilename + "\"");
+			response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
+		}
+
+		try (BufferedOutputStream os = new BufferedOutputStream(response.getOutputStream())) {
+			int leng = 0;
+			byte b[] = new byte[1024 * 3];
+			while ((leng = inputStream.read(b)) > 0) {
+				os.write(b, 0, leng);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
 		return "0";
-	}	
+	}
 }

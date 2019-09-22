@@ -16,7 +16,7 @@ public class ChargeDaoImpl implements ChargeDao{
 	
 	@Override
 	public Map<String, Object> getCreditInfo(CustVO vo) {
-		return sqlSession.selectOne("charge.listCharge", vo);
+		return sqlSession.selectOne("charge.listChargeCnt", vo);
 	}
 
 	@Override
@@ -27,5 +27,10 @@ public class ChargeDaoImpl implements ChargeDao{
 	@Override
 	public Map<String, Object> todayCharge(CreditVO vo) {
 		return sqlSession.selectOne("charge.todayCharge",vo);
+	}
+
+	@Override
+	public int getCurrentCredit(int familyCustNo) {
+		return sqlSession.selectOne("charge.getCurrentCredit",familyCustNo);
 	}
 }

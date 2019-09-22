@@ -137,6 +137,11 @@ public class BoardServiceImpl implements BoardService{
 
 	public BoardVO getShowBoard(BoardVO vo) {
 		BoardVO bVo = boardDao.getShowBoard(vo);
+		
+		if(bVo == null) {
+			return null;
+		}
+		
 		String contents = bVo.getBoardContents();
 		bVo.setBoardContents(contents);
 		

@@ -61,7 +61,6 @@ public class RegisterCustController {
 		
 		if(nCaptchaResult == 0) { // 틀린캡챠
 			nResult = -99;
-			rep.setStatus(HttpStatus.BAD_REQUEST.value());
 		} else if(custDupleId != null) { // 중복 아이디
 			nResult = -98;
 		} else if(custDupleNickname != null) { // 중복 닉네임

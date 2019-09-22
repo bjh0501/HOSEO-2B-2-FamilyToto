@@ -3,10 +3,87 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="totoMiniGame">
-	<select id="getCustCredit" resultType="CreditVO" parameterType="CustVO">
-		SELECT	IFNULL(SUM(CREDIT_VALUE), 0) as creditValue
-        FROM	CUSTOM_CREDIT
-        WHERE	FAMILY_CUST_NO = #{familyCustNo}
-        AND		USE_YN = 'Y'
+	<select id="getCustCredit" resultType="CreditVO"
+		parameterType="CustVO">
+		SELECT IFNULL(SUM(CREDIT_VALUE), 0) as creditValue
+		FROM CUSTOM_CREDIT
+		WHERE FAMILY_CUST_NO = #{familyCustNo}
+		AND USE_YN = 'Y'
 	</select>
+	<select id="isHaveCredit" resultType="boolean" >
+		<![CDATA[
+		SELECT EXISTS (SELECT CREDIT_VALUE
+		FROM	CUSTOM_CREDIT
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+		HAVING	IFNULL(SUM(CREDIT_VALUE),0) >= #{creditValue}) as creditValue
+		]]>
+	</select>
+	<insert id="insertDiceBet">
+		INSERT INTO TOTO_DICE (
+		DICE_AMOUNT, DICE_BET, DICE_RESULT, REG_CUST_NO,
+		REG_DT, REG_IP, USE_YN, FAMILY_CUST_NO,
+		DICE_CUST_BET_OPTION, CREDIT_ID, DICE_OPTION
+		) VALUES (
+		#{diceAmount}, #{diceBet}, #{diceResult}, #{regCustNo},
+		NOW(), #{regIp}, 'Y', #{familyCustNo},
+		#{diceCustBetOption}, #{creditId},#{diceOption}
+		)
+	</insert>
+	<!-- 중간에 나가거나 팅길수도있으니 상태값 P(Process)로 -->
+	<insert id="insertGraphGame" useGeneratedKeys="true"
+		keyProperty="graphNo">
+		INSERT INTO TOTO_GRAPH (
+			GRAPH_MAX, GRAPH_START_DT, REG_CUST_NO, REG_DT,
+			REG_IP, USE_YN, FAMILY_CUST_NO
+		) VALUES (
+			#{graphMax}, NOW(), #{regCustNo}, NOW(),
+			#{regIp}, 'P', #{familyCustNo}
+		)
+	</insert>
+	<select id="isProcessGame" resultType="boolean"
+		parameterType="GraphVO">
+		SELECT	EXISTS(
+			SELECT	GRAPH_NO
+			FROM	TOTO_GRAPH
+			WHERE	FAMILY_CUST_NO = #{familyCustNo}
+			AND		GRAPH_NO = #{graphNo}
+			AND		GRAPH_MAX >= #{graphMax}
+			AND		USE_YN = 'P'
+		) as checkGraph
+	</select>
+	<update id="updateRecordLose">
+		UPDATE TOTO_GRAPH
+		SET GRAPH_END_DT = NOW()
+		, USE_YN =
+		'Y'
+		WHERE GRAPH_NO = #{graphNo}
+		AND FAMILY_CUST_NO = #{familyCustNo}
+		AND
+		USE_YN = 'P'
+	</update>
+	<update id="updateLastGamePorcess">
+		UPDATE TOTO_GRAPH
+		SET USE_YN = 'N'
+		WHERE FAMILY_CUST_NO
+		= #{familyCustNo}
+		AND USE_YN = 'P'
+	</update>
+	<select id="isCorrectStopGraph" resultType="boolean">
+		SELECT EXISTS(SELECT GRAPH_NO
+		FROM TOTO_GRAPH
+		WHERE GRAPH_MAX >= #{graphMax}
+		AND GRAPH_NO = #{graphNo}
+		AND FAMILY_CUST_NO = #{familyCustNo}
+		AND USE_YN = 'P') as checkGraphNo
+	</select>
+	<update id="updateStopGraph">
+		UPDATE	TOTO_GRAPH
+        SET		GRAPH_END_DT = NOW()
+        ,		USE_YN = 'Y'
+        ,		GRAPH_STOP_BET = #{graphStopBet}
+        WHERE	GRAPH_NO = #{graphNo}
+        AND		FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'P'
+	</update>
 </mapper>

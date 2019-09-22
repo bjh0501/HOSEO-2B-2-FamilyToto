@@ -54,7 +54,8 @@ public class ChargeController {
 		Map<String, Object> map = chargeService.getCreditInfo(vo);
 		
 		mv.addObject("list", map);
-		mv.setViewName("shop/charge");
+		mv.addObject("currentCredit", chargeService.getCurrentCredit(nFamilyCustNo));
+		mv.setViewName("/shop/charge");
 		
         return mv;
     }

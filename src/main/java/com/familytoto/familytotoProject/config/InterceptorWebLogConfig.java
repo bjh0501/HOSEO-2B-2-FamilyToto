@@ -24,6 +24,7 @@ public class InterceptorWebLogConfig extends WebMvcConfigurerAdapter{
                 .excludePathPatterns("/img/**/")
                 .excludePathPatterns("/js/**/")
                 .excludePathPatterns("/scss/**/")
+                .excludePathPatterns("/toto/graph/process") // 실시간으로 되기떄문에 웹로그 기록X
                 .excludePathPatterns("/vendor/**/");
     }
 }

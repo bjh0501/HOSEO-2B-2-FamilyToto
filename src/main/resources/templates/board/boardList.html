@@ -74,7 +74,7 @@
 											<tr class="boardrow"
 												th:onClick="|javascript:clickBoard( ${ list.boardNo } );|"
 												th:if="${list.useYn=='Y'}">
-												<td>
+												<td style="text-align: center;">
 												 	<th:block
 												 	 th:if="${list.boardGrpDepth} > 0"
 												 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
@@ -88,11 +88,11 @@
 													
 													<i th:if="${list.boardFileName} != null" class="fas fa-file"></i>
 												</td>
-												<td><span th:text="${list.custNickname}"></span><img
+												<td style="text-align: center;"><span th:text="${list.custNickname}"></span><img
 													th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
 													width=26 height=26></img></td>
-												<td th:text="${list.regDtStr}"></td>
-												<td th:text="${list.visit}"></td>
+												<td th:text="${list.regDtStr}" style="text-align: center;"></td>
+												<td th:text="${list.visit}" style="text-align: center;"></td>
 											</tr>
 											<tr th:if="${list.useYn=='W'}">
 												<td colspan=5>

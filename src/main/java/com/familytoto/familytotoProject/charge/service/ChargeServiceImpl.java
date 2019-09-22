@@ -30,9 +30,10 @@ public class ChargeServiceImpl implements ChargeService {
 		vo.setCreditState("fre");
 		Map<String, Object> map = chargeDao.todayCharge(vo);
 		
+		//  하루에 최고 5번충전가능
 		if(Integer.parseInt(map.get("todayChargeCnt").toString()) >= 5) {
-			return -98;
-		} else if(Integer.parseInt(map.get("remainCredit").toString()) >= 5000) {
+			return -98;			
+		} else if( chargeDao.getCurrentCredit(vo.getFamilyCustNo()) >= 5000) { // 5천크레딧 미만이여야 충전가능 
 			return -97;
 		} else {
 			return chargeDao.doCharge(vo);
@@ -48,6 +49,11 @@ public class ChargeServiceImpl implements ChargeService {
 		
 		
 		emailService.sendEmail(to, sTitle, sContents);
+	}
+
+	@Override
+	public int getCurrentCredit(int familyCustNo) {
+		return chargeDao.getCurrentCredit(familyCustNo);
 	}
 	
 }
