@@ -31,6 +31,7 @@
 		,		FAMILY_CUST_ADDR_SI = #{familyCustAddrSi}
 		,		FAMILY_CUST_ADDR_GUGUN = #{familyCustAddrGugun}
 		,		FAMILY_CUST_ADDR_DONG = #{familyCustAddrDong}
+		,		ZIP_CODE1 = #{zipCode1}
 		,		CHG_DT = NOW()
 		,		CHG_IP = #{chgIp}
 		WHERE	FAMILY_CUST_NO = #{familyCustNo}

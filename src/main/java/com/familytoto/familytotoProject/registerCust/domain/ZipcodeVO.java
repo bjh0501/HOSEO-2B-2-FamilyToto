@@ -19,7 +19,6 @@ public class ZipcodeVO {
 	
 	private String zipCode2;
 	
-	
 
 	public String getZipCode1() {
 		return zipCode1;

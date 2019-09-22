@@ -293,14 +293,13 @@ public class BoardController {
 		mv.addObject("replyBoardList", boardService.listReplyBoard(vo.getBoardGrpNo()));
 
 		String sLink = "";
+		
 		if (request.getHeader("referer") == null || request.getHeader("referer").indexOf("boardList") == -1) {
 			sLink = "/boardList";
-		}
-
-		else {
+		} else {
 			sLink = request.getHeader("referer");
 		}
-
+		
 		mv.addObject("listLink", sLink);
 
 		mv.setViewName("/board/showBoard");

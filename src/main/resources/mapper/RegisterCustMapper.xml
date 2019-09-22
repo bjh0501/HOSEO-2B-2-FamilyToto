@@ -108,10 +108,11 @@
     </select>
     
     <select id="listZip" parameterType="ZipcodeVO" resultType="ZipcodeVO">
-    	select	DISTINCT
-    			TRIM(CONCAT(RI,' ', BUNJI)) as ri
- 		,		LEFT(ZIPCODE,3) as zipCode1
+    	 select	DISTINCT
+				TRIM(CONCAT(RI,' ', BUNJI)) as ri
+		,		LEFT(ZIPCODE,3) as zipCode1
  		,		RIGHT(ZIPCODE,3) as zipCode2
+        ,		'' as zipcode
         from	ZIPCODE 
         WHERE	SIDO = #{sido}
         AND		GUGUN = #{gugun}
@@ -120,11 +121,14 @@
         AND		BUNJI != ''
         UNION DISTINCT
         select	DISTINCT ROAD_NAME_KOR as ri
-        ,		null as zipCode1
- 		,		null as zipCode2
-        from	NEW_ZIPCODE 
+        ,		NULL as zipCode1
+ 		,		NULL as zipCode2
+        ,		ANZ.BASIC_AREA_NUMBER as zipcode
+        from	NEW_ZIPCODE NZ
+			INNER JOIN	ADDRESS_NEW_ZIPCODE ANZ ON NZ.NEW_ZIPCODE = ANZ.NEW_ZIPCODE
+            AND			NZ.DONG_ID = ANZ.DONG_ID
         WHERE	SI_DO_KOR = #{sido}
-        AND		SI_GUN_GU_KOR = #{gugun}
+        AND		SI_GUN_GU_KOR =  #{gugun}
         AND		DONG_KOR = #{dong}
         ORDER BY ri ASC
     </select>

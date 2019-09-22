@@ -117,6 +117,18 @@ public class BoardServiceImpl implements BoardService{
 				vo.setCustGubun("");
 			}
 			
+			String sCovertContetns = vo.getBoardContents().replaceAll("<.+?>|&nbsp;", "");
+			
+			if(sCovertContetns.trim().equals("")) {
+				sCovertContetns = "<b>미리보기 없음</b>";
+			}
+			
+			if(sCovertContetns.length() >= 50) {
+				sCovertContetns = sCovertContetns.substring(0, 48) + " ...";
+			}
+			
+			vo.setBoardContents(sCovertContetns);
+			
 			vo.setRegDtStr(GlobalVariable.formatTimeString(vo.getRegDt()));
 			
 			if(vo.getRegDtStr().equals("출력")) {

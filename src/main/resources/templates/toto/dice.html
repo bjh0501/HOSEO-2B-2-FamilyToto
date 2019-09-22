@@ -59,13 +59,16 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3"></div>
 								<div class="card-body" style="min-height: 492px;">
-									<canvas id="myCanvas" style="width:100%; height:100%; background: #068e06;"></canvas>
+									<canvas id="myCanvas"
+										style="width: 100%; height: 100%; background: #068e06;"></canvas>
 									<br>
-									<h2 id="result" style="display: none;">결과 : <span id="resultText"></span></h2>
+									<h2 id="result" style="display: none;">
+										결과 : <span id="resultText"></span>
+									</h2>
 								</div>
 							</div>
 						</div>
- 
+
 						<!-- 배팅리모콘 -->
 						<div class="col-xl-3 col-lg-3 .col-md-3 .col-sm-3">
 							<div class="card shadow mb-4" style="align: center">
@@ -74,11 +77,12 @@
 									<h6 class="m-0 font-weight-bold text-primary text-center"
 										style="font-size: 25px">배팅 리모콘</h6>
 									<hr>
-									<h6 class="m-0 font-weight-bold text-primary text-center" >보유
+									<h6 class="m-0 font-weight-bold text-primary text-center">보유
 										크레딧</h6>
 									<br> <input type="text" class="form-control"
-										 aria-describedby="basic-addon1" id="haveCredit"
-										th:value="${#numbers.formatInteger(creditInfo.getCreditValue(), 0, 'COMMA')}" disabled>
+										aria-describedby="basic-addon1" id="haveCredit"
+										th:value="${#numbers.formatInteger(creditInfo.getCreditValue(), 0, 'COMMA')}"
+										disabled>
 									<hr>
 
 									<h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6>
@@ -103,8 +107,8 @@
 									</div>
 								</div>
 								<hr>
-								<input class="btn-secondary" id="betButton" type="button" value="배팅하기"
-									onclick="javascript:bet();"
+								<input class="btn-secondary" id="betButton" type="button"
+									value="배팅하기" onclick="javascript:bet();"
 									style="width: 90%; margin: 0 auto; height: 45px"></input><br>
 							</div>
 						</div>
@@ -146,27 +150,27 @@
 	var diceResult1 = "";
 	var diceResult2 = "";
 	var timeRef;
-	
+
 	function goCharge() {
 		location.href = "/charge"
 	}
 
 	function bet() {
-		if($("#credit").val().trim() == "") {
+		if ($("#credit").val().trim() == "") {
 			alert("크레딧을 입력해주세요.");
 			$("#credit").focus();
 			return false;
 		}
-		
-		if($("#credit").val() < 1000) {
+
+		if ($("#credit").val() < 1000) {
 			alert("1,000크레딧 이상만 배팅할 수 있습니다.");
 			$("#credit").focus();
 			return false;
 		}
-		
+
 		var radioVal = $('input[name="option"]:checked').val();
 
-		if( radioVal == undefined) {
+		if (radioVal == undefined) {
 			alert("배팅 옵션을 선택해주세요.");
 			return false;
 		}
@@ -176,52 +180,37 @@
 			type : "POST",
 			cache : false,
 			dataType : "json",
-			data : "creditValue=" + $("#credit").val() 
-			+ "&diceCustBetOption=" + radioVal,
+			data : "creditValue=" + $("#credit").val() + "&diceCustBetOption="
+					+ radioVal,
 			success : function(data) {
-				if(data.error==-99) {
+				if (data.error == -99) {
 					alert("배팅할 크레딧이 부족합니다.");
 					return;
 				}
-				
+
 				$("#credit").attr("disabled", true);
-				$('input[name="option"]').attr("disabled",true)
-				 
-				var currentCredit = removeComma($("#haveCredit").val())-$("#credit").val() ;
+				$('input[name="option"]').attr("disabled", true)
+
+				var currentCredit = removeComma($("#haveCredit").val())
+						- $("#credit").val();
 				$("#haveCredit").val(numberWithCommas(currentCredit));
 				$("#credit").val(numberWithCommas($("#credit").val()));
-				
-				if(data.dice1 == 1) {
-			    	diceResult1="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
-			    } else if(data.dice1 == 2) {
-			    	diceResult1="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
-			    } else if(data.dice1 == 3) {
-			    	diceResult1="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
-			    } else if(data.dice1 == 4) {
-			    	diceResult1="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
-			    } else if(data.dice1 == 5) {
-			    	diceResult1="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
-			    } else if(data.dice1 == 6) {
-			    	diceResult1="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
-			    }
-				
-				if(data.dice2 == 1) {
-			    	diceResult2="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
-			    } else if(data.dice2 == 2) {
-			    	diceResult2="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
-			    } else if(data.dice2 == 3) {
-			    	diceResult2="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
-			    } else if(data.dice2 == 4) {
-			    	diceResult2="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
-			    } else if(data.dice2 == 5) {
-			    	diceResult2="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
-			    } else if(data.dice2 == 6) {
-			    	diceResult2="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
-			    }
-				
-				$("#resultText").html(data.dice1 + ", " + data.dice2 );
-				
-				timeRef = setInterval(function(){
+
+				for (i = 1; i <= 6; i++) {
+					if (data.dice1 == i) {
+						diceResult1 = "/img/toto/dice/dice" + i + ".png";
+					}
+				}
+
+				for (i = 1; i <= 6; i++) {
+					if (data.dice2 == i) {
+						diceResult2 = "/img/toto/dice/dice" + i + ".png";
+					}
+				}
+
+				$("#resultText").html(data.dice1 + ", " + data.dice2);
+
+				timeRef = setInterval(function() {
 					draw(data.error, data.getCredit);
 				}, 10);
 			},
@@ -232,128 +221,125 @@
 			}
 		});
 	}
-	
+
 	var size = 50;
 	var canvas = document.getElementById("myCanvas");
-	
+
 	var ballRadius = size;
-	
+
 	var ctx1 = canvas.getContext("2d");
 	var ctx2 = canvas.getContext("2d");
-	
-	var x1 = canvas.width/2;
-	var y1 = canvas.height-size;
-	
-	var x2 = canvas.width/2;
-	var y2 = canvas.height-size;
-	
+
+	var x1 = canvas.width / 2;
+	var y1 = canvas.height - size;
+
+	var x2 = canvas.width / 2;
+	var y2 = canvas.height - size;
+
 	var dx1 = getRandomArbitrary(-10, 10);
 	var dy1 = getRandomArbitrary(-10, 10);
-	
+
 	var dx2 = getRandomArbitrary(-10, 10);
 	var dy2 = getRandomArbitrary(-10, 10);
-	
-	var imgClo1 = new Image(); 
+
+	var imgClo1 = new Image();
 	var imgClo2 = new Image();
-	
-	var n=0;
+
+	var n = 0;
 	var turnTime = 30;
-	
-	function drawBall() {	    
-	    var random = Math.floor(6 * Math.random()) + 1;
-	    
-	    n++;
-	    if(n >= turnTime) {
-		    if(random == 1) {
-		    	imgClo1.src="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
-		    	imgClo2.src="https://cdn.pixabay.com/photo/2014/04/03/10/24/one-310338_960_720.png";
-		    } else if(random == 2) {
-		    	imgClo1.src="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
-		    	imgClo2.src="https://cdn.pixabay.com/photo/2014/04/03/11/56/dice-312627_960_720.png";
-		    } else if(random == 3) {
-		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
-		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/fa/faa851400b93e90dcacf601bbce48811_w.jpeg";
-		    } else if(random == 4) {
-		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
-		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/1c/1cbcade8fcc02279c143dd2c2acc2944_w.jpeg";
-		    } else if(random == 5) {
-		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
-		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/37/374a4a74b501117fcfa7685cac4e40c6_w.jpeg";
-		    } else if(random == 6) {
-		    	imgClo1.src="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
-		    	imgClo2.src="https://data.ac-illust.com/data/thumbnails/40/404025a07c1cc382b00aa2851b2828a8_w.jpeg";
-		    }
-		    
-		    n = 1;
-		    turnTime += 10;
-	    }
+
+	function drawBall() {
+		var random1 = Math.floor(6 * Math.random()) + 1;
+		var random2 = Math.floor(6 * Math.random()) + 1;
+		n++;
+		if (n >= turnTime) {
+			for (var i = 1; i <= 6; i++) {
+				if (random1 == i) {
+					imgClo1.src = "/img/toto/dice/dice" + i + ".png";
+				}
+
+				if (random2 == i) {
+					imgClo2.src = "/img/toto/dice/dice" + i + ".png";
+				}
+			}
+
+			n = 1;
+			turnTime += 10;
+		}
 	}
-	
-	function draw(result, credit) {
-		if(turnTime >= 100) {
-			
+
+	function draw(result, credit) {		
+		if (turnTime >= 100) {
 			clearInterval(timeRef);
 			
+			if (result == 0) {
+				//alert("돈을 얻었습니다.");
+
+				var haveCredit = removeComma($("#haveCredit").val());
+				var result = haveCredit + credit;
+
+				$("#haveCredit").val(numberWithCommas(result));
+			} else if (result == 1) {
+				//alert("돈을 잃었습니다.");
+
+			}
+
+			$("#result").attr("style", "");
+
+			$("#betButton").val("다시하기");
+			$("#betButton").attr("onclick", "location.reload()");
 			imgClo1.src = diceResult1;
 			imgClo2.src = diceResult2;
-			
-		    ctx2.drawImage( imgClo2, x2, y2, ballRadius, ballRadius);
-		    ctx1.drawImage( imgClo1, x1, y1, ballRadius, ballRadius);
-		    
-		    if(result == 0) {
-		    	alert("돈을 얻었습니다.");
-		    	
-		    	var haveCredit = removeComma($("#haveCredit").val());
-    			var result = haveCredit + credit;
-    			
-    			$("#haveCredit").val(numberWithCommas(result));
-		    } else if(result == 1) { 
-		    	alert("돈을 잃었습니다.");
-		    }
-		    
-		    $("#result").attr("style", "");
-		    
-		    $("#betButton").val("다시하기");
-		    $("#betButton").attr("onclick", "location.reload()");
+			ctx2.drawImage(imgClo2, x2, y2, ballRadius, ballRadius);
+			ctx1.drawImage(imgClo1, x1, y1, ballRadius, ballRadius);
+
+			console.log(imgClo1.src)
+			console.log(imgClo2.src)
 			
 			return false;
 		} else {
 			ctx1.clearRect(0, 0, canvas.width, canvas.height);
-		    
-			////
-			    if(x1 + dx1 > canvas.width-ballRadius || x1+ dx1 < ballRadius-size) {
-			        dx1 = -dx1;
-			    }
-			    if(y1 + dy1 > canvas.height-ballRadius || y1 + dy1 < ballRadius-size) {
-			        dy1 = -dy1;
-			    }
-			    
-			    x1 += dx1;
-			    y1 += dy1;
-		    
-		    ////		    
-			    if(x2 + dx2 > canvas.width-ballRadius || x2+ dx2 < ballRadius-size) {
-			        dx2 = -dx2;
-			    }
-			    if(y2 + dy2 > canvas.height-ballRadius || y2 + dy2 < ballRadius-size) {
-			        dy2 = -dy2;
-			    }
-			    
-			    x2 += dx2;
-			    y2 += dy2;
-			    
-		    ////
-		    
-		    drawBall();
-		    
-		    ctx2.drawImage( imgClo2, x2, y2, ballRadius, ballRadius);
-		    ctx1.drawImage( imgClo1, x1, y1, ballRadius, ballRadius);
 		}
+		////
+		if (x1 + dx1 > canvas.width - ballRadius
+				|| x1 + dx1 < ballRadius - size) {
+			dx1 = -dx1;
+		}
+		if (y1 + dy1 > canvas.height - ballRadius
+				|| y1 + dy1 < ballRadius - size) {
+			dy1 = -dy1;
+		}
+
+		x1 += dx1;
+		y1 += dy1;
+
+		////		    
+		if (x2 + dx2 > canvas.width - ballRadius
+				|| x2 + dx2 < ballRadius - size) {
+			dx2 = -dx2;
+		}
+		if (y2 + dy2 > canvas.height - ballRadius
+				|| y2 + dy2 < ballRadius - size) {
+			dy2 = -dy2;
+		}
+
+		x2 += dx2;
+		y2 += dy2;
+
+		////
+		console.log("AA")
+		drawResultDices();
 	}
-	
+
 	function getRandomArbitrary(min, max) {
 		var randomVal = (Math.random() * (max - min) + min);
 		return randomVal == 0 ? getRandomArbitrary(min, max) : randomVal;
-					
+
+	}
+
+	function drawResultDices() {
+		drawBall();
+		ctx2.drawImage(imgClo2, x2, y2, ballRadius, ballRadius);
+		ctx1.drawImage(imgClo1, x1, y1, ballRadius, ballRadius);
 	}
 </script>

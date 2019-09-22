@@ -289,7 +289,8 @@ FB.init({
 }
 
 function getUserData() {
-    FB.api('/me','GET', {"fields": 'name,email,id,age_range'}, function(response) {
+    //,age_range'
+	FB.api('/me','GET', {"fields": 'name,email,id'}, function(response) {
     	id = response.id
     	name = response.name
     	email = response.email

@@ -19,6 +19,8 @@
 
 <!-- Custom styles for this template-->
 <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
 <style>
 .boardrow:hover {
 	background: black;
@@ -26,6 +28,17 @@
 	cursor: pointer;
 }
 </style>
+<style>
+label {
+	display: inline-block;
+	width: 5em;
+}
+
+role[tooltip] {
+	
+}
+</style>
+
 </head>
 
 <body id="page-top">
@@ -73,22 +86,18 @@
 										<th:block th:each="list: ${boardList}">
 											<tr class="boardrow"
 												th:onClick="|javascript:clickBoard( ${ list.boardNo } );|"
-												th:if="${list.useYn=='Y'}">
-												<td style="text-align: center;">
-												 	<th:block
-												 	 th:if="${list.boardGrpDepth} > 0"
-												 	 th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
+												th:if="${list.useYn=='Y'}" th:title="${list.boardContents}">
+												<td style="text-align: center;"><th:block
+														th:if="${list.boardGrpDepth} > 0"
+														th:each="num: ${#numbers.sequence(1, list.boardGrpDepth)}">
 														>
-													</th:block>
-													<span th:text="${list.boardNo}"></span>
-												</td>
-												<td>
-													<span  th:text="${list.boardTitle}"></span>
-													<font color="orange">(<span  th:text="${list.commentCnt}"></span>)</font>
-													
-													<i th:if="${list.boardFileName} != null" class="fas fa-file"></i>
-												</td>
-												<td style="text-align: center;"><span th:text="${list.custNickname}"></span><img
+													</th:block> <span th:text="${list.boardNo}"></span></td>
+												<td><span th:text="${list.boardTitle}"></span> <font
+													color="orange">(<span th:text="${list.commentCnt}"></span>)
+												</font> <i th:if="${list.boardFileName} != null"
+													class="fas fa-file"></i></td>
+												<td style="text-align: center;"><span
+													th:text="${list.custNickname}"></span><img
 													th:if="${list.custGubun != ''}" th:src="${list.custGubun}"
 													width=26 height=26></img></td>
 												<td th:text="${list.regDtStr}" style="text-align: center;"></td>
@@ -96,7 +105,7 @@
 											</tr>
 											<tr th:if="${list.useYn=='W'}">
 												<td colspan=5>
-												<center style="color: gray">삭제된 게시글입니다.</center>
+													<center style="color: gray">삭제된 게시글입니다.</center>
 												</td>
 											</tr>
 										</th:block>
@@ -132,7 +141,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="row justify-content-md-center" th:if="${pagination.listCnt} > 0">
+							<div class="row justify-content-md-center"
+								th:if="${pagination.listCnt} > 0">
 								<div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 mb-4"
 									id="paginationBox">
 									<ul class="pagination justify-content-center">
@@ -146,8 +156,8 @@
 												<a class="page-link" th:text="${idx}"
 												th:href="|javascript:fn_pagination(${idx}, ${pagination.getRange()}, ${pagination.getRangeSize()} )|">2</a>
 											</li>
-											<li class="page-item" th:if="${pagination.page!=idx}">
-												<a class="page-link" th:text="${idx}"
+											<li class="page-item" th:if="${pagination.page!=idx}"><a
+												class="page-link" th:text="${idx}"
 												th:href="|javascript:fn_pagination(${idx}, ${pagination.getRange()}, ${pagination.getRangeSize()} )|">2</a>
 											</li>
 										</th:block>
@@ -181,15 +191,30 @@
 
 	<!-- Bootstrap core JavaScript-->
 	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
-	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
 	<!-- Custom scripts for all pages-->
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script th:src="@{js/sb-admin-2.min.js}"></script>
+	
+	<script src="/js/jquery-ui.min.js"></script>
 
 </body>
-
 </html>
 <script>
+	$(function() {
+		$("#dataTable tbody tr").tooltip({
+			content: function() {
+				return $(this).prop('title')
+			},
+			show: {
+			  delay: 200
+			},
+			position : {
+				track : true,
+				collision: "none"
+			}
+		});
+	});
+
 	$('#searchType').val("[[ ${pagination.getSearchType()} ]]");
 
 	var currentKeyword = $('#keyword').val();
@@ -199,7 +224,7 @@
 		var url = "/boardList";
 		url = url + "?searchType=" + $('#searchType').val();
 		url = url + "&keyword=" + $('#keyword').val();
-		
+
 		location.href = url;
 	}
 
@@ -213,18 +238,18 @@
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + currentSearchType;
 		url = url + "&keyword=" + currentKeyword;
-		
+
 		location.href = url;
 	}
 
-  	//페이지 번호 클릭
+	//페이지 번호 클릭
 	function fn_pagination(page, range, rangeSize, searchType, keyword) {
 		var url = "/boardList";
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + currentSearchType;
 		url = url + "&keyword=" + currentKeyword;
-		
+
 		location.href = url;
 	}
 
@@ -233,7 +258,7 @@
 		var page = parseInt((range * rangeSize)) + 1;
 		var range = parseInt(range) + 1;
 		var url = "/boardList";
-		
+
 		url = url + "?page=" + page;
 		url = url + "&range=" + range;
 		url = url + "&searchType=" + currentSearchType;
@@ -241,10 +266,13 @@
 
 		location.href = url;
 	}
-	
+
 	function clickBoard(no) {
-		location.href= "/showBoard/" + no;
+		location.href = "/showBoard/" + no;
 	}
 
-	$("#keyword").keyup(function(e){if(e.keyCode == 13)  fn_search(); });
+	$("#keyword").keyup(function(e) {
+		if (e.keyCode == 13)
+			fn_search();
+	});
 </script>

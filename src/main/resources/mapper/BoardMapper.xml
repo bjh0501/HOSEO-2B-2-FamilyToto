@@ -59,6 +59,7 @@
 		,COUNT(COM.COMMENT_NO) as commentCnt
 			FROM(
 				SELECT	B.BOARD_NO as boardNo
+				,		B.BOARD_CONTENTS as boardContents
 				,		B.BOARD_GRP_NO as boardGrpNo
 				,		B.BOARD_TITLE as boardTitle
 				,		B.REG_CUST_NO as regCustNo
@@ -115,6 +116,9 @@
     	<if test="searchType=='both' and keyword != null and keyword != ''">
     		AND		(B.BOARD_TITLE LIKE CONCAT('%', #{keyword}, '%')
           		OR		B.BOARD_CONTENTS LIKE CONCAT('%', #{keyword}, '%'))
+    	</if>
+    	<if test="searchType=='register' and keyword != null and keyword != ''">
+    		AND		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID) LIKE CONCAT('%', #{keyword}, '%')
     	</if>
 	</select>
 	<select id="getShowBoard" resultType="BoardVO">

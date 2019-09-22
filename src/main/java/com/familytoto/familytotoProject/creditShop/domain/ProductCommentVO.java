@@ -20,7 +20,7 @@ public class ProductCommentVO {
     private String productCommentContents;
 
     // 평점
-    @Range(min=1,max=5)
+    @Range(min=0,max=5)
     private double productCommentRating;
 
     private int regCustNo;
