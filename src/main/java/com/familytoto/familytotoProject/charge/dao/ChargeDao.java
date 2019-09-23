@@ -12,4 +12,7 @@ public interface ChargeDao {
 	
 	// 현재 보유 크레딧 보기
 	int getCurrentCredit(int familyCustNo);
+	
+	// 카드 정보보기
+	CreditVO getCardInfo(int familyCustNo);
 }

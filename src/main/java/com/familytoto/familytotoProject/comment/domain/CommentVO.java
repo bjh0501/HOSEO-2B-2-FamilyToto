@@ -36,7 +36,7 @@ public class CommentVO {
     @Pattern(regexp = "[a-zA-Zㄱ-힣0-9]{2,8}", message = "2자에서 8자 사이의 영문, 숫자, 한글만 가능")
     private String commentAnnoId;
 
-    @Length(min = 4, max = 20)
+    @Length(min = 8, max = 20)
     private String commentAnnoPw;
 
     private int regCustNo;

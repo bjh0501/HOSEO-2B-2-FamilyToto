@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -129,13 +130,54 @@ public class BasketController {
 			
 		if (custVo == null) {
 			return -99;								// 로그인 안한경우
-		} else if(custVo.getFamilyCustNo() == 0) {
-			return -98;								// 패밀리회원 아닌경우
-		} else {			
-			vo.setChgCustNo(custVo.getCustNo());
-			vo.setFamilyCustNo(custVo.getFamilyCustNo());
-			
-			return basketService.updateChooseBuyBasket(vo); 
 		}
+		
+		if(custVo.getFamilyCustNo() == 0) {
+			return -98;								// 패밀리회원 아닌경우
+		}
+					
+		vo.setChgCustNo(custVo.getCustNo());
+		vo.setFamilyCustNo(custVo.getFamilyCustNo());
+		
+		return basketService.updateChooseBuyBasket(vo);
+    }
+	
+	@RequestMapping("/basket/update")
+	@ResponseBody
+	@Transactional
+    public int updateBasket(HttpSession session,
+    		HttpServletRequest request) {
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+			
+		if (custVo == null) {
+			return -99;								// 로그인 안한경우
+		}
+		
+		if(custVo.getFamilyCustNo() == 0) {
+			return -98;								// 패밀리회원 아닌경우
+		}
+		
+		String sBasketNo[] = request.getParameterValues("basketNo");
+		String sBasketAmount[] = request.getParameterValues("basketAmount");
+		
+		BasketVO vo = new BasketVO();
+		vo.setFamilyCustNo(custVo.getFamilyCustNo());
+		vo.setChgIp(request.getRemoteAddr());
+		
+		
+		for(int i = 0; i < sBasketAmount.length;i++) {
+			if(Integer.parseInt(sBasketAmount[i]) < 0) {
+				return -1;
+			}
+			
+			vo.setBasketNo(Integer.parseInt(sBasketNo[i]));
+			vo.setBasketAmount(Integer.parseInt(sBasketAmount[i]));
+			
+			if(basketService.updateBasketAmount(vo) != 1) {
+				return -2;
+			}
+		}
+		
+		return 0;
     }
 }

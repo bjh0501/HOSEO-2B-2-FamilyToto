@@ -26,7 +26,7 @@ public class CustVO {
 
 	// CUST_PASSWORD
     @NotBlank
-    @Length(min = 4, max = 20)
+    @Length(min = 8, max = 20)
 	private String custPassword;
 
 	// REG_CUST_NO

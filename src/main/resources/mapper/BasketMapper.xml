@@ -31,6 +31,7 @@
         AND		PRODUCT_NO = #{productNo}
         AND		USE_YN = 'Y'
 	</select>
+	
 	<update id="updateChooseBuyBasket">
 		UPDATE	BASKET
 		SET		USE_YN = 'W'
@@ -45,5 +46,14 @@
 		SET		USE_YN = 'Y'
 		WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'W'
+	</update>
+	<update id="updateBasketAmount">
+		UPDATE	BASKET
+        SET		BASKET_AMOUNT = #{basketAmount}
+		,		CHG_DT = NOW()
+        ,		CHG_IP = #{chgIp}
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN ='Y'
+        AND		BASKET_NO = #{basketNo}
 	</update>
 </mapper>

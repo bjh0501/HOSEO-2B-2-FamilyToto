@@ -37,7 +37,17 @@ public class CreditVO {
 
     private String chgIp;
 
-    // Y,N,B
+    private int chargeCnt;
+    
+    public int getChargeCnt() {
+		return chargeCnt;
+	}
+
+	public void setChargeCnt(int chargeCnt) {
+		this.chargeCnt = chargeCnt;
+	}
+
+	// Y,N,B
     private String useYn;
 
 	public int getCreditId() {

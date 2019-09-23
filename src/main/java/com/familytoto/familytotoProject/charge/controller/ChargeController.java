@@ -24,43 +24,46 @@ import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 public class ChargeController {
 	@Autowired
 	ChargeService chargeService;
-	
+
 	private int nCustNo = 0;
 	private int nFamilyCustNo = 0;
-	private String sEmail = ""; 
-	
+	private String sEmail = "";
+
 	@RequestMapping("/charge")
-    public ModelAndView charge(ModelAndView mv, HttpSession session, HttpServletResponse response) {
+	public ModelAndView charge(ModelAndView mv, HttpSession session, HttpServletResponse response) {
 		// 소셜 아이디
 		CustVO vo = (CustVO) session.getAttribute("cust");
-		
-		if(vo.getFamilyCustNo() == 0) {
+
+		if (vo.getFamilyCustNo() == 0) {
 			try {
 				response.setContentType("text/html; charset=UTF-8");
-	            PrintWriter out = response.getWriter();
-	            out.println("<script>alert('연동이 안된 소셜아이디는  충전을 할 수 없습니다.'); history.go(-1);</script>");
-	            out.flush();
-			} catch(Exception e) {}
-		
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('연동이 안된 소셜아이디는  충전을 할 수 없습니다.'); history.go(-1);</script>");
+				out.flush();
+			} catch (Exception e) {
+			}
+
 			mv.setViewName("redirect:/");
-			
+
 			return mv;
 		}
-		
+
 		sEmail = vo.getFamilyCustEmail();
 		nCustNo = vo.getCustNo();
 		nFamilyCustNo = vo.getFamilyCustNo();
-		
+
 		Map<String, Object> map = chargeService.getCreditInfo(vo);
-		
+
 		mv.addObject("list", map);
 		mv.addObject("currentCredit", chargeService.getCurrentCredit(nFamilyCustNo));
+		mv.addObject("cardInfo", chargeService.getCardInfo(nFamilyCustNo));
 		mv.setViewName("/shop/charge");
-		
-        return mv;
-    }
-	
-	@RequestMapping(value="/charge/doCharge",method = RequestMethod.POST)
+		mv.addObject("custEmail", vo.getFamilyCustEmail());
+
+		return mv;
+	}
+
+	@RequestMapping(value = "/charge/doCharge", method = RequestMethod.POST)
 	@ResponseBody
 	public int doCharge(@Valid @ModelAttribute CreditVO vo, HttpServletRequest request) {
 		vo.setRegCustNo(nCustNo);
@@ -69,19 +72,33 @@ public class ChargeController {
 
 		String sMail = request.getParameter("mail");
 		
-		int nResult = chargeService.doCharge(vo);
+		String sGubun = request.getParameter("gubun");
 		
-		if(nResult == 1) {
-			if(sMail.equals("Y") && sEmail != null) {
+		if(!sGubun.equals("FREE") && !sGubun.equals("CARD")) {
+			return -1;
+		}
+		
+		if(sGubun.equals("FREE")) {
+			vo.setCreditState("FRE");
+		} else  {
+			vo.setCreditState("CBC");
+		}
+
+		int nResult = chargeService.doCharge(vo);
+
+		if (nResult == 1) {
+			if (sMail.equals("Y") && sEmail != null) {
 				chargeService.sendHistoryEmail(sEmail, vo.getCreditValue());
 				return 0;
 			} else {
 				return 1;
 			}
-		} else if(nResult==-98) {
+		} else if (nResult == -98) {
 			return -98;
+		} else if (nResult == -97) {
+			return -97;
 		} else {
 			return -99;
 		}
-	}	
+	}
 }

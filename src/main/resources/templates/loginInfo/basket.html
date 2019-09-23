@@ -71,7 +71,7 @@
 										</tr>
 									</thead>
 									<tbody id="basketTbody">
-										<tr th:each="ba : ${basket}" >
+										<tr th:each="ba : ${basket}">
 											<td style="text-align: center;">
 												<div class="custom-control custom-checkbox">
 													<input type="checkbox" class="custom-control-input"
@@ -88,7 +88,7 @@
 											<td th:text="${#numbers.formatInteger(ba.getProductCredit(), 0, 'COMMA')}" style="text-align: right;"></td>
 											<td class="text-middle">
 												<input type="text" class="form-control"
-												placeholder="Amount" id="amount"
+												placeholder="Amount" name="amount"
 												th:value="${ba.getBasketAmount()}"
 												onKeyup="javascript:updateCredit($(this));">
 											</td>
@@ -168,7 +168,42 @@
 	
 
 	function allBuy() {
-		location.href= "/basketBuy";
+		var basketNo = new Array();
+		var basketAmount = new Array();
+		
+		for(var i = 0; i < $("[name=amount]").length; i++ ) {
+			basketNo.push($("[basketno]").eq(i).attr("basketno"));
+			basketAmount.push($("[name=amount]").eq(i).val());
+		}
+		
+		// 장바구니 개수 변경하기
+		$.ajax({
+			url : "/basket/update",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			traditional : true,
+			data : {
+					"basketNo" : basketNo
+			, 		"basketAmount" : basketAmount
+			},
+			success : function(data) {
+				if(data == 0) {
+					location.href= "/basketBuy";
+				} else if(data.trim() == -99) {
+					alert("로그인을 해야 구입을 할 수 있습니다.");
+				} else if(data.trim() == -98) {
+					alert("패밀리 회원만 구입을 할 수 있습니다.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 	
 	function fn_delRow() {
@@ -288,6 +323,49 @@
 					basketNoStr += $("[name=chBasket]:not(:checked)").eq(i).attr("basketNo") + ",";
 				}
 			}
+			
+			var basketNo = new Array();
+			var basketAmount = new Array();
+			
+			for(var i=0; i < $("input[name=chBasket]").length; i++) {
+				if($('input:checkbox[name=chBasket]').eq(i).is(":checked") == true) {
+					basketNo.push($("[basketno]").eq(i).attr("basketno"));
+					basketAmount.push($("[name=amount]").eq(i).val());
+				}
+			}
+
+			// 장바구니 개수 변경하기
+			$.ajax({
+				url : "/basket/update",
+				type : "POST",
+				cache : false,
+				dataType : "html",
+				traditional : true,
+				async : false,
+				data : {
+						"basketNo" : basketNo
+				, 		"basketAmount" : basketAmount
+				},
+				success : function(data) {
+					if(data == 0) {
+
+					} else if(data.trim() == -99) {
+						alert("로그인을 해야 구입을 할 수 있습니다.");
+						return false;
+					} else if(data.trim() == -98) {
+						alert("패밀리 회원만 구입을 할 수 있습니다.");
+						return false;
+					} else {
+						alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+						return false;
+					}
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
 			
 			$.ajax({
 				url : "/basket/chooseBuy",

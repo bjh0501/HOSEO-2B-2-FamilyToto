@@ -27,7 +27,6 @@ public class ChargeServiceImpl implements ChargeService {
 	public int doCharge(CreditVO vo) {
 		// 오늘 충전한거 갯수 예외처리하기
 		
-		vo.setCreditState("fre");
 		Map<String, Object> map = chargeDao.todayCharge(vo);
 		
 		//  하루에 최고 5번충전가능
@@ -54,6 +53,11 @@ public class ChargeServiceImpl implements ChargeService {
 	@Override
 	public int getCurrentCredit(int familyCustNo) {
 		return chargeDao.getCurrentCredit(familyCustNo);
+	}
+
+	@Override
+	public CreditVO getCardInfo(int familyCustNo) {
+		return chargeDao.getCardInfo(familyCustNo);
 	}
 	
 }

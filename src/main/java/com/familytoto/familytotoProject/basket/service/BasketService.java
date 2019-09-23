@@ -20,4 +20,7 @@ public interface BasketService {
 	
 	// 장바구니 상태 대기 > 원상태
 	int updateOriginBasket(int familyCustNo);
+	
+	// 장바구니 수량 변경
+	int updateBasketAmount(BasketVO vo);
 }

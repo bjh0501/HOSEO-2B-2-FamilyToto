@@ -43,4 +43,9 @@ public class BasketDaoImpl implements BasketDAO {
 	public int updateOriginBasket(int familyCustNo) {
 		return sqlSession.update("basket.updateOriginBasket", familyCustNo);
 	}
+
+	@Override
+	public int updateBasketAmount(BasketVO vo) {
+		return sqlSession.update("basket.updateBasketAmount", vo);
+	}
 }

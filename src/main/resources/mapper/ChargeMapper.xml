@@ -23,6 +23,15 @@
 		WHERE	IFNULL(CHG_DT, REG_DT) > curdate()
 		AND		FAMILY_CUST_NO = #{familyCustNo}
 		AND		CREDIT_STATE = 'fre'
+		AND		USE_YN = 'Y'
+	</select>
+	<select id="getCardInfo" resultType="CreditVO" parameterType="int">
+       SELECT	COUNT(*) as chargeCnt
+       ,		IFNULL(SUM(CREDIT_VALUE), 0) as creditValue
+		FROM	CUSTOM_CREDIT
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		CREDIT_STATE = 'CBC'
+		AND		USE_YN = 'Y';
 	</select>
 	<insert id="insertCharge" useGeneratedKeys="true" keyProperty="creditId">
 		INSERT INTO CUSTOM_CREDIT

@@ -53,4 +53,9 @@ public class BasketServiceImpl implements BasketService{
 	public int updateOriginBasket(int familyCustNo) {
 		return basketDao.updateOriginBasket(familyCustNo);
 	}
+
+	@Override
+	public int updateBasketAmount(BasketVO vo) {
+		return basketDao.updateBasketAmount(vo);
+	}
 }

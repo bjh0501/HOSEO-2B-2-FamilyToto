@@ -16,7 +16,58 @@
 
   <!-- Custom styles for this template-->
   <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
-
+	<style>
+		.panel.with-nav-tabs .panel-heading{
+		    padding: 5px 5px 0 5px;
+		}
+		.panel.with-nav-tabs .nav-tabs{
+			border-bottom: none;
+		}
+		.panel.with-nav-tabs .nav-justified{
+			margin-bottom: -1px;
+		}
+		/********************************************************************/
+		/*** PANEL DEFAULT ***/
+		.with-nav-tabs.panel-default .nav-tabs > li > a,
+		.with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+		.with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+		    color: #777;
+		}
+		.with-nav-tabs.panel-default .nav-tabs > .open > a,
+		.with-nav-tabs.panel-default .nav-tabs > .open > a:hover,
+		.with-nav-tabs.panel-default .nav-tabs > .open > a:focus,
+		.with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+		.with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+		    color: #777;
+			background-color: #ddd;
+			border-color: transparent;
+		}
+		.with-nav-tabs.panel-default .nav-tabs > li.active > a,
+		.with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+		.with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
+			color: #555;
+			background-color: #fff;
+			border-color: #ddd;
+			border-bottom-color: transparent;
+		}
+		.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu {
+		    background-color: #f5f5f5;
+		    border-color: #ddd;
+		}
+		.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a {
+		    color: #777;   
+		}
+		.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+		.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+		    background-color: #ddd;
+		}
+		.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+		.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+		.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+		    color: #fff;
+		    background-color: #555;
+		}
+	</style>
 </head>
 
 <body id="page-top">
@@ -44,6 +95,22 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">충전</h2>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="card shadow h-100 py-12">
+								<div style="padding-bottom:20px;">
+									<ul class="nav nav-tabs nav-justified">
+										<li class="nav-item">
+											<a class="nav-link active"  href="javascript:gubun('free')" id="gubunFree">무료충전</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link"  href="javascript:gubun('card')" id="gubunCard">카드결제</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4">
@@ -95,14 +162,26 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4">
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4" gubun="free">
 							<div class="card shadow h-100 py-12">
 								<div style="padding:20px;">
 									<div class="input-group">
-										<h3>지금까지한 충전 횟수 : <span th:text=${list.totalCharge}>12</span>회</h3>
+										<h3>지금까지한 무료 충전 횟수 : <span th:text=${list.totalCharge}>0</span>회</h3>
 									</div>
 									<div class="input-group">
-										<h3>오늘가능한 충전 횟수 : <span th:text=${list.todayCharge}>12</span>회</h3>
+										<h3>오늘가능한 충전 횟수 : <span th:text=${list.todayCharge}>0</span>회</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-4" style="display: none;" gubun="card">
+							<div class="card shadow h-100 py-12">
+								<div style="padding:20px;">
+									<div class="input-group">
+										<h3>총 카드 결제 횟수 : <span th:text=${cardInfo.chargeCnt}>0</span>회</h3>
+									</div>
+									<div class="input-group">
+										<h3>총 카드 결제 크레딧 : <span th:text=${cardInfo.creditValue}>0</span>크레딧</h3>
 									</div>
 								</div>
 							</div>
@@ -146,7 +225,7 @@
 										</div>
 										<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-4">
 											<div class="input-group mb-3">
-												<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="charge()">결제하기</button>
+												<button type="button" class="btn btn-secondary btn-lg btn-block" onClick="charge()" >결제하기</button>
 											</div>
 										</div>
 									</div>
@@ -181,11 +260,17 @@
  
  <!-- common -->
   <script src="/js/common.js"></script>
+  
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 </body>
 
 </html>
 
 <script>
+	var chargeGubun = "free";
+	var IMP = window.IMP; // 생략가능
+	IMP.init('imp02311696'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+	
 	function charge() {
 		var st = $(":input:radio[name=chip]:checked").val();
 		var mail = "N";
@@ -201,55 +286,108 @@
 			credit = $("#twoCharge").val()
 		}
 		
-		if(parseInt($("#nowCredit").html()) >= 5000) {
-			alert("현재 크레딧이 5,000크레딧미만 이여야만 충전을 할 수 있습니다.");
-			return
-		}
-		
-		if(parseInt(credit) > 10000) {
-			alert("10,000크레딧 이하로 충전할 수 있습니다.");
-			$("#twoCharge").focus();
-			return
-		}
-		
-		if($("input:checkbox[id='agree']").is(":checked") == false) {
-			alert("약관에 동의해야만 결제를 할 수 있습니다");
-			$("#agree").focus()
-			return
-		}
-		
-		$.ajax({
-			url : "/charge/doCharge",
-			type : "POST",
-			cache : false,
-			dataType : "json",
-			data : "creditValue=" + encodeURIComponent(parseInt(credit)) 
-			+ "&mail=" + mail,
-			success : function(data) {
-				if(data == 0) {
-					alert("충전에 성공하였습니다.");
-					location.reload();
-				} else if(data == 1) {
-					if(mail == "N") {
+		if(chargeGubun == "free") {
+			if(parseInt(removeComma($("#nowCredit").html())) >= 5000) {
+				alert("현재 크레딧이 5,000크레딧미만 이여야만 충전을 할 수 있습니다.");
+				return false;
+			}
+			
+			if(parseInt(credit) > 10000) {
+				alert("10,000크레딧 이하로 충전할 수 있습니다.");
+				$("#twoCharge").focus();
+				return false;
+			}
+			
+			if($("input:checkbox[id='agree']").is(":checked") == false) {
+				alert("약관에 동의해야만 결제를 할 수 있습니다");
+				$("#agree").focus()
+				return false;
+			}
+			
+			$.ajax({
+				url : "/charge/doCharge?gubun=FREE",
+				type : "POST",
+				cache : false,
+				dataType : "json",
+				data : "creditValue=" + encodeURIComponent(parseInt(credit)) 
+				+ "&mail=" + mail,
+				success : function(data) {
+					if(data == 0) {
 						alert("충전에 성공하였습니다.");
 						location.reload();
+					} else if(data == 1) {
+						if(mail == "N") {
+							alert("충전에 성공하였습니다.");
+							location.reload();
+						} else {
+							alert("충전에는 성공했으나,\n이메일 정보가 없어서 충전내역을 메일로 보내지 못하였습니다.");
+							location.reload();
+						}
+					} else if(data == -98) {
+						alert("충전할 수 있는 횟수를 초과하였습니다.");
 					} else {
-						alert("충전에는 성공했으나,\n이메일 정보가 없어서 충전내역을 메일로 보내지 못하였습니다.");
-						location.reload();
+						alert("새로고침후 다시 시도해주세요.");
 					}
-				} else if(data == -98) {
-					alert("충전할 수 있는 횟수를 초과하였습니다.");
-				} else {
-					alert("새로고침후 다시 시도해주세요.");
-				}
-			},
+				},
 
-			error : function(request, status, error) {
-				var msg = "ERROR : " + request.status + "<br>"
-				msg += +"내용 : " + request.responseText + "<br>" + error;
-				console.log(msg);
-			}
-		});
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
+		} else {
+			IMP.request_pay({
+			    pg : 'uplus', // version 1.1.0부터 지원.
+			    pay_method : 'card',
+			    merchant_uid : 'merchant_' + new Date().getTime(),
+			    name : "크레딧 충전",
+			    amount : parseInt(credit),
+			    buyer_email : '[[ ${custEmail} ]]'
+			}, function(rsp) {
+			    if ( rsp.success ) {
+			        var msg = '결제가 완료되었습니다.';
+			        //msg += '고유ID : ' + rsp.imp_uid;
+			        //msg += '상점 거래ID : ' + rsp.merchant_uid;
+			        msg += '\n결제 금액 : ' + rsp.paid_amount;
+			        //msg += '카드 승인번호 : ' + rsp.apply_num;
+			        
+			        $.ajax({
+						url : "/charge/doCharge?gubun=CARD",
+						type : "POST",
+						cache : false,
+						dataType : "json",
+						data : "creditValue=" + encodeURIComponent(parseInt(credit)) 
+						+ "&mail=" + mail,
+						success : function(data) {
+							if(data == 0) {
+								alert(msg);
+							} else if(data == 1) {
+								if(mail == "N") {
+									alert(msg);
+									location.reload();
+								} else {
+									alert("결제에는 성공했으나,\n이메일 정보가 없어서 충전내역을 메일로 보내지 못하였습니다.");
+									location.reload();
+								}
+							} else if(data == -98) {
+								alert("충전할 수 있는 횟수를 초과하였습니다.");
+							} else {
+								alert("새로고침후 다시 시도해주세요.");
+							}
+						},
+						error : function(request, status, error) {
+							var msg = "ERROR : " + request.status + "<br>"
+							msg += +"내용 : " + request.responseText + "<br>" + error;
+							console.log(msg);
+						}
+					});
+			    } else {
+			        var msg = '결제에 실패하였습니다.';
+			        msg += '에러내용 : ' + rsp.error_msg;
+			    }
+			});
+		}
 	}
 	
 	var input = document.getElementById('twoCharge')
@@ -257,11 +395,18 @@
 	input.onkeyup = function(event) {
 		$("#chip2").prop("checked", true)
 		
-		var chargeValue = parseInt($("#twoCharge").val())
+		var charge = 0;
+		if($("#twoCharge").val() == "") {
+			charge = 0;
+		} else {
+			charge = $("#twoCharge").val();
+		}
+		
+		var chargeValue = parseInt(charge);
 		var now = parseInt(removeComma($("#nowCredit").html()));
 		var future = numberWithCommas(now +  chargeValue);
 		
-		if($("#twoCharge").val() == "") {
+		if(charge == 0) {
 			$("#futureCredit").html(now);
 		} else {
 			$("#futureCredit").html(future);			
@@ -275,5 +420,21 @@
 		var future = numberWithCommas(now +  parseInt($("#oneCharge").val()));
 		
 		$("#futureCredit").html(future);
+	}
+	
+	function gubun(gubun) {
+		if(gubun == "card") {
+			$("[gubun='card']").attr("style", "");
+			$("[gubun='free']").attr("style", "display: none");
+			$("#gubunFree").removeClass("active");
+			$("#gubunCard").addClass("active");
+			chargeGubun = "card";
+		} else {
+			$("[gubun='free']").attr("style", "");
+			$("[gubun='card']").attr("style", "display: none");
+			$("#gubunFree").addClass("active");
+			$("#gubunCard").removeClass("active");
+			chargeGubun = "free";
+		}
 	}
 </script>
