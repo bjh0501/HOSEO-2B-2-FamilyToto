@@ -39,7 +39,17 @@ public class CreditVO {
 
     private int chargeCnt;
     
-    public int getChargeCnt() {
+    private String regCreditDt;
+    
+    public String getRegCreditDt() {
+		return regCreditDt;
+	}
+
+	public void setRegCreditDt(String regCreditDt) {
+		this.regCreditDt = regCreditDt;
+	}
+
+	public int getChargeCnt() {
 		return chargeCnt;
 	}
 

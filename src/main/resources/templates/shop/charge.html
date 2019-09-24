@@ -181,7 +181,7 @@
 										<h3>총 카드 결제 횟수 : <span th:text=${cardInfo.chargeCnt}>0</span>회</h3>
 									</div>
 									<div class="input-group">
-										<h3>총 카드 결제 크레딧 : <span th:text=${cardInfo.creditValue}>0</span>크레딧</h3>
+										<h3>총 카드 결제 크레딧 : <span th:text="${#numbers.formatInteger(cardInfo.creditValue, 0, 'COMMA')}">0</span>크레딧</h3>
 									</div>
 								</div>
 							</div>
@@ -349,7 +349,7 @@
 			        var msg = '결제가 완료되었습니다.';
 			        //msg += '고유ID : ' + rsp.imp_uid;
 			        //msg += '상점 거래ID : ' + rsp.merchant_uid;
-			        msg += '\n결제 금액 : ' + rsp.paid_amount;
+			        msg += '\n결제 금액 : ' + numberWithCommas(rsp.paid_amount);
 			        //msg += '카드 승인번호 : ' + rsp.apply_num;
 			        
 			        $.ajax({
@@ -362,6 +362,7 @@
 						success : function(data) {
 							if(data == 0) {
 								alert(msg);
+								location.reload();
 							} else if(data == 1) {
 								if(mail == "N") {
 									alert(msg);
@@ -370,8 +371,8 @@
 									alert("결제에는 성공했으나,\n이메일 정보가 없어서 충전내역을 메일로 보내지 못하였습니다.");
 									location.reload();
 								}
-							} else if(data == -98) {
-								alert("충전할 수 있는 횟수를 초과하였습니다.");
+							} else if(data == -96) {
+								alert("하루 최대 300,000크레딧만 충전가능합니다.");
 							} else {
 								alert("새로고침후 다시 시도해주세요.");
 							}

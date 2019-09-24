@@ -15,4 +15,7 @@ public interface ChargeDao {
 	
 	// 카드 정보보기
 	CreditVO getCardInfo(int familyCustNo);
+	
+	// 카드 유효성검사
+	boolean isCardChargeCheck(int familyCustNo);
 }

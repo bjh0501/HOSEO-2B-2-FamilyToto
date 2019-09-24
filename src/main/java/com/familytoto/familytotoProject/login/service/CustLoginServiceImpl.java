@@ -28,4 +28,9 @@ public class CustLoginServiceImpl implements CustLoginService {
 		return custLoginDao.login(vo);
 	}
 
+	@Override
+	public CustVO getExpInfo(int familyCustNo) {
+		return null;
+	}
+
 }

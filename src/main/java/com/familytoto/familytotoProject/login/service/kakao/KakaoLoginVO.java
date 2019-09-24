@@ -180,6 +180,7 @@ public class KakaoLoginVO {
     				cVo2.setCustNo(vo.getScCustNo());
     				cVo2.setFamilyCustNick(nickname);
     				cVo2.setCustOperatorGubun("N");
+    				// 해결해야함
     				session.setAttribute("cust", cVo2); // 세션 생성
     			} else {
     				cVo.setCustNo(nScCustNo);

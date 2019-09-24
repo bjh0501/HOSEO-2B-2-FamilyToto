@@ -97,8 +97,10 @@ public class ChargeController {
 			return -98;
 		} else if (nResult == -97) {
 			return -97;
+		} else if (nResult == -96) {
+			return -96; 
 		} else {
-			return -99;
+			return -95;
 		}
 	}
 }

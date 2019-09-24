@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>One Sports</title>
+
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+	.button {
+		cursor: pointer;
+	}
+	
+	.button div:hover {
+		background-color: #c5c5c5;
+	}
+</style>
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<div class="row">
+						<h2 class="text-title">대시보드</h2>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+							<div class="card shadow h-100 py-2">
+								<div class="card-body">
+									<button type="button" class="btn btn-secondary btn-lg">
+										<i class="far fa-file-excel"></i> 엑셀 다운로드
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-3 col-md-6 mb-4 button" onClick="javascript:creditInfo()">
+							<div class="card border-left-secondary shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Credit</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">$<span th:text="${#numbers.formatInteger(list.credit, 0, 'COMMA')}">0</span></div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-calendar fa-2x text-gray-300"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xl-3 col-md-6 mb-4 button" onclick="javascript:mileageInfo()">
+							<div class="card border-left-secondary shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Mileage</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">$<span th:text="${#numbers.formatInteger(list.mileage, 0, 'COMMA')}">0</span></div>
+										</div>
+										<div class="col-auto">
+											<i class="fab fa-monero fa-2x text-gray-300"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xl-3 col-md-6 mb-4 button">
+							<div class="card border-left-secondary shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Experience</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatInteger(list.exp, 0, 'COMMA')}">0</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-running fa-2x text-gray-300"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xl-3 col-md-6 mb-4 button">
+							<div class="card border-left-secondary shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1">아직모름</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-calendar fa-2x text-gray-300"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-6 col-lg-6">
+							<!-- Area Chart -->
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary"><span id="chartName">크레딧</span> 수익 변동</h6>
+								</div>
+								<div class="card-body">
+									<div class="chart-area">
+										<div class="chartjs-size-monitor">
+											<div class="chartjs-size-monitor-expand">
+												<div class=""></div>
+											</div>
+											<div class="chartjs-size-monitor-shrink">
+												<div class=""></div>
+											</div>
+										</div>
+										<canvas id="myAreaChart"
+											style="display: block; width: 1037px; height: 320px;"
+											width="1037" height="320" class="chartjs-render-monitor"></canvas>
+									</div>
+									<hr>
+									토토로 돈을 따보는건 어떨까요? <a href="/toto/ladder">사다리</a> <a
+										href="/toto/dice">홀짝</a> <a href="/toto/graph">그래프</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Donut Chart -->
+						<div class="col-xl-4 col-lg-5">
+							<div class="card shadow mb-4">
+								<!-- Card Header - Dropdown -->
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">보유 크레딧 &
+										마일리지</h6>
+								</div>
+								<!-- Card Body -->
+								<div class="card-body">
+									<div class="chart-pie pt-4">
+										<div class="chartjs-size-monitor">
+											<div class="chartjs-size-monitor-expand">
+												<div class=""></div>
+											</div>
+											<div class="chartjs-size-monitor-shrink">
+												<div class=""></div>
+											</div>
+										</div>
+										<canvas id="myPieChart" width="486" height="253"
+											class="chartjs-render-monitor"
+											style="display: block; width: 486px; height: 253px;"></canvas>
+									</div>
+									<hr>
+									마일리지 : <span>25</span>% 크레딧 : <span>55</span>%
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+				</footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+		</div>
+		<!-- End of Page Wrapper -->
+
+
+
+		<!-- Bootstrap core JavaScript-->
+		<script src="/vendor/jquery/jquery.min.js"></script>
+		<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="/js/sb-admin-2.min.js"></script>
+		<script src="/vendor/chart.js/Chart.min.js"></script>
+</body>
+
+</html>
+<script>
+	var ctx = document.getElementById("myAreaChart");
+	
+	myLineChart = new Chart(
+	ctx,
+	{
+		type : 'line',
+		data : {
+			labels : "",
+			datasets : [ {
+				label : "",
+				lineTension : 0.3,
+				backgroundColor : "rgba(78, 115, 223, 0.05)",
+				borderColor : "#000000",
+				pointRadius : 3,
+				pointBackgroundColor : "#000000",
+				pointBorderColor : "#000000",
+				pointHoverRadius : 3,
+				pointHoverBackgroundColor : "rgba(78, 115, 223, 1)",
+				pointHoverBorderColor : "rgba(78, 115, 223, 1)",
+				pointHitRadius : 10,
+				pointBorderWidth : 2,
+				data : "",
+			} ],
+		},
+		options : {
+			maintainAspectRatio : false,
+			layout : {
+				padding : {
+					left : 10,
+					right : 25,
+					top : 25,
+					bottom : 0
+				}
+			},
+			scales : {
+				xAxes : [ {
+					time : {
+						unit : 'date'
+					},
+					gridLines : {
+						display : false,
+						drawBorder : false
+					},
+					ticks : {
+						maxTicksLimit : 7
+					}
+				} ],
+				yAxes : [ {
+					ticks : {
+						maxTicksLimit : 10,
+						padding : 10,
+						// Include a dollar sign in the ticks
+						callback : function(value, index, values) {
+							return '$' + number_format(value);
+						}
+					},
+					gridLines : {
+						color : "rgb(234, 236, 244)",
+						zeroLineColor : "rgb(234, 236, 244)",
+						drawBorder : false,
+						borderDash : [ 2 ],
+						zeroLineBorderDash : [ 2 ]
+					}
+				} ],
+			},
+			legend : {
+				display : false
+			},
+			tooltips : {
+				backgroundColor : "rgb(255,255,255)",
+				bodyFontColor : "#858796",
+				titleMarginBottom : 10,
+				titleFontColor : '#6e707e',
+				titleFontSize : 14,
+				borderColor : '#dddfeb',
+				borderWidth : 1,
+				xPadding : 15,
+				yPadding : 15,
+				displayColors : false,
+				intersect : false,
+				mode : 'index',
+				caretPadding : 10,
+				callbacks : {
+					label : function(tooltipItem, chart) {
+						var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label
+								|| '';
+						return datasetLabel
+								+ number_format(tooltipItem.yLabel);
+					}
+				}
+			}
+		}
+	});
+	
+	getProfitCredit();
+	
+	function getProfitCredit() {
+		$.ajax({
+			url : "/dashboard/getCredit",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				for(i = 0; i < 7; i++) {
+					removeData(myLineChart);
+				}
+				
+				for(i = 0; i < data.length; i++) {
+					addData(myLineChart, data[i].regCreditDt, data[i].creditValue);
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getProfitMileage() {
+		$.ajax({
+			url : "/dashboard/getMileage",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				for(i = 0; i < 7; i++) {
+					removeData(myLineChart);
+				}
+				
+				for(i = 0; i < data.length; i++) {
+					addData(myLineChart, data[i].regMileageDt, data[i].mileageValue);
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	//Set new default font family and font color to mimic Bootstrap's default styling
+			Chart.defaults.global.defaultFontFamily = 'Nunito',
+			'-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+	Chart.defaults.global.defaultFontColor = '#000000';
+
+	function number_format(number, decimals, dec_point, thousands_sep) {
+		// *     example: number_format(1234.56, 2, ',', ' ');
+		// *     return: '1 234,56'
+		number = (number + '').replace(',', '').replace(' ', '');
+		var n = !isFinite(+number) ? 0 : +number, prec = !isFinite(+decimals) ? 0
+				: Math.abs(decimals), sep = (typeof thousands_sep === 'undefined') ? ','
+				: thousands_sep, dec = (typeof dec_point === 'undefined') ? '.'
+				: dec_point, s = '', toFixedFix = function(n, prec) {
+			var k = Math.pow(10, prec);
+			return '' + Math.round(n * k) / k;
+		};
+		// Fix for IE parseFloat(0.55).toFixed(0) = 0;
+		s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+		if (s[0].length > 3) {
+			s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+		}
+		if ((s[1] || '').length < prec) {
+			s[1] = s[1] || '';
+			s[1] += new Array(prec - s[1].length + 1).join('0');
+		}
+		return s.join(dec);
+	}
+
+	// Set new default font family and font color to mimic Bootstrap's default styling
+	Chart.defaults.global.defaultFontFamily = 'Nunito',
+	'-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+	Chart.defaults.global.defaultFontColor = '#858796';
+
+	// Pie Chart Example
+	var ctx = document.getElementById("myPieChart");
+	var myPieChart = new Chart(ctx, {
+		type : 'doughnut',
+		data : {
+			labels : [ "Direct", "Referral", "Social" ],
+			datasets : [ {
+				data : [ 55, 30, 15 ],
+				backgroundColor : [ '#4e73df', '#1cc88a', '#36b9cc' ],
+				hoverBackgroundColor : [ '#2e59d9', '#17a673', '#2c9faf' ],
+				hoverBorderColor : "rgba(234, 236, 244, 1)",
+			} ],
+		},
+		options : {
+			maintainAspectRatio : false,
+			tooltips : {
+				backgroundColor : "rgb(255,255,255)",
+				bodyFontColor : "#858796",
+				borderColor : '#dddfeb',
+				borderWidth : 1,
+				xPadding : 15,
+				yPadding : 15,
+				displayColors : false,
+				caretPadding : 10,
+			},
+			legend : {
+				display : false
+			},
+			cutoutPercentage : 80,
+		},
+	});
+	
+	function addData(chart, label, data) {
+	    chart.data.labels.push(label);
+	    chart.data.datasets.forEach((dataset) => {
+	        dataset.data.push(data);
+	    });
+	    chart.update();
+	}
+
+	function removeData(chart) {
+	    chart.data.labels.pop();
+	    chart.data.datasets.forEach((dataset) => {
+	        dataset.data.pop();
+	    });
+	    chart.update();
+	}
+	
+	function creditInfo() {
+		$("#chartName").html("크레딧");
+		getProfitCredit();
+	}
+	
+	function mileageInfo() {
+		$("#chartName").html("마일리지");
+		getProfitMileage();
+	}
+</script>

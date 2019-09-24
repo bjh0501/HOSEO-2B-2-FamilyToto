@@ -62,6 +62,16 @@ public class CustVO {
 	
 	private String custOperatorGubun;
 	
+	private int familyCustExp;
+	
+	public int getFamilyCustExp() {
+		return familyCustExp;
+	}
+
+	public void setFamilyCustExp(int familyCustExp) {
+		this.familyCustExp = familyCustExp;
+	}
+
 	public String getCustOperatorGubun() {
 		return custOperatorGubun;
 	}

@@ -27,8 +27,8 @@ public class CreditShopServiceImpl implements CreditShopService {
 	}
 
 	@Override
-	public List<ProductVO> listCreditShop(int nParameter) {
-		return creditShopDao.listCreditShop(nParameter);
+	public List<ProductVO> listCreditShop(ProductVO vo) {
+		return creditShopDao.listCreditShop(vo);
 	}
 
 	@Override

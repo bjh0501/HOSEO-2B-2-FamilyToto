@@ -22,8 +22,8 @@ public class CreditShopDaoImpl implements CreditShopDao {
 	}
 
 	@Override
-	public List<ProductVO> listCreditShop(int nParameter) {
-		return sqlSession.selectList("creditShop.listCreditShop", nParameter);
+	public List<ProductVO> listCreditShop(ProductVO vo) {
+		return sqlSession.selectList("creditShop.listCreditShop", vo);
 	}
 
 	@Override

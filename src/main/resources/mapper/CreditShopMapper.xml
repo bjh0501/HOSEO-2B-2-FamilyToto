@@ -24,16 +24,23 @@
 		AND		P.USE_YN = 'Y';
 	</select>
 	
-	<select id="listCreditShop" resultType="ProductVO" parameterType="int">
-		SELECT	P.PRODUCT_NO as productNo
+	<select id="listCreditShop" resultType="ProductVO" parameterType="ProductVO">
+		
+        SELECT	P.PRODUCT_NO as productNo
 		,		P.PRODUCT_NAME as productName
 		,		P.PRODUCT_CREDIT as productCredit
 		,		PI.PRODUCT_IMG_URL as productImgUrl
 		FROM	PRODUCT P
 			INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y' AND PI.PRODUCT_IMG_PRIMARY = 'Y'
 		WHERE	P.USE_YN = 'Y'
+		<if test="productName != ''">
+        	AND		P.PRODUCT_NAME LIKE CONCAT('%',#{productName},'%')
+       	</if>
+       	<if test="categoryNo != 0">
+        	AND		P.CATEGORY_NO = #{categoryNo}
+       	</if>
 		ORDER BY P.PRODUCT_NO DESC
-		LIMIT #{nParameter}, 20
+		LIMIT #{pagingNo}, 20;
 	</select>
 	
 	<insert id="insertProductComment">

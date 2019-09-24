@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.toto.service.CommonService;
-import com.google.auto.value.AutoAnnotation;
 
 @Controller
 public class LadderController {

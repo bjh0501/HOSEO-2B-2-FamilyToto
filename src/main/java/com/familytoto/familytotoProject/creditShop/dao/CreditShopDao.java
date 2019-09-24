@@ -15,7 +15,7 @@ public interface CreditShopDao {
 	List<ProductVO> listProductImgs(ProductVO vo);
 	
 	// 상품리스트
-	List<ProductVO> listCreditShop(int nParameter);
+	List<ProductVO> listCreditShop(ProductVO vo);
 	
 	// 상품평달기
 	int insertProductComment(ProductCommentVO vo);

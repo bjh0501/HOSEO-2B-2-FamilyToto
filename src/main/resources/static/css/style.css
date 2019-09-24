@@ -79,12 +79,13 @@ html, body{
 }
 .ladder table{
     position: absolute;
-    top:2;
-    left: 1;
+    top:2px;
+    left: 1px;
     z-index: -99;
 }
 .user-wrap{
     width: 60px;
+    height: 35px;
     position: absolute;
     top : -52px;
     text-align: center;
@@ -96,19 +97,19 @@ html, body{
     border-radius:3px;
     border: 1px solid #ddd;    
 }
-.user-wrap button{
-    margin: 5px 0 0 0;    
-    border:0;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    text-align: center;
-    line-height: 20px;
-    font-weight: bolder;
-    color: #fff;
-    cursor: pointer;
-    outline: 0;
-}
+/* .user-wrap button{ */
+/*     margin: 5px 0 0 0;     */
+/*     border:0; */
+/*     width: 20px; */
+/*     height: 20px; */
+/*     border-radius: 10px; */
+/*     text-align: center; */
+/*     line-height: 20px; */
+/*     font-weight: bolder; */
+/*     color: #fff; */
+/*     cursor: pointer; */
+/*     outline: 0; */
+/* } */
 .answer-wrap{
         width: 60px;
         position: absolute;
@@ -163,4 +164,9 @@ html, body{
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.ladder-start {
+	width: 62px;
+    height: 32px;
 }

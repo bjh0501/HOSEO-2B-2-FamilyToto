@@ -38,4 +38,9 @@ public class ChargeDaoImpl implements ChargeDao{
 	public CreditVO getCardInfo(int familyCustNo) {
 		return sqlSession.selectOne("charge.getCardInfo",familyCustNo);
 	}
+
+	@Override
+	public boolean isCardChargeCheck(int familyCustNo) {
+		return sqlSession.selectOne("charge.isCardChargeCheck",familyCustNo);
+	}
 }

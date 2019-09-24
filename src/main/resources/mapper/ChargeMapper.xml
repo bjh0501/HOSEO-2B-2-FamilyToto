@@ -43,4 +43,13 @@
 		    #{regCustNo}, 		NOW(), 				#{regIp},
 		    'Y',				#{familyCustNo});
 	</insert>
+	<select id="isCardChargeCheck" parameterType="int" resultType="boolean">
+		SELECT EXISTS (SELECT 0
+        FROM	CUSTOM_CREDIT
+        WHERE	CREDIT_STATE = 'CBC'
+        AND		FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
+        AND		DATE(IFNULL(CHG_DT,REG_DT)) = DATE(NOW())
+        HAVING	IFNULL(SUM(CREDIT_VALUE), 0) > 300000)  as creditValue
+	</select>
 </mapper>

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
+import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.toto.domain.GraphVO;
 import com.familytoto.familytotoProject.toto.service.CommonService;
@@ -26,6 +28,9 @@ public class GraphController {
 	
 	@Autowired
 	GraphService graphService;
+	
+	@Autowired
+	ExpService expService;
 	
 	private double timeValue = 1.00;
 	private int graphNo = 0;
@@ -61,6 +66,8 @@ public class GraphController {
 		creVo.setRegCustNo(cVo.getCustNo());
 		creVo.setRegIp(request.getRemoteAddr());
 		creVo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+		expService.insertExp(cVo, "GGS", 100, request);
 		
 		if(creVo.getCreditValue() < 1000) {
 			return -4;
@@ -163,6 +170,18 @@ public class GraphController {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return -3;
 		}
+		
+		int nRandomExp = 0;
+		
+		if(creVo.getCreditValue() >= 50001) {
+			nRandomExp = GlobalVariable.RadnomValue(310, 350);
+		} else if(creVo.getCreditValue() >= 10001) {
+			nRandomExp = GlobalVariable.RadnomValue(210, 300);
+		} else if(creVo.getCreditValue() >= 1000) {
+			nRandomExp = GlobalVariable.RadnomValue(110, 200);
+		}
+		
+		expService.insertExp(cVo, "GGW", nRandomExp, request);
 		
 		return graphService.insertGetBet(creVo) == 1 ? creVo.getCreditValue() : -1;
 	}

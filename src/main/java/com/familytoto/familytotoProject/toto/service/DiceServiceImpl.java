@@ -3,12 +3,18 @@ package com.familytoto.familytotoProject.toto.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
+import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.exp.service.ExpService;
+import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.toto.dao.CommonDao;
 import com.familytoto.familytotoProject.toto.dao.DiceDao;
 import com.familytoto.familytotoProject.toto.domain.DiceVO;
@@ -21,11 +27,19 @@ public class DiceServiceImpl implements DiceService {
 	@Autowired
 	CommonDao commonDao;
 	
+	@Autowired
+	ExpService expService;
+	
 	@Override
 	@Transactional
-	public Map<String, Object> insertDiceBet(DiceVO vo, CreditVO creVo) {
+	public Map<String, Object> insertDiceBet(DiceVO vo,
+			CreditVO creVo,
+			HttpServletRequest request,
+			HttpSession session) {
 		Map<String, Object> map = new  HashMap<String, Object>();
 		map.put("error", "0");
+		int nPlusCredit = creVo.getCreditValue()*-1;
+		
 		creVo.setCreditValue(creVo.getCreditValue()*-1);
 		
 		if(creVo.getCreditValue() < 1000) {
@@ -46,6 +60,16 @@ public class DiceServiceImpl implements DiceService {
 		
 		vo.setDiceAmount(randomDice);
 		vo.setDiceResult(randomValue1+randomValue2);
+		
+		int nRandomExp = 0;
+		
+		if(nPlusCredit >= 50001) {
+			nRandomExp = GlobalVariable.RadnomValue(310, 350);
+		} else if(nPlusCredit >= 10001) {
+			nRandomExp = GlobalVariable.RadnomValue(210, 300);
+		} else if(nPlusCredit >= 1000) {
+			nRandomExp = GlobalVariable.RadnomValue(110, 200);
+		}
 		
 		if(randomValue1 == randomValue2) {
 			vo.setDiceOption("D");
@@ -73,6 +97,10 @@ public class DiceServiceImpl implements DiceService {
 				int getCredit = (int) (vo.getDiceBet()* creVo.getCreditValue())*-1 ;
 				creVo.setCreditValue(getCredit);
 				map.put("getCredit", getCredit);
+				
+				CustVO cVo = (CustVO) session.getAttribute("cust");
+				expService.insertExp(cVo, "DGW", nRandomExp, request);
+				
 				diceDao.insertCredit(creVo);
 			} else {
 				map.put("getCredit", 0);

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dashboard">
+	<select id="getTotalMileage" resultType="int" parameterType="int">
+		SELECT	SUM(CM.MILEAGE_VALUE) as mileageValue
+        FROM 	FAMILY_CUSTOM FC
+			INNER JOIN CUSTOM_MILEAGE CM ON CM.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND CM.USE_YN = 'Y'
+		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+        AND		FC.USE_YN = 'Y';
+	</select>
+	<select id="getTotalCredit"  resultType="int" parameterType="int">
+		SELECT	SUM(CC.CREDIT_VALUE) as creditValue
+        FROM 	FAMILY_CUSTOM FC
+			INNER JOIN CUSTOM_CREDIT CC ON CC.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND CC.USE_YN = 'Y'
+		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+        AND		FC.USE_YN = 'Y'
+	</select>
+	<select id="getTotalExp"  resultType="int" parameterType="int">
+		SELECT	FAMILY_CUST_EXP as familyCustExp
+        FROM 	FAMILY_CUSTOM
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'		
+	</select>
+	<select id="listRecentProfitCredit" parameterType="int" resultType="CreditVO">
+		SELECT	SUM(CREDIT_VALUE) AS creditValue
+		,		date_format(IFNULL(CHG_DT, REG_DT),'%m. %d') AS regCreditDt
+	    FROM    CUSTOM_CREDIT
+	    WHERE	FAMILY_CUST_NO = #{familyCustNo}
+	    AND		IFNULL(CHG_DT, REG_DT) > date_add(now(),interval -7 day)
+	    AND		USE_YN = 'Y'
+	    GROUP BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
+	    ORDER BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
+	</select>
+	<select id="listRecentProfitMileage" parameterType="int" resultType="MileageVO">
+		SELECT	SUM(MILEAGE_VALUE) AS mileageValue
+		,		date_format(IFNULL(CHG_DT, REG_DT),'%m. %d') AS regMileageDt
+	    FROM    CUSTOM_MILEAGE
+	    WHERE	FAMILY_CUST_NO = #{familyCustNo}
+	    AND		IFNULL(CHG_DT, REG_DT) > date_add(now(),interval -7 day)
+	    AND		USE_YN = 'Y'
+	    GROUP BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
+	    ORDER BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
+	</select>
+	
+</mapper>

@@ -52,7 +52,27 @@ public class ProductVO {
     
     private double ratingAvg;
     
-   	public double getRatingAvg() {
+    private String cateogryName;
+    
+    private int pagingNo;
+    
+   	public String getCateogryName() {
+		return cateogryName;
+	}
+
+	public void setCateogryName(String cateogryName) {
+		this.cateogryName = cateogryName;
+	}
+
+	public int getPagingNo() {
+		return pagingNo;
+	}
+
+	public void setPagingNo(int pagingNo) {
+		this.pagingNo = pagingNo;
+	}
+
+	public double getRatingAvg() {
 		return ratingAvg;
 	}
 

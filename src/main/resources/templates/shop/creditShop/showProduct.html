@@ -54,7 +54,7 @@
 }
 
 .thumbs li, .thumbs li a {
-    width: 98px;
+    width: 55px;
     height: 55px;
     margin-left: 5px;
     margin-right: 5px;
@@ -243,30 +243,30 @@ ul, li{
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon1">남은
+												<span class="input-group-text" id="amountcheck">남은
 													재고</span>
 											</div>
 											<input type="text" class="form-control"
-												th:value="${product.productAmount}" disabled>
+												th:value="${product.productAmount}" disabled id="remindAmount">
 										</div>
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
 												<span class="input-group-text" id="basic-addon1" style="width: 95.2px;">개수</span>
 											</div>
-											<input type="text" class="form-control" placeholder="Amount"
+											<input type="text" class="form-control amountcheck" placeholder="Amount"
 												id="amount">
 										</div>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="col-6">
-												<button type="button"
-													class="btn btn-secondary btn-block btn-lg"
+												<button type="button" 
+													class="btn btn-secondary btn-block btn-lg amountcheck"
 													th:onClick="|javascript:basket(${product.productNo});|">장바구니</button>
 											</div>
 											<div class="col-6">
 												<button type="button"
-													class="btn btn-secondary btn-block btn-lg"
+													class="btn btn-secondary btn-block btn-lg amountcheck"
 													th:onClick="|javascript:directBuy(${product.productNo});|">즉시구매</button>
 											</div>
 											<div class="col-12">
@@ -361,6 +361,11 @@ ul, li{
 
 <script>
     $(document).ready(function(){
+    	if($("#remindAmount").val() == 0) {
+    		$(".amountcheck").attr("disabled","true");
+    		$("#amount").val("재고가 없습니다.");
+    	}
+    
         var options = {
             max_value: 5,
             step_size: 0.5,

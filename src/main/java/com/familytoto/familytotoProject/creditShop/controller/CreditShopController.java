@@ -36,12 +36,11 @@ public class CreditShopController {
 	
 	@RequestMapping("/creditShop/list")
 	@ResponseBody
-    public String creditShopList(Model model, HttpServletRequest request) {
-		String sPageParameter = request.getParameter("pageParameter");
-		int nParameter = Integer.parseInt(sPageParameter);
-		
+    public String creditShopList(Model model,
+    		HttpServletRequest request,
+    		ProductVO vo) {
 		Gson gson = new Gson();
-		String json = gson.toJson(creditShopService.listCreditShop(nParameter));
+		String json = gson.toJson(creditShopService.listCreditShop(vo));
 		return json;
     }
 	

@@ -1,6 +1,7 @@
 package com.familytoto.familytotoProject.config;
 
 import java.util.Date;
+import java.util.Random;
 
 public class GlobalVariable {
 	private static class TIME_MAXIMUM {
@@ -34,5 +35,9 @@ public class GlobalVariable {
 		}
 
 		return msg;
+	}
+	
+	public static int RadnomValue(int min, int max) {
+		return new Random().nextInt((max - min) + 1) + min;
 	}
 }

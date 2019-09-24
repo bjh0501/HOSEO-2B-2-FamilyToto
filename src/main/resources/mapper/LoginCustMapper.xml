@@ -25,7 +25,7 @@
 		,		SC.SC_CUST_NO as scCustNo
 		FROM	SOCIAL_CUSTOM SC
 			INNER JOIN CUSTOM C ON SC.FAMILY_CUST_NO = C.FAMILY_CUST_NO
-			AND		C.USE_YN = 'Y'
+				AND		C.USE_YN = 'Y'
 		WHERE	SC_CUST_ID = #{scCustId}
 		AND		SC_CUST_GUBUN = #{scCustGubun}
 		AND		SC.USE_YN = 'Y'	
@@ -37,5 +37,12 @@
 		WHERE	SC_CUST_ID = #{scCustId}
 		AND		SC_CUST_GUBUN = #{scCustGubun}
 		AND		USE_YN = 'Y'
+	</select>
+	
+	<select id="geExpInfo" parameterType="int">
+		SELECT	FAMILY_CUST_EXP as familyCustExp
+        FROM 	FAMILY_CUSTOM
+        WHERE	FAMILY_CUST_NO = #{familycustNo}
+        AND		USE_YN = 'Y'
 	</select>
 </mapper>

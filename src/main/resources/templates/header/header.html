@@ -2,87 +2,97 @@
 <meta charset="utf-8">
 
 <!-- Topbar Navbar -->
-	
-	<ul class="navbar-nav ml-auto" th:if="${session.cust != null}">
-		<!-- Nav Item - Alerts -->
-	
-		<!-- Nav Item - Messages -->
-<!-- 		<li class="nav-item dropdown no-arrow mx-1"> -->
-<!-- 			<a	class="nav-link dropdown-toggle" href="#" id="messagesDropdown" -->
-<!-- 				role="button" data-toggle="dropdown" aria-haspopup="true" -->
-<!-- 				aria-expanded="false"> -->
-<!-- 					<i class="fas fa-dollar-sign"></i> Counter - Messages -->
-<!-- 					<span class="badge badge-danger badge-counter">7</span> -->
-<!-- 			</a> Dropdown - Messages -->
-<!-- 		</li> -->
-<!-- 		<div class="topbar-divider d-none d-sm-block"></div> -->
-	
-		<!-- Nav Item - User Information -->
-		<li class="nav-item dropdown no-arrow">
-			<a	class="nav-link dropdown-toggle" href="#" id="userDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false">
-				<span class="mr-2 d-none d-lg-inline small" th:text="${session.cust.getFamilyCustNick()}">회원닉네임</span>
-				<img class="img-profile rounded-circle" src="/img/social/icon/naverMiniIcon.jpg" th:if="${session.social}=='NA'">
-				<img class="img-profile rounded-circle" src="/img/social/icon/kakaoMiniIcon.jpg" th:if="${session.social}=='KA'">
-				<img class="img-profile rounded-circle" src="/img/social/icon/facebookMiniIcon.jpg" th:if="${session.social}=='FA'">
-				<img class="img-profile rounded-circle" src="/img/social/icon/onesportsMiniIcon.jpg" th:if="${session.social}=='ON'">
-			</a> <!-- Dropdown - User Information -->
-			<div
-				class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-				aria-labelledby="userDropdown">
-				<a class="dropdown-item" href="/changeCust"> <i class="fas fa-user-edit"></i>
-					내정보보기
-				</a>
-<!-- 				<a class="dropdown-item" href="#"> -->
-<!-- 					<i class="fas fa-book-open"></i> -->
-<!-- 					활동로그보기 -->
-<!-- 				</a> -->
-				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="/charge">
-					<i class="far fa-gem"></i>
-					충전
-				</a>
-				<a class="dropdown-item" href="/basket">
-					<i class="fas fa-shopping-cart"></i>
-					장바구니
-				</a>
-				<a class="dropdown-item" href="/productBuyList">
-					<i class="fas fa-clipboard-list"></i>
-					구입내역
-				</a>
-				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="/logout">
-					<i class="fas fa-sign-out-alt"></i>
-					로그아웃
-				</a>
-			</div>
-		</li>
-	</ul>
-	<ul class="navbar-nav ml-auto" th:if="${session.cust == null}">
-		<!-- Nav Item - User Information -->
-		<li class="nav-item dropdown no-arrow">
-			<a	class="nav-link dropdown-toggle" href="#" id="userDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false">
-				<span class="mr-2 d-none d-lg-inline small">회원가입/로그인</span>
-				<i class="fas fa-user"></i>
-			</a> <!-- Dropdown - User Information -->
-			<div
-				class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-				aria-labelledby="userDropdown">
-				<a class="dropdown-item" href="/registerCust">
-					<i class="fas fa-user-plus"></i>
-					회원가입
-				</a>
-				<a class="dropdown-item" href="/login">
-					<i class="fas fa-sign-in-alt"></i>
-					로그인
-				</a>
-				<a class="dropdown-item" href="/findID_PW">
-					<i class="fas fa-lock-open"></i>
-					ID/PW 찾기
-				</a>
-			</div>
-		</li>
-	</ul>
+
+<ul class="navbar-nav ml-auto" th:if="${session.cust != null}">
+
+	<li class="nav-item dropdown no-arrow mx-1"><a
+		class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
+		role="button" data-toggle="dropdown" aria-haspopup="true"
+		aria-expanded="false"> <i class="fas fa-running"></i> <!-- Counter - Alerts -->
+			EXP <!--                 <span class="badge badge-danger badge-counter">3+</span> -->
+	</a> <!-- Dropdown - Alerts -->
+		<div
+			class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+			aria-labelledby="alertsDropdown">
+			<h6 class="dropdown-header">경험치</h6>
+			<a class="dropdown-item d-flex align-items-center" href="#">
+				<div class="mr-3">
+					<div class="icon-circle bg-secondary">1</div>
+				</div>
+				<div style="width: 100%;">
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" style="width: 25%;"
+							aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+							<span>234</span>
+					</div>
+				</div>
+			</a> <a class="dropdown-item text-center small text-gray-500" href="#">경험치
+				내역 보기</a>
+		</div></li>
+
+	<div class="topbar-divider d-none d-sm-block"></div>
+	<li class="nav-item dropdown no-arrow"><a
+		class="nav-link dropdown-toggle" href="#" id="userDropdown"
+		role="button" data-toggle="dropdown" aria-haspopup="true"
+		aria-expanded="false"> <span class="mr-2 d-none d-lg-inline small"
+			th:text="${session.cust.getFamilyCustNick()}">회원닉네임</span> <img
+			class="img-profile rounded-circle"
+			src="/img/social/icon/naverMiniIcon.jpg"
+			th:if="${session.social}=='NA'"> <img
+			class="img-profile rounded-circle"
+			src="/img/social/icon/kakaoMiniIcon.jpg"
+			th:if="${session.social}=='KA'"> <img
+			class="img-profile rounded-circle"
+			src="/img/social/icon/facebookMiniIcon.jpg"
+			th:if="${session.social}=='FA'"> <img
+			class="img-profile rounded-circle"
+			src="/img/social/icon/onesportsMiniIcon.jpg"
+			th:if="${session.social}=='ON'">
+	</a> <!-- Dropdown - User Information -->
+		<div
+			class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+			aria-labelledby="userDropdown">
+			<a class="dropdown-item" href="/changeCust"> <i
+				class="fas fa-user-edit"></i> 내정보보기
+			</a>
+			<a class="dropdown-item" href="/dashboard">
+			<i class="fas fa-chalkboard-teacher"></i> 대시보드
+			</a>
+			<!-- 				<a class="dropdown-item" href="#"> -->
+			<!-- 					<i class="fas fa-book-open"></i> -->
+			<!-- 					활동로그보기 -->
+			<!-- 				</a> -->
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="/charge"> <i class="far fa-gem"></i>
+				충전
+			</a> <a class="dropdown-item" href="/basket"> <i
+				class="fas fa-shopping-cart"></i> 장바구니
+			</a> <a class="dropdown-item" href="/productBuyList"> <i
+				class="fas fa-clipboard-list"></i> 구입내역
+			</a>
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="/logout"> <i
+				class="fas fa-sign-out-alt"></i> 로그아웃
+			</a>
+		</div></li>
+</ul>
+<ul class="navbar-nav ml-auto" th:if="${session.cust == null}">
+	<!-- Nav Item - User Information -->
+	<li class="nav-item dropdown no-arrow"><a
+		class="nav-link dropdown-toggle" href="#" id="userDropdown"
+		role="button" data-toggle="dropdown" aria-haspopup="true"
+		aria-expanded="false"> <span class="mr-2 d-none d-lg-inline small">회원가입/로그인</span>
+			<i class="fas fa-user"></i>
+	</a> <!-- Dropdown - User Information -->
+		<div
+			class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+			aria-labelledby="userDropdown">
+			<a class="dropdown-item" href="/registerCust"> <i
+				class="fas fa-user-plus"></i> 회원가입
+			</a> <a class="dropdown-item" href="/login"> <i
+				class="fas fa-sign-in-alt"></i> 로그인
+			</a> <a class="dropdown-item" href="/findID_PW"> <i
+				class="fas fa-lock-open"></i> ID/PW 찾기
+			</a>
+		</div></li>
+</ul>

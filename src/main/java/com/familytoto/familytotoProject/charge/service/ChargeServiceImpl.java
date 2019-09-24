@@ -27,16 +27,22 @@ public class ChargeServiceImpl implements ChargeService {
 	public int doCharge(CreditVO vo) {
 		// 오늘 충전한거 갯수 예외처리하기
 		
-		Map<String, Object> map = chargeDao.todayCharge(vo);
-		
-		//  하루에 최고 5번충전가능
-		if(Integer.parseInt(map.get("todayChargeCnt").toString()) >= 5) {
-			return -98;			
-		} else if( chargeDao.getCurrentCredit(vo.getFamilyCustNo()) >= 5000) { // 5천크레딧 미만이여야 충전가능 
-			return -97;
+		if(vo.getCreditState().equals("FRE")) {
+			Map<String, Object> map = chargeDao.todayCharge(vo);
+			
+			//  하루에 최고 5번충전가능
+			if(Integer.parseInt(map.get("todayChargeCnt").toString()) >= 5) {
+				return -98;			
+			} else if( chargeDao.getCurrentCredit(vo.getFamilyCustNo()) >= 5000) { // 5천크레딧 미만이여야 충전가능 
+				return -97;
+			}
 		} else {
-			return chargeDao.doCharge(vo);
+			if(chargeDao.isCardChargeCheck(vo.getFamilyCustNo()) == true) {
+				return -96;
+			}
 		}
+		
+		return chargeDao.doCharge(vo);
 	}
 
 	@Override

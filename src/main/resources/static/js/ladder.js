@@ -9,20 +9,23 @@ $(function(){
     var ladder_canvas = $('#ladder_canvas');
     var GLOBAL_FOOT_PRINT= {};
     var GLOBAL_CHECK_FOOT_PRINT= {};
+    var GLOBAL_CHECK_DUPLE = false; 
+    
     var working = false;
     function init(){
         canvasDraw();
     }
 
-    $('#button').on('click', function(){
-        var member = $('input[name=member]').val();
-        if(member < 5){
-            return alert('사다리는 5개 입니다.')
-        }
-
-        if(member > 6){
-            return alert('사다리는 5개 입니다.')   
-        }
+    $('#betButton').on('click', function(){
+    	GLOBAL_CHECK_DUPLE = false
+        var member = 3;
+//        if(member < 5){
+//            return alert('사다리는 5개 입니다.')
+//        }
+//
+//        if(member > 6){
+//            return alert('사다리는 5개 입니다.')   
+//        }
         $('#landing').css({
             'opacity': 0
         });
@@ -56,6 +59,14 @@ $(function(){
     }
     var userName = "";
     $(document).on('click', 'button.ladder-start', function(e){
+    	if(GLOBAL_CHECK_DUPLE == true) {
+    		var con = confirm("동일한 크레딧으로 선택됩니다.\n계속 하시겠습니까?");
+    		
+    		if(con==false) {
+    			return false;
+    		}
+    	}
+    	
         if(working){
             return false;
         }
@@ -74,8 +85,7 @@ $(function(){
         userName =  $('input[data-node="'+node+'"]').val();
     })
     
-    function startLineDrawing(node , color){
-
+    function startLineDrawing(node , color){    	
         var node = node;
         var color = color;
         
@@ -90,12 +100,16 @@ $(function(){
             reSetCheckFootPrint();
             var target = $('input[data-node="'+node+'"]');
             target.css({
-                'background-color' : color
+                //'background-color' : color
             })
-            $('#' + node + "-user").text(userName)
+            
+            // 여기서 ajax
+            $('[data-node=' + node + ']').val("1.95배");
+            GLOBAL_CHECK_DUPLE  = true
              working = false;
             return false;
         }
+        
         if(nodeInfo["change"] ){
             var leftNode = (x-1) + "-" +y;
             var rightNode = (x+1) + "-" +y;
@@ -196,8 +210,6 @@ $(function(){
         }
     }
 
-
-
     function userSetting(){
         var userList = LADDER[0];
         var html = '';
@@ -207,7 +219,8 @@ $(function(){
             var x = userList[i].split('-')[0]*1;
             var y = userList[i].split('-')[1]*1;
             var left = x * 100  -30
-            html += '<div class="user-wrap" style="left:'+left+'"><input type="text" data-node="'+userList[i]+'"><button class="ladder-start" style="background-color:'+color+'" data-color="'+color+'" data-node="'+userList[i]+'"></button>';
+            
+            html += '<div class="user-wrap" style="left:'+left+'px"><button class="ladder-start btn-secondary" data-color="#000000" data-node="'+userList[i]+'">선택</button>';
             html +='</div>'
         }
         ladder.append(html);
@@ -223,7 +236,10 @@ $(function(){
             var y = resultList[i].split('-')[1]*1 + 1;
             var node = x + "-" + y;
             var left = x * 100  -30
-            html += '<div class="answer-wrap" style="left:'+left+'"><input type="text" data-node="'+node+'">';
+            
+            html += "<div class='answer-wrap' style='left:"+left+"px'>" +
+            		"<input type='text' data-node='"+node+"' value='결과' readonly>" +
+            				"";
             html +='<p id="'+node+'-user"></p>'
             html +='</div>'
         }
@@ -248,13 +264,14 @@ $(function(){
     function stokeLine(x, y, flag , dir , color , width){
         var canvas = document.getElementById('ladder_canvas');
         var ctx = canvas.getContext('2d');
+        var ctx2 = canvas.getContext('2d');
+        
         var moveToStart =0, moveToEnd =0, lineToStart =0 ,lineToEnd =0; 
         var eachWidth = 100; 
         var eachHeight = 25;
+        
         if(flag == "w"){
             //가로줄
-           
-           
             if(dir == "r"){
                 ctx.beginPath();
                 moveToStart = x * eachWidth ;
@@ -292,7 +309,7 @@ $(function(){
          for(var y =0; y < heightNode-1; y++){
             html += '<tr>';
             for(var x =0; x <widthNode-1 ; x++){
-                html += '<td style="width:98px; height:25px; border-left:2px solid #ddd; border-right:2px solid #ddd;"></td>';
+                html += '<td style="width:100px; height:25px; border-left:2px solid #ddd; border-right:2px solid #ddd;"></td>';
             }
             html += '</tr>';
         }

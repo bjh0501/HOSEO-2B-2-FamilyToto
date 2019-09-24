@@ -16,4 +16,8 @@ public class CustLoginDAOImpl implements CustLoginDAO {
 		return sqlSession.selectOne("login.custLogin", vo);
 	}
 
+	@Override
+	public CustVO getExpInfo(int familyCustNo) {
+		return sqlSession.selectOne("login.geExpInfo", familyCustNo);
+	}
 }

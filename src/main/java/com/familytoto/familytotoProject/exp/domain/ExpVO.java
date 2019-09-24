@@ -1,18 +1,17 @@
-package com.familytoto.familytotoProject.creditShop.domain;
+package com.familytoto.familytotoProject.exp.domain;
 
 import java.sql.Timestamp;
 
-public class MileageVO {
-
-    // 80000001
-    private int mileageNo;
+public class ExpVO {
+	 // 100000001
+    private int expNo;
 
     // 10000001
     private int familyCustNo;
 
-    private int mileageValue;
+    private String expState;
 
-    private String mileageState;
+    private int expValue;
 
     private int regCustNo;
 
@@ -26,25 +25,14 @@ public class MileageVO {
 
     private String chgIp;
 
-    // Y,N,B
     private String useYn;
-    
-    private String regMileageDt;
 
-	public String getRegMileageDt() {
-		return regMileageDt;
+	public int getExpNo() {
+		return expNo;
 	}
 
-	public void setRegMileageDt(String regMileageDt) {
-		this.regMileageDt = regMileageDt;
-	}
-
-	public int getMileageNo() {
-		return mileageNo;
-	}
-
-	public void setMileageNo(int mileageNo) {
-		this.mileageNo = mileageNo;
+	public void setExpNo(int expNo) {
+		this.expNo = expNo;
 	}
 
 	public int getFamilyCustNo() {
@@ -55,20 +43,20 @@ public class MileageVO {
 		this.familyCustNo = familyCustNo;
 	}
 
-	public int getMileageValue() {
-		return mileageValue;
+	public String getExpState() {
+		return expState;
 	}
 
-	public void setMileageValue(int mileageValue) {
-		this.mileageValue = mileageValue;
+	public void setExpState(String expState) {
+		this.expState = expState;
 	}
 
-	public String getMileageState() {
-		return mileageState;
+	public int getExpValue() {
+		return expValue;
 	}
 
-	public void setMileageState(String mileageState) {
-		this.mileageState = mileageState;
+	public void setExpValue(int expValue) {
+		this.expValue = expValue;
 	}
 
 	public int getRegCustNo() {
@@ -125,14 +113,6 @@ public class MileageVO {
 
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
-	}
-
-	@Override
-	public String toString() {
-		return "MileageVO [mileageNo=" + mileageNo + ", familyCustNo=" + familyCustNo + ", mileageValue=" + mileageValue
-				+ ", mileageState=" + mileageState + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo
-				+ ", regDt=" + regDt + ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn
-				+ "]";
 	}
     
     

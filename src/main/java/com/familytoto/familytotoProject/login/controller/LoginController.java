@@ -19,6 +19,7 @@ import com.familytoto.familytotoProject.login.service.facebook.FacebookLoginVO;
 import com.familytoto.familytotoProject.login.service.kakao.KakaoLoginVO;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.google.gson.Gson;
 
 @Controller
 public class LoginController {
@@ -34,7 +35,7 @@ public class LoginController {
 	@Autowired
 	FacebookLoginVO facebookLoginVo;
 	
-	@RequestMapping("login")
+	@RequestMapping("/login")
     public String login(Model model, HttpSession session, HttpServletRequest request) {
 		String sRefer = request.getHeader("referer");
 		
@@ -62,7 +63,7 @@ public class LoginController {
 		return "/loginInfo/login";
     }
 	
-	@RequestMapping("logout")
+	@RequestMapping("/logout")
 	public void logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String sRefer = request.getHeader("referer");
 		
@@ -78,7 +79,7 @@ public class LoginController {
 	}
 	
 	// 원스포츠 회원전용
-	@RequestMapping("login/custLogin")
+	@RequestMapping("/login/custLogin")
 	@ResponseBody
 	public int custLogin(@ModelAttribute CustVO vo, HttpServletRequest request) {
 		CustVO login = custLoginService.login(vo);
@@ -97,6 +98,27 @@ public class LoginController {
 		}
 		
 		return nReuslt;
+	}
+	
+	@RequestMapping("/header/header")
+	public String expInfo(HttpSession session, Model model) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		Gson gson = new Gson();
+		
+		if(cVo != null) {
+			
+			CustVO getExpInfo = custLoginService.getExpInfo(cVo.getFamilyCustExp());
+			
+			if(getExpInfo == null ) {
+				model.addAttribute("expInfo", null);
+			} else {
+				//String sJson = gson.toJson(getExpInfo);
+				model.addAttribute("expInfo", getExpInfo);
+			}
+		}
+		
+		return "/header/header";
 	}
 }
 
