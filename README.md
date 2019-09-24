@@ -92,7 +92,7 @@
 |   PDB(ProductDirectBuy)    |   상품즉시구매    | 상품즉시구매  |-    |
 |   GBP(GraphBettingPlay)    |   그래프배팅    |  최소 1,000크레딧<BR>최대100,000크레딧 |-1000~100,000|
 |   GBG(GraphBettingGet)    |   그래프따기    | 배당1.00~최대30.00배 |+|
-|   ~DBP(DiceBettingPlay)~    |   홀짝배팅    |  최소 1,000크레딧<BR>최대100,000크레딧 |-1000~100,000|
+|   DBP(DiceBettingPlay)    |   홀짝배팅    |  최소 1,000크레딧<BR>최대100,000크레딧 |-1000~100,000|
 |   DBG(DiceBettingGet)    |   홀짝따기    | 홀, 짝 1.95배<BR>더블3.49배  |+|
 |   ~LBP(LadderBettingPlay)~    |   사다리배팅    |  최소 1,000크레딧<BR>최대100,000크레딧 |-1000~100,000|
 |   ~LBG(LadderBettingGet)~    |   사다리따기    | 다리2개 : 1.95, 3개 : 2.95 ... 5개 : 4.95  |+|
