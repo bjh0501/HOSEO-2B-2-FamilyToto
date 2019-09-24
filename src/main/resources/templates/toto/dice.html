@@ -10,6 +10,11 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
+
+
+
+
+
 <title>One Sports</title>
 
 <!-- Custom fonts for this template-->
@@ -19,6 +24,11 @@
 
 <!-- Custom styles for this template-->
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+
+
+
 
 </head>
 
@@ -247,27 +257,7 @@
 
 	var n = 0;
 	var turnTime = 30;
-
-	function drawBall() {
-		var random1 = Math.floor(6 * Math.random()) + 1;
-		var random2 = Math.floor(6 * Math.random()) + 1;
-		n++;
-		if (n >= turnTime) {
-			for (var i = 1; i <= 6; i++) {
-				if (random1 == i) {
-					imgClo1.src = "/img/toto/dice/dice" + i + ".png";
-				}
-
-				if (random2 == i) {
-					imgClo2.src = "/img/toto/dice/dice" + i + ".png";
-				}
-			}
-
-			n = 1;
-			turnTime += 10;
-		}
-	}
-
+	
 	function draw(result, credit) {		
 		if (turnTime >= 100) {
 			clearInterval(timeRef);
@@ -290,8 +280,6 @@
 			$("#betButton").attr("onclick", "location.reload()");
 			imgClo1.src = diceResult1;
 			imgClo2.src = diceResult2;
-			ctx2.drawImage(imgClo2, x2, y2, ballRadius, ballRadius);
-			ctx1.drawImage(imgClo1, x1, y1, ballRadius, ballRadius);
 
 			console.log(imgClo1.src)
 			console.log(imgClo2.src)
@@ -300,35 +288,7 @@
 		} else {
 			ctx1.clearRect(0, 0, canvas.width, canvas.height);
 		}
-		////
-		if (x1 + dx1 > canvas.width - ballRadius
-				|| x1 + dx1 < ballRadius - size) {
-			dx1 = -dx1;
-		}
-		if (y1 + dy1 > canvas.height - ballRadius
-				|| y1 + dy1 < ballRadius - size) {
-			dy1 = -dy1;
-		}
 
-		x1 += dx1;
-		y1 += dy1;
-
-		////		    
-		if (x2 + dx2 > canvas.width - ballRadius
-				|| x2 + dx2 < ballRadius - size) {
-			dx2 = -dx2;
-		}
-		if (y2 + dy2 > canvas.height - ballRadius
-				|| y2 + dy2 < ballRadius - size) {
-			dy2 = -dy2;
-		}
-
-		x2 += dx2;
-		y2 += dy2;
-
-		////
-		console.log("AA")
-		drawResultDices();
 	}
 
 	function getRandomArbitrary(min, max) {
@@ -337,9 +297,5 @@
 
 	}
 
-	function drawResultDices() {
-		drawBall();
-		ctx2.drawImage(imgClo2, x2, y2, ballRadius, ballRadius);
-		ctx1.drawImage(imgClo1, x1, y1, ballRadius, ballRadius);
-	}
+
 </script>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+
+  <title>One Sports</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/Nunito.css" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+
+	
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:include="/sidebar/sidebar">
+	</ul>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:include="/header/header">
+
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+          </div> -->
+
+         <!-- 사다리 페이지 -->
+          <div class="row">
+            <div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9 " >
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                </div>
+				<!-- 카드 안 토토 -->	 
+									<SCRIPT language="JavaScript1.1">
+
+
+
+						coin = 50  
+						bet = 1
+						game = false
+						box1 = true
+						box2 = true
+						box3 = true
+						num = Math.floor(Math.random() * 10)
+						
+						IMG = new Array();
+						
+						IMG[0] = new Image(); IMG[0].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/0.gif";
+						IMG[1] = new Image(); IMG[1].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/1.gif";
+						IMG[2] = new Image(); IMG[2].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/2.gif";
+						IMG[3] = new Image(); IMG[3].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/3.gif";
+						IMG[4] = new Image(); IMG[4].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/4.gif";
+						IMG[5] = new Image(); IMG[5].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/5.gif";
+						IMG[6] = new Image(); IMG[6].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/6.gif";
+						IMG[7] = new Image(); IMG[7].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/7.gif";
+						IMG[8] = new Image(); IMG[8].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/8.gif";
+						IMG[9] = new Image(); IMG[9].src = "http://www.blueb.co.kr/SRC/javascript/image1/slot/9.gif";
+						
+						
+						function keisan(){
+							if((document.images["first"].src == document.images["second"].src) && (document.images["second"].src == document.images["third"].src) && (document.images["third"].src == IMG[7].src)){
+								coin += bet * 10; 
+								document.form.pay_back.value="축하합니다! "+(bet*10)+"1점 먹었구요    점수는 : "+coin+"점입니다."
+							}
+							else if((document.images["first"].src == document.images["second"].src) && (document.images["second"].src == document.images["third"].src)){
+								coin += bet * 5; 
+								document.form.pay_back.value="와따리~"+(bet*5)+"�젏 癒뱀뿀援ъ슂�����젏�닔�뒗竊�"+coin+"�젏";
+							} else {
+								coin -= bet
+								document.form.pay_back.value="�븞嫄몃젮 ���떎竊곥�������궓�� �젏�닔竊�"+coin+"�젏";
+							}
+							game = false
+							box1 = true
+							box2 = true
+							box3 = true
+						}
+						
+						function end(variable){
+							if(game == true){
+									if(variable == 1)box1 = false
+									if(variable == 2)box2 = false
+									if(variable == 3)box3 = false
+							  }
+							if((box1 == false) && (box2 == false) && (box3 == false)){
+									clearTimeout(tid)
+									keisan()
+							  }
+						}
+						
+						function hyouji(){
+						       
+						   if(num == 10) num = 0
+						   if(box1)document.images["first"].src = IMG[num % 10].src
+						   if(box2)document.images["second"].src = IMG[(num + 3) % 10].src
+						   if(box3)document.images["third"].src = IMG[(num + 6) % 10].src
+						num += 1
+						tid = setTimeout("hyouji()",60)  
+						}
+						
+						
+						function inCoin(){
+						  if (document.forms[0].elements[3].options[0].selected) bet = 1;
+						  else if (document.forms[0].elements[3].options[1].selected) bet = 1;
+						  else if (document.forms[0].elements[3].options[2].selected) bet = 2;
+						  else if (document.forms[0].elements[3].options[3].selected) bet = 3;
+						  else if (document.forms[0].elements[3].options[4].selected) bet = 4;
+						  else if (document.forms[0].elements[3].options[5].selected) bet = 5;
+						
+						  if((coin-bet) < 0){
+							  document.form.pay_back.value="利먭굅�슫 �떆媛� �릺�뀲�뒾源�? �룄諛뺤� �젙�떊�� 蹂묐뱾寃� �븿�떎!";
+							  game = false
+							}
+						  else if (bet > 0){
+							  document.form.pay_back.value="諛고똿�썑 �젏�닔�뒗"+(coin-bet)+"�젏 �씠援ъ슂, "+bet+"諛고똿�븯�뀲�꽕�슂";
+							  hyouji()
+							}
+						}
+						function startGame(){
+						   if(game == false){
+						            game = true
+						        if (coin <= 0){
+						          document.form.pay_back.value="�걹�궗�뒾�떎! 怨좊쭏�븯援� �뵶嫄� �빐�슂^^"
+						           }else{
+						          inCoin()
+						         }
+						     }
+						}
+						
+						document.write('<center><form name="form"><IMG src="http://www.blueb.co.kr/SRC/javascript/image1/slot/7.gif" name="first"> <IMG src="http://www.blueb.co.kr/SRC/javascript/image1/slot/7.gif" name="second"> <IMG src="http://www.blueb.co.kr/SRC/javascript/image1/slot/7.gif" name="third"><br>')
+						document.write('<input type="button" value="stop" name="firstb" onClick=end(1)><input type="button" value="stop" name="secondb" onClick=end(2)><input type="button" value="stop" name="thirdb" onClick=end(3)><br><br>')
+						document.write('<SELECT NAME="select" SIZE="1"><OPTION>INSERT COIN(S)<OPTION>1 COIN<OPTION>2 COINS<OPTION>3 COINS<OPTION>4 COINS<OPTION>5 COINS</SELECT><input type="button" value="  START  " onClick=startGame()><br><br><br>')
+						document.write('<input type="text" size=55 name="pay_back"></form></center>')
+						document.form.pay_back.value="�떆�옉�젏�닔"+coin+"�젏, INSEART COIN�븯�떆援�, START踰꾪듉 袁�!"
+						
+						</SCRIPT>
+              </div>
+            </div>
+            
+     
+            <!-- 배팅리모콘 -->
+            <div class="col-xl-3 col-lg-3 .col-md-3 .col-sm-3" >
+              <div class="card shadow mb-4" style="align:center">
+                <div class="card-header py-3">
+                
+									<h6 class="m-0 font-weight-bold text-primary text-center"
+										style="font-size: 25px">배팅 리모콘</h6>
+									<hr>
+									<h6 class="m-0 font-weight-bold text-primary text-center">보유
+										크레딧</h6>
+									<br> <input type="text" class="form-control"
+										aria-describedby="basic-addon1" id="haveCredit"
+										th:value="${#numbers.formatInteger(creditInfo.getCreditValue(), 0, 'COMMA')}"
+										disabled>
+									<hr>
+
+									<h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6>
+									<br> <input type="text" class="form-control"
+										placeholder="Betting" id="credit"
+										aria-describedby="basic-addon1">
+									<hr>
+                  
+                  <h6 class="m-0 font-weight-bold text-primary text-center">사다리 배팅</h6><br>
+                  
+                  <hr>
+                <input class="btn-secondary" id="betButton" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:90%; margin:0 auto; height:45px"
+                ></input><br>
+                </div>
+            </div> 
+          </div>
+
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white" th:include="/footer/footer">
+      
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+ <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="/vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="/js/demo/chart-area-demo.js"></script>
+  <script src="/js/demo/chart-pie-demo.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+

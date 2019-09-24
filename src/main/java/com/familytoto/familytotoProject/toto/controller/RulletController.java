@@ -12,17 +12,17 @@ import com.familytoto.familytotoProject.toto.service.CommonService;
 import com.google.auto.value.AutoAnnotation;
 
 @Controller
-public class LadderController {
+public class RulletController {
 	@Autowired
 	CommonService commonService;
 	
-	@RequestMapping("/toto/ladder")
+	@RequestMapping("/toto/rullet")
 	public String goSadari(HttpSession session, Model model) {
 		
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 		cVo.getCustNo();
 		
 		model.addAttribute("creditInfo", commonService.getCustCredit(cVo));
-		return "/toto/ladder";
+		return "/toto/rullet";
 	}
 }

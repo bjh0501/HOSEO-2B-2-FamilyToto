@@ -8,6 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  
+  <!-- 토토 meta -->
+  <meta name=description content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
   <title>One Sports</title>
 
@@ -17,7 +21,14 @@
 
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+  
+  
+  <!-- 토토 링크 -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href=" /css/meterial.css">
 
+
+	
 </head>
 
 <body id="page-top">
@@ -56,34 +67,63 @@
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
                 </div>
-                <div class="card-body">
-                  <img class="img-fluid px-3 px-sm-1 mt-3 mb-5" style="width: 55rem;" src="/img/ladder.png" alt="">
-                </div>
+				<!-- 카드 안 토토 -->	 
+									<div class="start-form">
+							            <div class="landing-form">
+							                <div class="group">      
+							                  <input type="text" name="member" required>
+							                  <span class="highlight"></span>
+							                  <span class="bar"></span>
+							                  <label>참여자 수</label>
+							                    <div  id="button" class="button raised green">
+							                      <div  class="center" fit>START</div>
+							                      <paper-ripple fit></paper-ripple>
+							                    </div>
+							                </div>
+							           	</div>
+							       	</div>
+						    <div id="ladder" class="ladder">
+        						<div class="dim"></div>
+         						<canvas class="ladder_canvas" id="ladder_canvas"></canvas>
+    						</div>
               </div>
             </div>
             
+     
             <!-- 배팅리모콘 -->
             <div class="col-xl-3 col-lg-3 .col-md-3 .col-sm-3" >
               <div class="card shadow mb-4" style="align:center">
                 <div class="card-header py-3">
                 
-                  <h6 class="m-0 font-weight-bold text-primary text-center" style="font-size:25px">배팅 리모콘</h6><hr>
-                  <h6 class="m-0 font-weight-bold text-primary text-center">현재금액</h6><br>
-                  <input type="text" style="width:350px"></input><hr>
-                  
-                  <h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6><br>
-                  <input type="text" style="width:350px"></input><hr>
+									<h6 class="m-0 font-weight-bold text-primary text-center"
+										style="font-size: 25px">배팅 리모콘</h6>
+									<hr>
+									<h6 class="m-0 font-weight-bold text-primary text-center">보유
+										크레딧</h6>
+									<br> <input type="text" class="form-control"
+										aria-describedby="basic-addon1" id="haveCredit"
+										th:value="${#numbers.formatInteger(creditInfo.getCreditValue(), 0, 'COMMA')}"
+										disabled>
+									<hr>
+
+									<h6 class="m-0 font-weight-bold text-primary text-center">배팅금액</h6>
+									<br> <input type="text" class="form-control"
+										placeholder="Betting" id="credit"
+										aria-describedby="basic-addon1">
+									<hr>
                   
                   <h6 class="m-0 font-weight-bold text-primary text-center">사다리 배팅</h6><br>
-                  <div class="text-center">&nbsp&nbsp&nbsp&nbsp&nbsp<input type ="radio" name="ladder" style="width:30px; height:30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-                  <input type ="radio" name="ladder" style="width:30px; height:30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-                  <input type ="radio" name="ladder" style="width:30px; height:30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-                  <input type ="radio" name="ladder" style="width:30px; height:30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-                  <input type ="radio" name="ladder" checked="checked" style="width:30px; height:30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input></div>
+                  
+                  <div id="sel_num" class="text-center">&nbsp&nbsp&nbsp&nbsp&nbsp<input id="nunm1" type ="radio" name="ladder" style="width:30px; height:30px">1번&nbsp&nbsp&nbsp&nbsp&nbsp</input>
+	                  <input id="nunm2" type ="radio" name="ladder" style="width:30px; height:30px">2번&nbsp&nbsp&nbsp&nbsp&nbsp</input>
+	                  <input id="nunm3" type ="radio" name="ladder" style="width:30px; height:30px">3번&nbsp&nbsp&nbsp&nbsp&nbsp</input>
+	                  <input id="nunm4" type ="radio" name="ladder" style="width:30px; height:30px">번&nbsp&nbsp&nbsp&nbsp&nbsp</input>
+	                  <input id="nunm5" type ="radio" name="ladder" checked="checked" style="width:30px; height:30px">5번&nbsp&nbsp&nbsp&nbsp&nbsp</input></div>
                 </div><hr>
-                <input class="btn-secondary" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:90%; margin:0 auto; height:45px"></input><br>
+                <input class="btn-secondary" id="betButton" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:90%; margin:0 auto; height:45px"
+                ></input><br>
                 </div>
-            </div>
+            </div> 
           </div>
 
 
@@ -121,7 +161,9 @@
   <!-- Page level custom scripts -->
   <script src="/js/demo/chart-area-demo.js"></script>
   <script src="/js/demo/chart-pie-demo.js"></script>
-
+  
+  <!-- sadari script -->
+	<script src="/js/ladder.js"></script>
 </body>
 
 </html>
@@ -129,4 +171,84 @@
 	function goCharge() {
 		location.href = "/charge"
 	}
+	
+	var ladderResult1 = "";
+	var ladderResult2 = "";
+	var timeRef;
+
+	function goCharge() {
+		location.href = "/charge"
+	}
+
+	function bet() {
+		if ($("#credit").val().trim() == "") {
+			alert("크레딧을 입력해주세요.");
+			$("#credit").focus();
+			return false;
+		}
+
+		if ($("#credit").val() < 1000) {
+			alert("1,000크레딧 이상만 배팅할 수 있습니다.");
+			$("#credit").focus();
+			return false;
+		}
+
+		var radioVal = $('input[name="option"]:checked').val();
+
+		if (radioVal == undefined) {
+			alert("배팅 옵션을 선택해주세요.");
+			return false;
+		}
+
+		$.ajax({
+			url : "/toto/ladder/bet",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : "creditValue=" + $("#credit").val() + "&ladderCustBetOption="
+					+ radioVal,
+			success : function(data) {
+				if (data.error == -99) {
+					alert("배팅할 크레딧이 부족합니다.");
+					return;
+				}
+
+				$("#credit").attr("disabled", true);
+				$('input[name="option"]').attr("disabled", true)
+
+				var currentCredit = removeComma($("#haveCredit").val())
+						- $("#credit").val();
+				$("#haveCredit").val(numberWithCommas(currentCredit));
+				$("#credit").val(numberWithCommas($("#credit").val()));
+
+				for (i = 1; i <= 6; i++) {
+					if (data.dice1 == i) {
+						ladderResult1 = "/img/toto/ladder/ladder" + i + ".png";
+					}
+				}
+
+				for (i = 1; i <= 6; i++) {
+					if (data.dice2 == i) {
+						ladderResult2 = "/img/toto/ladder/ladder" + i + ".png";
+					}
+				}
+
+				$("#resultText").html(data.dice1 + ", " + data.dice2);
+
+				timeRef = setInterval(function() {
+					draw(data.error, data.getCredit);
+				}, 10);
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+</script>
+<<script>
+<!-- 사다리 구현 -->
+
+
 </script>
