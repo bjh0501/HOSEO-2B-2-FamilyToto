@@ -9,7 +9,8 @@ $(function(){
     var ladder_canvas = $('#ladder_canvas');
     var GLOBAL_FOOT_PRINT= {};
     var GLOBAL_CHECK_FOOT_PRINT= {};
-    var GLOBAL_CHECK_DUPLE = false; 
+    var GLOBAL_CHECK_DUPLE = false;
+    var GLOBAL_BUTTON_IDX = 0;
     
     var working = false;
     function init(){
@@ -17,8 +18,15 @@ $(function(){
     }
 
     $('#betButton').on('click', function(){
-    	GLOBAL_CHECK_DUPLE = false
-        var member = 3;
+    	GLOBAL_CHECK_DUPLE = false;
+    	GLOBAL_BUTTON_IDX = 0;
+    	
+    	if($("#credit").val() < 1000) {
+    		alert("1,000크레딧 이상만 입력해주세요.");
+    		return false;
+    	}
+    	
+        var member = 5;
 //        if(member < 5){
 //            return alert('사다리는 5개 입니다.')
 //        }
@@ -82,6 +90,9 @@ $(function(){
         var node = _this.attr('data-node');
         var color =  _this.attr('data-color');
         startLineDrawing(node, color);
+        
+        GLOBAL_BUTTON_IDX = parseInt(node.substring(0,1))+1;
+        
         userName =  $('input[data-node="'+node+'"]').val();
     })
     
@@ -102,9 +113,31 @@ $(function(){
             target.css({
                 //'background-color' : color
             })
-            
             // 여기서 ajax
-            $('[data-node=' + node + ']').val("1.95배");
+            
+            $.ajax({
+				url : "/toto/ladder/bet",
+				type : "POST",
+				cache : false,
+				dataType : "html",
+				data : "ladderRegs=" + 5 
+				 + "&ladderAnswer=" + GLOBAL_BUTTON_IDX
+				 + "&creditValue=" + $("#credit").val(),
+				success : function(data) {
+					if(data < 0) {
+						alert("알수없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
+					} else {
+						$('[data-node=' + node + ']').val(data + "배");
+					}
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
+
+
             GLOBAL_CHECK_DUPLE  = true
              working = false;
             return false;

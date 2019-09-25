@@ -55,27 +55,25 @@
 	<update id="updateRecordLose">
 		UPDATE TOTO_GRAPH
 		SET GRAPH_END_DT = NOW()
-		, USE_YN =
-		'Y'
+		, USE_YN ='Y'
 		WHERE GRAPH_NO = #{graphNo}
 		AND FAMILY_CUST_NO = #{familyCustNo}
 		AND
 		USE_YN = 'P'
 	</update>
 	<update id="updateLastGamePorcess">
-		UPDATE TOTO_GRAPH
-		SET USE_YN = 'N'
-		WHERE FAMILY_CUST_NO
-		= #{familyCustNo}
-		AND USE_YN = 'P'
+		UPDATE	TOTO_GRAPH
+		SET		USE_YN = 'N'
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'P'
 	</update>
 	<select id="isCorrectStopGraph" resultType="boolean">
-		SELECT EXISTS(SELECT GRAPH_NO
-		FROM TOTO_GRAPH
-		WHERE GRAPH_MAX >= #{graphMax}
-		AND GRAPH_NO = #{graphNo}
-		AND FAMILY_CUST_NO = #{familyCustNo}
-		AND USE_YN = 'P') as checkGraphNo
+		SELECT	EXISTS(SELECT GRAPH_NO
+		FROM	TOTO_GRAPH
+		WHERE	GRAPH_MAX >= #{graphMax}
+		AND		GRAPH_NO = #{graphNo}
+		AND		FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'P') as checkGraphNo
 	</select>
 	<update id="updateStopGraph">
 		UPDATE	TOTO_GRAPH
@@ -86,4 +84,13 @@
         AND		FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'P'
 	</update>
+	<insert id="insertLadderBet">
+		INSERT INTO TOTO_LADDER (
+			LADDER_REGS,	LADDER_BET,		LADDER_ANSWER,
+            REG_CUST_NO,	REG_DT,			REG_IP,			USE_YN
+        ) VALUES (
+			#{ladderRegs},	#{ladderBet},	#{ladderAnswer},
+            #{regCustNo},	NOW(),			#{regIp},		'Y'
+        )
+	</insert>
 </mapper>
