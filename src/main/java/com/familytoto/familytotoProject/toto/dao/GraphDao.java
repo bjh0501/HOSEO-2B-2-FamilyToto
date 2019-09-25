@@ -11,9 +11,6 @@ public interface GraphDao {
 	// 그래프게임 시작
 	int insertGraphGame(GraphVO vo);
 	
-	// 정상적인 게임인지 확인하는로직
-	boolean isProcessGame(GraphVO vo);
-	
 	// 게임패배 기록
 	int updateRecordLose(GraphVO vo);
 	

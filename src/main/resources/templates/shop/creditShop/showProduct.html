@@ -27,6 +27,11 @@
 
 </head>
 <style>
+.comment-rate {
+	color: orange;
+	font-size: 22px;
+}
+
 .rate-base-layer {
 	color: #aaa;
 }
@@ -39,6 +44,11 @@
 	font-size: 35px;
 }
 
+.rate1 {
+	font-size: 35px;
+	color: orange;
+}
+
 .rate2 .rate-hover-layer {
 	color: orange;
 }
@@ -47,122 +57,130 @@
 	color: orange;
 }
 
+
+
 .thumbs {
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: center;
+	margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
 }
 
 .thumbs li, .thumbs li a {
-    width: 55px;
-    height: 55px;
-    margin-left: 5px;
-    margin-right: 5px;
+	width: 55px;
+	height: 55px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
 .thumbs a {
-  /*display: block;*/
-  position: relative;
-  font: bold 12px/25px Arial, sans-serif;
-  color: #515151;
-  text-decoration: none;
-  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.25), inset 1px 1px 0px rgba(0, 0, 0, 0.15);
+	/*display: block;*/
+	position: relative;
+	font: bold 12px/25px Arial, sans-serif;
+	color: #515151;
+	text-decoration: none;
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.25), inset 1px 1px 0px
+		rgba(0, 0, 0, 0.15);
 }
 
 .thumbs li a img {
-  width: 100%;
-  height: 100%;
-  border: 2px solid gray;
+	width: 100%;
+	height: 100%;
+	border: 2px solid gray;
 }
 
 .thumbs li a:hover span {
-  position: absolute;
-  z-index: 101;
-  bottom: -30px;
-  display: block;
-  width: 98px;
-  height: 25px;
-  text-align: center;
-  border-radius: 3px;
-  -webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
-  -o-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
-  -ms-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
-  background: #fff;
-  background: -webkit-linear-gradient(top, #fff 0%, #bcbcbc 100%);
-  background: -moz-linear-gradient(top, #fff 0%, #bcbcbc 100%);
-  background: -o-linear-gradient(top, #fff 0%, #bcbcbc 100%);
-  background: -ms-linear-gradient(top, #fff 0%, #bcbcbc 100%);
-  background: linear-gradient(top, #fff 0%, #bcbcbc 100%);
+	position: absolute;
+	z-index: 101;
+	bottom: -30px;
+	display: block;
+	width: 98px;
+	height: 25px;
+	text-align: center;
+	border-radius: 3px;
+	-webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+	-o-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+	-ms-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+	background: #fff;
+	background: -webkit-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+	background: -moz-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+	background: -o-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+	background: -ms-linear-gradient(top, #fff 0%, #bcbcbc 100%);
+	background: linear-gradient(top, #fff 0%, #bcbcbc 100%);
 }
 
 .thumbs li a:hover span::before {
-  width: 0;
-  height: 0;
-  border-bottom: 5px solid white;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  content: "";
-  position: absolute;
-  top: -5px;
-  left: 44px;
+	width: 0;
+	height: 0;
+	border-bottom: 5px solid white;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	content: "";
+	position: absolute;
+	top: -5px;
+	left: 44px;
 }
 
 .slide {
-  overflow: hidden;
-  /*border: 4px solid #E74C3C;*/
-  border: 2px solid gray;
+	overflow: hidden;
+	/*border: 4px solid #E74C3C;*/
+	border: 2px solid gray;
 }
 
 .slide, .slide li, .slide img {
-  width: 100%;
-  height: 350px;
-  position: relative;
+	width: 100%;
+	height: 350px;
+	position: relative;
 }
 
 .slide li {
-  position: absolute;
-  z-index: 50;
+	position: absolute;
+	z-index: 50;
 }
 
 /*Animation For Slider*/
-@-webkit-keyframes slider {
-	0% {
-		left: -500px;
-	}
-	
-	100% {
-		left: 0;
-	}
+@
+-webkit-keyframes slider { 0% {
+	left: -500px;
 }
 
+100%
+{
+left
+:
+ 
+0;
+}
+}
 .slide li:target {
-  z-index: 100;
-  -webkit-animation: slider 1s 1;
+	z-index: 100;
+	-webkit-animation: slider 1s 1;
 }
 
 /*Not Target*/
-@-webkit-keyframes 
-noTarget {
-	0% {
-		z-index: 75;
-	}
- 	
- 	100% {
-		z-index: 75;
-	}
+@
+-webkit-keyframes 
+noTarget { 0% {
+	z-index: 75;
 }
 
-.slide li:not(:target) {
+100%
+{
+z-index
+:
+ 
+75;
+}
+}
+.slide li:not (:target ) {
 	-webkit-animation: noTarget 1s 1;
 }
 
-ul, li{
-   list-style:none;
-   padding-left:0px;
+ul, li {
+	list-style: none;
+	padding-left: 0px;
 }
-
 </style>
 
 <body id="page-top">
@@ -199,24 +217,23 @@ ul, li{
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 									<div class="container">
 										<ul class="slide">
-							                <li class="first" id="slide-1">
-							                	<img id="mainImg" th:src="${listImgs[0].getProductImgUrl()}" alt="">
-							                </li>
-							            </ul>
-							            <ul class="thumbs">
-							                <li th:each="list : ${listImgs}">
-							                	<a href="javascript:;"
-							                	th:onClick="|javascript:clickThumb('thumbImg'+${list.getProductNo()});|">
-							                		<img th:src="${list.getProductImgUrl()}" th:id="'thumbImg' + ${list.getProductNo()}" >
-							                	</a>
-						                	</li>
-							            </ul>
+											<li class="first" id="slide-1"><img id="mainImg"
+												th:src="${listImgs[0].getProductImgUrl()}" alt=""></li>
+										</ul>
+										<ul class="thumbs">
+											<li th:each="list : ${listImgs}"><a href="javascript:;"
+												th:onClick="|javascript:clickThumb('thumbImg'+${list.getProductNo()});|">
+													<img th:src="${list.getProductImgUrl()}"
+													th:id="'thumbImg' + ${list.getProductNo()}">
+											</a></li>
+										</ul>
 									</div>
 								</div>
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
-											<span class="input-group-text" id="basic-addon1" style="width:73.6px">가격</span>
+											<span class="input-group-text" id="basic-addon1"
+												style="width: 73.6px">가격</span>
 										</div>
 										<label class="text-word-l"
 											th:text="${#numbers.formatInteger(product.productCredit, 0, 'COMMA')}+'크레딧'">0</label>
@@ -226,7 +243,11 @@ ul, li{
 											<div class="input-group-prepend">
 												<span class="input-group-text" id="basic-addon1">상품평</span>
 											</div>
-											<label class="text-word-l" th:text="${product.ratingAvg}">★★★☆☆</label>
+											<div style="margin-top: -11px;"
+											class="rate1"
+											th:if="${commentCnt} != 0"
+											th:data-rate-value=${#numbers.formatDecimal(product.ratingAvg,1,2)}></div>
+											<label class="text-word-l" th:if="${commentCnt} == 0">상품평이 존재하지 않습니다.</label>
 										</div>
 									</div>
 									<div class="input-group mb-2">
@@ -243,24 +264,25 @@ ul, li{
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
-												<span class="input-group-text" id="amountcheck">남은
-													재고</span>
+												<span class="input-group-text" id="amountcheck">남은 재고</span>
 											</div>
 											<input type="text" class="form-control"
-												th:value="${product.productAmount}" disabled id="remindAmount">
+												th:value="${product.productAmount}" disabled
+												id="remindAmount">
 										</div>
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon1" style="width: 95.2px;">개수</span>
+												<span class="input-group-text" id="basic-addon1"
+													style="width: 95.2px;">개수</span>
 											</div>
-											<input type="text" class="form-control amountcheck" placeholder="Amount"
-												id="amount">
+											<input type="text" class="form-control amountcheck"
+												placeholder="Amount" id="amount">
 										</div>
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
 											<div class="col-6">
-												<button type="button" 
+												<button type="button"
 													class="btn btn-secondary btn-block btn-lg amountcheck"
 													th:onClick="|javascript:basket(${product.productNo});|">장바구니</button>
 											</div>
@@ -271,7 +293,8 @@ ul, li{
 											</div>
 											<div class="col-12">
 												<button type="button"
-													class="btn btn-secondary btn-block btn-lg" onClick="javascript:location.href='/creditShop'">크레딧샵</button>
+													class="btn btn-secondary btn-block btn-lg"
+													onClick="javascript:location.href='/creditShop'">크레딧샵</button>
 											</div>
 										</div>
 									</div>
@@ -282,7 +305,9 @@ ul, li{
 								<div class="col-xl-12 col-md-12 mb-3">
 									<div class="input-group mb-3">
 										<h4>
-											상품 평<span style="color: orange">(<span th:text="${commentCnt}">0</span>)</span>
+											상품 평<span style="color: orange">(<span
+												th:text="${commentCnt}">0</span>)
+											</span>
 										</h4>
 									</div>
 								</div>
@@ -290,30 +315,32 @@ ul, li{
 							<div class="row">
 								<div class="input-group mb-3">
 									<label style="padding-top: 8px; padding-right: 2px;"></label>
-									<div style="margin-top: -11px;" class="rate2" data-rate-value=2.5></div>
-									<input type="hidden" id="ratingValue">
-									<a class="navbar-brand" href="#"> <img src="#" width="30"
+									<div style="margin-top: -11px;" class="rate2"
+										data-rate-value=2.5></div>
+									<input type="hidden" id="ratingValue"> <a
+										class="navbar-brand" href="#"> <img src="#" width="30"
 										height="30" alt="">
-									</a> <input type="text" class="form-control" placeholder="Comment" id="comment"
-										aria-describedby="basic-addon1">
+									</a> <input type="text" class="form-control" placeholder="Comment"
+										id="comment" aria-describedby="basic-addon1">
 									<button type="button" class="btn btn-secondary"
 										style="margin-left: 5px" onClick="javascript:comment();">등록</button>
 								</div>
 							</div>
+							<hr>
 							<div class="row" th:each="list : ${listComment}">
-								<div class="input-group d-flex">
+								<div class="input-group d-flex" style="border-bottom: 1px solid #c7c7c7;">
 									<div class="p-1">
-										<label class="text-word-r" th:text="${list.getFamilyCustNickname()}"></label> <a
-											class="navbar-brand" href="#"> <img
-											src="img/social/naver.jpg" width="30" height="30" alt="">
+										<label class="text-word-r"
+											th:text="${list.getFamilyCustNickname()}"></label> <a
+											class="navbar-brand" href="#">
 										</a>
 									</div>
 									<div class="p-1">
-										<span th:text="${list.getProductCommentRating()}">★★★★☆</span><br>
+										<div class="comment-rate" style="height:6px;" th:data-rate-value=${list.getProductCommentRating()}></div>
 										<span th:text="${list.getProductCommentContents()}">내용</span>
 									</div>
 									<p class="ml-auto p-2 ">
-										<label class="text-word-l" th:text="${list.getRegDt()}">2015. 12. 12 12:25:33</label>
+										<label class="text-word-l" th:text="${list.getRegDt()}"></label>
 									</p>
 								</div>
 							</div>
@@ -347,7 +374,7 @@ ul, li{
 	<script src="/js/sb-admin-2.min.js"></script>
 	<script src="/js/rater.js"></script>
 
-	
+
 </body>
 
 </html>
@@ -361,6 +388,26 @@ ul, li{
 
 <script>
     $(document).ready(function(){
+    	var commentRateOptions = {
+    			max_value: 5,
+    			step_size: 0.1,
+    			initial_value: 3,
+    			 readonly: true,
+    			//update_input_field_name: $("#ratingValue"),
+    		}
+               
+    		$(".comment-rate").rate(commentRateOptions);
+    	
+		var options1 = {
+			max_value: 5,
+			step_size: 0.1,
+			initial_value: 3,
+			 readonly: true,
+			//update_input_field_name: $("#ratingValue"),
+		}
+           
+		$(".rate1").rate(options1);
+		
     	if($("#remindAmount").val() == 0) {
     		$(".amountcheck").attr("disabled","true");
     		$("#amount").val("재고가 없습니다.");

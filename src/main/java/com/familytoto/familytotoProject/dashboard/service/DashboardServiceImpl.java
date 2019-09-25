@@ -27,10 +27,12 @@ public class DashboardServiceImpl implements DashboardService {
 		int credit = dashboardDao.getTotalCredit(familyCustNo);
 		int mileage = dashboardDao.getTotalMileage(familyCustNo);
 		int exp = dashboardDao.getTotalExp(familyCustNo);
+		int level = dashboardDao.getCustLevel(familyCustNo);
 		
 		map.put("credit", credit);
 		map.put("mileage", mileage);
 		map.put("exp", exp);
+		map.put("level", level);
 		
 		return map;
 	}

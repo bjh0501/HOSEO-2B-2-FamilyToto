@@ -26,6 +26,46 @@ public class ExpVO {
     private String chgIp;
 
     private String useYn;
+    
+    private int level;
+    
+    private int familyCustExp;
+
+    private int startExp;
+    
+    private int endExp;
+
+	public int getStartExp() {
+		return startExp;
+	}
+
+	public void setStartExp(int startExp) {
+		this.startExp = startExp;
+	}
+
+	public int getEndExp() {
+		return endExp;
+	}
+
+	public void setEndExp(int endExp) {
+		this.endExp = endExp;
+	}
+
+	public int getFamilyCustExp() {
+		return familyCustExp;
+	}
+
+	public void setFamilyCustExp(int familyCustExp) {
+		this.familyCustExp = familyCustExp;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
 	public int getExpNo() {
 		return expNo;

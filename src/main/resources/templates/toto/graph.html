@@ -152,29 +152,29 @@
 	var yVal = 0.0;
 	var dataLength = 100; // number of dataPoints visible at any point
 	var timer;
- 
+ 	var data = 1.0;
 	var updateChart = function (count) {
-		$.ajax({
-			url : "/toto/graph/process",
-			type : "POST",
-			cache : false,
-			async : false,
-			dataType : "html",
-			success : function(data) {
-				if(data == 0) {
-					alert("패배하였습니다.");
+// 		$.ajax({
+// 			url : "/toto/graph/process",
+// 			type : "POST",
+// 			cache : false,
+// 			async : false,
+// 			dataType : "html",
+// 			success : function(data) {
+// 				if(data == 0) {
+// 					alert("패배하였습니다.");
 					
-					$("#credit").attr("disabled", false);
-					$("#credit").val("");
-					$("#startStopButton").val("시작하기");
-					clearInterval(timer);
-					clearGraph();
-					return false;
-				} else if(data < 0) {
-					alert("문제가 발생하였습니다.\n에러코드 : " + data);
-					location.reload();
-					return false;
-				} else {
+// 					$("#credit").attr("disabled", false);
+// 					$("#credit").val("");
+// 					$("#startStopButton").val("시작하기");
+// 					clearInterval(timer);
+// 					clearGraph();
+// 					return false;
+// 				} else if(data < 0) {
+// 					alert("문제가 발생하였습니다.\n에러코드 : " + data);
+// 					location.reload();
+// 					return false;
+// 				} else {
 					data = parseFloat(data);
 					$("#getBetNum").html(data.toFixed(2));
 					
@@ -185,17 +185,19 @@
 					dataLength++;	// 있어야함
 					chart.render();
 					
+					data += 0.01;
+					
 					return true;
-				}
-			},
-			error : function(request, status, error) {
-				var msg = "ERROR : " + request.status + "<br>"
-				msg += +"내용 : " + request.responseText + "<br>" + error;
-				console.log(msg);
-				location.reload();
-				return false;
-			}
-		});
+// 				}
+// 			},
+// 			error : function(request, status, error) {
+// 				var msg = "ERROR : " + request.status + "<br>"
+// 				msg += +"내용 : " + request.responseText + "<br>" + error;
+// 				console.log(msg);
+// 				location.reload();
+// 				return false;
+// 			}
+// 		});
 	};
 	
 	var initialChart = function (count) {

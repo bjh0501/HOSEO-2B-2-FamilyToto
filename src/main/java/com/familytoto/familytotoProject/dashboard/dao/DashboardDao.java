@@ -20,4 +20,7 @@ public interface DashboardDao {
 	
 	// 경험치 가져오기
 	int getTotalExp(int familyCustNo);
+	
+	// 레벨 가져오기
+	int getCustLevel(int familyCustNo);
 }

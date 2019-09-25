@@ -18,4 +18,16 @@
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'Y'	
 	</update>
+	<select id="getCustLevel" resultType="ExpVO" parameterType="int">
+		<![CDATA[
+			SELECT	LEVEL as level
+			,		FC.FAMILY_CUST_EXP as familyCustExp
+			,		START_EXP as startExp
+            ,		END_EXP as endExp
+	        FROM	FAMILY_CUSTOM FC, LEVEL
+	        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+	        AND		START_EXP <= FC.FAMILY_CUST_EXP
+			AND		END_EXP >= FC.FAMILY_CUST_EXP
+		]]>
+	</select>
 </mapper>

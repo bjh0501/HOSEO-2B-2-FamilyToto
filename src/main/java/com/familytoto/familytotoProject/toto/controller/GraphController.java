@@ -35,6 +35,7 @@ public class GraphController {
 	private double timeValue = 1.00;
 	private int graphNo = 0;
 	private int creditValue = 0;
+	static private double randomMaxValue = 0;
 	
 	@RequestMapping("/toto/graph")
 	public String goGraph(HttpSession session, Model model) {
@@ -61,6 +62,7 @@ public class GraphController {
 		timeValue = 1.00;
 		graphNo = 0;
 		creditValue = 0;
+		randomMaxValue = 0;
 		
 		creVo.setCreditState("GBP");
 		creVo.setRegCustNo(cVo.getCustNo());
@@ -96,7 +98,7 @@ public class GraphController {
 		
 		GraphVO vo = new GraphVO();
 		
-		double randomMaxValue = superRandom();
+		randomMaxValue = superRandom();
 		randomMaxValue = Double.parseDouble(String.format("%.2f", randomMaxValue));
 		
 		vo.setRegCustNo(cVo.getCustNo());
@@ -129,7 +131,7 @@ public class GraphController {
 		vo.setGraphMax(timeValue);
 		
 		// 잘못된 데이터면 패배로 기록
-		if(graphService.isProcessGame(vo) == true) {
+		if(randomMaxValue > timeValue) {
 			timeValue += 0.01;
 		} else {
 			return graphService.updateRecordLose(vo) == 1 ? 0 : -1;
@@ -171,15 +173,7 @@ public class GraphController {
 			return -3;
 		}
 		
-		int nRandomExp = 0;
-		
-		if(creVo.getCreditValue() >= 50001) {
-			nRandomExp = GlobalVariable.RadnomValue(310, 350);
-		} else if(creVo.getCreditValue() >= 10001) {
-			nRandomExp = GlobalVariable.RadnomValue(210, 300);
-		} else if(creVo.getCreditValue() >= 1000) {
-			nRandomExp = GlobalVariable.RadnomValue(110, 200);
-		}
+		int nRandomExp = GlobalVariable.getWinCredit(creVo.getCreditValue());
 		
 		expService.insertExp(cVo, "GGW", nRandomExp, request);
 		

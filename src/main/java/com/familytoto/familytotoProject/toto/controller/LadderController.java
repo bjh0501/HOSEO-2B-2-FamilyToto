@@ -30,6 +30,8 @@ public class LadderController {
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 		cVo.getCustNo();
 		
+		ladderService.initFirstGubun(); // 사다리 게임준비 하기(꼭있어야함)
+		
 		model.addAttribute("creditInfo", commonService.getCustCredit(cVo));
 		return "/toto/ladder";
 	}
@@ -44,6 +46,10 @@ public class LadderController {
 		if(cVo == null) {
 			return -1;	
 		}
+		
+		if(creVo.getCreditValue() < 1000) {
+			return -2;
+		}
 
 		vo.setRegCustNo(cVo.getCustNo());
 		vo.setRegIp(request.getRemoteAddr());
@@ -54,22 +60,20 @@ public class LadderController {
         
         vo.setLadderBet(betValue);
 		
-		if(ladderService.insertLadderBet(vo) != 1) {
-			return -2;
-		}
-		
-		creVo.setCreditState("LBP");
+        creVo.setCreditState("LBP");
 		creVo.setRegCustNo(cVo.getCustNo());
 		creVo.setRegIp(request.getRemoteAddr());
 		creVo.setFamilyCustNo(cVo.getFamilyCustNo());
 		creVo.setCreditValue(creVo.getCreditValue()*-1);
-		ladderService.insertLadderCredit(creVo);
 		
-		// 시작경험치 얻기
-		
-		// 승리경험치얻기
-		// 승리돈얻기
-		
-		return vo.getLadderBet();
+		int winGubun = ladderService.insertLadderBet(vo, creVo, cVo, request);
+        
+		if(winGubun == 1) {
+			return vo.getLadderBet();
+		} else if(winGubun == 2) {
+			return 0; 
+		} else {
+			return -2;
+		}
 	}
 }

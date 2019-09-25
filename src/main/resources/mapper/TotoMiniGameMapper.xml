@@ -41,17 +41,6 @@
 			#{regIp}, 'P', #{familyCustNo}
 		)
 	</insert>
-	<select id="isProcessGame" resultType="boolean"
-		parameterType="GraphVO">
-		SELECT	EXISTS(
-			SELECT	GRAPH_NO
-			FROM	TOTO_GRAPH
-			WHERE	FAMILY_CUST_NO = #{familyCustNo}
-			AND		GRAPH_NO = #{graphNo}
-			AND		GRAPH_MAX >= #{graphMax}
-			AND		USE_YN = 'P'
-		) as checkGraph
-	</select>
 	<update id="updateRecordLose">
 		UPDATE TOTO_GRAPH
 		SET GRAPH_END_DT = NOW()

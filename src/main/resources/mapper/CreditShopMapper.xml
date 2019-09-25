@@ -29,6 +29,7 @@
         SELECT	P.PRODUCT_NO as productNo
 		,		P.PRODUCT_NAME as productName
 		,		P.PRODUCT_CREDIT as productCredit
+		,		P.PRODUCT_AMOUNT as productAmount
 		,		PI.PRODUCT_IMG_URL as productImgUrl
 		FROM	PRODUCT P
 			INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y' AND PI.PRODUCT_IMG_PRIMARY = 'Y'

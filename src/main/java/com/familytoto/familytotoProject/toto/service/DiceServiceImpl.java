@@ -61,15 +61,7 @@ public class DiceServiceImpl implements DiceService {
 		vo.setDiceAmount(randomDice);
 		vo.setDiceResult(randomValue1+randomValue2);
 		
-		int nRandomExp = 0;
-		
-		if(nPlusCredit >= 50001) {
-			nRandomExp = GlobalVariable.RadnomValue(310, 350);
-		} else if(nPlusCredit >= 10001) {
-			nRandomExp = GlobalVariable.RadnomValue(210, 300);
-		} else if(nPlusCredit >= 1000) {
-			nRandomExp = GlobalVariable.RadnomValue(110, 200);
-		}
+		int nRandomExp = GlobalVariable.getWinCredit(nPlusCredit);
 		
 		if(randomValue1 == randomValue2) {
 			vo.setDiceOption("D");

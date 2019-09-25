@@ -1,23 +1,47 @@
 package com.familytoto.familytotoProject.index.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.board.service.BoardService;
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
+import com.familytoto.familytotoProject.exp.service.ExpService;
+import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.google.gson.Gson;
 
 @Controller
 public class IndexController {
-
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	ExpService expService;
 	
 	@RequestMapping(value = { "/index", "/" })
     public String index(Model model) {
 		model.addAttribute("notice", boardService.listNotice());
 	
         return "/index";
+    }
+	
+	
+	@RequestMapping(value = "/header/levelInfo")
+	@ResponseBody
+    public String levelInfo(HttpSession session) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		if(cVo == null) {
+			return "";
+		}
+		
+		Gson gson = new Gson();
+		String sJson = gson.toJson(expService.getLevelInfo(cVo.getFamilyCustNo()));
+		
+        return sJson;
     }
 	
 	@RequestMapping(value = "/history")

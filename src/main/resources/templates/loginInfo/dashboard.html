@@ -111,7 +111,10 @@
 										<div class="col mr-2">
 											<div
 												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Experience</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#numbers.formatInteger(list.exp, 0, 'COMMA')}">0</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+												LEVEL <b th:text="${#numbers.formatInteger(list.level, 0, 'COMMA')}"></b><br>
+												<span th:text="${#numbers.formatInteger(list.exp, 0, 'COMMA')}"></span>
+											</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-running fa-2x text-gray-300"></i>

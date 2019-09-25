@@ -37,5 +37,10 @@ public class DashboardDaoImpl implements DashboardDao {
 	@Override
 	public List<MileageVO> listRecentMileage(int familyCustNo) {
 		return sqlSession.selectList("dashboard.listRecentProfitMileage", familyCustNo);
+	}
+
+	@Override
+	public int getCustLevel(int familyCustNo) {
+		return sqlSession.selectOne("dashboard.getCustLevel", familyCustNo);
 	}	
 }

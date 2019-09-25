@@ -82,6 +82,7 @@ public class BasketController {
 			ProductBuyVO pbVo = new ProductBuyVO();
 			pbVo.setProductBuyAmount(vo.getBasketAmount());
 			pbVo.setProductNo(vo.getProductNo());
+			
 			if(basketService.checkProductAmount(pbVo) == false) {
 				return "-97";							// 기존수량 < 장바구니수량 경우
 			}
@@ -163,7 +164,6 @@ public class BasketController {
 		BasketVO vo = new BasketVO();
 		vo.setFamilyCustNo(custVo.getFamilyCustNo());
 		vo.setChgIp(request.getRemoteAddr());
-		
 		
 		for(int i = 0; i < sBasketAmount.length;i++) {
 			if(Integer.parseInt(sBasketAmount[i]) < 0) {

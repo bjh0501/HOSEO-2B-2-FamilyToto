@@ -26,7 +26,9 @@ public class ExpServiceImpl implements ExpService {
 		if(!expState.equals("GGS") &&
 				!expState.equals("GGW") &&
 				!expState.equals("DGS") &&
-				!expState.equals("DGW")) {
+				!expState.equals("DGW") &&
+				!expState.equals("LGW") &&
+				!expState.equals("LGS")) {
 			return -1;
 		}
 		
@@ -39,5 +41,10 @@ public class ExpServiceImpl implements ExpService {
 		expDao.updateCustExp(eVo);
 		
 		return expDao.insertExp(eVo);
+	}
+
+	@Override
+	public ExpVO getLevelInfo(int familyCustNo) {
+		return expDao.getLevelInfo(familyCustNo);
 	}
 }

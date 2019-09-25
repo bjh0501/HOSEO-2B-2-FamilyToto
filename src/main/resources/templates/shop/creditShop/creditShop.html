@@ -19,13 +19,11 @@
 
 <!-- Custom styles for this template-->
 <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
-
 </head>
 <body id="page-top">
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-
 		<ul
 			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
 			id="accordionSidebar" th:include="/sidebar/sidebar">
@@ -94,6 +92,36 @@
 				<!-- End of Footer -->
 
 			</div>
+			<div class="modal fade" id="promptModal" tabindex="-1" role="dialog"
+				aria-labelledby="promptModal" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">장바구니</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">상품명 :
+									<b id="productNameByModal"></b>
+									<input type="hidden" id="productNoByModal">
+								<br>
+								<label for="recipient-name" class="col-form-label">수량<b>(<b id="productAmountByModal"></b>개 남음)</b></label>
+								<input type="number" class="form-control" id="amount">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-secondary"
+								onClick="javascript:basketAction()" id="promptButton">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- End of Content Wrapper -->
 		</div>
 		<!-- End of Page Wrapper -->
@@ -103,6 +131,8 @@
 		<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 		<!-- Custom scripts for all pages-->
 		<script src="/js/sb-admin-2.min.js"></script>
+		
+		<script src="/js/header/header.js"></script>
 </body>
 </html>
 <script>	
@@ -190,7 +220,8 @@
 								img = data[i].productImgUrl;
 							}
 
-							var productName = data[i].productName;
+							var productName = data[i].productName.trim();
+							var productAmount = data[i].productAmount;
 							var productNo = data[i].productNo;
 							var productCredit = comma(data[i].productCredit);
 
@@ -212,7 +243,9 @@
 							str += "				<span>"
 									+ productCredit
 									+ "</span>크레딧<span style='float: right'><input";
-							str += "					class='btn-secondary' type='button' value='장바구니'>";
+							str += "					class='btn-secondary' type='button' productName ='" + productName +
+																"' productNo='" + productNo + "' productamount='" + productAmount+ "' value='장바구니'";
+							str += "						onClick=javascript:openModal($(this))>";
 							str += "			</p>";
 							str += "		</div>";
 							str += "	</div>";
@@ -243,6 +276,56 @@
 	function openProduct(productNo) {
 		var win = window.open("/showProduct/" + productNo, "_blank");
 	    win.focus();
+	}
+	
+	function basketAction() {
+		var productNo = $("#productNoByModal").val();
+		if($("#amount").val() < 0) {
+			alert("수량은 0개이상으로 입력해주세요.");
+			return;
+		}
+		
+		$.ajax({
+			url : "/basket/insert",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : "basketAmount=" + $("#amount").val()
+			+ "&productNo=" + productNo,
+			success : function(data) {
+				if (data.trim() == 0) {
+					alert("장바구니에 담았습니다.\n누군가 전부 구입하기전에 먼저 구입해주세요!");
+				} else if (data.trim() == -99) {
+					alert("로그인을 해야 장바구니에 담을 수 있습니다.");
+				} else if (data.trim() == -98) {
+					alert("패밀리 회원만 장바구니에 담을 수 있습니다.");
+				} else if (data.trim() == -97) {
+					alert("장바구니 수량을 상품 수량보다 적게 입력해주세요.");
+				} else if (data.trim() == -95) {
+					alert("이미 장바구니에 담은 상품입니다.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function openModal(obj) {
+		var productNo = obj.attr("productno");
+		var productName = obj.attr("productname");
+		var productAmount = obj.attr("productamount");
+
+		$("#amount").val("");
+		
+		$("#productNoByModal").val(productNo);
+		$("#productNameByModal").html(productName);
+		$("#productAmountByModal").html(productAmount);
+		$('#promptModal').modal('show');
 	}
 	
 	$("#search").keyup(function(e){getList(-1, "Y"); });

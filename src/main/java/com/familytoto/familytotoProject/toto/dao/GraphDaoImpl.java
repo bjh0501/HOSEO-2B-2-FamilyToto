@@ -20,11 +20,6 @@ public class GraphDaoImpl implements GraphDao {
 	}
 
 	@Override
-	public boolean isProcessGame(GraphVO vo) {
-		return sqlSession.selectOne("totoMiniGame.isProcessGame", vo);
-	}
-
-	@Override
 	public int updateRecordLose(GraphVO vo) {
 		return sqlSession.update("totoMiniGame.updateRecordLose", vo);
 	}

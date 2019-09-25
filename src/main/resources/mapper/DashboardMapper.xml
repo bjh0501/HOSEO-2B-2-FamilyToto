@@ -17,11 +17,20 @@
 		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
         AND		FC.USE_YN = 'Y'
 	</select>
-	<select id="getTotalExp"  resultType="int" parameterType="int">
+	<select id="getTotalExp" resultType="int" parameterType="int">
 		SELECT	FAMILY_CUST_EXP as familyCustExp
         FROM 	FAMILY_CUSTOM
 		WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		USE_YN = 'Y'		
+	</select>
+	<select id="getCustLevel" resultType="int" parameterType="int">
+		<![CDATA[
+			SELECT	LEVEL
+	        FROM	FAMILY_CUSTOM FC, LEVEL
+	        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+	        AND		START_EXP <= FC.FAMILY_CUST_EXP
+			AND		END_EXP >= FC.FAMILY_CUST_EXP
+		]]>
 	</select>
 	<select id="listRecentProfitCredit" parameterType="int" resultType="CreditVO">
 		SELECT	SUM(CREDIT_VALUE) AS creditValue

@@ -1,3 +1,5 @@
+document.write("<script src='/js/common.js'></script>");
+
 $(function(){
 
     var heightNode = 10;
@@ -11,6 +13,8 @@ $(function(){
     var GLOBAL_CHECK_FOOT_PRINT= {};
     var GLOBAL_CHECK_DUPLE = false;
     var GLOBAL_BUTTON_IDX = 0;
+    var GLOBAL_BET_CREDIT = 0;
+    var GLOBAL_HAVE_CREDIT = 0;
     
     var working = false;
     function init(){
@@ -20,11 +24,26 @@ $(function(){
     $('#betButton').on('click', function(){
     	GLOBAL_CHECK_DUPLE = false;
     	GLOBAL_BUTTON_IDX = 0;
+    	GLOBAL_BET_CREDIT = 0;
+    	GLOBAL_HAVE_CREDIT = 0;
+    	    
+    	if($("#betButton").val() == "다시하기") {
+    		location.reload();
+    	}
     	
     	if($("#credit").val() < 1000) {
     		alert("1,000크레딧 이상만 입력해주세요.");
     		return false;
     	}
+    	
+    	GLOBAL_BET_CREDIT = parseInt($("#credit").val());
+    	GLOBAL_HAVE_CREDIT = parseInt(removeComma($("#haveCredit").val()));
+    	
+    	$("#credit").val(numberWithCommas($("#credit").val()));
+    	
+    	$("#credit").attr("disabled" ,true);
+    	$("#betButton").val("다시하기");
+    	
     	
         var member = 5;
 //        if(member < 5){
@@ -75,6 +94,9 @@ $(function(){
     		}
     	}
     	
+    	GLOBAL_HAVE_CREDIT -= GLOBAL_BET_CREDIT;
+    	$("#haveCredit").val(numberWithCommas(GLOBAL_HAVE_CREDIT));
+    	
         if(working){
             return false;
         }
@@ -122,12 +144,31 @@ $(function(){
 				dataType : "html",
 				data : "ladderRegs=" + 5 
 				 + "&ladderAnswer=" + GLOBAL_BUTTON_IDX
-				 + "&creditValue=" + $("#credit").val(),
+				 + "&creditValue=" + GLOBAL_BET_CREDIT,
 				success : function(data) {
 					if(data < 0) {
 						alert("알수없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
 					} else {
 						$('[data-node=' + node + ']').val(data + "배");
+						
+						if(data > 0) {
+							GLOBAL_HAVE_CREDIT += parseInt((GLOBAL_BET_CREDIT * data));
+							$("#haveCredit").val(numberWithCommas(GLOBAL_HAVE_CREDIT));
+							
+							$('[data-node=' + node + ']').attr("style", "background: black; color: white;");
+							
+							$(".ladder-start").attr('disabled' ,  true).css({
+					            'color' : '#000',
+					            'border' : '1px solid #F2F2F2',
+					            'opacity' : '0.3'
+					        })
+					        
+					        alert(numberWithCommas(parseInt((GLOBAL_BET_CREDIT * data))) + "크레딧을 획득했습니다.");
+					        
+					        if(confirm("계속하시겠습니까?") == true) {
+					        	location.reload();
+					        }
+						}
 					}
 				},
 				error : function(request, status, error) {

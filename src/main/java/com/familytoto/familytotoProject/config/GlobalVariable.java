@@ -37,7 +37,21 @@ public class GlobalVariable {
 		return msg;
 	}
 	
-	public static int RadnomValue(int min, int max) {
+	public static int radnomValue(int min, int max) {
 		return new Random().nextInt((max - min) + 1) + min;
+	}
+	
+	public static int getWinCredit(int creditValue) {
+		int nRandomExp = 0;
+		
+		if(creditValue >= 50001) {
+			nRandomExp = GlobalVariable.radnomValue(310, 350);
+		} else if(creditValue >= 10001) {
+			nRandomExp = GlobalVariable.radnomValue(210, 300);
+		} else if(creditValue >= 1000) {
+			nRandomExp = GlobalVariable.radnomValue(110, 200);
+		}
+		
+		return nRandomExp;
 	}
 }

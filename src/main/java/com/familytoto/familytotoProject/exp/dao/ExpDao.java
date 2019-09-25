@@ -8,4 +8,7 @@ public interface ExpDao {
 	
 	// 회원 경험치 업데이트
 	int updateCustExp(ExpVO vo);
+	
+	// 회원 경험치정보 가져오기(헤더에쓰임)
+	ExpVO getLevelInfo(int familyCustNo); 
 }

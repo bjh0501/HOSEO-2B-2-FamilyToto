@@ -21,4 +21,8 @@ public class ExpDaoImpl implements ExpDao {
 		return sqlSession.update("exp.updateCustExp", vo);
 	}
 
+	@Override
+	public ExpVO getLevelInfo(int familyCustNo) {
+		return sqlSession.selectOne("exp.getCustLevel", familyCustNo);
+	}
 }

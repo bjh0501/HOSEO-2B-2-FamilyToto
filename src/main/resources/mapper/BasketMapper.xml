@@ -23,6 +23,7 @@
 			INNER JOIN PRODUCT P ON B.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'
         WHERE	FAMILY_CUST_NO = #{familyCustNo}
         AND		B.USE_YN = 'Y'
+        ORDER BY P.PRODUCT_NO DESC
 	</select>
 	<select id="isCheckBeforeBasket" parameterType="int" resultType="boolean">
 	    SELECT	COUNT(*) as basketNo

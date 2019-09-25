@@ -22,11 +22,6 @@ public class GraphServiceImpl implements GraphService{
 	}
 
 	@Override
-	public boolean isProcessGame(GraphVO vo) {
-		return graphDao.isProcessGame(vo);
-	}
-
-	@Override
 	public int updateRecordLose(GraphVO vo) {
 		return graphDao.updateRecordLose(vo);
 	}
