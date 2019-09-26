@@ -20,14 +20,16 @@
 	</update>
 	<select id="getCustLevel" resultType="ExpVO" parameterType="int">
 		<![CDATA[
-			SELECT	LEVEL as level
-			,		FC.FAMILY_CUST_EXP as familyCustExp
-			,		START_EXP as startExp
-            ,		END_EXP as endExp
-	        FROM	FAMILY_CUSTOM FC, LEVEL
-	        WHERE	FAMILY_CUST_NO = #{familyCustNo}
-	        AND		START_EXP <= FC.FAMILY_CUST_EXP
-			AND		END_EXP >= FC.FAMILY_CUST_EXP
+			SELECT	IFNULL(LEVEL,0) as level
+	        ,		COUNT(*) as checkData
+			,		IFNULL(FC.FAMILY_CUST_EXP,0) as familyCustExp
+			,		IFNULL(START_EXP,0) as startExp
+			,		IFNULL(END_EXP,0) as endExp
+			FROM	FAMILY_CUSTOM FC, LEVEL
+			WHERE	FAMILY_CUST_NO =#{familyCustNo}
+			AND		START_EXP <= FC.FAMILY_CUST_EXP
+	        ORDER BY LEVEL DESC
+	        LIMIT 1
 		]]>
 	</select>
 </mapper>

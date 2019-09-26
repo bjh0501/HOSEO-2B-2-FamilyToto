@@ -258,6 +258,24 @@
 	var n = 0;
 	var turnTime = 30;
 	
+	function drawBall() {	
+		var random1 = Math.floor(6 * Math.random()) + 1;	
+		var random2 = Math.floor(6 * Math.random()) + 1;	
+		n++;	
+		if (n >= turnTime) {	
+			for (var i = 1; i <= 6; i++) {	
+				if (random1 == i) {	
+					imgClo1.src = "/img/toto/dice/dice" + i + ".png";	
+				}	
+				if (random2 == i) {	
+					imgClo2.src = "/img/toto/dice/dice" + i + ".png";	
+				}	
+			}	
+			n = 1;	
+			turnTime += 10;	
+		}	
+	}
+	
 	function draw(result, credit) {		
 		if (turnTime >= 100) {
 			clearInterval(timeRef);
