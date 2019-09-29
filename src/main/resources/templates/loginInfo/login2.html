@@ -224,85 +224,87 @@ filter: gray;
 						<h2 class="text-title">로그인</h2>
 					</div>
 
-					<div class="row d-flex justify-content-center">
-						
-						<!-- 이미지 -->
-						
-							<div class="col-xl-4 col-md-4 mb-4 col-sm-4"  style="margin-right:-25px" >
-								<div class="card shadow h-100 py-12">
-									<center>
-										<img src="/img/OneSports.png" width="80%" style="margin-top:25%; "/>
-									</center>
+					<div class="row">
+						<div class="col-xl-6 col-md-12 mb-6">
+							<div class="card shadow h-100 py-12">
+								<center>
+									<img src="/img/OneSports.png" width="80%" style="margin-top:8%"/>
+								</center>
+							</div>
+						</div>
+
+						<div class="col-xl-6 col-md-12 mb-6">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" style="width: 95px;">ID</span>
+										</div>
+										<input type="text" class="form-control"
+											aria-label="Sizing example input"
+											aria-describedby="inputGroup-sizing-default" id="id">
+									</div>
+
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Password</span>
+										</div>
+										<input type="password" class="form-control"
+											aria-label="Sizing example input"
+											aria-describedby="inputGroup-sizing-default" id="pw"
+											onkeypress="caps_lock(event)">
+									</div>
+									<p id="capslock"
+										style="position: relative; border: 2px solid #003b83; width: 300px; bottom: 0px; display: none">
+										&nbsp;<b>CapsLock</b> 키가 눌려있습니다.&nbsp;
+									</p>
+									<div class="input-group mb-3">
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input" id="use">
+											<label class="custom-control-label" for="use">아이디 기억</label>
+										</div>
+									</div>
+									<div class="input-group mb-3">
+										<img src="/img/social/button/onesportsButton.png"
+											style="width: 100%; cursor: pointer;"
+											onclick="javascript:custLogin()">
+									</div>
+									<div class="input-group mb-3">
+										<img src="/img/social/button/facebookButton.png"
+											style="width: 100%; cursor: pointer;"
+											onClick="javascript:facebookLogin();">
+									</div>
+									<div class="input-group mb-3">
+										<img src="/img/social/button/kakaoButton.png"
+											style="width: 100%; cursor: pointer;"
+											onClick="javascript:kakaoLogin();"> <a
+											href="https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&amp;redirect_uri=https://onesports.ga/login/social/kakao&amp;response_type=code" style="display: none"
+											id="kakaoSocial">kakao</a>
+									</div>
+									<div class="input-group mb-3">
+										<img 
+										src="/img/social/button/naverButton.jpg"
+											style="width: 100%; cursor: pointer; -webkit-filter: grayscale(100%); filter: gray;"
+											onClick="javascript:naverLogin();"> <a
+											href="https://nid.naver.com/oauth2.0/authorize?response_type=code&amp;client_id=Za6kr7wC2cVLJ3c1qVvu&amp;redirect_uri=https%3A%2F%2Fonesports.ga%2Flogin%2Fsocial%2Fnaver&amp;state=b3e348c2-8208-402c-94e8-d72c43088411" style="display: none"
+											id="naverSocial">naver</a> <span>*<u><a
+												href="http://www.law.go.kr/LSW//precInfoP.do?precSeq=186216"
+												target="_blank">관련 법</a></u>에 의하여 네이버 로그인이 중지되었습니다.<br>
+												<small>네이버 로그인을 하려면 운영자에게 문의줘야된다 맨이야.</small>
+										</span><br>
+									</div>
+									<p class="text-center">
+										<a href="/findID_PW">아이디/비밀번호 찾기</a>
+									</p>
+									<p class="text-center">
+										<a href="/registerCust">회원가입</a>
+									</p>
+									<input type="hidden" id="refer" value="https://onesports.ga/">
 								</div>
 							</div>
-							
-							
-							<div class="col-xs-4 col-lg-4 .col-md-4 .col-sm-4">
-								<div class="card shadow h-100 py-12">
-									<div style="padding: 20px;">
-										<div class="input-group mb-3">
-											<input type="text" class="form-control" placeholder="ID"
-												aria-label="Sizing example input"
-												aria-describedby="inputGroup-sizing-default" id="id">
-										</div>
-	
-										<div class="input-group mb-3">
-											<input type="password" class="form-control" placeholder="Password"
-												aria-label="Sizing example input"
-												aria-describedby="inputGroup-sizing-default" id="pw"
-												onkeypress="caps_lock(event)">
-										</div>
-										<p id="capslock"
-											style="position: relative; border: 2px solid #003b83; width: 300px; bottom: 0px; display: none">
-											&nbsp;<b>CapsLock</b> 키가 눌려있습니다.&nbsp;
-										</p>
-										<div class="input-group mb-2">
-											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input" id="use">
-												<label class="custom-control-label" for="use">아이디 기억</label>
-											</div>
-										</div>
-										<div class="input-group mb-2">
-											<img src="/img/social/button/onesportsButton.png"
-												style="width: 100%; cursor: pointer;"
-												onclick="javascript:custLogin()">
-										</div>
-										<div class="input-group mb-2">
-											<img src="/img/social/button/facebookButton.png"
-												style="width: 100%; cursor: pointer;"
-												onClick="javascript:facebookLogin();">
-										</div>
-										<div class="input-group mb-2">
-											<img src="/img/social/button/kakaoButton.png"
-												style="width: 100%; cursor: pointer;"
-												onClick="javascript:kakaoLogin();"> <a
-												href="https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&amp;redirect_uri=https://onesports.ga/login/social/kakao&amp;response_type=code" style="display: none"
-												id="kakaoSocial">kakao</a>
-										</div>
-										<div class="input-group mb-2">
-											<img 
-											src="/img/social/button/naverButton.jpg"
-												style="width: 100%; cursor: pointer; -webkit-filter: grayscale(100%); filter: gray;"
-												onClick="javascript:naverLogin();"> <a
-												href="https://nid.naver.com/oauth2.0/authorize?response_type=code&amp;client_id=Za6kr7wC2cVLJ3c1qVvu&amp;redirect_uri=https%3A%2F%2Fonesports.ga%2Flogin%2Fsocial%2Fnaver&amp;state=b3e348c2-8208-402c-94e8-d72c43088411" style="display: none"
-												id="naverSocial">naver</a> <span>*<u><a
-													href="http://www.law.go.kr/LSW//precInfoP.do?precSeq=186216"
-													target="_blank">관련 법</a></u>에 의하여 네이버 로그인이 중지되었습니다.<br>
-													<small>네이버 로그인을 하려면 운영자에게 문의줘야된다 맨이야.</small>
-											</span><br>
-										</div>
-										<p class="text-center">
-											<a href="/findID_PW">아이디/비밀번호 찾기</a>
-										</p>
-										<p class="text-center">
-											<a href="/registerCust">회원가입</a>
-										</p>
-										<input type="hidden" id="refer" value="https://onesports.ga/">
-									</div>
-								</div>
-							<!-- ㅇㅇ --></div>
-					
-				</div><br><br>
+						</div>
+					</div>
+				</div>
 				<!-- /.container-fluid -->
 
 			</div>

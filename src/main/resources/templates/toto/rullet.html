@@ -54,17 +54,16 @@
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div> -->
 
-         <!-- 사다리 페이지 -->
+         <!-- 슬롯머신 페이지 -->
           <div class="row">
             <div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9 " >
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
                 </div>
 				<!-- 카드 안 토토 -->	 
-									<SCRIPT language="JavaScript1.1">
-
-
-
+					<br>
+					<div style="height:450px">
+					<SCRIPT language="JavaScript1.1">
 						coin = 50  
 						bet = 1
 						game = false
@@ -94,10 +93,10 @@
 							}
 							else if((document.images["first"].src == document.images["second"].src) && (document.images["second"].src == document.images["third"].src)){
 								coin += bet * 5; 
-								document.form.pay_back.value="와따리~"+(bet*5)+"�젏 癒뱀뿀援ъ슂�����젏�닔�뒗竊�"+coin+"�젏";
+								document.form.pay_back.value="와따리~ "+(bet*5)+"점 먹었구요　　점수는："+coin+"점";
 							} else {
 								coin -= bet
-								document.form.pay_back.value="�븞嫄몃젮 ���떎竊곥�������궓�� �젏�닔竊�"+coin+"�젏";
+								document.form.pay_back.value="안걸려 씀다！　　　남은 점수："+coin+"점";
 							}
 							game = false
 							box1 = true
@@ -137,11 +136,11 @@
 						  else if (document.forms[0].elements[3].options[5].selected) bet = 5;
 						
 						  if((coin-bet) < 0){
-							  document.form.pay_back.value="利먭굅�슫 �떆媛� �릺�뀲�뒾源�? �룄諛뺤� �젙�떊�� 蹂묐뱾寃� �븿�떎!";
+							  document.form.pay_back.value="즐거운 시간 되셨슴까? 도박은 정신은 병들게 함다!";
 							  game = false
 							}
 						  else if (bet > 0){
-							  document.form.pay_back.value="諛고똿�썑 �젏�닔�뒗"+(coin-bet)+"�젏 �씠援ъ슂, "+bet+"諛고똿�븯�뀲�꽕�슂";
+							  document.form.pay_back.value="배팅후 점수는"+(coin-bet)+"점 이구요, "+bet+"배팅하셨네요";
 							  hyouji()
 							}
 						}
@@ -149,7 +148,7 @@
 						   if(game == false){
 						            game = true
 						        if (coin <= 0){
-						          document.form.pay_back.value="�걹�궗�뒾�떎! 怨좊쭏�븯援� �뵶嫄� �빐�슂^^"
+						          document.form.pay_back.value="끝났슴다! 고마하구 딴거 해요^^"
 						           }else{
 						          inCoin()
 						         }
@@ -160,9 +159,10 @@
 						document.write('<input type="button" value="stop" name="firstb" onClick=end(1)><input type="button" value="stop" name="secondb" onClick=end(2)><input type="button" value="stop" name="thirdb" onClick=end(3)><br><br>')
 						document.write('<SELECT NAME="select" SIZE="1"><OPTION>INSERT COIN(S)<OPTION>1 COIN<OPTION>2 COINS<OPTION>3 COINS<OPTION>4 COINS<OPTION>5 COINS</SELECT><input type="button" value="  START  " onClick=startGame()><br><br><br>')
 						document.write('<input type="text" size=55 name="pay_back"></form></center>')
-						document.form.pay_back.value="�떆�옉�젏�닔"+coin+"�젏, INSEART COIN�븯�떆援�, START踰꾪듉 袁�!"
+						document.form.pay_back.value="시작점수"+coin+"점, INSEART COIN하시구, START버튼 꾹!"
 						
-						</SCRIPT>
+					</SCRIPT>
+					</div>
               </div>
             </div>
             
@@ -189,10 +189,10 @@
 										aria-describedby="basic-addon1">
 									<hr>
                   
-                  <h6 class="m-0 font-weight-bold text-primary text-center">사다리 배팅</h6><br>
+                  <h6 class="m-0 font-weight-bold text-primary text-center">슬롯머신 배팅</h6><br>
                   
-                  <hr>
-                <input class="btn-secondary" id="betButton" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:90%; margin:0 auto; height:45px"
+                  
+                <input class="btn-secondary" id="betButton" type="button" value="배팅하기" onclick="alert('배팅을시작합니다.')" style="width:100%; margin:0 auto; height:45px"
                 ></input><br>
                 </div>
             </div> 
