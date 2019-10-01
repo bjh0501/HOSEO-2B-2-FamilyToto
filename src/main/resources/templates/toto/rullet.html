@@ -65,17 +65,17 @@
 
 					<!-- 사다리 페이지 -->
 					<div class="row">
-						<div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9 ">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3"></div>
+						<div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9" >
+							<div class="card shadow mb-4" style="height:450px">
+								<div class="card-header py-3" style="height:100px"></div>
 								<!-- 카드 안 토토 -->
 								<center>
-									<img src="http://www.blueb.co.kr/SRC/javascript/image1/slot/7.gif" name="first">
-									<img src="http://www.blueb.co.kr/SRC/javascript/image1/slot/7.gif" name="second">
-									<img src="http://www.blueb.co.kr/SRC/javascript/image1/slot/7.gif" name="third"><br>
-									<input type="button" value="stop" class="rulletButton" onclick="end(0, $(this))">
-									<input type="button" value="stop" class="rulletButton" onclick="end(1, $(this))">
-									<input type="button" value="stop" class="rulletButton" onclick="end(2, $(this))"><br>
+									<img src="/img/toto/slotmachine/slot-m7.png" name="first">
+									<img src="/img/toto/slotmachine/slot-m7.png" name="second">
+									<img src="/img/toto/slotmachine/slot-m7.png" name="third"><br>
+									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(0, $(this))" style="width:10%; border-radius:30px; height:40px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(1, $(this))" style="width:10%; border-radius:30px; height:40px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(2, $(this))" style="width:10%; border-radius:30px; height:40px"><br>
 									<br>
 									<input type="text" size="55" id="pay_back">
 								</center>
@@ -180,15 +180,15 @@
 					
 					playAlert = setInterval(function() {
 						if(GLOBAL_STOP_CHECK_ARR[0] != -1) {
-							$("[name=first]").attr("src", "http://www.blueb.co.kr/SRC/javascript/image1/slot/" + rullet + ".gif");
+							$("[name=first]").attr("src", "/img/toto/slotmachine/slot-m" + rullet + ".png");
 						}
 						
 						if(GLOBAL_STOP_CHECK_ARR[1] != -1) {
-							$("[name=second]").attr("src", "http://www.blueb.co.kr/SRC/javascript/image1/slot/" + rullet + ".gif");
+							$("[name=second]").attr("src", "/img/toto/slotmachine/slot-m" + rullet + ".png");
 						}
 						
 						if(GLOBAL_STOP_CHECK_ARR[2] != -1) {
-							$("[name=third]").attr("src", "http://www.blueb.co.kr/SRC/javascript/image1/slot/" + rullet + ".gif");
+							$("[name=third]").attr("src", "/img/toto/slotmachine/slot-m" + rullet + ".png");
 						}
 						
 						rullet++;
