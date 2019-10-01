@@ -75,6 +75,7 @@ public class ProductBuyController {
 			mv.addObject("product", pVo);
 			mv.setViewName("/loginInfo/productBuy");
 			mv.addObject("custInfo", productBuyService.getCustInfo(vo.getFamilyCustNo()));
+			mv.addObject("defaultAddr", productBuyService.getFamilyCustDefaultAddr(vo.getFamilyCustNo()));
 			
 		} else {
 			try {
@@ -84,7 +85,7 @@ public class ProductBuyController {
 	            out.flush();	            
 			} catch(Exception e) {}
 		}
-        
+
         return mv;
     }
 	
@@ -106,6 +107,7 @@ public class ProductBuyController {
 			} catch(Exception e) {}
 		}
 				
+		mv.addObject("defaultAddr", productBuyService.getFamilyCustDefaultAddr(vo.getFamilyCustNo()));
 		mv.addObject("custInfo", productBuyService.getCustInfo(vo.getFamilyCustNo()));
 		mv.addObject("product", productBuyService.listProductBuy(vo.getFamilyCustNo()));
         return mv;
@@ -219,7 +221,6 @@ public class ProductBuyController {
 		
 		ProductBuyVO pbVo = new ProductBuyVO();
 		pbVo.setFamilyCustNo(vo.getFamilyCustNo());
-		
 		model.addAttribute("productList", productBuyService.listBoughtProduct(pbVo));
 		
 		return "/loginInfo/productBuyList";

@@ -57,7 +57,8 @@ public class BoardController {
 	CommentService commentService;
 
 	@RequestMapping("/boardList")
-	public String boardList(Model model, @RequestParam(required = false, defaultValue = "1") int page,
+	public String boardList(
+			Model model, @RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "1") int range,
 			@RequestParam(required = false, defaultValue = "title") String searchType,
 			@RequestParam(required = false) String keyword) throws Exception {

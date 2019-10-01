@@ -10,6 +10,7 @@ import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
+import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 
 @Repository
 public class ProductBuyDaoImpl implements ProductBuyDao {
@@ -89,5 +90,10 @@ public class ProductBuyDaoImpl implements ProductBuyDao {
 	@Override
 	public List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo) {
 		return sqlSession.selectList("productBuy.listBoughtProduct", vo);
+	}
+
+	@Override
+	public RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo) {
+		return sqlSession.selectOne("productBuy.getFamilyCustDefaultAddr", familyCustNo);
 	}	
 }

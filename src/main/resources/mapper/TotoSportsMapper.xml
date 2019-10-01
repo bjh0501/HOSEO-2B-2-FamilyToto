@@ -5,13 +5,100 @@
 <mapper namespace="totoSports">
 	<insert id="insertSportsToto">
 	INSERT INTO TOTO_SPORTS(
-		SPORTS_GUBUN,		SPORTS_LEAGUE_NAME,		SPORTS_TEAM1,		SPORTS_TEAM2,
-	    SPORTS_SCHEDULE,	SPORTS_WIN_BET,			SPORTS_DRAW_BET,	SPORTS_LOSE_BET,
+		SPORTS_GUBUN,		SPORTS_LEAGUE_NAME,		SPORTS_TEAM1_NAME,	SPORTS_TEAM2_NAME,
+	    SPORTS_SCHEDULE,	SPORTS_TEAM1_BET,		SPORTS_TEAM2_BET,	SPORTS_DRAW_BET,
 	    REG_CUST_NO,		REG_DT,					REG_IP,				USE_YN
 	) VALUES (
-		#{sportsGubun},		#{sportsLeagueName},	#{sportsTeam1},		#{sportsTeam2},
-		#{sportsSchedule},	#{sportsWinBet},		#{sportsDrawBet},	#{sportsLoseBet},
+		#{sportsGubun},		#{sportsLeagueName},	#{sportsTeam1Name},	#{sportsTeam2Name},
+		#{sportsSchedule},	#{sportsTeam1Bet},		#{sportsTeam2Bet},	#{sportsDrawBet},
 	    #{regCustNo},		NOW(),					#{regIp},			'Y'
 	)
 	</insert>
+	<update id="updateSportsToto">
+		UPDATE	TOTO_SPORTS
+		SET		SPORTS_SCORE1 = #{sportsScore1}  
+		,		SPORTS_SCORE2 = #{sportsScore2}
+		,		SPORTS_RESULT = #{sportsResult}
+		WHERE	SPORTS_GUBUN = #{sportsGubun}
+		AND		SPORTS_LEAGUE_NAME = #{sportsLeagueName}
+		AND		SPORTS_TEAM1_NAME = #{sportsTeam1Name}
+		AND		SPORTS_TEAM2_NAME = #{sportsTeam2Name}
+		AND		DATE_FORMAT(SPORTS_SCHEDULE, '%Y-%m-%d') = DATE_FORMAT(#{sportsSchedule}, '%Y-%m-%d')
+		AND		USE_YN = 'Y'
+	</update>
+	<select id="isNotSportsTotoWinnerCheck" resultType="boolean" parameterType="int">
+		SELECT	SUM(IF(TSB.BETTING_TEAM_CHOICE = TS.SPORTS_RESULT, 0, 1)) as sportsResult
+		FROM	TOTO_SPORTS_BETTING TSB
+		INNER JOIN TOTO_SPORTS_BETTING_GROUP TSBG ON 
+			TSB.SPORTS_BETTING_GROUP_NO = TSBG.SPORTS_BETTING_GROUP_NO AND TSBG.USE_YN = 'Y'
+		    AND TSBG.FAMILY_CUST_NO = #{familyCustNo}
+		INNER JOIN TOTO_SPORTS TS ON TS.SPORTS_NO = TSB.SPORTS_NO AND TS.USE_YN = 'Y'
+		WHERE	TSB.USE_YN = 'Y'
+		AND		TSB.FAMILY_CUST_NO = #{familyCustNo}
+
+	</select>
+	<insert id="insertSportsBettingGroup" useGeneratedKeys="true" keyProperty="sportsBettingGroupNo">
+		INSERT INTO TOTO_SPORTS_BETTING_GROUP (
+			FAMILY_CUST_NO,		BETTING_GROUP_BET,	REG_CUST_NO,
+		    REG_DT,				REG_IP,				USE_YN,
+		    CREDIT_ID
+		) VALUES (
+			#{familyCustNo},	0.0,				#{regCustNo},
+		    NOW(),				#{regIp},			'Y',
+		    #{creditId}
+		)
+	</insert>
+	<insert id="insertSportsBetting">
+		INSERT INTO TOTO_SPORTS_BETTING (
+			FAMILY_CUST_NO,			SPORTS_NO,		SPORTS_BETTING_GROUP_NO,
+			BETTING_TEAM_CHOICE,	BETTING_BET,	REG_CUST_NO,	REG_DT,
+		    REG_IP,					USE_YN
+		) VALUES (
+			#{familyCustNo},		#{sportsNo},	#{sportsBettingGroupNo},
+		    #{bettingTeamChoice},	#{bettingBet},	#{regCustNo},	NOW(),
+		    #{regIp},				'Y'
+		)
+	</insert>
+	<select id="getSportsMatchBet" parameterType="SportsVO" resultType="double">
+		SELECT
+		<if test="sportsTeam1Bet == 1.0">
+			SPORTS_TEAM1_BET as sportsTem1Bet
+		</if>
+		<if test="sportsTeam1Bet == 2.0">
+			SPORTS_TEAM2_BET as sportsTem2Bet
+		</if>
+		FROM	TOTO_SPORTS
+		WHERE	SPORTS_NO = #{sportsNo}
+		AND		USE_YN = 'Y'
+		AND		SPORTS_RESULT IS NULL
+	</select>
+	<update id="updateSportsGrpSumBet">
+		UPDATE	TOTO_SPORTS_BETTING_GROUP
+		SET		BETTING_GROUP_BET = #{bettingGroupBet}
+		WHERE	SPORTS_BETTING_GROUP_NO = #{sportsBettingGroupNo}
+	</update>
+	<select id="isDupleBet" parameterType="SportsBettingVO" resultType="boolean">
+		SELECT EXISTS (SELECT	IFNULL(SPORTS_BETTING_NO, 0)
+		FROM	TOTO_SPORTS_BETTING
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		SPORTS_NO = #{sportsNo}
+		AND		USE_YN = 'Y') as checkExists
+	</select>
+	<select id="listSportsTotoInnerSoccer" resultType="SportsVO">
+		SELECT	SPORTS_NO as sportsNo
+		,		SPORTS_TEAM1_NAME AS sportsTeam1Name
+		,		SPORTS_TEAM2_NAME as sportsTeam2Name
+		,		SPORTS_SCHEDULE as sportsSchedule
+		,		SPORTS_TEAM1_BET as sportsTeam1Bet
+		,		SPORTS_DRAW_BET as sportsDrawBet
+		,		SPORTS_TEAM2_BET as sportsTeam2Bet
+		,		SPORTS_LEAGUE_NAME as sportsLeagueName
+		,		SPORTS_SCORE1 as sportsScore1
+		,		SPORTS_SCORE2 as sportsScore2
+		,		SPORTS_RESULT as sportsResult
+		FROM	TOTO_SPORTS
+		WHERE	SPORTS_GUBUN = 'ISO'
+		AND		SPORTS_LEAGUE_NAME = 'K리그1'
+		ORDER BY SPORTS_SCHEDULE ASC
+	</select>
 </mapper>

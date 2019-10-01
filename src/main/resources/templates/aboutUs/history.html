@@ -13,26 +13,49 @@
 <title>One Sports</title>
 
 <!-- Custom fonts for this template-->
-<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
-	rel="stylesheet" type="text/css">
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet"
+	type="text/css">
 <link th:href="@{css/Nunito.css}" rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+table td {
+	padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    border: 0px !important;
+}
 
+.date {
+	border-right: 2px solid !important;
+	vertical-align: top !important;
+	font-size: 25px;
+	width: 172px;
+}
+
+.head {
+	border-top: 2px solid !important;
+}
+
+.contents {
+	font-size: 19px;
+}
+
+.end {
+	vertical-align: top !important;
+	height: 70px;
+}
+</style>
 </head>
-  
+
 <body id="page-top">
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-  
-		<ul
-			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-			id="accordionSidebar" th:include="/sidebar/sidebar">
-		</ul>
 
-		<!-- Content Wrapper -->
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul> 
 		<div id="content-wrapper" class="d-flex flex-column">
 
 			<!-- Main Content -->
@@ -50,10 +73,65 @@
 						<h2 class="text-title">연혁</h2>
 					</div>
 					<div class="row"></div>
-
-
-					<div class="card shadow mb-4">
-						<img src="/img/history.jpg" alt="Cinque Terre" width=100%>
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<div class="row justify-content-between">
+										<div class="col-4">
+											<h2 class="m-0 font-weight-bold text-primary">OneSports History</h2>
+										</div>
+										<div class="col-2">
+											<img src="/img/OneSports.png" style="width: 90%;">
+										</div>
+									</div>
+									<br>									
+									<div class="table-responsive">
+										<table class="table table-bordered" id="dataTable" width="100%"
+											cellspacing="0">
+											<tbody>
+												<tr class="head">
+													<td class="date">2019년 6월</td>
+													<td class="contents start">24일 프로젝트 시작</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 6월</td>
+													<td class="contents">25일 사이트명 OneSports, 팀이름 FamilyToto 결정</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 6월</td>
+													<td class="contents end">임시 네이버블로그 생성</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 7월</td>
+													<td class="contents">11일 OneSports 로고 제작</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 7월</td>
+													<td class="contents">17일 1차 프로젝트 발표</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 7월</td>
+													<td class="contents end">20일 familytoto 블로그 생성</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 8월</td>
+													<td class="contents">09일 OneSports 서버 개통(AWS사용)</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 8월</td>
+													<td class="contents">14일 2차 프로젝트 발표</td>
+												</tr>
+												<tr>
+													<td class="date">2019년 8월</td>
+													<td class="contents">18일 카카오톡 아이디 연동 구현</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<!-- /.container-fluid -->
@@ -80,9 +158,28 @@
 
 		<!-- Custom scripts for all pages-->
 		<script th:src="@{js/sb-admin-2.min.js}"></script>
-	<!-- common -->
-    <script src="/js/common.js"></script>
-	<script src="/js/header.js"></script>
+		<!-- common -->
+		<script src="/js/common.js"></script>
+		<script src="/js/header.js"></script>
 </body>
 
 </html>
+<script>
+	function genRowspan(className){
+		var i = 0;
+		
+	    $("." + className).each(function() {
+	        var rows = $("." + className + ":contains('" + $(this).text() + "')");
+	        
+	        if (rows.length > 1) {
+	            rows.eq(0).attr("rowspan", rows.length);
+	            rows.not(":eq(0)").remove();
+	        }
+	    });
+	}
+	$(document).ready(function(e){
+	    genRowspan("date");
+	});
+
+	
+</script>

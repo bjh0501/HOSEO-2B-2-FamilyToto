@@ -10,6 +10,7 @@ import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.config.GlobalVariable;
 import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.toto.dao.CommonDao;
 import com.familytoto.familytotoProject.toto.dao.LadderDao;
 import com.familytoto.familytotoProject.toto.domain.LadderVO;
 
@@ -21,11 +22,15 @@ public class LadderServiceImpl implements LadderService {
 	@Autowired
 	ExpService expService;
 	
+	@Autowired
+	CommonDao commonDao;
+	
 	private static int resultArr[] = {0,0,0,0,0}; 
 	private static boolean isFirstGubun = false; 
 	private static int userCredit = 0; // 크레딧 박제
 	/*
 	 * 
+	 * 크레딧 확인
 	 * 시작 경험치얻기
 	 * 크레딧 소모 insert
 	 * 배팅 insert
@@ -41,6 +46,14 @@ public class LadderServiceImpl implements LadderService {
 			CreditVO creVo,
 			CustVO cVo,
 			HttpServletRequest request) {
+		int nCheckCredit = creVo.getCreditValue() * -1; 
+		// 크레딧확인
+		creVo.setCreditValue(nCheckCredit);
+		if(commonDao.isHaveCredit(creVo) == false) {
+			return -99;
+		} else {
+			creVo.setCreditValue(nCheckCredit *-1);
+		}
 		
 		// 처음일때만탐
 		if(isFirstGubun == false) {

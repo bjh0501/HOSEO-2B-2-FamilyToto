@@ -16,6 +16,7 @@ import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.productbuy.dao.ProductBuyDao;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
+import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 
 @Service
 public class ProductBuyServiceImpl implements ProductBuyService {
@@ -112,6 +113,7 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 				}
 			}
 			
+
 			return 1;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -160,5 +162,10 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 	@Override
 	public List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo) {
 		return productBuyDao.listBoughtProduct(vo);
+	}
+
+	@Override
+	public RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo) {
+		return productBuyDao.getFamilyCustDefaultAddr(familyCustNo);
 	}
 }

@@ -1,10 +1,9 @@
-package com.familytoto.familytotoProject.scheduler.domain;
+package com.familytoto.familytotoProject.toto.domain;
 
 import java.sql.Timestamp;
 
-public class TotoSportsVO {
-
-    // 40000001
+public class SportsVO {
+	  // 40000001
     private int sportsNo;
 
     // (E,I)(BA,SO)
@@ -198,6 +197,4 @@ public class TotoSportsVO {
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
-    
-    
 }

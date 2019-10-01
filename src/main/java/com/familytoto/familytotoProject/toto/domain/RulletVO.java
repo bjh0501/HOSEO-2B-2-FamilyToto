@@ -1,18 +1,16 @@
-package com.familytoto.familytotoProject.creditShop.domain;
+package com.familytoto.familytotoProject.toto.domain;
 
 import java.sql.Timestamp;
 
-public class MileageVO {
+public class RulletVO {
+	 // 50000001
+    private int rulletNo;
 
-    // 80000001
-    private int mileageNo;
-
-    // 10000001
     private int familyCustNo;
 
-    private int mileageValue;
+    private double rulletBet;
 
-    private String mileageState;
+    private String rulletResult;
 
     private int regCustNo;
 
@@ -25,26 +23,18 @@ public class MileageVO {
     private String regIp;
 
     private String chgIp;
-    
-    // Y,N,B
+
+    // Y,N,B,W
     private String useYn;
-    
-    private String regMileageDt;
 
-	public String getRegMileageDt() {
-		return regMileageDt;
+    private String rulletCustResult;
+
+	public int getRulletNo() {
+		return rulletNo;
 	}
 
-	public void setRegMileageDt(String regMileageDt) {
-		this.regMileageDt = regMileageDt;
-	}
-
-	public int getMileageNo() {
-		return mileageNo;
-	}
-
-	public void setMileageNo(int mileageNo) {
-		this.mileageNo = mileageNo;
+	public void setRulletNo(int rulletNo) {
+		this.rulletNo = rulletNo;
 	}
 
 	public int getFamilyCustNo() {
@@ -55,20 +45,20 @@ public class MileageVO {
 		this.familyCustNo = familyCustNo;
 	}
 
-	public int getMileageValue() {
-		return mileageValue;
+	public double getRulletBet() {
+		return rulletBet;
 	}
 
-	public void setMileageValue(int mileageValue) {
-		this.mileageValue = mileageValue;
+	public void setRulletBet(double rulletBet) {
+		this.rulletBet = rulletBet;
 	}
 
-	public String getMileageState() {
-		return mileageState;
+	public String getRulletResult() {
+		return rulletResult;
 	}
 
-	public void setMileageState(String mileageState) {
-		this.mileageState = mileageState;
+	public void setRulletResult(String rulletResult) {
+		this.rulletResult = rulletResult;
 	}
 
 	public int getRegCustNo() {
@@ -127,12 +117,12 @@ public class MileageVO {
 		this.useYn = useYn;
 	}
 
-	@Override
-	public String toString() {
-		return "MileageVO [mileageNo=" + mileageNo + ", familyCustNo=" + familyCustNo + ", mileageValue=" + mileageValue
-				+ ", mileageState=" + mileageState + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo
-				+ ", regDt=" + regDt + ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn
-				+ "]";
+	public String getRulletCustResult() {
+		return rulletCustResult;
+	}
+
+	public void setRulletCustResult(String rulletCustResult) {
+		this.rulletCustResult = rulletCustResult;
 	}
     
     

@@ -19,7 +19,15 @@
 
 <!-- Custom styles for this template-->
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
+<style>
+	#getBetNum {
+	    font-weight: bold;
+	    font-size: 8em;
+	    position: absolute;
+	    top: 22%;
+	    left: 40%;
+    }
+</style>
 </head>
 
 <body id="page-top">
@@ -88,8 +96,6 @@
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 				<!-- /.container-fluid -->
 
@@ -130,6 +136,15 @@
 
 </html>
 <script>
+	$("#credit").focus();
+	var updateInterval = 100; // 기본값100
+	
+	var yVal = 0.0;
+	var dataLength = 100; // number of dataPoints visible at any point
+	var timer;
+	var data = 1.0;
+	var GLOBAL_MAX_GRPAH_DATA = 0;
+	
 	function goCharge() {
 		location.href = "/charge"
 	}
@@ -149,12 +164,6 @@
 		}]
 	});
 	
-	var updateInterval = 100; // 기본값100
-	
-	var yVal = 0.0;
-	var dataLength = 100; // number of dataPoints visible at any point
-	var timer;
- 	var data = 1.0;
 	var updateChart = function (count) {
 // 		$.ajax({
 // 			url : "/toto/graph/process",
@@ -177,6 +186,18 @@
 // 					location.reload();
 // 					return false;
 // 				} else {
+				
+				if(GLOBAL_MAX_GRPAH_DATA <= data.toFixed(2)) {
+					alert("패배하였습니다.");
+					
+					$("#credit").attr("disabled", false);
+					$("#credit").val("");
+					$("#startStopButton").val("시작하기");
+					clearInterval(timer);
+					clearGraph();
+					$("#credit").focus();
+					return false;
+				}
 					data = parseFloat(data);
 					$("#getBetNum").html(data.toFixed(2));
 					
@@ -229,12 +250,14 @@
 	initialChart(dataLength);
 	
 	function stopGraph() {
-		if($("#startStopButton").val() == "시작하기") {			
-			if($("#credit").val() < 1000) {
-				alert("1,000크레딧 이상만 배팅할 수 있습니다.");
+		if($("#startStopButton").val() == "시작하기") {
+			if($("#credit").val() < 1000 || $("#credit").val() > 100000) {
+				alert("1,000 ~ 100,000크레딧만 배팅이 가능합니다.");
 				$("#credit").focus();
 				return;
 			}
+			
+			data = 1.0;
 			
 			$.ajax({
 				url : "/toto/graph/start",
@@ -247,7 +270,9 @@
 					if(data == -99) {
 						alert("배팅할 크레딧이 부족합니다.");
 						return;
-					} else if(data == 0) {
+					} else if(data > 0) {
+						GLOBAL_MAX_GRPAH_DATA = data;
+						
 						var currentCredit = removeComma($("#currentCredit").val());
 						var resultCredit = parseInt(currentCredit) - parseInt($("#credit").val());
 						$("#currentCredit").val(numberWithCommas(resultCredit));
@@ -276,6 +301,7 @@
 				type : "POST",
 				cache : false,
 				async: false,
+				data : "value=" + $("#getBetNum").html().trim(),
 				dataType : "html",
 				success : function(data) {
 					if(data >= 1000) {
@@ -285,6 +311,7 @@
 						$("#credit").attr("disabled", false);
 						$("#credit").val("");
 						clearGraph();
+						$("#credit").focus();
 					}
 				},
 				error : function(request, status, error) {

@@ -42,7 +42,7 @@ public class DiceServiceImpl implements DiceService {
 		
 		creVo.setCreditValue(creVo.getCreditValue()*-1);
 		
-		if(creVo.getCreditValue() < 1000) {
+		if(creVo.getCreditValue() < 1000 || creVo.getCreditValue() > 100000) {
 			map.put("error", "-98");
 			return map;
 		}

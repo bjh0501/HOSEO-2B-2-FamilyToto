@@ -6,6 +6,7 @@ import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
+import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 
 public interface ProductBuyDao {
 	// 구입할 돈있는지 체크
@@ -52,4 +53,7 @@ public interface ProductBuyDao {
 	
 	// 구입한상품 리스트
 	List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo);
+	
+	// 기본 배송지 가져오기
+	RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo);
 }

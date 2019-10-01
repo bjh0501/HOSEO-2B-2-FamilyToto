@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.board.service.BoardService;
-import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.scheduler.serivce.SportsTotoSchedulerService;
 import com.google.gson.Gson;
 
 @Controller
@@ -21,6 +21,17 @@ public class IndexController {
 	
 	@Autowired
 	ExpService expService;
+	
+	@Autowired
+	SportsTotoSchedulerService sportsTotoSchedulerService;
+	
+	@RequestMapping(value = { "/inesrtInSoccer" })
+	@ResponseBody
+    public String insert() {
+		sportsTotoSchedulerService.inSoccer();
+	
+        return "insertSoccer";
+    }
 	
 	@RequestMapping(value = { "/index", "/" })
     public String index(Model model) {

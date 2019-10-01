@@ -14,5 +14,15 @@ public class SportsTotoSchedulerDaoImpl implements SportsTotoSchedulerDao {
 	@Override
 	public int inSoccer(TotoSportsVO vo) {
 		return sqlSession.insert("totoSports.insertSportsToto", vo);
+	}
+
+	@Override
+	public int updateSportsToto(TotoSportsVO vo) {
+		return sqlSession.update("totoSports.updateSportsToto", vo);
+	}
+
+	@Override
+	public boolean isNotSportsTotoWinnerCheck(int familyCustNo) {
+		return sqlSession.selectOne("totoSports.isNotSportsTotoWinnerCheck", familyCustNo);
 	}	
 }

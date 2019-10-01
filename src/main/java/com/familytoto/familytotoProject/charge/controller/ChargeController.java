@@ -57,8 +57,10 @@ public class ChargeController {
 		mv.addObject("list", map);
 		mv.addObject("currentCredit", chargeService.getCurrentCredit(nFamilyCustNo));
 		mv.addObject("cardInfo", chargeService.getCardInfo(nFamilyCustNo));
-		mv.setViewName("/shop/charge");
 		mv.addObject("custEmail", vo.getFamilyCustEmail());
+		mv.addObject("custNickname", vo.getFamilyCustNick());
+		
+		mv.setViewName("/shop/charge");
 
 		return mv;
 	}

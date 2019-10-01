@@ -4,14 +4,14 @@
 
 <mapper namespace="dashboard">
 	<select id="getTotalMileage" resultType="int" parameterType="int">
-		SELECT	SUM(CM.MILEAGE_VALUE) as mileageValue
+		SELECT	IFNULL(SUM(CM.MILEAGE_VALUE),0) as mileageValue
         FROM 	FAMILY_CUSTOM FC
 			INNER JOIN CUSTOM_MILEAGE CM ON CM.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND CM.USE_YN = 'Y'
 		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
         AND		FC.USE_YN = 'Y';
 	</select>
 	<select id="getTotalCredit"  resultType="int" parameterType="int">
-		SELECT	SUM(CC.CREDIT_VALUE) as creditValue
+		SELECT	IFNULL(SUM(CC.CREDIT_VALUE),0) as creditValue
         FROM 	FAMILY_CUSTOM FC
 			INNER JOIN CUSTOM_CREDIT CC ON CC.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND CC.USE_YN = 'Y'
 		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
@@ -33,29 +33,51 @@
 			FROM	FAMILY_CUSTOM FC, LEVEL
 			WHERE	FAMILY_CUST_NO = #{familyCustNo}
 			AND		START_EXP <= FC.FAMILY_CUST_EXP
+            GROUP BY LEVEL
 	        ORDER BY LEVEL DESC
 	        LIMIT 1
 		]]>
 	</select>
 	<select id="listRecentProfitCredit" parameterType="int" resultType="CreditVO">
-		SELECT	SUM(CREDIT_VALUE) AS creditValue
-		,		date_format(IFNULL(CHG_DT, REG_DT),'%m. %d') AS regCreditDt
-	    FROM    CUSTOM_CREDIT
-	    WHERE	FAMILY_CUST_NO = #{familyCustNo}
-	    AND		IFNULL(CHG_DT, REG_DT) > date_add(now(),interval -7 day)
-	    AND		USE_YN = 'Y'
-	    GROUP BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
-	    ORDER BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
+		SELECT	S.REG_DT AS regCreditDt
+        ,		IFNULL(SUM(C.CREDIT_VALUE),0) AS creditValue
+		FROM	CUSTOM_CREDIT C
+		RIGHT OUTER JOIN (
+			select DATE_FORMAT( DATE_ADD(now(), INTERVAL -a.a DAY),'%m. %d' ) as REG_DT
+			from (
+				  select 1 as a  union all 
+				  select 2 union all 
+				  select 3 union all 
+				  select 4 union all 
+				  select 5 union all
+				  select 6 union all 
+				  select 7
+			) a
+		) S		ON DATE_FORMAT(C.REG_DT,'%m. %d' ) = S.REG_DT 
+           AND		C.FAMILY_CUST_NO = #{familyCustNo}
+           AND		C.USE_YN = 'Y'
+           GROUP BY S.REG_DT
+		ORDER BY S.REG_DT
 	</select>
 	<select id="listRecentProfitMileage" parameterType="int" resultType="MileageVO">
-		SELECT	SUM(MILEAGE_VALUE) AS mileageValue
-		,		date_format(IFNULL(CHG_DT, REG_DT),'%m. %d') AS regMileageDt
-	    FROM    CUSTOM_MILEAGE
-	    WHERE	FAMILY_CUST_NO = #{familyCustNo}
-	    AND		IFNULL(CHG_DT, REG_DT) > date_add(now(),interval -7 day)
-	    AND		USE_YN = 'Y'
-	    GROUP BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
-	    ORDER BY date_format(IFNULL(CHG_DT, REG_DT),'%m. %d')
-	</select>
-	
+		SELECT	S.REG_DT AS regMileageDt
+        ,		IFNULL(SUM(M.MILEAGE_VALUE),0) AS mileageValue
+		FROM	CUSTOM_MILEAGE M
+		RIGHT OUTER JOIN (
+			select DATE_FORMAT( DATE_ADD(now(), INTERVAL -a.a DAY),'%m. %d' ) as REG_DT
+			from (
+				  select 1 as a  union all 
+				  select 2 union all 
+				  select 3 union all 
+				  select 4 union all 
+				  select 5 union all
+				  select 6 union all 
+				  select 7
+			) a
+		) S		ON DATE_FORMAT(M.REG_DT,'%m. %d' ) = S.REG_DT
+           AND		M.FAMILY_CUST_NO = #{familyCustNo}
+           AND		M.USE_YN = 'Y'
+           GROUP BY S.REG_DT
+		ORDER BY S.REG_DT
+	</select>	
 </mapper>

@@ -1,7 +1,15 @@
 package com.familytoto.familytotoProject.config;
 
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+
+import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 public class GlobalVariable {
 	private static class TIME_MAXIMUM {
@@ -53,5 +61,10 @@ public class GlobalVariable {
 		}
 		
 		return nRandomExp;
+	}
+	
+	public static double toTwoFixed(double value) {
+		double per = Double.parseDouble(String.format("%.2f",value));
+		return per;
 	}
 }

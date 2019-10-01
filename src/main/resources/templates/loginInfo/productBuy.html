@@ -111,18 +111,28 @@
 												<div style="padding: 20px;">
 													<div class="row">
 														<h3>배송지</h3>
+														<input type="hidden" id="defaultSi" th:value="${defaultAddr.familyCustAddrSi}">
+														<input type="hidden" id="defaultGugun" th:value="${defaultAddr.familyCustAddrGugun}">
+														<input type="hidden" id="defaultDong" th:value="${defaultAddr.familyCustAddrDong}">
+														<input type="hidden" id="defaultAddr" th:value="${defaultAddr.familyCustAddr}">
+														<input type="hidden" id="defaultZip" th:value="${defaultAddr.zipCode1}">
 													</div>
 													<hr>
-													<div class="custom-control custom-checkbox">
-														<h4>
-															<label>주소</label>
-														</h4>
-														<input type="checkbox" class="custom-control-input"
-															id="defaultZip"> <label
-															class="custom-control-label" for="defaultZip">기본
-															배송지</label>
-													</div>
+													<h4>
+														<label>주소</label>
+													</h4>
 													<div class="row">
+														<div class="col-12">
+															<div class="input-group mb-3">
+																<div class="custom-control custom-checkbox">
+																	<input type="checkbox" class="custom-control-input"
+																		id="defaultAddress" onChange="javascript:getDefaultAddr();"> <label
+																		class="custom-control-label" for="defaultAddress">
+																		기본 배송지
+																	</label>
+																</div>
+															</div>
+														</div>
 														<div class="col-xl-4 col-md-4 mb-4">
 															<span>시</span>
 															<div class="input-group mb-3">
@@ -146,34 +156,18 @@
 														</div>
 													</div>
 													<div class="row">
-														<div class="col-xl-12 col-lg-12 col-md-12 mb-6">
-															<div class="input-group mb-3" onChange="getZipList();">
+														<div class="col-xl-6 col-lg-12 col-md-12 mb-6">
+															<div class="input-group mb-3">
 																<span class="text-word-r">상세주소</span> <input type="text"
 																	class="form-control" placeholder="Address"
 																	aria-label="Address" id="addr">
 															</div>
 														</div>
-														<div class="col-xl-12 col-lg-12 col-md-12 mb-6">
-															<div
-																class="custom-control custom-radio custom-control-inline"
-																onClick="radioChange('gu');">
-																<input type="radio" id="guCheck" name="zipRadio"
-																	class="custom-control-input" value="gu"> <label
-																	class="custom-control-label" for="guCheck">구주소
-																	우편번호</label>
-															</div>
-															<div
-																class="custom-control custom-radio custom-control-inline"
-																onClick="radioChange('new');">
-																<input type="radio" id="newCheck" name="zipRadio"
-																	class="custom-control-input" value="new" checked>
-																<label class="custom-control-label" for="newCheck">도로명
-																	우편번호</label>
-															</div>
+														<div class="col-xl-6 col-lg-12 col-md-12 mb-6">
 															<div class="input-group mb-3" id="zipArea">
 																<span class="text-word-r">우편번호</span> <input type="text"
 																	class="form-control" placeholder="Zip Code"
-																	aria-label="zipcode1" id="zipcode1">
+																	aria-label="zipcode" id="zipcode">
 															</div>
 														</div>
 													</div>
@@ -195,9 +189,6 @@
 										</div>
 									</div>
 									<br>
-
-
-
 								</div>
 							</div>
 						</div>
@@ -313,6 +304,68 @@
 	});
 
 
+	function getDefaultAddr() {
+		if($("input:checkbox[id='defaultAddress']").is(":checked") == true) {
+			$("#sido").val($("#defaultSi").val());
+			
+			$.ajax({
+				url : "/zipcode/getGugun",
+				type : "POST",
+				cache : false,
+				async : false,
+				dataType : "json",
+				data : "sido=" + $("#defaultSi").val(),
+				success : function(data) {
+					var sStr = "";
+					
+					for(var i = 0;i < data.length; i++) {
+						var sData = data[i].gugun;
+						sStr += "<option value='" + sData + "'>" + sData + "</option>";
+					}
+					
+					$("#gugun").html(sStr);
+					$("#gugun").val($("#defaultGugun").val())
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
+			
+			$.ajax({
+				url : "/zipcode/getDong",
+				type : "POST",
+				cache : false,
+				async : false,
+				dataType : "json",
+				data : "sido=" + $("#defaultSi").val()
+						+ "&gugun=" + $("#defaultGugun").val(),
+				success : function(data) {
+					var sStr = "";
+					
+					for(var i = 0;i < data.length; i++) {
+						var sData = data[i].dong;
+						sStr += "<option value='" + sData + "'>" + sData + "</option>";
+					}
+					
+					$("#dong").html(sStr);
+					$("#dong").val($("#defaultDong").val());
+					getZipList();
+					
+					$("#addr").val($("#defaultAddr").val())
+					$("#zipcode").val($("#defaultZip").val())
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
+		}
+	}
+
+	
 	function getSido() {
 		$.ajax({
 			url : "/zipcode/getSido",
@@ -322,13 +375,12 @@
 			dataType : "json",
 			success : function(data) {
 				var sStr = "";
-
-				for (var i = 0; i < data.length; i++) {
+				
+				for(var i = 0;i < data.length; i++) {
 					var sSido = data[i].sido;
-					sStr += "<option value='" + sSido + "'>" + sSido
-							+ "</option>";
+					sStr += "<option value='" + sSido + "'>" + sSido + "</option>";
 				}
-
+				
 				$("#sido").html(sStr);
 				getGugun();
 			},
@@ -339,7 +391,7 @@
 			}
 		});
 	}
-
+	
 	function getGugun() {
 		$.ajax({
 			url : "/zipcode/getGugun",
@@ -350,13 +402,12 @@
 			data : "sido=" + $("#sido").val(),
 			success : function(data) {
 				var sStr = "";
-
-				for (var i = 0; i < data.length; i++) {
+				
+				for(var i = 0;i < data.length; i++) {
 					var sData = data[i].gugun;
-					sStr += "<option value='" + sData + "'>" + sData
-							+ "</option>";
+					sStr += "<option value='" + sData + "'>" + sData + "</option>";
 				}
-
+				
 				$("#gugun").html(sStr);
 				getDong();
 			},
@@ -367,7 +418,7 @@
 			}
 		});
 	}
-
+	
 	function getDong() {
 		$.ajax({
 			url : "/zipcode/getDong",
@@ -375,16 +426,16 @@
 			cache : false,
 			async : false,
 			dataType : "json",
-			data : "sido=" + $("#sido").val() + "&gugun=" + $("#gugun").val(),
+			data : "sido=" + $("#sido").val()
+					+ "&gugun=" + $("#gugun").val(),
 			success : function(data) {
 				var sStr = "";
-
-				for (var i = 0; i < data.length; i++) {
+				
+				for(var i = 0;i < data.length; i++) {
 					var sData = data[i].dong;
-					sStr += "<option value='" + sData + "'>" + sData
-							+ "</option>";
+					sStr += "<option value='" + sData + "'>" + sData + "</option>";
 				}
-
+				
 				$("#dong").html(sStr);
 				getZipList();
 			},
@@ -395,7 +446,7 @@
 			}
 		});
 	}
-
+	
 	function getZipList() {
 		$.ajax({
 			url : "/zipcode/getZip",
@@ -403,54 +454,44 @@
 			cache : false,
 			async : false,
 			dataType : "json",
-			data : "sido=" + $("#sido").val() + "&gugun="
-					+ $("#gugun").val() + "&dong=" + $("#dong").val(),
+			data : "sido=" + $("#sido").val()
+					+ "&gugun=" + $("#gugun").val()
+					+ "&dong=" + $("#dong").val(),
 			success : function(data) {
 				var sStr = "";
 				var sListLi = "";
-
-				if (data.length > 0) {
-					for (var i = 0; i < data.length; i++) {
+				
+				if(data.length > 0) {
+					for(var i = 0;i < data.length; i++) {
 						var sRi = data[i].ri;
 						var zip1 = data[i].zipCode1;
-						var zip2 = data[i].zipCode2;
-
-						var gubun = "구주소";
-
-						if (zip1 == undefined) {
+						var zip = data[i].zipcode;
+						
+						var gubun = "구주소";	
+						
+						if(zip1 == undefined) {
 							zip1 = "";
 							gubun = "도로명주소";
 						}
-
-						if (zip2 == undefined) {
-							zip2 = "";
-						}
-
+						
 						var sListData = "";
-
+	
 						sListData += "<a class='list-group-item list-group-item-action '";
-						sListData += " data-toggle='list' href='javascript:;' ri='"
-								+ sRi
-								+ "' zipcode1='"
-								+ zip1
-								+ "' zipcode2='" + zip2 + "'";
+						sListData += " data-toggle='list' href='javascript:;'  zipcode='" + zip + "' ri='" + sRi + "' zipcode1='" + zip1 + "'";
 						sListData += " onClick='javascript:chooseZip($(this));'";
-						sListData += "role='tab' >" + sRi + "<sup><b>"
-								+ gubun + "</b></sup></a>";
-
-						sListLi += sListData;
-					}
+						sListData += "role='tab' >" + sRi + "<sup><b>" + gubun + "</b></sup></a>";
+						
+						sListLi += sListData; 
+					} 
 				} else {
 					sListLi = "<center>상세주소가 존재하지 않습니다.</center>"
 				}
-
+				
 				$("#addr").val("");
-				$("#zipcode1").val("");
-				$("#zipcode2").val("");
-
-				$("#list-tab").html(sListLi);
-			},
-			error : function(request, status, error) {
+				$("#zipcode").val("");
+				
+				$("#list-tab").html(sListLi);				
+			},error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
 				msg += +"내용 : " + request.responseText + "<br>" + error;
 				console.log(msg);
@@ -458,34 +499,10 @@
 		});
 	}
 
+	
 	function chooseZip(obj) {
 		$("#addr").val(obj.attr("ri"));
-		$("#zipcode1").val(obj.attr("zipcode1"));
-		$("#zipcode2").val(obj.attr("zipcode2"));
-
-		if (obj.attr("zipcode1") == "") {
-			$("input:radio[id='newCheck']").prop('checked', true);
-			radioChange("new")
-		} else {
-			$("input:radio[id='guCheck']").prop('checked', true);
-			radioChange("gu")
-		}
-	}
-
-	function radioChange(radioValue) {
-		var sStr = "";
-
-		if (radioValue == "gu") {
-			sStr += '<span class="text-word-r">우편번호</span>';
-			sStr += '<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode1" id="zipcode1">';
-			sStr += '<span style="margin-top: 6px;">-</span>';
-			sStr += '<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode2" id="zipcode2">';
-		} else {
-			sStr += '<span class="text-word-r">우편번호</span>';
-			sStr += '<input type="text" class="form-control" placeholder="Zip Code" aria-label="zipcode1" id="zipcode1">';
-		}
-
-		$("#zipArea").html(sStr);
+		$("#zipcode").val(obj.attr("zipcode"));
 	}
 	
 	function comma(num){
@@ -520,21 +537,10 @@
 			return;
 		}
 		
-		if($("input:checkbox[id='guCheck']").is(":checked") == true) {
-			if($("#zipcode1").val().trim() == "") {
-				alert("우편번호를 입력해주세요.");
-				$("#zipcode1").focus();
-				return;
-			} else {
-				alert("우편번호를 입력해주세요.");
-				$("#zipcode2").focus();
-			}
-		} else {
-			if($("#zipcode1").val().trim() == "") {
-				alert("우편번호를 입력해주세요.");
-				$("#zipcode1").focus();
-				return;
-			}
+		if($("#zipcode").val().trim() == "") {
+			alert("우편번호를 입력해주세요.");
+			$("#zipcode").focus();
+			return;
 		}
 		
 		$(".productNo").each(function(){
@@ -557,8 +563,8 @@
 			data : {
 		        'productNo' : productNo
 			,	'produtBuyAmount' : produtBuyAmount
-			,	'zipCode1' : $("#zipcode1").val()
-			,	'zipCode2' : $("#zipcode2").val()
+			,	'zipCode1' : $("#zipcode").val()
+			,	'zipCode2' : $("#zipcode").val()
 			,	'familyCustAddrSi' : $("#sido").val()
 			,	'familyCustAddrGugun' : $("#gugun").val()
 			,	'familyCustAddrDong' : $("#dong").val()

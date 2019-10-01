@@ -27,22 +27,61 @@
 	color: white;
 	cursor: pointer;
 }
-</style>
-<style>
+
 label {
 	display: inline-block;
 	width: 5em;
 }
-
-role[tooltip] {
 	
-}
+	#helpCharacter {
+	    width: 100%;
+	    height: 100%;
+	    position: fixed;
+	    background: #0000009e;
+	    z-index: 5;
+	    cursor: pointer;
+	}
+	
+	#helpCharacter img {
+	   opacity: 0.8;
+	    width: 28%;
+	    height: auto;
+	    position: fixed;
+	    bottom: 0%;
+	}
+	
+	.balloon {
+        position: fixed;
+	    background: #ccc;
+	    border-radius: 50%;
+	    bottom: 42%;
+	    left: 24%;
+	    padding: 34px;
+	}
+	.balloon:before {
+	    content: '';
+	    position: absolute;
+	    background: #ccc;
+	    height: 20px;
+ 	    width: 20px; 
+	    border-radius: 10px;
+	    bottom: -20px;
+	    left: 4px;
+	}
+	.balloon:after {
+	        content: '';
+	    position: absolute;
+	    background: #ccc;
+	    height: 10px;
+	    width: 10px;
+	    border-radius: 5px;
+	    bottom: -30px;
+	    left: -14px;
+	}
 </style>
 
-</head>
-
+<!-- </head> -->
 <body id="page-top">
-
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -67,6 +106,8 @@ role[tooltip] {
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">자유 게시판</h2>
+						<a class="btn btn-light btn-circle" id="helpButton" href="javascript:;"> <i class="fas fa-info-circle"></i>
+						</a>
 					</div>
 					<div class="card shadow mb-4">
 						<div class="card-body">
@@ -208,7 +249,7 @@ role[tooltip] {
 				return $(this).prop('title')
 			},
 			show: {
-			  delay: 200
+// 			  delay: 200
 			},
 			position : {
 				track : true,
@@ -217,6 +258,56 @@ role[tooltip] {
 		});
 	});
 
+	var GLOBAL_COMMENT_IDX = 0;
+	var helpCommentList = ["안녕하세여 저의 이름은 리지에여<br>" +
+							"현재 게시판 운영자가 없어서 제가 대신 일하고있어여<br>"+
+							"게시판 리스트사용법을 알려드릴게여<br>",
+							"각 글들은 글번호, 제목, 글쓴이, 작성일, 조회수<br>"+
+							"이렇게 구성되있어여",
+							"각 글에 마우스를 올리면 내용 미리보기가<br>"+
+							"해당 글 하단에 보여여<br>"+
+							"제목에는 글의 댓글갯수가 나타나고<br>"+
+							"글쓴이는 소셜 아이콘이 나타나고<br>"+
+							"없는건 익명사용자에여",
+							"작성일은 1분이하는 방금전으로, 1시간 이하는 분으로,<br>"+
+							"작성일은 1일이하는 시간으로, 3일이하 일로 표시되고<br>"+
+							"그이상은 시간으로 표시되여"+
+							"하단에 글쓰기버튼을 클릭하면 글도 쓰러 갈 수 있어여",
+							"글검색은 제목+내용, 제목, 내용, 작성자로<br>"+
+							"검색도 가능해여"
+							]
+	
+	function helpMeCharacter() {
+		$("#helpComment").html(helpCommentList[GLOBAL_COMMENT_IDX++]);
+		
+		if(helpCommentList.length == GLOBAL_COMMENT_IDX-1) {
+			GLOBAL_COMMENT_IDX = 0;
+			tip = confirm("설명을 해준 리지에게 팁으로 1,000크레딧을 드리겠습니까?")
+			
+			if(tip == true) {
+				alert("리지가 감사하다고합니다.")
+			}
+			
+			$("#helpCharacter").remove();
+		}
+	}
+	
+	$( '#helpButton' ).click( function() {
+		  // function
+		var makeDiv = "";
+		makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter()">';
+		makeDiv += '	<img src="/img/character/leage.jpg" alt="">';
+		makeDiv += '	<div class="balloon">';
+		makeDiv += '		<span id="helpComment"></span>';
+		makeDiv += '	</div>';
+		makeDiv += '</div>';
+		
+		$("#page-top").prepend(makeDiv);
+		
+		helpMeCharacter();
+	} );
+	
+	
 	$('#searchType').val("[[ ${pagination.getSearchType()} ]]");
 
 	var currentKeyword = $('#keyword').val();

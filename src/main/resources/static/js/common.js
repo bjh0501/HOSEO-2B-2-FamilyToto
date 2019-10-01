@@ -1,36 +1,45 @@
 $(document).ready(function(){
 	if($("#levelInHeader").html() != undefined) {
-		 $.ajax({
-			url : "/header/levelInfo",
-			type : "POST",
-			cache : false,
-			dataType : "json",
-			success : function(data) {
-				var totalExp = data.endExp - data.startExp;
-				var currentExp = data.familyCustExp - data.startExp;
-				var percent = parseInt((currentExp/totalExp)*100);
-				
-				$("#levelInHeader").html(data.level);
-				$("#expBarInHeader").html(currentExp + "/" + totalExp);
-				
-				$("#expBarInHeader").attr("style", "width:" + percent + "%");
-				$('#expInHeader').attr('data-original-title',percent+"%");
-//				$("#levelInHeader").html(data.level);
-			//	alert(data.level)
-				//alert(data.familyCustExp)
-			},
-			error : function(request, status, error) {
-				var msg = "ERROR : " + request.status + "<br>"
-				msg += +"내용 : " + request.responseText + "<br>" + error;
-				console.log(msg);
-			}
-		});
+		asyncExp();
 	}
+	
+	$(".dropdown-menu, .show").on('click', function (event) {
+	    event.stopImmediatePropagation()
+	});
+	
+	$('[data-toggle="headerExpPercent"]').tooltip()
 });
 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+function asyncExp() {
+	 $.ajax({
+		url : "/header/levelInfo",
+		type : "POST",
+		cache : false,
+		dataType : "json",
+		success : function(data) {
+			var totalExp = data.endExp - data.startExp;
+			var currentExp = data.familyCustExp - data.startExp;
+			var percent = parseInt((currentExp/totalExp)*100);
+			
+			$("#levelInHeader").html(data.level);
+			$("#expBarInHeader").html(currentExp + "/" + totalExp);
+			
+			$("#expBarInHeader").animate({
+			        width: percent+"%"
+		    }, 300 );
+
+			$('#expInHeader').attr('data-original-title',percent+"%");
+//				$("#levelInHeader").html(data.level);
+		//	alert(data.level)
+			//alert(data.familyCustExp)
+		},
+		error : function(request, status, error) {
+			var msg = "ERROR : " + request.status + "<br>"
+			msg += +"내용 : " + request.responseText + "<br>" + error;
+			console.log(msg);
+		}
+	});
+}
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

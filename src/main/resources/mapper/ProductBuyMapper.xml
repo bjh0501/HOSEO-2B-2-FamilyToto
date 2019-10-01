@@ -28,13 +28,11 @@
         )
 	</insert>
 	<select id="getCustCredit" parameterType="ProductBuyVO" resultType="boolean">
-        SELECT EXISTS(
-			SELECT	CREDIT_ID
-	        FROM	CUSTOM_CREDIT CC
-				INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
-			WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
-	        AND		CC.USE_YN = 'Y'
-	        GROUP BY CREDIT_VALUE
+	 SELECT EXISTS(
+			SELECT	0
+        FROM	CUSTOM_CREDIT
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
         HAVING SUM(CREDIT_VALUE) >= #{productBuyCredit}) as cnt
 	</select>
 	<select id="isProductAmount"  parameterType="ProductBuyVO" resultType="boolean">
@@ -112,16 +110,16 @@
 		)
 	</insert>
 	<select id="getCustMileage" parameterType="ProductBuyVO" resultType="boolean">
-		SELECT EXISTS(SELECT	MILEAGE_VALUE
-		FROM	CUSTOM_MILEAGE CG
-			INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = CG.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
-		WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
-		AND		CG.USE_YN = 'Y'
-		HAVING SUM(MILEAGE_VALUE) >= #{productBuyCredit}) as cnt
+		 SELECT EXISTS(
+			SELECT	0
+        FROM	CUSTOM_MILEAGE
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
+        HAVING SUM(MILEAGE_VALUE) >= #{productBuyCredit}) as cnt
 	</select>
 	<select id="listBoughtProduct" parameterType="ProductBuyVO" resultType="ProductBuyVO">
-		 SELECT	PBG.PRODUCT_BUY_GRP_NO as productBuyGrpNo
-        ,		PBG.REG_DT as regDt
+		SELECT	PBG.PRODUCT_BUY_GRP_NO as productBuyGrpNo
+        ,		IFNULL(PBG.CHG_DT, PBG.REG_DT) as regDt
         ,		P.PRODUCT_NAME as productName
         ,		P.PRODUCT_NO as productNo
         ,		PB.PRODUCT_BUY_CREDIT as productBuyCredit
@@ -133,5 +131,16 @@
             INNER JOIN PRODUCT P ON PB.PRODUCT_NO = P.PRODUCT_NO
 		WHERE	PB.FAMILY_CUST_NO = #{familyCustNo}
         AND		PB.USE_YN = 'Y'
+        ORDER BY IFNULL(PBG.CHG_DT, PBG.REG_DT) DESC
+	</select>
+	<select id="getFamilyCustDefaultAddr" parameterType="int" resultType="RegisterCustVO">
+		SELECT	FAMILY_CUST_ADDR_SI as familyCustAddrSi
+		,		FAMILY_CUST_ADDR_GUGUN as familyCustAddrGugun
+		,		FAMILY_CUST_ADDR_DONG as familyCustAddrDong
+        ,		FAMILY_CUST_ADDR as familyCustAddr
+        ,		ZIP_CODE1 as zipCode1
+		FROM	FAMILY_CUSTOM
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y';
 	</select>
 </mapper>

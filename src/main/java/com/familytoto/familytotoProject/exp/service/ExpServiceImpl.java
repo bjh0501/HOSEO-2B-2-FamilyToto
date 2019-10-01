@@ -27,6 +27,8 @@ public class ExpServiceImpl implements ExpService {
 				!expState.equals("GGW") &&
 				!expState.equals("DGS") &&
 				!expState.equals("DGW") &&
+				!expState.equals("RGW") &&
+				!expState.equals("RGS") &&
 				!expState.equals("LGW") &&
 				!expState.equals("LGS")) {
 			return -1;

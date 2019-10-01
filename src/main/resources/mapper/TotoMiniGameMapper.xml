@@ -82,4 +82,30 @@
             #{regCustNo},	NOW(),			#{regIp},		'Y'
         )
 	</insert>
+	<insert id="insertRulletBet" useGeneratedKeys="true"
+		keyProperty="rulletNo">
+		INSERT INTO TOTO_RULLET (
+			FAMILY_CUST_NO,		RULLET_BET,		RULLET_RESULT,	REG_CUST_NO,
+		    REG_DT,				REG_IP,			USE_YN,			RULLET_CUST_RESULT
+		) VALUES (
+			#{familyCustNo},	0,				#{rulletResult},#{regCustNo},
+		    NOW(),				#{regIp},		'W',			NULL
+		)
+	</insert>
+	<update id="updateRulletEnd">
+		UPDATE	TOTO_RULLET
+		SET		USE_YN = 'Y'
+		,		RULLET_CUST_RESULT = #{rulletCustResult}
+		,		RULLET_BET = #{rulletBet}
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'W'
+		AND		RULLET_NO = #{rulletNo}
+	</update>
+	<update id="updateInitialRullet" parameterType="int">
+		UPDATE	TOTO_RULLET
+		SET		USE_YN = 'Y'
+		,		RULLET_CUST_RESULT = '-'
+		WHERE	USE_YN = 'W'
+		AND		FAMILY_CUST_NO = #{familyCustNo}
+	</update>
 </mapper>

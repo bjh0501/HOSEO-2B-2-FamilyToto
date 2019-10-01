@@ -6,6 +6,7 @@ import java.util.Map;
 import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
+import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 
 import lombok.Builder.Default;
 
@@ -29,4 +30,7 @@ public interface ProductBuyService {
 	
 	// 구입한상품 리스트
 	List<ProductBuyVO> listBoughtProduct(ProductBuyVO vo);
+	
+	// 기본 배송지 가져오기
+	RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo);
 }

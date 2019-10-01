@@ -1,7 +1,7 @@
 document.write("<script src='/js/common.js'></script>");
 
 $(function(){
-
+	$("#credit").focus();
     var heightNode = 10;
     var widthNode =  0;
 
@@ -31,10 +31,10 @@ $(function(){
     		location.reload();
     	}
     	
-    	if($("#credit").val() < 1000) {
-    		alert("1,000크레딧 이상만 입력해주세요.");
-    		return false;
-    	}
+    	if($("#credit").val() < 1000 || $("#credit").val() > 100000) {
+			alert("1,000 ~ 100,000크레딧만 배팅이 가능합니다.");
+			return;
+		}
     	
     	GLOBAL_BET_CREDIT = parseInt($("#credit").val());
     	GLOBAL_HAVE_CREDIT = parseInt(removeComma($("#haveCredit").val()));
@@ -146,6 +146,12 @@ $(function(){
 				 + "&ladderAnswer=" + GLOBAL_BUTTON_IDX
 				 + "&creditValue=" + GLOBAL_BET_CREDIT,
 				success : function(data) {
+					if(data.trim() == -99) {
+						alert("배팅할 크레딧이 없습니다.\n사다리가 다시 시작됩니다.");
+						location.reload();
+						return ;
+					}
+					
 					if(data < 0) {
 						alert("알수없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
 					} else {
@@ -164,10 +170,6 @@ $(function(){
 					        })
 					        
 					        alert(numberWithCommas(parseInt((GLOBAL_BET_CREDIT * data))) + "크레딧을 획득했습니다.");
-					        
-					        if(confirm("계속하시겠습니까?") == true) {
-					        	location.reload();
-					        }
 						}
 					}
 				},

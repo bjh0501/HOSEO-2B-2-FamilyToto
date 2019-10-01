@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no"
+>
+<meta name="description" content="">
+<meta name="author" content="">
+
+
+<!-- Custom fonts for this template-->
+<link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet"
+	type="text/css"
+>
+<link th:href="@{/css/Nunito.css}" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+#draggable {
+	width: 206px;
+    height: 252px;
+    padding: 0.5em;
+    z-index: 3;
+    right: 25px;
+    top: 149px;
+}
+
+.boardrow:hover {
+	background: black;
+	color: white;
+	cursor: pointer;
+}
+</style>
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<div class="row">
+						<h2 class="text-title">스포츠 토토</h2>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="card shadow h-100 py-12">
+								<div style="padding-bottom: 20px;">
+									<ul class="nav nav-tabs nav-justified">
+										<li class="nav-item"><a class="nav-link active" id="gubunFree">국내축구</a>
+										</li>
+										<li class="nav-item"><a class="nav-link" id="gubunCard">해외축구</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div id="draggable" class="ui-widget-content" style="position: fixed">
+							<p>리모콘</p>
+							<hr>
+							<div>ㄴㄴㄴㄴ<i class="fas fa-trash-alt" style="cursor: pointer;"></i></div>
+						</div>
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="table-responsive">
+										<table class="table table-bordered" id="dataTable" width="100%"
+											cellspacing="0">
+											<thead>
+												<tr>
+													<th style="width: 10%">선택</th>
+													<th style="width: 10%">일정</th>
+													<th style="width: 10%">리그</th>
+													<th style="width: 10%">경기(배당)</th>
+													<th style="width: 10%">결과</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr class="boardrow" th:each="list : ${totoList}">
+													<td>
+														<input type="checkbox">1팀 <input type="checkbox">2팀
+														<input type="text" th:value="${list.sportsNo}" />
+													</td>
+													<td style="text-align: center;" th:text="${list.sportsSchedule}"></td>
+													<td style="text-align: center;" th:text="${list.sportsLeagueName}"></td>
+													<td style="text-align: center;">
+														<span th:text="${list.sportsTeam1Name}"></span> (<span
+															th:text="${list.sportsTeam1Bet}"
+														></span>) <br> vs <br> <span
+															th:text="${list.sportsTeam2Name}"
+														></span> (<span th:text="${list.sportsTeam2Bet}"></span>)
+													</td>
+													<td style="text-align: center;"
+														th:if="${list.sportsResult != null}"
+													>
+														<th:block th:if="${list.sportsResult == '1'}">
+															<b><span th:text="${list.sportsScore1}"></span></b> :
+															<span th:text="${list.sportsScore2}"></span>
+														</th:block>
+														<th:block th:if="${list.sportsResult == '2'}">
+															<span th:text="${list.sportsScore1}"></span> :
+															<b><span th:text="${list.sportsScore2}"></span></b>
+														</th:block>
+														<th:block th:if="${list.sportsResult == '0'}">
+															<span th:text="${list.sportsScore1}"></span> :
+															<span th:text="${list.sportsScore2}"></span>
+														</th:block>
+													</td>
+													<td style="text-align: center;"
+														th:if="${list.sportsResult == null}"
+													>결과 대기중</td>
+												</tr>
+											</tbody>
+										</table>
+										선택팀 : (1 or 2)<input type="text">
+										<button onClick="javascript:bet();">aaatet</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /.container-fluid -->
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+				</footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+		</div>
+		<!-- End of Page Wrapper -->
+
+
+
+		<!-- Bootstrap core JavaScript-->
+		<script src="/vendor/jquery/jquery.min.js"></script>
+		<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="/js/sb-admin-2.min.js"></script>
+
+		<!-- common -->
+		<script src="/js/common.js"></script>
+
+		<!-- common -->
+		<script src="/js/common.js"></script>
+		<script src="/js/header.js"></script>
+
+		<!--jquery ui -->
+		<script src="/js/jquery-ui.min.js"></script>
+</body>
+
+</html>
+
+<script>
+	$(function() {
+		$("#draggable").draggable();
+	});
+
+	function bet() {
+
+		var sportsNo = [ 40000001, 40000003, 40000005 ];
+		var choiceTeam = [ 1, 2, 1 ];
+		var credit = 1000;
+		$.ajax({
+			url : "/toto/sports/soccer/betting",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			traditional : true,
+			data : {
+				"nSportsNo" : sportsNo,
+				"nChoiceTeam" : choiceTeam,
+				"creditValue" : credit
+			},
+			success : function(data) {
+				alert(data)
+
+				// 				} else {
+				// 					alert("새로고침후 다시 시도해주세요.");
+				// 				}
+			},
+
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+</script>

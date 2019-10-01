@@ -33,7 +33,6 @@
 </head>
 
 <body id="page-top">
-
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -104,16 +103,23 @@
 									<h6 class="m-0 font-weight-bold text-primary text-center">홀짝
 										배팅</h6>
 									<br>
-									<h6 class="m-0 font-weight-bold text-primary text-center">&nbsp홀
-										&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 짝&nbsp&nbsp&nbsp&nbsp&nbsp
-										더블</h6>
-									<div class="text-center">
-										&nbsp&nbsp&nbsp&nbsp&nbsp<input type="radio" name="option"
-											style="width: 30px; height: 30px" value="H">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-										<input type="radio" name="option" value="J"
-											style="width: 30px; height: 30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input>
-										<input type="radio" name="option" value="D"
-											style="width: 30px; height: 30px">&nbsp&nbsp&nbsp&nbsp&nbsp</input></input>
+									<h6 class="m-0 font-weight-bold text-primary text-center">
+										<div class="row justify-content-md-center">									
+											<div class="col-4">홀<br>x1.95</div>
+											<div class="col-4">짝<br>x1.95</div>
+											<div class="col-4">더블<br>x3.95</div>
+										</div>
+									</h6>
+									<div class="text-center row justify-content-md-center">
+										<div class="col-4">
+											<input type="radio" name="option" style="width: 30px; height: 30px" value="H"/>
+										</div>
+										<div class="col-4">
+											<input type="radio" name="option" value="J" style="width: 30px; height: 30px"/>
+										</div>
+										<div class="col-4">
+											<input type="radio" name="option" value="D" style="width: 30px; height: 30px"/>	
+										</div>
 									</div>
 								</div>
 								<hr>
@@ -160,34 +166,33 @@
 
 </html>
 <script>
+	$("#credit").focus();
 	var diceResult1 = "";
 	var diceResult2 = "";
 	var timeRef;
-
+	
 	function goCharge() {
 		location.href = "/charge"
 	}
-
+	
 	function bet() {
 		if ($("#credit").val().trim() == "") {
 			alert("크레딧을 입력해주세요.");
 			$("#credit").focus();
 			return false;
 		}
-
-		if ($("#credit").val() < 1000) {
-			alert("1,000크레딧 이상만 배팅할 수 있습니다.");
+		
+		if($("#credit").val() < 1000 || $("#credit").val() > 100000) {
+			alert("1,000 ~ 100,000크레딧만 배팅이 가능합니다.");
 			$("#credit").focus();
-			return false;
+			return;
 		}
-
+		
 		var radioVal = $('input[name="option"]:checked').val();
-
 		if (radioVal == undefined) {
 			alert("배팅 옵션을 선택해주세요.");
 			return false;
 		}
-
 		$.ajax({
 			url : "/toto/dice/bet",
 			type : "POST",
@@ -200,29 +205,24 @@
 					alert("배팅할 크레딧이 부족합니다.");
 					return;
 				}
-
 				$("#credit").attr("disabled", true);
 				$('input[name="option"]').attr("disabled", true)
-
 				var currentCredit = removeComma($("#haveCredit").val())
 						- $("#credit").val();
 				$("#haveCredit").val(numberWithCommas(currentCredit));
 				$("#credit").val(numberWithCommas($("#credit").val()));
-
 				for (i = 1; i <= 6; i++) {
 					if (data.dice1 == i) {
 						diceResult1 = "/img/toto/dice/dice" + i + ".png";
 					}
 				}
-
 				for (i = 1; i <= 6; i++) {
 					if (data.dice2 == i) {
 						diceResult2 = "/img/toto/dice/dice" + i + ".png";
 					}
 				}
-
-				$("#resultText").html(data.dice1 + ", " + data.dice2);
-
+				$("#resultText").html(data.dice1 + ", " + data.dice2 + "<br>"
+						+ numberWithCommas(data.getCredit) + "크레딧을 얻었습니다.");
 				timeRef = setInterval(function() {
 					draw(data.error, data.getCredit);
 				}, 10);
@@ -234,89 +234,103 @@
 			}
 		});
 	}
-
 	var size = 50;
 	var canvas = document.getElementById("myCanvas");
-
 	var ballRadius = size;
-
 	var ctx1 = canvas.getContext("2d");
 	var ctx2 = canvas.getContext("2d");
-
 	var x1 = canvas.width / 2;
 	var y1 = canvas.height - size;
-
 	var x2 = canvas.width / 2;
 	var y2 = canvas.height - size;
-
 	var dx1 = getRandomArbitrary(-10, 10);
 	var dy1 = getRandomArbitrary(-10, 10);
-
 	var dx2 = getRandomArbitrary(-10, 10);
 	var dy2 = getRandomArbitrary(-10, 10);
-
 	var imgClo1 = new Image();
 	var imgClo2 = new Image();
-
 	var n = 0;
 	var turnTime = 30;
-	
-	function drawBall() {	
-		var random1 = Math.floor(6 * Math.random()) + 1;	
-		var random2 = Math.floor(6 * Math.random()) + 1;	
-		n++;	
-		if (n >= turnTime) {	
-			for (var i = 1; i <= 6; i++) {	
-				if (random1 == i) {	
-					imgClo1.src = "/img/toto/dice/dice" + i + ".png";	
-				}	
-				if (random2 == i) {	
-					imgClo2.src = "/img/toto/dice/dice" + i + ".png";	
-				}	
-			}	
-			n = 1;	
-			turnTime += 10;	
-		}	
+	function drawBall() {
+		var random1 = Math.floor(6 * Math.random()) + 1;
+		var random2 = Math.floor(6 * Math.random()) + 1;
+		n++;
+		if (n >= turnTime) {
+			for (var i = 1; i <= 6; i++) {
+				if (random1 == i) {
+					imgClo1.src = "/img/toto/dice/dice" + i + ".png";
+				}
+				if (random2 == i) {
+					imgClo2.src = "/img/toto/dice/dice" + i + ".png";
+				}
+			}
+			n = 1;
+			turnTime += 10;
+		}
 	}
-	
 	function draw(result, credit) {		
 		if (turnTime >= 100) {
 			clearInterval(timeRef);
 			
 			if (result == 0) {
 				//alert("돈을 얻었습니다.");
-
 				var haveCredit = removeComma($("#haveCredit").val());
 				var result = haveCredit + credit;
-
 				$("#haveCredit").val(numberWithCommas(result));
 			} else if (result == 1) {
 				//alert("돈을 잃었습니다.");
-
 			}
-
+			
 			$("#result").attr("style", "");
-
 			$("#betButton").val("다시하기");
 			$("#betButton").attr("onclick", "location.reload()");
 			imgClo1.src = diceResult1;
 			imgClo2.src = diceResult2;
-
-			console.log(imgClo1.src)
-			console.log(imgClo2.src)
+			
+			// 이상하게 이걸 써야 마지막 이미지가나온다.
+			
+			setInterval(function(){
+				ctx2.drawImage(imgClo2, x2, y2, ballRadius, ballRadius);
+				ctx1.drawImage(imgClo1, x1, y1, ballRadius, ballRadius);
+			}, 10);
 			
 			return false;
 		} else {
 			ctx1.clearRect(0, 0, canvas.width, canvas.height);
 		}
-
+		////
+		if (x1 + dx1 > canvas.width - ballRadius
+				|| x1 + dx1 < ballRadius - size) {
+			dx1 = -dx1;
+		}
+		if (y1 + dy1 > canvas.height - ballRadius
+				|| y1 + dy1 < ballRadius - size) {
+			dy1 = -dy1;
+		}
+		x1 += dx1;
+		y1 += dy1;
+		////		    
+		if (x2 + dx2 > canvas.width - ballRadius
+				|| x2 + dx2 < ballRadius - size) {
+			dx2 = -dx2;
+		}
+		if (y2 + dy2 > canvas.height - ballRadius
+				|| y2 + dy2 < ballRadius - size) {
+			dy2 = -dy2;
+		}
+		x2 += dx2;
+		y2 += dy2;
+		////
+		console.log("AA")
+		drawResultDices();
 	}
-
 	function getRandomArbitrary(min, max) {
 		var randomVal = (Math.random() * (max - min) + min);
 		return randomVal == 0 ? getRandomArbitrary(min, max) : randomVal;
-
 	}
-
-
+	function drawResultDices() {
+		drawBall();
+		ctx2.drawImage(imgClo2, x2, y2, ballRadius, ballRadius);
+		ctx1.drawImage(imgClo1, x1, y1, ballRadius, ballRadius);
+	}
 </script>

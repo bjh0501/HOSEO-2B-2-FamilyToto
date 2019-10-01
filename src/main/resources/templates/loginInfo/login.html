@@ -276,7 +276,7 @@ filter: gray;
 											<img src="/img/social/button/kakaoButton.png"
 												style="width: 100%; cursor: pointer;"
 												onClick="javascript:kakaoLogin();"> <a
-												href="https://kauth.kakao.com/oauth/authorize?client_id=e051b552544132d23d2ce1fc5898963c&amp;redirect_uri=https://onesports.ga/login/social/kakao&amp;response_type=code" style="display: none"
+												th:href="${kakaoLoginUrl}" style="display: none"
 												id="kakaoSocial">kakao</a>
 										</div>
 										<div class="input-group mb-2">
@@ -284,7 +284,7 @@ filter: gray;
 											src="/img/social/button/naverButton.jpg"
 												style="width: 100%; cursor: pointer; -webkit-filter: grayscale(100%); filter: gray;"
 												onClick="javascript:naverLogin();"> <a
-												href="https://nid.naver.com/oauth2.0/authorize?response_type=code&amp;client_id=Za6kr7wC2cVLJ3c1qVvu&amp;redirect_uri=https%3A%2F%2Fonesports.ga%2Flogin%2Fsocial%2Fnaver&amp;state=b3e348c2-8208-402c-94e8-d72c43088411" style="display: none"
+												th:href="${naverLoginUrl}" style="display: none"
 												id="naverSocial">naver</a> <span>*<u><a
 													href="http://www.law.go.kr/LSW//precInfoP.do?precSeq=186216"
 													target="_blank">관련 법</a></u>에 의하여 네이버 로그인이 중지되었습니다.<br>
@@ -297,7 +297,7 @@ filter: gray;
 										<p class="text-center">
 											<a href="/registerCust">회원가입</a>
 										</p>
-										<input type="hidden" id="refer" value="https://onesports.ga/">
+										<input type="hidden" id="refer" th:value="${referUrl}">
 									</div>
 								</div>
 							<!-- ㅇㅇ --></div>
