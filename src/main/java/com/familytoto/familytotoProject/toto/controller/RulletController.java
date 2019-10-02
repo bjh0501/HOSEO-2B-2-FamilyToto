@@ -110,6 +110,8 @@ public class RulletController {
 			}
 		}
 		
+		
+		
 		if(sNumbers[0].equals(sNumbers[1]) ||
 				sNumbers[0].equals(sNumbers[2]) ||
 				sNumbers[1].equals(sNumbers[2])) {

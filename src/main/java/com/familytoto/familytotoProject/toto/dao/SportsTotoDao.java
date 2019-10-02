@@ -23,5 +23,8 @@ public interface SportsTotoDao {
 	boolean isDupleBet(SportsBettingVO vo);
 	
 	// 국내축구 리스트
-	List<SportsVO> listSportsTotoInnerSoccer();
+	List<SportsVO> listSportsTotoInnerSoccer(int familyCustNo);
+	
+	// 구입한 스포츠번호 리스트
+	List<SportsVO> listBoughtSportsNo(int familyCustNo);
 }

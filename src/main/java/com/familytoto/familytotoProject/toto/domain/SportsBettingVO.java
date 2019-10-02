@@ -42,6 +42,16 @@ public class SportsBettingVO {
     // W,L
     private String bettingGroupResult;
 
+    private String sportsResult;
+    
+	public String getSportsResult() {
+		return sportsResult;
+	}
+
+	public void setSportsResult(String sportsResult) {
+		this.sportsResult = sportsResult;
+	}
+
 	public int getSportsBettingNo() {
 		return sportsBettingNo;
 	}

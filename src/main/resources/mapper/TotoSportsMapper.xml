@@ -67,6 +67,9 @@
 		<if test="sportsTeam1Bet == 2.0">
 			SPORTS_TEAM2_BET as sportsTem2Bet
 		</if>
+		<if test="sportsTeam1Bet == 0.0">
+			SPORTS_DRAW_BET as sportsDrawBet
+		</if>
 		FROM	TOTO_SPORTS
 		WHERE	SPORTS_NO = #{sportsNo}
 		AND		USE_YN = 'Y'
@@ -84,21 +87,85 @@
 		AND		SPORTS_NO = #{sportsNo}
 		AND		USE_YN = 'Y') as checkExists
 	</select>
-	<select id="listSportsTotoInnerSoccer" resultType="SportsVO">
+	<select id="listSportsTotoInnerSoccer" resultType="SportsVO" parameterType="int">
+		SELECT	TS.SPORTS_NO as sportsNo
+		,		TS.SPORTS_TEAM1_NAME AS sportsTeam1Name
+		,		TS.SPORTS_TEAM2_NAME as sportsTeam2Name
+		,		TS.SPORTS_SCHEDULE as sportsSchedule
+		,		TS.SPORTS_TEAM1_BET as sportsTeam1Bet
+		,		TS.SPORTS_DRAW_BET as sportsDrawBet
+		,		TS.SPORTS_TEAM2_BET as sportsTeam2Bet
+		,		TS.SPORTS_LEAGUE_NAME as sportsLeagueName
+		,		TS.SPORTS_SCORE1 as sportsScore1
+		,		TS.SPORTS_SCORE2 as sportsScore2
+		,		TS.SPORTS_RESULT as sportsResult
+        ,		TSB.BETTING_TEAM_CHOICE as bettingTeamChoice
+		FROM	TOTO_SPORTS TS
+			LEFT OUTER JOIN  TOTO_SPORTS_BETTING TSB ON TS.SPORTS_NO = TSB.SPORTS_NO AND  TSB.USE_YN = 'Y'
+			AND	TSB.FAMILY_CUST_NO = #{familyCustNo}
+		WHERE	TS.SPORTS_GUBUN = 'ISO'
+		AND		TS.SPORTS_LEAGUE_NAME = 'K리그1'
+        AND		TS.USE_YN = 'Y'
+		ORDER BY SPORTS_SCHEDULE ASC, TS.SPORTS_RESULT DESC;
+	</select>
+	<select id="listBoughtSportsNo" parameterType="int" resultType="SportsVO">
 		SELECT	SPORTS_NO as sportsNo
-		,		SPORTS_TEAM1_NAME AS sportsTeam1Name
-		,		SPORTS_TEAM2_NAME as sportsTeam2Name
-		,		SPORTS_SCHEDULE as sportsSchedule
-		,		SPORTS_TEAM1_BET as sportsTeam1Bet
-		,		SPORTS_DRAW_BET as sportsDrawBet
-		,		SPORTS_TEAM2_BET as sportsTeam2Bet
-		,		SPORTS_LEAGUE_NAME as sportsLeagueName
-		,		SPORTS_SCORE1 as sportsScore1
-		,		SPORTS_SCORE2 as sportsScore2
-		,		SPORTS_RESULT as sportsResult
-		FROM	TOTO_SPORTS
-		WHERE	SPORTS_GUBUN = 'ISO'
-		AND		SPORTS_LEAGUE_NAME = 'K리그1'
-		ORDER BY SPORTS_SCHEDULE ASC
+		FROM 	TOTO_SPORTS_BETTING
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+	</select>
+	<select id="isSportsTotoWin" parameterType="int" resultType="SportsBettingVO">
+		SELECT	GROUP_CONCAT(IF(TS.SPORTS_RESULT=TSB.BETTING_TEAM_CHOICE, '1', '0') separator ',') AS sportsResult
+		,		TSB.SPORTS_BETTING_GROUP_NO as sportsBettingGroupNo
+		FROM	TOTO_SPORTS TS
+			INNER JOIN TOTO_SPORTS_BETTING TSB ON TS.SPORTS_NO = TSB.SPORTS_NO AND TSB.USE_YN = 'Y'
+		    LEFT OUTER JOIN TOTO_SPORTS_BETTING_GROUP TSBG ON
+		    TSBG.SPORTS_BETTING_GROUP_NO = TSB.SPORTS_BETTING_GROUP_NO AND TSBG.USE_YN = 'Y'
+		WHERE	SPORTS_RESULT IS NOT NULL
+		AND		TS.USE_YN = 'Y'
+		AND		TSB.FAMILY_CUST_NO = #{familyCustNo}
+		-- AND		TS.SPORTS_NO IN(40000002, 40000006) -- 주석한쿼리에 sportsNo들 
+		/*
+			SELECT	SPORTS_NO
+		    FROM	TOTO_SPORTS_BETTING
+		    WHERE	SPORTS_BETTING_GROUP_NO = 200000005
+		    AND		FAMILY_CUST_NO = 10000074
+		    AND		USE_YN = 'Y'
+		*/
+		-- HAVING	COUNT(*) = 2 --  주석한쿼리의 CNT
+		
+		/*
+			SELECT	GROUP_CONCAT(IF(TS.SPORTS_RESULT=TSB.BETTING_TEAM_CHOICE, '1', '0') separator ',') AS sportsResult
+			,		TSB.SPORTS_BETTING_GROUP_NO as sportsBettingGroupNo
+			FROM	TOTO_SPORTS TS
+				INNER JOIN TOTO_SPORTS_BETTING TSB ON TS.SPORTS_NO = TSB.SPORTS_NO AND TSB.USE_YN = 'Y'
+				LEFT OUTER JOIN TOTO_SPORTS_BETTING_GROUP TSBG ON
+				TSBG.SPORTS_BETTING_GROUP_NO = TSB.SPORTS_BETTING_GROUP_NO AND TSBG.USE_YN = 'Y'
+			WHERE	SPORTS_RESULT IS NOT NULL
+			AND		TS.USE_YN = 'Y'
+			AND		TSB.FAMILY_CUST_NO = 10000074
+			AND		TS.SPORTS_NO IN(
+				SELECT	SPORTS_NO
+				FROM	TOTO_SPORTS_BETTING
+				WHERE	SPORTS_BETTING_GROUP_NO = 200000005
+				AND		FAMILY_CUST_NO = 10000074
+				AND		USE_YN = 'Y'
+			)
+			HAVING	COUNT(*) = 2 --  주석한쿼리의 CNT
+		*/
+	</select>
+	<update id="updateCustSportsTotoResult">
+		UPDATE	TOTO_SPORTS_BETTING_GROUP
+		SET		BETTING_GROUP_RESULT = #{bettingGroupResult}
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		SPORTS_BETTING_GROUP_NO = #{sportsBettingGroupNo}
+		AND		USE_YN = 'Y'
+	</update>
+	<select id="getCreditValueByBettingGroup" parameterType="SportsBettingVO" resultType="int">
+		SELECT  CC.CREDIT_VALUE as creditValue
+        FROM	TOTO_SPORTS_BETTING_GROUP TSBG
+			INNER JOIN CUSTOM_CREDIT CC ON CC.CREDIT_ID = TSBG.CREDIT_ID AND CC.USE_YN = 'Y'
+        WHERE	TSBG.FAMILY_CUST_NO = #{familyCustNo}
+        AND		TSBG.SPORTS_BETTING_GROUP_NO = #{sportsBettingGroupNo}
 	</select>
 </mapper>

@@ -40,7 +40,12 @@ public class SportsTotoDaoImpl implements SportsTotoDao {
 	}
 
 	@Override
-	public List<SportsVO> listSportsTotoInnerSoccer() {
-		return sqlSession.selectList("totoSports.listSportsTotoInnerSoccer");
+	public List<SportsVO> listSportsTotoInnerSoccer(int familyCustNo) {
+		return sqlSession.selectList("totoSports.listSportsTotoInnerSoccer", familyCustNo);
+	}
+
+	@Override
+	public List<SportsVO> listBoughtSportsNo(int familyCustNo) {
+		return sqlSession.selectList("totoSports.listBoughtSportsNo", familyCustNo);
 	}
 }

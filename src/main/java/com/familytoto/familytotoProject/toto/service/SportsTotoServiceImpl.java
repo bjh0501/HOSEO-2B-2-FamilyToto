@@ -18,24 +18,6 @@ public class SportsTotoServiceImpl implements SportsTotoService{
 	@Autowired
 	SportsTotoDao sportsTotoDao;
 	
-	@Override
-	
-	public int insertBuyToto(SportsBettingVO vo, CreditVO creVo, SportsVO sVo) {
-		
-//		creditId	// 크레딧id get
-//		betGroupId // 배팅그룹 get
-//
-//
-//		insertSportsBetting // 배팅insert
-//		
-//		
-//		
-//		sportsTotoDao.insertSportsBetting(vo);
-//		
-		return 0;
-	}
-
-	@Override
 	public int insertSportsBettingGroup(SportsBettingVO vo) {
 		return sportsTotoDao.insertSportsBettingGroup(vo);
 	}
@@ -61,7 +43,12 @@ public class SportsTotoServiceImpl implements SportsTotoService{
 	}
 
 	@Override
-	public List<SportsVO> listSportsTotoInnerSoccer() {
-		return sportsTotoDao.listSportsTotoInnerSoccer();
+	public List<SportsVO> listSportsTotoInnerSoccer(int familyCustNo) {
+		return sportsTotoDao.listSportsTotoInnerSoccer(familyCustNo);
+	}
+
+	@Override
+	public List<SportsVO> listBoughtSportsNo(int familyCustNo) {
+		return sportsTotoDao.listBoughtSportsNo(familyCustNo);
 	}
 }

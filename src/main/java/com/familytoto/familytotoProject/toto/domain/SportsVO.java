@@ -42,9 +42,21 @@ public class SportsVO {
     private String regIp;
 
     private String chgIp;
-
+    
     // Y,N,B
     private String useYn;
+    
+    private String bettingTeamChoice;
+    
+    
+
+	public String getBettingTeamChoice() {
+		return bettingTeamChoice;
+	}
+
+	public void setBettingTeamChoice(String bettingTeamChoice) {
+		this.bettingTeamChoice = bettingTeamChoice;
+	}
 
 	public int getSportsNo() {
 		return sportsNo;

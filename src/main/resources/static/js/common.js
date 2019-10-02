@@ -1,17 +1,17 @@
-$(document).ready(function(){
-	if($("#levelInHeader").html() != undefined) {
+$(document).ready(function() {
+	if ($("#levelInHeader").html() != undefined) {
 		asyncExp();
 	}
-	
-	$(".dropdown-menu, .show").on('click', function (event) {
-	    event.stopImmediatePropagation()
+
+	$(".dropdown-menu, .show").on('click', function(event) {
+		event.stopImmediatePropagation()
 	});
-	
+
 	$('[data-toggle="headerExpPercent"]').tooltip()
 });
 
 function asyncExp() {
-	 $.ajax({
+	$.ajax({
 		url : "/header/levelInfo",
 		type : "POST",
 		cache : false,
@@ -19,19 +19,19 @@ function asyncExp() {
 		success : function(data) {
 			var totalExp = data.endExp - data.startExp;
 			var currentExp = data.familyCustExp - data.startExp;
-			var percent = parseInt((currentExp/totalExp)*100);
-			
+			var percent = parseInt((currentExp / totalExp) * 100);
+
 			$("#levelInHeader").html(data.level);
 			$("#expBarInHeader").html(currentExp + "/" + totalExp);
-			
-			$("#expBarInHeader").animate({
-			        width: percent+"%"
-		    }, 300 );
 
-			$('#expInHeader').attr('data-original-title',percent+"%");
-//				$("#levelInHeader").html(data.level);
-		//	alert(data.level)
-			//alert(data.familyCustExp)
+			$("#expBarInHeader").animate({
+				width : percent + "%"
+			}, 300);
+
+			$('#expInHeader').attr('data-original-title', percent + "%");
+			// $("#levelInHeader").html(data.level);
+			// alert(data.level)
+			// alert(data.familyCustExp)
 		},
 		error : function(request, status, error) {
 			var msg = "ERROR : " + request.status + "<br>"
@@ -42,11 +42,11 @@ function asyncExp() {
 }
 
 function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function removeComma(str) {
-	n = parseInt(str.replace(/,/g,""));
+	n = parseInt(str.replace(/,/g, ""));
 	return n;
 }
 
@@ -54,8 +54,9 @@ function setCookie(cookie_name, value, days) {
 	var exdate = new Date();
 	exdate.setDate(exdate.getDate() + days);
 	// 설정 일수만큼 현재시간에 만료값으로 지정
-	
-	var cookie_value = escape(value) + ((days == null) ? '' : ';    expires=' + exdate.toUTCString());
+
+	var cookie_value = escape(value)
+			+ ((days == null) ? '' : ';    expires=' + exdate.toUTCString());
 	document.cookie = cookie_name + '=' + cookie_value;
 }
 
@@ -67,7 +68,7 @@ function getCookie(cookie_name) {
 		x = val[i].substr(0, val[i].indexOf('='));
 		y = val[i].substr(val[i].indexOf('=') + 1);
 		x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
-		
+
 		if (x == cookie_name) {
 			return unescape(y); // unescape로 디코딩 후 값 리턴
 		}
@@ -76,4 +77,12 @@ function getCookie(cookie_name) {
 
 var deleteCookie = function(name) {
 	document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+}
+
+function InpuOnlyNumber(obj) {
+    if (event.keyCode >= 48 && event.keyCode <= 57) { //숫자키만 입력
+        return true;
+    } else {
+        event.returnValue = false;
+    }
 }

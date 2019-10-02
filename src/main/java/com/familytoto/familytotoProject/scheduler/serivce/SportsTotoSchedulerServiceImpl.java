@@ -8,23 +8,42 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.familytoto.familytotoProject.charge.dao.ChargeDao;
+import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.exp.service.ExpService;
+import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.scheduler.dao.SportsTotoSchedulerDao;
 import com.familytoto.familytotoProject.scheduler.domain.TotoSportsVO;
+import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 
+/**
+ * @version 	1.00 2019년 10월 2일
+ * @author		jiho 
+ */
 @Service
 public class SportsTotoSchedulerServiceImpl implements SportsTotoSchedulerService {
 	@Autowired
 	SportsTotoSchedulerDao sportsTotoSchedulerDao;
 
+	@Autowired
+	ChargeDao chargeDao;
+	
+	@Autowired
+	ExpService expService;
+	
 	// 국내 축구
+	// 정각 12시마다 크롤링한다.
 	public void inSoccer() {
 		TotoSportsVO vo = new TotoSportsVO();
 		String league = "1"; // 1 or 2
@@ -148,14 +167,64 @@ public class SportsTotoSchedulerServiceImpl implements SportsTotoSchedulerServic
 
 	/*
 	 * 
-	 * 사용자가 선택한 경기날짜 < 지금날짜 AND 해당경기 결과있는지 체크
+	 * 사용자가 선택한 경기날짜 < 해당경기 결과있는지 체크
 	 * 사용자가 선택한 답과 경기 결과 비교
 	 *  같다면 db에넣은  크레딧ID의 value * 배당
 	 *  경험치 추가
 	 * 
 	 * 
 	 */
-	public void sportsResult() {
+	@Transactional
+	public void sportsResult(CustVO cVo, String creditState,
+			HttpServletRequest request) {
+		SportsBettingVO sbVo = sportsTotoSchedulerDao.isSportsTotoWin(cVo.getFamilyCustNo());
 		
+		sbVo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+		if(sbVo.getSportsResult().contains("0")) {
+			sbVo.setBettingGroupResult("L");
+			sportsTotoSchedulerDao.updateCustSportsTotoResult(sbVo);
+		} else {
+			sbVo.setBettingGroupResult("W");
+			sportsTotoSchedulerDao.updateCustSportsTotoResult(sbVo);
+			
+			CreditVO creVo = new CreditVO();
+			
+			// 계산하기, 같다면 db에넣은  크레딧ID의 value * 배당
+			int operateCreditValue = sportsTotoSchedulerDao.getCreditValueByBettingGroup(sbVo);
+			
+			creVo.setCreditValue(operateCreditValue);		// 크레딧 세팅
+			creVo.setCreditState(creditState);				// 상태값
+			creVo.setRegCustNo(cVo.getCustNo());			// 넣기
+			creVo.setRegIp(cVo.getRegIp());					// 넣기
+			creVo.setFamilyCustNo(cVo.getFamilyCustNo());	// 넣기
+			
+			chargeDao.doCharge(creVo); // 크레딧 추가
+			
+			/*
+			 * 1개		200
+			 * 2개		500
+			 * 3~4개	900~1200
+			 * 5~6개	1500~2500
+			 * 7개~		3500~5000 
+			 */
+			
+			String sRightCnt[] = sbVo.getSportsResult().split(",");
+			int nExpValue = 0;
+			
+			if(sRightCnt.length == 1) {
+				nExpValue = 200;
+			} else if(sRightCnt.length == 2) {
+				nExpValue = 500;
+			} else if(sRightCnt.length >= 3 && sRightCnt.length <= 4) {
+				nExpValue = GlobalVariable.radnomValue(900, 1200);
+			} else if(sRightCnt.length >= 5 && sRightCnt.length <= 6) {
+				nExpValue = GlobalVariable.radnomValue(1500, 2500);
+			} else {
+				nExpValue = GlobalVariable.radnomValue(3500, 5000);
+			}
+			
+			expService.insertExp(cVo, "STW", nExpValue, request);	// 경험치 추가	
+		}
 	}
 }

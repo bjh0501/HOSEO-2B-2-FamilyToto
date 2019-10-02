@@ -22,18 +22,12 @@
 <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
 <style>
 #draggable {
-	width: 206px;
-    height: 252px;
-    padding: 0.5em;
-    z-index: 3;
-    right: 25px;
-    top: 149px;
-}
-
-.boardrow:hover {
-	background: black;
-	color: white;
-	cursor: pointer;
+	width: 320px;
+	padding: 0.5em;
+	z-index: 3;
+	right: 5%;
+	background: #d2d2d2db;
+	cursor: all-scroll;
 }
 </style>
 <link rel="stylesheet" href="/css/jquery-ui.min.css">
@@ -44,7 +38,8 @@
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-			id="accordionSidebar" th:include="/sidebar/sidebar">
+			id="accordionSidebar" th:include="/sidebar/sidebar"
+		>
 		</ul>
 
 		<!-- Content Wrapper -->
@@ -55,7 +50,8 @@
 				<!-- Topbar -->
 				<nav
 					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-					th:include="/header/header"></nav>
+					th:include="/header/header"
+				></nav>
 				<!-- End of Topbar -->
 
 				<!-- Begin Page Content -->
@@ -80,8 +76,31 @@
 					<div class="row">
 						<div id="draggable" class="ui-widget-content" style="position: fixed">
 							<p>리모콘</p>
+							<h6>*마우스로 움직일수 있습니다.</h6>
 							<hr>
-							<div>ㄴㄴㄴㄴ<i class="fas fa-trash-alt" style="cursor: pointer;"></i></div>
+							<div id="betDiv" style="overflow-y: auto; max-height: 263px;">
+								<div class="alert alert-secondary" role="alert" style="display: flex;" id="clear">
+									<b>비어있습니다.</b>
+								</div>
+							</div>
+							<hr>
+							<div class="alert alert-secondary" role="alert">
+								선택경기<b id="choiceCnt">0</b>경기<br>
+								<div>
+									<div class="input-group-prepend">
+										<span class="text-word-l"><b id="currentBet">0.0</b>배당 x</span>&nbsp;
+										<input type="text" class="form-control" placeholder="Betting"
+											id="credit" style="width: 50%;"
+											onKeyPress="InpuOnlyNumber();"
+											onKeyUp="javascript:changeCredit()">
+									</div>
+								</div>
+								= <b id="resultCredit">0</b>
+							</div>
+							<hr>
+							<input class="btn-secondary" type="button" value="배팅하기"
+								style="width: 100%;"
+								onClick="javascript:bet();"></input>
 						</div>
 						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow h-100 py-12">
@@ -99,23 +118,51 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr class="boardrow" th:each="list : ${totoList}">
+												<tr class="boardrow" th:each="list : ${totoList}" th:id="${list.sportsNo}"
+												th:team1="${list.sportsTeam1Name}"
+												th:team2=${list.sportsTeam2Name}>
 													<td>
-														<input type="checkbox">1팀 <input type="checkbox">2팀
-														<input type="text" th:value="${list.sportsNo}" />
+														<div class="btn-group btn-group-toggle" data-toggle="buttons">
+															<label class="btn btn-secondary active">
+																<input type="radio" th:name="'teamOptions_'+${list.sportsNo}"
+																th:value="${list.sportsTeam1Name}"
+																th:bet="${list.sportsTeam1Bet}"
+																choice="1"
+																autocomplete="off" checked="true">
+																<span th:text="${list.sportsTeam1Name}">Radio</span>
+															</label>
+															<label class="btn btn-secondary">
+																<input type="radio" th:name="'teamOptions_'+${list.sportsNo}"
+																th:value="무"
+																th:bet="${list.sportsDrawBet}"
+																choice="0"
+																autocomplete="off">
+																<span th:text="무승부">Radio</span>
+															</label>
+															<label class="btn btn-secondary">
+																<input type="radio" th:name="'teamOptions_'+${list.sportsNo}"
+																th:value="${list.sportsTeam2Name}"
+																th:bet="${list.sportsTeam2Bet}"
+																choice="2"
+																autocomplete="off">
+																<span th:text="${list.sportsTeam2Name}">Radio</span>
+															</label>															
+															<input th:if="${list.bettingTeamChoice == null}" class="btn-secondary" type="button" value="배팅하기"
+															th:onClick="|javascript:basketBet(${list.sportsNo});|">
+															<span th:if="${list.bettingTeamChoice != null}" class="text-word-l"><b>배팅완료</b><i class="fas fa-check"></i></span>
+														</div>
 													</td>
-													<td style="text-align: center;" th:text="${list.sportsSchedule}"></td>
-													<td style="text-align: center;" th:text="${list.sportsLeagueName}"></td>
+													<td style="text-align: center;" name="schedule" th:text="${list.sportsSchedule}"></td>
+													<td style="text-align: center;" name="league" th:text="${list.sportsLeagueName}"></td>
 													<td style="text-align: center;">
-														<span th:text="${list.sportsTeam1Name}"></span> (<span
-															th:text="${list.sportsTeam1Bet}"
-														></span>) <br> vs <br> <span
-															th:text="${list.sportsTeam2Name}"
-														></span> (<span th:text="${list.sportsTeam2Bet}"></span>)
+														<span th:text="${list.sportsTeam1Name}"></span> (<span th:text="${list.sportsTeam1Bet}"></span>)
+														vs 
+														<span th:text="${list.sportsTeam2Name}"></span> (<span th:text="${list.sportsTeam2Bet}"></span>)
+														<br>
+														무승부(<span th:text="${list.sportsDrawBet}"></span>) 
 													</td>
 													<td style="text-align: center;"
-														th:if="${list.sportsResult != null}"
-													>
+														th:if="${list.sportsResult != null}">
 														<th:block th:if="${list.sportsResult == '1'}">
 															<b><span th:text="${list.sportsScore1}"></span></b> :
 															<span th:text="${list.sportsScore2}"></span>
@@ -135,8 +182,6 @@
 												</tr>
 											</tbody>
 										</table>
-										선택팀 : (1 or 2)<input type="text">
-										<button onClick="javascript:bet();">aaatet</button>
 									</div>
 								</div>
 							</div>
@@ -179,15 +224,32 @@
 </html>
 
 <script>
+	var GLOBAL_CHOICE_CNT = 0;
+	var GLOBAL_CURRENT_BET = 0.0;
+	var GLOBAL_RESULT_CREDIT = 0;
+	
 	$(function() {
-		$("#draggable").draggable();
+		$( "#draggable" ).draggable({ containment: "#content", scroll: false });
 	});
 
 	function bet() {
+		if($("#credit").val() < 1000 || $("#credit").val() > 100000) {
+			alert("크레딧은 1,000 ~ 100,000 까지배팅이 가능합니다");
+			$("#credit").focus();
+			return false;
+		}
 
-		var sportsNo = [ 40000001, 40000003, 40000005 ];
-		var choiceTeam = [ 1, 2, 1 ];
-		var credit = 1000;
+		var sportsNo = new Array();
+		var choiceTeam = new Array();
+		// var choiceTeam = [ 1, 2, 1 ];
+		
+		for(i = 0; i < $("[totobetid]").length; i++) {
+			sportsNo.push($("[totobetid]").eq(i).attr("totobetid"));
+			choiceTeam.push($("[totobetid]").eq(i).attr("choiceteam"));
+		}
+
+		var credit = $("#credit").val() ;
+		
 		$.ajax({
 			url : "/toto/sports/soccer/betting",
 			type : "POST",
@@ -200,11 +262,17 @@
 				"creditValue" : credit
 			},
 			success : function(data) {
-				alert(data)
-
-				// 				} else {
-				// 					alert("새로고침후 다시 시도해주세요.");
-				// 				}
+				if(data == 0) {
+					
+					alert("경기 " + $("#choiceCnt").html() +"건\n"+
+							$("#currentBet").html()  + "배당 X " +
+							numberWithCommas(credit) + "크레딧 = " +
+							(resultCredit) + "크레딧\n" +
+							"배팅이 완료되었습니다.");
+					location.reload();
+				}   else {
+					alert("새로고침후 다시 시도해주세요.");
+				}
 			},
 
 			error : function(request, status, error) {
@@ -213,5 +281,109 @@
 				console.log(msg);
 			}
 		});
+	}
+
+	function basketBet(sportsTotoNo) {
+		setCookie("totoDate", )
+		
+		$("#clear").attr("style", "display: none");
+		
+		var date = $("#" + sportsTotoNo).find("[name=schedule]").html();
+		var league = $("#" + sportsTotoNo).find("[name=league]").html();
+		var team1 = $("#" + sportsTotoNo).attr("team1");
+		var team2 = $("#" + sportsTotoNo).attr("team2");
+		var choiceTeam = $("#" + sportsTotoNo).find("input[name='teamOptions_" + sportsTotoNo + "']:checked").val();		
+		var bet = $("#" + sportsTotoNo).find("input[name='teamOptions_" + sportsTotoNo + "']:checked").attr("bet");
+		var choiceNum = $("#" + sportsTotoNo).find("input[name='teamOptions_" + sportsTotoNo + "']:checked").attr("choice"); 
+		
+		str = "";
+		str += '<div totobetid="' + sportsTotoNo + '" choiceteam="' + choiceNum + '" ';
+		str += 'class="alert alert-secondary cnt-div" role="alert" style="display: flex;">';
+		str += "<div>";
+		str += "	<b>" + date + "</b><br>";
+		str += "	<b>" + league + "</b> | <b>" + team1 + "vs" + team2 + "</b><br>";
+		
+		if(choiceTeam == "무") {
+			str += "	<b>무승부(<span class='bet-list'>" + bet + "</span>)</b>";
+		} else {
+			str += "	<b>" + choiceTeam + "승(<span class='bet-list'>" + bet + "</span>)</b>";
+		}
+		
+		str += "</div>";
+		str += "<div>";
+		str += '	<i class="fas fa-trash-alt" style="cursor:pointer; margin-top: 25px; margin-left: 67px;" onclick="deleteBetDiv($(this));"></i>';
+		str += '</div>';
+		str += '</div>';
+		
+		$("#betDiv").append(str);
+		
+		GLOBAL_CHOICE_CNT++;
+		matchCnt();
+		operateBet();
+		operateDisabled();
+		changeCredit();
+	}
+	
+	function matchCnt() {
+		$("#choiceCnt").html(GLOBAL_CHOICE_CNT);
+	}
+	
+	function deleteBetDiv(obj) {
+		obj.parent().parent().fadeOut(300, function() {
+			obj.parent().parent().remove();
+			
+			if($(".cnt-div").length <= 0) {
+				$("#clear").fadeIn(300);
+			}
+			
+			GLOBAL_CHOICE_CNT--;
+			
+			operateBet();
+			matchCnt();
+			operateDisabled();
+			changeCredit();
+		});
+	}
+	
+	function operateBet() {
+		
+		if(GLOBAL_CHOICE_CNT > 0) {
+			GLOBAL_CURRENT_BET = 1.0;
+			
+			for(i = 0 ; i < $(".bet-list").length; i++) {
+				GLOBAL_CURRENT_BET *= parseFloat($(".bet-list").eq(i).html());			
+			}
+			
+			GLOBAL_CURRENT_BET = Math.round(GLOBAL_CURRENT_BET * 100) / 100
+			
+			$("#currentBet").html(GLOBAL_CURRENT_BET);
+		} else {
+			$("#currentBet").html("0.0");
+		}
+	}
+	
+	function operateDisabled() {
+		for(i = 0; i < $("#dataTable tr input").length;i++) {
+			$("#dataTable tr input").attr("disabled",false);			
+		}
+		
+		for(i = 0 ; i < $("[totobetid]").length; i++) {
+			totoId = $("[totobetid]").eq(i).attr("totobetid");
+			$("#" + totoId).find("input").attr("disabled",true);
+		}
+	}
+	
+	function changeCredit() {
+		var credit = 0;
+		
+		if($("#credit").val() == "") {
+			credit = 0;
+		} else {
+			credit = $("#credit").val();
+		}
+		
+		var currentBet = $("#currentBet").html();
+		var resultCredit = numberWithCommas(parseInt(currentBet * credit));
+		$("#resultCredit").html(resultCredit);
 	}
 </script>

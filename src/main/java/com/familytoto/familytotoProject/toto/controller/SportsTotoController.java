@@ -57,7 +57,9 @@ public class SportsTotoController {
 			} catch(Exception e) {}
 		}
 		
-		mv.addObject("totoList", sportsTotoService.listSportsTotoInnerSoccer());		
+		mv.addObject("totoList", sportsTotoService.listSportsTotoInnerSoccer(cVo.getFamilyCustNo()));		
+		mv.addObject("cust", cVo);
+		mv.addObject("boughtList", sportsTotoService.listBoughtSportsNo(cVo.getFamilyCustNo()));
 		mv.setViewName("/toto/sports/soccer");
 		return mv;
 	}

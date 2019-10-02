@@ -7,9 +7,6 @@ import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 import com.familytoto.familytotoProject.toto.domain.SportsVO;
 
 public interface SportsTotoService {
-	// 토토 구입,곧삭제예정
-	int insertBuyToto(SportsBettingVO vo, CreditVO creVo, SportsVO sVo);
-	
 	// 토토구입 묶음
 	int insertSportsBettingGroup(SportsBettingVO vo);
 	
@@ -26,5 +23,8 @@ public interface SportsTotoService {
 	boolean isDupleBet(SportsBettingVO vo);
 	
 	// 국내축구 리스트
-	List<SportsVO> listSportsTotoInnerSoccer();
+	List<SportsVO> listSportsTotoInnerSoccer(int familyCustNo);
+	
+	// 구입한 스포츠번호 리스트
+	List<SportsVO> listBoughtSportsNo(int familyCustNo);	
 }

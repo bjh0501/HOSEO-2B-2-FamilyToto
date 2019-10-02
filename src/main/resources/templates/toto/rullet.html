@@ -73,9 +73,9 @@
 									<img src="/img/toto/slotmachine/slot-m7.png" name="first">
 									<img src="/img/toto/slotmachine/slot-m7.png" name="second">
 									<img src="/img/toto/slotmachine/slot-m7.png" name="third"><br>
-									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(0, $(this))" style="width:10%; border-radius:30px; height:40px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(1, $(this))" style="width:10%; border-radius:30px; height:40px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(2, $(this))" style="width:10%; border-radius:30px; height:40px"><br>
+									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(0, $(this))" style="width:10%; border-radius:30px; height:40px" disabled>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(1, $(this))" style="width:10%; border-radius:30px; height:40px" disabled>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(2, $(this))" style="width:10%; border-radius:30px; height:40px" disabled><br>
 									<br>
 									<input type="text" size="55" id="pay_back">
 								</center>
@@ -156,6 +156,8 @@
 			alert("1,000 ~ 100,000크레딧만 배팅이 가능합니다.");
 			return;
 		}
+		
+		$(".rulletButton").removeAttr("disabled");
 		
 		$.ajax({
 			url : "/toto/rullet/start",

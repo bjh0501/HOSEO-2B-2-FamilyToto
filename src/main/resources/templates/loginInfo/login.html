@@ -26,6 +26,10 @@
 filter: gray;
 
 }
+
+.login-img {
+	border-radius: 50px;
+}
 </style>
 </head>
 
@@ -263,24 +267,24 @@ filter: gray;
 											</div>
 										</div>
 										<div class="input-group mb-2">
-											<img src="/img/social/button/onesportsButton.png"
+											<img class="login-img" src="/img/social/button/onesportsButton.png"
 												style="width: 100%; cursor: pointer;"
 												onclick="javascript:custLogin()">
 										</div>
 										<div class="input-group mb-2">
-											<img src="/img/social/button/facebookButton.png"
+											<img class="login-img" src="/img/social/button/facebookButton.png"
 												style="width: 100%; cursor: pointer;"
 												onClick="javascript:facebookLogin();">
 										</div>
 										<div class="input-group mb-2">
-											<img src="/img/social/button/kakaoButton.png"
+											<img class="login-img" src="/img/social/button/kakaoButton.png"
 												style="width: 100%; cursor: pointer;"
 												onClick="javascript:kakaoLogin();"> <a
 												th:href="${kakaoLoginUrl}" style="display: none"
 												id="kakaoSocial">kakao</a>
 										</div>
 										<div class="input-group mb-2">
-											<img 
+											<img class="login-img"
 											src="/img/social/button/naverButton.jpg"
 												style="width: 100%; cursor: pointer; -webkit-filter: grayscale(100%); filter: gray;"
 												onClick="javascript:naverLogin();"> <a
