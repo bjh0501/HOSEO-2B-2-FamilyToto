@@ -47,8 +47,7 @@
 		, USE_YN ='Y'
 		WHERE GRAPH_NO = #{graphNo}
 		AND FAMILY_CUST_NO = #{familyCustNo}
-		AND
-		USE_YN = 'P'
+		AND	USE_YN = 'P'
 	</update>
 	<update id="updateLastGamePorcess">
 		UPDATE	TOTO_GRAPH

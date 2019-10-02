@@ -28,7 +28,7 @@ function asyncExp() {
 				width : percent + "%"
 			}, 300);
 
-			$('#expInHeader').attr('data-original-title', percent + "%");
+			// $('#expInHeader').attr('data-original-title', percent + "%");
 			// $("#levelInHeader").html(data.level);
 			// alert(data.level)
 			// alert(data.familyCustExp)
@@ -80,9 +80,52 @@ var deleteCookie = function(name) {
 }
 
 function InpuOnlyNumber(obj) {
-    if (event.keyCode >= 48 && event.keyCode <= 57) { //숫자키만 입력
-        return true;
-    } else {
-        event.returnValue = false;
-    }
+	if (event.keyCode >= 48 && event.keyCode <= 57) { // 숫자키만 입력
+		return true;
+	} else {
+		event.returnValue = false;
+	}
 }
+
+var GLOBAL_COMMENT_IDX = 0;
+function helpMeCharacter(characterName) {
+	$("#helpComment").html(helpCommentList[GLOBAL_COMMENT_IDX++]);
+
+	if (helpCommentList.length == GLOBAL_COMMENT_IDX - 1) {
+		GLOBAL_COMMENT_IDX = 0;
+		tip = confirm("설명을 해준 " + characterName + "에게 팁으로 1,000크레딧을 드리겠습니까?")
+
+		if (tip == true) {
+			alert(characterName +"가 감사하다고합니다.")
+		}
+
+		$("#helpCharacter").remove();
+	}
+}
+
+$('#helpButton').click(
+	function() {
+		// function
+		var characterName = $("#helpButton").attr("character");
+		var img = "";
+
+		if(characterName == "리지") {
+			img = "leage";
+		} else if(characterName == "토순이") {
+			img = "tosson";
+		} else if(characterName == "보아") {
+			img = "boar";
+		}
+		
+		var makeDiv = "";
+		makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter(\'' + characterName + '\')">';
+		makeDiv += '	<img class="character" src="/img/character/' + img + '.png" alt="">';
+		makeDiv += '	<div class="balloon">';
+		makeDiv += '		<span id="helpComment"></span>';
+		makeDiv += '	</div>';
+		makeDiv += '</div>';
+
+		$("#page-top").prepend(makeDiv);
+
+		helpMeCharacter();
+	});

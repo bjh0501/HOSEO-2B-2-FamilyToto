@@ -9,6 +9,7 @@ public interface SportsTotoSchedulerService {
 	public void inSoccer();
 	
 	// 결과 처리
-	public void sportsResult(CustVO cVo, String creditState,
-			HttpServletRequest request);
+	public int sportsResult(CustVO cVo, String creditState,
+			HttpServletRequest request,
+			int sportsBettingGroupNo);
 }

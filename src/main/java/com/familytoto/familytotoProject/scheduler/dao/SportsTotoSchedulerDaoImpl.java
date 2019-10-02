@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.scheduler.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,8 +30,8 @@ public class SportsTotoSchedulerDaoImpl implements SportsTotoSchedulerDao {
 	}
 
 	@Override
-	public SportsBettingVO isSportsTotoWin(int familyCustNo) {
-		return sqlSession.selectOne("totoSports.isSportsTotoWin", familyCustNo);
+	public List<SportsBettingVO> isSportsTotoWin(SportsBettingVO vo) {
+		return sqlSession.selectList("totoSports.isSportsTotoWin", vo);
 	}
 
 	@Override

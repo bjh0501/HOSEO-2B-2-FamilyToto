@@ -63,16 +63,21 @@
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div> -->
 
-					<!-- 사다리 페이지 -->
 					<div class="row">
 						<div class="col-xl-9 col-lg-9 .col-md-9 .col-sm-9" >
 							<div class="card shadow mb-4" style="height:450px">
 								<div class="card-header py-3" style="height:100px"></div>
 								<!-- 카드 안 토토 -->
 								<center>
-									<img src="/img/toto/slotmachine/slot-m7.png" name="first">
-									<img src="/img/toto/slotmachine/slot-m7.png" name="second">
-									<img src="/img/toto/slotmachine/slot-m7.png" name="third"><br>
+									<span id="first">
+										
+									</span>
+									<span id="second">
+										
+									</span>
+									<span id="third">
+										
+									</span><br>
 									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(0, $(this))" style="width:10%; border-radius:30px; height:40px" disabled>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(1, $(this))" style="width:10%; border-radius:30px; height:40px" disabled>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(2, $(this))" style="width:10%; border-radius:30px; height:40px" disabled><br>
@@ -142,6 +147,18 @@
 
 </html>
 <script>
+	for(i =0;i<=9;i++) {
+		$("#first").append('<img src="/img/toto/slotmachine/slot-m'+i+'.png" name="first" style="display:none">');
+		$("#second").append('<img src="/img/toto/slotmachine/slot-m'+i+'.png" name="second" style="display:none">');
+		$("#third").append('<img src="/img/toto/slotmachine/slot-m'+i+'.png" name="third" style="display:none">');
+	}
+	
+	$("#first img:eq(7)").attr("style","");
+	$("#second img:eq(7)").attr("style","");
+	$("#third img:eq(7)").attr("style","");
+	
+	
+
 	$("#credit").focus();
 	var GLOBAL_REUSLT_ARR = [-1,-1,-1];
 	var GLOBAL_STOP_CHECK_ARR = [0,0,0];
@@ -180,17 +197,20 @@
 					$("#haveCredit").val(numberWithCommas(haveCredit-$("#credit").val()));
 					$("#credit").val(numberWithCommas($("#credit").val()));
 					
-					playAlert = setInterval(function() {
+					playAlert = setInterval(function() {						
 						if(GLOBAL_STOP_CHECK_ARR[0] != -1) {
-							$("[name=first]").attr("src", "/img/toto/slotmachine/slot-m" + rullet + ".png");
+							$("[name=first]").attr("style","display:none");
+							$("[name=first]").eq(rullet).attr("style","");
 						}
 						
 						if(GLOBAL_STOP_CHECK_ARR[1] != -1) {
-							$("[name=second]").attr("src", "/img/toto/slotmachine/slot-m" + rullet + ".png");
+							$("[name=second]").attr("style","display:none");
+							$("[name=second]").eq(rullet).attr("style","");
 						}
 						
 						if(GLOBAL_STOP_CHECK_ARR[2] != -1) {
-							$("[name=third]").attr("src", "/img/toto/slotmachine/slot-m" + rullet + ".png");
+							$("[name=third]").attr("style","display:none");
+							$("[name=third]").eq(rullet).attr("style","");
 						}
 						
 						rullet++;

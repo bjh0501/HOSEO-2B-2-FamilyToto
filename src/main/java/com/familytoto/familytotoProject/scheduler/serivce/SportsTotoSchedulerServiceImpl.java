@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.familytoto.familytotoProject.charge.dao.ChargeDao;
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
@@ -72,7 +74,6 @@ public class SportsTotoSchedulerServiceImpl implements SportsTotoSchedulerServic
 				Elements tbody = e.select(".team-match");
 
 				for (Element e2 : tbody) {
-					double dBetting = 0.0;
 					String team1 = e2.select(".team-1 .club").text();
 					String team2 = e2.select(".team-2 .club").text();
 					String score = e2.select(".score").text();
@@ -175,56 +176,88 @@ public class SportsTotoSchedulerServiceImpl implements SportsTotoSchedulerServic
 	 * 
 	 */
 	@Transactional
-	public void sportsResult(CustVO cVo, String creditState,
-			HttpServletRequest request) {
-		SportsBettingVO sbVo = sportsTotoSchedulerDao.isSportsTotoWin(cVo.getFamilyCustNo());
+	public int sportsResult(CustVO cVo, String creditState,
+			HttpServletRequest request,
+			int sportsBettingGroupNo) {
+		SportsBettingVO sbVo = new SportsBettingVO();
 		
 		sbVo.setFamilyCustNo(cVo.getFamilyCustNo());
+		sbVo.setSportsBettingGroupNo(sportsBettingGroupNo);
 		
-		if(sbVo.getSportsResult().contains("0")) {
-			sbVo.setBettingGroupResult("L");
-			sportsTotoSchedulerDao.updateCustSportsTotoResult(sbVo);
-		} else {
-			sbVo.setBettingGroupResult("W");
-			sportsTotoSchedulerDao.updateCustSportsTotoResult(sbVo);
-			
-			CreditVO creVo = new CreditVO();
-			
-			// 계산하기, 같다면 db에넣은  크레딧ID의 value * 배당
-			int operateCreditValue = sportsTotoSchedulerDao.getCreditValueByBettingGroup(sbVo);
-			
-			creVo.setCreditValue(operateCreditValue);		// 크레딧 세팅
-			creVo.setCreditState(creditState);				// 상태값
-			creVo.setRegCustNo(cVo.getCustNo());			// 넣기
-			creVo.setRegIp(cVo.getRegIp());					// 넣기
-			creVo.setFamilyCustNo(cVo.getFamilyCustNo());	// 넣기
-			
-			chargeDao.doCharge(creVo); // 크레딧 추가
-			
-			/*
-			 * 1개		200
-			 * 2개		500
-			 * 3~4개	900~1200
-			 * 5~6개	1500~2500
-			 * 7개~		3500~5000 
-			 */
-			
-			String sRightCnt[] = sbVo.getSportsResult().split(",");
-			int nExpValue = 0;
-			
-			if(sRightCnt.length == 1) {
-				nExpValue = 200;
-			} else if(sRightCnt.length == 2) {
-				nExpValue = 500;
-			} else if(sRightCnt.length >= 3 && sRightCnt.length <= 4) {
-				nExpValue = GlobalVariable.radnomValue(900, 1200);
-			} else if(sRightCnt.length >= 5 && sRightCnt.length <= 6) {
-				nExpValue = GlobalVariable.radnomValue(1500, 2500);
-			} else {
-				nExpValue = GlobalVariable.radnomValue(3500, 5000);
+		List<SportsBettingVO> list = sportsTotoSchedulerDao.isSportsTotoWin(sbVo);
+		
+		// 예외처리
+		for(SportsBettingVO vo : list) {
+			if(vo.getSportsResult() == null) {		// 결과 아직 안나옴
+				return -99;
 			}
 			
-			expService.insertExp(cVo, "STW", nExpValue, request);	// 경험치 추가	
+			// 0이 1개라도 포함된경우
+			// 배팅 lose
+			if(vo.getBettingGroupResult().equals("0")) {
+				sbVo.setBettingGroupResult("L");
+				
+				if(sportsTotoSchedulerDao.updateCustSportsTotoResult(sbVo) != 1) {
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					return -1;
+				}
+				
+				return 1;
+			}
 		}
+		
+		// 이긴경우
+		sbVo.setBettingGroupResult("W");
+		if(sportsTotoSchedulerDao.updateCustSportsTotoResult(sbVo) != 1) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return -2;
+		}
+		
+		CreditVO creVo = new CreditVO();
+		
+		// 계산하기, 같다면 db에넣은  크레딧ID의 value * 배당
+		int operateCreditValue = sportsTotoSchedulerDao.getCreditValueByBettingGroup(sbVo);
+		
+		creVo.setCreditValue(operateCreditValue);		// 크레딧 세팅
+		creVo.setCreditState(creditState);				// 상태값
+		creVo.setRegCustNo(cVo.getCustNo());			// 넣기
+		creVo.setRegIp(cVo.getRegIp());					// 넣기
+		creVo.setFamilyCustNo(cVo.getFamilyCustNo());	// 넣기
+		
+		if(chargeDao.doCharge(creVo) != 1) {  // 크레딧 추가
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return -3;
+		}
+			
+		
+		/*
+		 * 1개		200
+		 * 2개		500
+		 * 3~4개	900~1200
+		 * 5~6개	1500~2500
+		 * 7개~		3500~5000 
+		 */
+		
+		String sRightCnt[] = sbVo.getSportsResult().split(",");
+		int nExpValue = 0;
+		
+		if(sRightCnt.length == 1) {
+			nExpValue = 200;
+		} else if(sRightCnt.length == 2) {
+			nExpValue = 500;
+		} else if(sRightCnt.length >= 3 && sRightCnt.length <= 4) {
+			nExpValue = GlobalVariable.radnomValue(900, 1200);
+		} else if(sRightCnt.length >= 5 && sRightCnt.length <= 6) {
+			nExpValue = GlobalVariable.radnomValue(1500, 2500);
+		} else {
+			nExpValue = GlobalVariable.radnomValue(3500, 5000);
+		}
+		
+		if(expService.insertExp(cVo, "STW", nExpValue, request) != 1) {	// 경험치 추가
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return -4;
+		}
+		
+		return 0;
 	}
 }

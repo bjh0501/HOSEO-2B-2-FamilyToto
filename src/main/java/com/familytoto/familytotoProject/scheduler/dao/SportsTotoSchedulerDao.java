@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.scheduler.dao;
 
+import java.util.List;
+
 import com.familytoto.familytotoProject.scheduler.domain.TotoSportsVO;
 import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 
@@ -14,7 +16,7 @@ public interface SportsTotoSchedulerDao {
 	public boolean isNotSportsTotoWinnerCheck(int familyCustNo);
 	
 	// 스포츠 토토  땃느지 체크
-	public SportsBettingVO isSportsTotoWin(int familyCustNo);
+	public List<SportsBettingVO> isSportsTotoWin(SportsBettingVO vo);
 	
 	// 사용자 배팅 결과 업데이트
 	public int updateCustSportsTotoResult(SportsBettingVO vo);

@@ -14,7 +14,6 @@ import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.toto.dao.CommonDao;
 import com.familytoto.familytotoProject.toto.dao.RulletDao;
-import com.familytoto.familytotoProject.toto.dao.RulletService;
 import com.familytoto.familytotoProject.toto.domain.RulletVO;
 
 @Service
@@ -111,7 +110,7 @@ public class RulletServiceImpl implements RulletService {
 		
 		if(chargeDao.doCharge(creVo) != 1) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return -2;
+			return -3;
 		}
 		
 		CustVO cVo = new CustVO();
@@ -122,7 +121,7 @@ public class RulletServiceImpl implements RulletService {
 		
 		if(expService.insertExp(cVo, "RGW", randomExp, request) != 1) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return -3;
+			return -4;
 		}
 		
 		return nCreditValue;
