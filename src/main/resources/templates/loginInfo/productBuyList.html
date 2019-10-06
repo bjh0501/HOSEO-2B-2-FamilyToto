@@ -46,6 +46,9 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">상품 구매 현황</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="리지" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
 					</div>
 					<div class="row">
 						<div class="col-xl-8 col-lg-6 col-md-12 col-sm-12">
@@ -159,6 +162,21 @@
 
 </html>
 <script>
+var helpCommentList = [
+	"로그인창입니다.<br>각각 목록에 아이디와<br>"
++ "비밀번호를입력해<br>"
++ "해당메신저로 로그인하면되요",
+"아이디기억버튼누르면<br>"
++ "다음에 로그인할땐<br>"
++ "아이디가 미리 쳐져있어요<br>",
+ "혹시 회원가입이안되어있으시거나<br>"
++ "아이디,비밀번호를 까먹으셨다면<br>"
++ "회원가입,아이디/비밀번호찾기를<br>"
++ "하시면됩니다. "]
+
+
+
+
 	$.fn.rowspan = function(colIdx, isStats) {       
 	    return this.each(function(){      
 	        var that;     

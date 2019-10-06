@@ -44,6 +44,9 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">ID/PW찾기</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="하나" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
 					</div>
 		          
 					<div class="row">
@@ -170,6 +173,19 @@
 
 
 <script>
+var helpCommentList = [
+	"아이디와패스워드잊으셨나요?",
+"ID는 ID찾기에<br>"
++ "이메일을적으시면 <br>"
++ "해당이메일로 아이디를<br>"
++ "발송해요<br>",
+  "Password찾는법은<br>"
++ "회원님의ID와E-mail을 적으시면<br>"
++ "임시비밀번호를 해당이메일에<br>"
++ "발송시킵니다."]
+
+
+
 	function findId() {
 		if($("#idEmail1").val().trim() == "") {
 			alert("이메일을 입력해주세요.")

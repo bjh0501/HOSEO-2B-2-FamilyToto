@@ -48,6 +48,9 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">글쓰기</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="보아" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
 					</div>
 					<div class="card shadow mb-4">
 						<div class="card-body">
@@ -160,6 +163,19 @@
 
 </html>
 <script>
+var helpCommentList = [
+	"글쓰기페이지입니다.<br>만일 익명사용자일경우 <br>"
++ "글쓴이에 닉네임을적으셔야합니다.",
+"비밀번호는 게시글 수정,삭제할때<br>"
++ "필요한 암호입니다.<br>"
++ "제목은 게시글의 제목입니다.<br>",
+ "글을 다작성하셨으면 글쓰기를누르시고<br>"
++  "작성하기싫으실경우 취소를 누르시면됩니다<br>"]
+
+
+
+
+
 	function clickFile() {
 		$("#file").trigger("click");
 

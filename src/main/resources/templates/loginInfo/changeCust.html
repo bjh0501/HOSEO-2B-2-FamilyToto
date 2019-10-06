@@ -55,6 +55,10 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">정보수정</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="하나" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
+						
 					</div>
 
 					<div class="row">
@@ -271,6 +275,20 @@
 
 </html>
 <script>
+var helpCommentList = [
+	"회원님의 정보를 수정할수있는곳입니다.<br>아이디는 변경하실수없으며<br>"
++ "닉네임은 변경권으로만가능합니다<br>",
+"비밀번호를 수정하실땐"
++ "현재 비밀번호를 적으셔야합니다.<br>"
++ "그외에는 회원님이 임의로 변경하실수있습니다.",
+ "정보수정을 다마치셨으면<br>"
++ "수정하기 버튼을 누르시면됩니다.",
+ "회원탈퇴하시고싶을떈<br>"
++ "현재비밀번호를 누르신뒤 탈퇴하기누르시면<br>"
++ "정말로 하실건지 확인창이뜹니다<br? "
++ "확인창에서 '예'를 누르실경우 회원탈퇴가완료됩니다"]
+
+
 	getSido("[[ ${list.familyCustAddrSi} ]]");
 	getGugun("[[ ${list.familyCustAddrGugun} ]]");
 	getDong("[[ ${list.familyCustAddrDong} ]]");

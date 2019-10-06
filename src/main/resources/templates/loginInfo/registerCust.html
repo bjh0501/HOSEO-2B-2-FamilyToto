@@ -56,6 +56,10 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">회원가입</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="하나" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
+						
 					</div>
 					<br>
 
@@ -331,6 +335,24 @@
 </html>
 
 <script>
+var helpCommentList = [
+	"회원가입페이지입니다.<br>아이디는 4~20자리, 영어, 숫자, 한글만 가능합니다.<br>"
++ "다른회원과 중복이되면 못씁니다.<br>",
+"비밀번호도 4~20자리로만가능하고"
++ "이메일은 회원님이사용하고계신 이메일을<br>"
++ "적으시면되구요 <br>"
++ "닉네임은 회원님이 다른회원분들에게<br>"
++ "보여줄이름입니다",
+ "주소는 회원님이 살고계시는주소를적으시고<br>"
++ "시,구/군,동,상세주소,우편번호 순으로 입력하시면됩니다.",
+"기타엔 추천인있는데<br>회원님이 사이트추천받은분.<br>"
++ "닉네임을 적으시면됩니다.<br>",
+"자동가입방지문구는<br>잘안보이시면 새로고침이나<br>"
++ "음성으로 들을실수있구요<br>",
+"모든걸 다 적으셨으면<br>이용약관과 성인인증을마치신뒤<br>"
++ "회원가입버튼을 누르시면가입이완료됩니다"]
+
+
 	getSido();
 	
 	function getSido() {

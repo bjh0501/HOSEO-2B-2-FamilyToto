@@ -55,6 +55,9 @@ filter: gray;
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">로그인</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="하나" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
 					</div>
 
 					<div class="row d-flex justify-content-center">
@@ -169,6 +172,22 @@ filter: gray;
 
 </html>
 <script>
+var helpCommentList = [
+	"로그인창입니다.<br>각각 목록에 아이디와<br>"
++ "비밀번호를입력해<br>"
++ "해당메신저로 로그인하면되요",
+"아이디기억버튼누르면<br>"
++ "다음에 로그인할땐<br>"
++ "아이디가 미리 쳐져있어요<br>",
+ "혹시 회원가입이안되어있으시거나<br>"
++ "아이디,비밀번호를 까먹으셨다면<br>"
++ "회원가입,아이디/비밀번호찾기를<br>"
++ "하시면됩니다. "]
+
+
+
+
+
 	function caps_lock(e) {
 	    var keyCode = 0;
 	    var shiftKey = false;

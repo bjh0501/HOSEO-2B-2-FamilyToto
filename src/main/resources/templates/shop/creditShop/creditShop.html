@@ -45,8 +45,8 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">크레딧 샵</h2>
-						<a class="btn btn-light btn-circle" href="#"> <i
-							class="fas fa-info-circle"></i>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="리지" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
 						</a>
 					</div>
 					<div class="row">
@@ -139,7 +139,21 @@
 	
 </body>
 </html>
-<script>	
+<script>
+var helpCommentList = [
+	"크레딧샵페이지는<br> 메뉴카테고리,검색,상품<br>이렇게 세가지로구성되있어여<br>"
++ "메뉴카테고리는 전체보기로 상품전체를<br>보거나 특정한기호품만 볼수있게 설정할수있구여",
+"배팅 금액을 설정하고 시작하기를 누르게 되면<br>"
++ "검색버튼은 회원님이 원하시는<br>"
++ "상품을 검색하셔서 찾을수있어여<br>",
+ "그리고 상품은 이미지와이름가격<br>"
++ "상세보기,장바구니 이렇게있는데<br>"
++ "장바구니는 상품을 장바구니창으로 옮기는거에여<br>",
++ "상세보기는 상품보기로 페이지가이동되는데 <br>상품의 가격,이름,상품평,상품설명과 남은재고를 보실수있어여<br>"
++ "상품을사고싶으면 구매하실 수량을<br>적으시고 즉시구매를 누르시면되구여<br>"
++ "상품을 사기싫으시다면 크레딧샵을클릭해 이동하실수있어여"]
+
+
 	function comma(num) {
 		var len, point, str;
 
@@ -174,7 +188,7 @@
 		}
 	});
 
-	var beforeSearch = "-";
+
 	
 	function getList(page, searchGubun) {
 		if(searchGubun == "Y") {

@@ -55,12 +55,12 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
-					<!-- Page Heading -->
-					<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-          </div> -->
+					<div class="row">
+						<h2 class="text-title">홀짝</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="토순이" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
+					</div>
 
 					<!-- 사다리 페이지 -->
 					<div class="row">
@@ -74,6 +74,11 @@
 									<h2 id="result" style="display: none;">
 										결과 : <span id="resultText"></span>
 									</h2>
+									&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="토순" href="javascript:;">
+							<i class="fas fa-info-circle"></i></a>
+									
+									
+									
 								</div>
 							</div>
 						</div>
@@ -167,6 +172,13 @@
 
 </html>
 <script>
+var helpCommentList = [
+"2번쨰 게임을 설명할게<br>홀짝게임은 자신의 크레딧을걸고 배팅하는게임이야<br>우측 배팅리모콘에 너의 현재보유하고있는 크레딧과<br>그 크레딧을 사용할 배팅금액을볼수있지",
+"자신의 배팅할금액을 적고 홀,짝,홀짝 세가지중 하나를 선택한후<br>"
++ "배팅하기누르면 게임이시작해<br>게임이시작되면 중앙에 주사위가 굴러지는데<br>"
++ "결과에따라 크레딧을얻어 부자가되거나 <br>사다리타기처럼 꼴을수도있으니 잘해봐" ]
+
+
 	$("#credit").focus();
 	var diceResult1 = "";
 	var diceResult2 = "";

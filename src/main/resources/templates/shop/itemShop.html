@@ -75,6 +75,10 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">아이템 상점</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="리지" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
+						
 					</div>
 					<div class="row">
 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
@@ -193,6 +197,19 @@
 
 </html>
 <script>
+var helpCommentList = [
+	"안녕하세여 리지입니다.<br>아이템상점은  vip권,랜덤박스,무르기권,닉네임변경권<br>"
++ "이렇게 구성되있어여",
+"vip권은 vip룸에 입장하실수있는 이용권이에여<br>"
++ "지불하는 액수에따라 1~30일까지<br>"
++ "랜덤박스는 상점에있는<br>"
++ "임의의물품들을 1개로 구매하는박스에여<br>",
+  "무르기권은 자신이 배팅취소를<br>"
++ "하고싶을떄 사실수있는아이템이에여<br>"
++ "30분전까지니 사용에 유의하세여 <br>닉네임변경권은 회원님의<br>"
++ " 닉네임을 바꾸실수있는 아이템이에여"]
+
+
 	function buyNickChange() {
 		var nick = prompt("변경할 닉네임");
 		if(nick == null) {

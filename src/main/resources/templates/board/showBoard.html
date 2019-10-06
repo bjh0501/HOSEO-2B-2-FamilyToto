@@ -67,6 +67,9 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">글보기</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="보아" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
 					</div>
 					<div class="card shadow mb-4">
 						<div class="card-body">
@@ -422,6 +425,26 @@
 
 </html>
 <script>
+var helpCommentList = [
+	"다른사람이나자신이쓴글을<br>볼수있는페이지입니다.<br>",
+"글작성자는 해당글작성자를 나타내는것이며<br>"
++ "작성일은 이게시글을 쓴날짜<br>"
++ "글번호는 글번호고<br>"
++ "조회수는 방문횟수입니다<br>",
+  "댓글은 익명사용자일경우<br>"
++ "아이디,비번적고 코멘트를적으시면<br>"
++ "등록이됩니다.",
+"다른사람댓글에 답글을달수있으며<br>댓글을 잘못쓰신경우 수정하거나 삭제할수있습니다.<br>"
++ "목록으로 클릭하시면 다시 게시판으로돌아옵니다.<br>"]
+
+
+
+
+
+
+
+
+
 	if(getCookie('boardVisit' + [[ ${board.getBoardNo()} ]]) == undefined) {
 		setCookie('boardVisit' + [[ ${board.getBoardNo()} ]], "true", '1');
 	}

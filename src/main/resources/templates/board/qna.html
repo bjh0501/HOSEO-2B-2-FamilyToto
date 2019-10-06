@@ -51,7 +51,11 @@
 				<div class="container-fluid" style="display: none;">
 					<div class="row">
 						<h2 class="text-title">Q&A</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="보아" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>
 					</div>
+					
 					<div class="d-flex flex-row-reverse bd-highlight">
 						<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4">
 							<button type="button" class="btn btn-secondary btn-block"
@@ -225,6 +229,16 @@
 
 
 <script>
+
+
+var helpCommentList = [
+	"방금 자유게시판은 설명해드렸으니 .<br>이번엔 Q&A게시판 리스트사용법을 알려드릴게요.",
+	"Q&A게시판은 회원들이 사용에 불편하시거나 <br>모르는게있으실때  물어보는 게시판입니다.",
+	"각글들을 클릭하면 밑에 운영자분들이 답변한글들을 보실수있어요.<br> 아직 답변이달리지않은글들은 글머릿말에 [답변대기중]라고뜹니다.<br> 글쓴이는 소셜아이콘이 나타나고없는건 익명사용자입니다." ];
+	
+
+
+
 $(document).ready(function(){
 	$("#accordion").accordion({
 		collapsible : false

@@ -112,7 +112,7 @@ $('#helpButton').click(
 		if(characterName == "리지") {
 			img = "leage";
 		} else if(characterName == "토순이") {
-			img = "tosson";
+			img = "tosoon";
 		} else if(characterName == "보아") {
 			img = "boar";
 		}
