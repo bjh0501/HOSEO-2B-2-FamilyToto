@@ -29,11 +29,6 @@
 </head>
 
 <body id="page-top">
-	<div
-		style="background: #000000c4; width: 100%; height: 71px; position: fixed; z-index: 10000; color: white; font-weight: 800; cursor: pointer;"
-		onclick="javascript:$(this).slideUp()">
-		<center>기능은 동작하나 디자인 작업중인 페이지입니다.</center>
-	</div>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -82,7 +77,7 @@
 									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(1, $(this))" style="width:10%; border-radius:30px; height:40px" disabled>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 									<input type="button" value="stop" class="rulletButton btn-secondary" onclick="end(2, $(this))" style="width:10%; border-radius:30px; height:40px" disabled><br>
 									<br>
-									<input type="text" size="55" id="pay_back">
+									<input type="text" size="55" id="pay_back" disabled>
 								</center>
 							</div>
 						</div>
@@ -95,6 +90,12 @@
 
 									<h6 class="m-0 font-weight-bold text-primary text-center"
 										style="font-size: 25px">배팅 리모콘</h6>
+									<hr>
+									<h6 class="m-0 font-weight-bold text-primary text-center">축적된 크레딧</h6>
+									<br> <input type="text" class="form-control"
+										aria-describedby="basic-addon1" id="accumCredit"
+										th:value="${#numbers.formatInteger(accumRulletCredit, 0, 'COMMA')}"
+										disabled>
 									<hr>
 									<h6 class="m-0 font-weight-bold text-primary text-center">보유 크레딧</h6>
 									<br> <input type="text" class="form-control"
@@ -208,6 +209,12 @@ var helpCommentList = [
 					alert("배팅할 크레딧이 부족합니다.");
 					return;
 				} else if(data == 1) {
+					// 축적 크레딧 계산
+					var  accumCredit = removeComma($("#accumCredit").val());
+					
+					resultCredit = parseInt(accumCredit) + parseInt(removeComma($("#credit").val()));
+					$("#accumCredit").val(numberWithCommas(resultCredit));
+					
 					$(".rulletButton").attr("disabled", false);
 					$("#betButton").attr("disabled", true);
 					$("#credit").attr("disabled", true);
@@ -216,6 +223,8 @@ var helpCommentList = [
 					
 					$("#haveCredit").val(numberWithCommas(haveCredit-$("#credit").val()));
 					$("#credit").val(numberWithCommas($("#credit").val()));
+					
+					asyncExp();
 					
 					playAlert = setInterval(function() {						
 						if(GLOBAL_STOP_CHECK_ARR[0] != -1) {
@@ -279,11 +288,19 @@ var helpCommentList = [
 					if(data == 0) {
 						$("#pay_back").val("실패");
 					} else {
-						$("#pay_back").val(numberWithCommas(data) + "크레딧을 얻었습니다.");
+						if(GLOBAL_REUSLT_ARR[0] == 7 &&
+								GLOBAL_REUSLT_ARR[1] == 7 &&
+								GLOBAL_REUSLT_ARR[2] == 7) {
+							$("#pay_back").val("축하합니다! 잭팟이 터졌습니다. " + numberWithCommas(data) + "크레딧을 얻었습니다.");
+						} else {
+							$("#pay_back").val(numberWithCommas(data) + "크레딧을 얻었습니다.");
+						}
 						
 						var haveCredit = removeComma($("#haveCredit").val());
 						$("#haveCredit").val(numberWithCommas(parseInt(haveCredit)+parseInt(data)));
 					}
+					
+					asyncExp();
 					
 					$("#betButton").val("다시하기");
 					$("#betButton").removeAttr("disabled");

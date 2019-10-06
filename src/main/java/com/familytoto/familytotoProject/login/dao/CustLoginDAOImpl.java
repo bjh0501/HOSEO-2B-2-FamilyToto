@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.login.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,5 +21,10 @@ public class CustLoginDAOImpl implements CustLoginDAO {
 	@Override
 	public CustVO getExpInfo(int familyCustNo) {
 		return sqlSession.selectOne("login.geExpInfo", familyCustNo);
+	}
+
+	@Override
+	public List<String> listPreferProduct(int familyCustNo) {
+		return sqlSession.selectList("login.listPreferProduct", familyCustNo);
 	}
 }

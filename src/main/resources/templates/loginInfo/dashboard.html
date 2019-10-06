@@ -6,27 +6,29 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	content="width=device-width, initial-scale=1, shrink-to-fit=no"
+>
 <meta name="description" content="">
 <meta name="author" content="">
 
 <title>One Sports</title>
 
 <!-- Custom fonts for this template-->
-<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
-	rel="stylesheet" type="text/css">
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet"
+	type="text/css"
+>
 <link th:href="@{css/Nunito.css}" rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
 <style>
-	.button {
-		cursor: pointer;
-	}
-	
-	.button div:hover {
-		background-color: #c5c5c5;
-	}
+.button {
+	cursor: pointer;
+}
+
+.button div:hover {
+	background-color: #c5c5c5;
+}
 </style>
 </head>
 
@@ -35,9 +37,9 @@
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<ul
-			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-			id="accordionSidebar" th:include="/sidebar/sidebar">
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar"
+		>
 		</ul>
 
 		<!-- Content Wrapper -->
@@ -49,7 +51,8 @@
 				<!-- Topbar -->
 				<nav
 					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-					th:include="/header/header"></nav>
+					th:include="/header/header"
+				></nav>
 				<!-- End of Topbar -->
 
 				<!-- Begin Page Content -->
@@ -73,14 +76,20 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xl-3 col-md-6 mb-4 button" onClick="javascript:creditInfo()">
+						<div class="col-xl-4  col-md-6 mb-4 button"
+							onClick="javascript:creditInfo()">
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div
-												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Credit</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">$<span id="credit" th:text="${#numbers.formatInteger(list.credit, 0, 'COMMA')}">0</span></div>
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+											>Credit</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+												$<span id="credit"
+													th:text="${#numbers.formatInteger(list.credit, 0, 'COMMA')}"
+												>0</span>
+											</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -90,14 +99,20 @@
 							</div>
 						</div>
 
-						<div class="col-xl-3 col-md-6 mb-4 button" onclick="javascript:mileageInfo()">
+						<div class="col-xl-4 col-md-6 mb-4 button"
+							onclick="javascript:mileageInfo()">
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div
-												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Mileage</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">$<span id="mileage" th:text="${#numbers.formatInteger(list.mileage, 0, 'COMMA')}">0</span></div>
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+											>Mileage</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+												$<span id="mileage"
+													th:text="${#numbers.formatInteger(list.mileage, 0, 'COMMA')}"
+												>0</span>
+											</div>
 										</div>
 										<div class="col-auto">
 											<i class="fab fa-monero fa-2x text-gray-300"></i>
@@ -107,13 +122,13 @@
 							</div>
 						</div>
 
-						<div class="col-xl-3 col-md-6 mb-4 button">
+						<div class="col-xl-4 col-md-6 mb-4 button"
+							onclick="javascript:expInfo()">
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div
-												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Experience</div>
+											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Experience</div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">
 												LEVEL <b th:text="${#numbers.formatInteger(list.level, 0, 'COMMA')}"></b><br>
 												<span th:text="${#numbers.formatInteger(list.exp, 0, 'COMMA')}"></span>
@@ -126,30 +141,15 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="col-xl-3 col-md-6 mb-4 button">
-							<div class="card border-left-secondary shadow h-100 py-2">
-								<div class="card-body">
-									<div class="row no-gutters align-items-center">
-										<div class="col mr-2">
-											<div
-												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Toto</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">12건</div>
-										</div>
-										<div class="col-auto">
-											<i class="fas fa-futbol fa-2x text-gray-300"></i>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="row">
 						<div class="col-xl-6 col-lg-6">
 							<!-- Area Chart -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary"><span id="profitChartName">크레딧</span> 수익 변동</h6>
+									<h6 class="m-0 font-weight-bold text-primary">
+										<span class="profitChartName">크레딧 수익</span> 변동
+									</h6>
 								</div>
 								<div class="card-body">
 									<div class="chart-area">
@@ -162,67 +162,178 @@
 											</div>
 										</div>
 										<canvas id="profitChart"
-											style="display: block; width: 1037px; height: 320px;"
-											width="1037" height="320" class="chartjs-render-monitor"></canvas>
+											style="display: block; width: 1037px; height: 320px;" width="1037"
+											height="320" class="chartjs-render-monitor"
+										></canvas>
 									</div>
 									<hr>
-									토토로 돈을 따보는건 어떨까요? <a href="/toto/ladder">사다리</a> <a
-										href="/toto/dice">홀짝</a> <a href="/toto/graph">그래프</a>
+									토토로 돈을 따보는건 어떨까요? <a href="/toto/ladder">사다리</a> <a href="/toto/dice">홀짝</a>
+									<a href="/toto/graph">그래프</a>
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-6 col-lg-6">
+						<div class="col-xl-6 col-lg-6">	
 							<!-- Area Chart -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">과거 보유 <span id="haveChartName">크레딧</span></h6>
+									<h6 class="m-0 font-weight-bold text-primary">
+										<span class="profitChartName">크레딧 수익</span> 최근내역 TOP 100
+									</h6>
 								</div>
+								<div class="table-responsive" style="overflow-y: auto; max-height: 418px;">
+									<center id="clearTable">존재하지않습니다.</center>
+									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+										<thead>
+											<tr>
+												<th style="width: 33%">상태</th>
+												<th style="width: 33%">값</th>
+												<th style="width: 33%">날짜</th>
+											</tr>
+										</thead>
+										<tbody id="earnTable">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 등록 게시글, 등록 댓글, 등록 상품평  -->
+					<div class="row">
+						<div class="col-xl-4  col-md-6 mb-4 button"
+							onClick="javascript:getRegisterBoardTable()">
+							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
-									<div class="chart-area">
-										<div class="chartjs-size-monitor">
-											<div class="chartjs-size-monitor-expand">
-												<div class=""></div>
-											</div>
-											<div class="chartjs-size-monitor-shrink">
-												<div class=""></div>
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div class="text-xs font-weight-bold text-primary mb-1">게시글</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+												<span th:text="${#numbers.formatInteger(list.board, 0, 'COMMA')}">0</span>
 											</div>
 										</div>
-										<canvas id="haveChart"
-											style="display: block; width: 1037px; height: 320px;"
-											width="1037" height="320" class="chartjs-render-monitor"></canvas>
+										<div class="col-auto">
+											<i class="fas fa-book-open fa-2x text-gray-300"></i>
+										</div>
 									</div>
-									<hr>
-									토토로 돈을 따보는건 어떨까요? <a href="/toto/ladder">사다리</a> <a
-										href="/toto/dice">홀짝</a> <a href="/toto/graph">그래프</a>
 								</div>
 							</div>
 						</div>
 
-						<!-- Donut Chart -->
-						<div class="col-xl-4 col-lg-5">
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">보유 크레딧 &
-										마일리지</h6>
-								</div>
-								<!-- Card Body -->
+						<div class="col-xl-4 col-md-6 mb-4 button"
+							onclick="javascript:getRegisterCommentTable()">
+							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
-									<div class="chart-pie pt-4">
-										<div class="chartjs-size-monitor">
-											<div class="chartjs-size-monitor-expand">
-												<div class=""></div>
-											</div>
-											<div class="chartjs-size-monitor-shrink">
-												<div class=""></div>
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div class="text-xs font-weight-bold text-primary mb-1">댓글</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+											<span th:text="${#numbers.formatInteger(list.comment, 0, 'COMMA')}">0</span>
 											</div>
 										</div>
-										<canvas id="myPieChart" width="486" height="253"
-											class="chartjs-render-monitor"
-											style="display: block; width: 486px; height: 253px;"></canvas>
+										<div class="col-auto">
+											<i class="fas fa-comment fa-2x text-gray-300"></i>
+										</div>
 									</div>
-									<hr>
-									마일리지 : <span>25</span>% 크레딧 : <span>55</span>%
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xl-4 col-md-6 mb-4 button"
+							onclick="javascript:getRegisterProductCommentTable()">
+							<div class="card border-left-secondary shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div class="text-xs font-weight-bold text-primary mb-1">상품평</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">
+												<span th:text="${#numbers.formatInteger(list.productComment, 0, 'COMMA')}">0</span>
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-star-half-alt fa-2x text-gray-300"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 2번째  row -->
+					<div class="row">
+						<div class="col-xl-12 col-lg-12">	
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">
+										<span id="dynamicTableTitle">게시글 리스트</span>
+									</h6>
+								</div>
+								<div class="table-responsive" style="overflow-y: auto; max-height: 418px;">
+									<center id="middleClearDiv">존재하지않습니다.</center>
+									<table id="middleTableDiv" class="table table-bordered" width="100%" cellspacing="0">
+										<thead>
+											<tr id="dynamicTitle">
+												<th style="width: 15%">게시글 번호</th>
+												<th style="width: 10%">소셜 구분</th>
+												<th style="width: 20%">작성자 </th>
+												<th style="width: 35%">게시글 제목</th>
+												<th style="width: 20%">작성일</th>
+											</tr>
+										</thead>
+										<tbody id="middleTable">
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- 토토 -->
+					<div class="row">
+						<div class="col-xl-12 col-lg-12">	
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">
+										배팅한 토토 목록
+									</h6>
+								</div>
+								<div class="table-responsive" style="overflow-y: auto; max-height: 418px;">
+									<center th:if="${totoBetList} == null">존재하지않습니다.</center>
+									<table class="table table-bordered" id="totoTable" width="100%" cellspacing="0">
+										<thead>
+											<tr>
+												<th style="width: 10%">배팅번호</th>
+												<th style="width: 10%">배팅금액</th>
+												<th style="width: 10%">배당률</th>
+												<th style="width: 20%">일정</th>
+												<th style="width: 10%">종류</th>
+												<th style="width: 10%">리그</th>
+												<th style="width: 10%">팀1</th>
+												<th style="width: 10%">팀2</th>
+												<th style="width: 10%">결과</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="list : ${totoBetList}">
+												<td th:class="${list.sportsBettingGroupNo}"
+												th:text="${list.sportsBettingGroupNo}"
+												style="text-align: center"></td>
+												<td style="text-align: right"
+												th:class="${list.sportsBettingGroupNo}"
+												th:text="${#numbers.formatInteger(list.creditValue, 3, 'COMMA')}"></td>
+												<td style="text-align: right"
+												th:class="${list.sportsBettingGroupNo}" th:text="${list.bettingGroupBet}"></td>
+												<td style="text-align: center" th:text="${list.sportsSchedule}"></td>
+												<td style="text-align: center"
+												th:text="${list.sportsGubun}"></td>
+												<td style="text-align: center"
+												th:text="${list.sportsLeagueName}"></td>
+												<td style="text-align: center"
+												th:text="${list.sportsTeam1Name}"></td>
+												<td style="text-align: center"
+												th:text="${list.sportsTeam2Name}"></td>
+												<td th:class="${list.sportsBettingGroupNo}" style="text-align: center">대기중</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
@@ -251,13 +362,52 @@
 		<!-- Custom scripts for all pages-->
 		<script src="/js/sb-admin-2.min.js"></script>
 		<script src="/vendor/chart.js/Chart.min.js"></script>
-	<!-- common -->
-    <script src="/js/common.js"></script>
-	
+		<!-- common -->
+		<script src="/js/common.js"></script>
 </body>
 
 </html>
-<script>	
+<script>
+	$.fn.rowspan = function(colIdx, isStats) {       
+	    return this.each(function(){      
+	        var that;     
+	        $('tr', this).each(function(row) {      
+	            $('td:eq('+colIdx+')', this).filter(':visible').each(function(col) {
+	                 
+	                if ($(this).attr("class") == $(that).attr("class")
+	                    && (!isStats 
+	                            || isStats && $(this).prev().attr("class") == $(that).prev().attr("class")
+	                            )
+	                    ) {            
+	                    rowspan = $(that).attr("rowspan") || 1;
+	                    rowspan = Number(rowspan)+1;
+	 
+	                    $(that).attr("rowspan",rowspan);
+	                     
+	                    // do your action for the colspan cell here            
+	                    $(this).remove();
+	                     
+	                    //$(this).remove(); 
+	                    // do your action for the old cell here
+	                     
+	                } else {            
+	                    that = this;         
+	                }          
+	                 
+	                // set the that if not already set
+	                that = (that == null) ? this : that;      
+	            });     
+	        });    
+	    });  
+	};
+	
+	$('#totoTable').rowspan(8);
+	$('#totoTable').rowspan(2);
+	$('#totoTable').rowspan(1);
+	$('#totoTable').rowspan(0);
+	creditInfo();
+	getRegisterBoardTable();
+	
 	var chartOption = {
 		type : 'line',
 		data : {
@@ -437,12 +587,8 @@
 		}
 	
 	var ctx1 = $("#profitChart");
-	var ctx2 = $("#haveChart");
 	
 	profitChart = new Chart(ctx1, chartOption);
-	haveChart = new Chart(ctx2, chartOption1);
-	
-	getProfitCredit();
 	
 	function getProfitCredit() {
 		$.ajax({
@@ -451,11 +597,8 @@
 			cache : false,
 			dataType : "json",
 			success : function(data) {
-				var nCredit = parseInt(removeComma($("#credit").html()));
-				
 				for(i = 0; i < 7; i++) {
 					removeData(profitChart);
-					removeData(haveChart);
 				}
 				
 				//  수익 크레딧
@@ -472,11 +615,6 @@
 				
 				// 과거크레딧
 				j = data.length-1;
-				
-				for(i = 0; i < data.length; i++) {
-					 addData(haveChart, data[i].regCreditDt, (nCredit+nSubCredit[i]));
-					j--;
-				}
 			},
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
@@ -492,12 +630,9 @@
 			type : "POST",
 			cache : false,
 			dataType : "json",
-			success : function(data) {
-				var nMileage = parseInt(removeComma($("#mileage").html()));
-				
+			success : function(data) {				
 				for(i = 0; i < 7; i++) {
 					removeData(profitChart);
-					removeData(haveChart);
 				}
 				
 				//  수익 마일리지
@@ -511,14 +646,37 @@
 				
 				// 마지막 인덱스는 변동하면안되서0으로
 				nSubMileage[6] = 0;
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getProfitExp() {
+		$.ajax({
+			url : "/dashboard/getExp",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {				
+				for(i = 0; i < 7; i++) {
+					removeData(profitChart);
+				}
 				
-				// 과거마일리지
-				j = data.length-1;
+				//  수익 마일리지
+				var nSubMileage = [];
+				var sum = 0;
 				
 				for(i = 0; i < data.length; i++) {
-					 addData(haveChart, data[i].regMileageDt, (nMileage+nSubMileage[j]));
-					j--;
+					addData(profitChart, data[i].regExpDt, data[i].expValue);
+					nSubMileage[i]=data[i].expValue;
 				}
+				
+				// 마지막 인덱스는 변동하면안되서0으로
+				nSubMileage[6] = 0;
 			}, 
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
@@ -610,15 +768,312 @@
 	}
 	
 	function creditInfo() {
-		$("#chartName").html("크레딧");
-		$("#haveChartName").html("크레딧");
+		$(".profitChartName").html("크레딧 수익");
 		
+		getCreditTable();
 		getProfitCredit();
 	}
 	
 	function mileageInfo() {
-		$("#profitChartName").html("마일리지");
-		$("#haveChartName").html("마일리지");
+		$(".profitChartName").html("마일리지 수익");
+		
+		getMileageTable();
 		getProfitMileage();
+	}
+	
+	function expInfo() {
+		$(".profitChartName").html("경험치");
+		
+		getExpTable();
+		getProfitExp();
+	}
+	
+	function getCreditTable() {
+		$.ajax({
+			url : "/dashboard/getCreditTable",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if(data.length==0) {
+					$("#clearTable").attr("style","");
+					$("#dataTable").attr("style","display:none");
+				} else {
+					$("#earnTable").html("");
+					$("#clearTable").attr("style","display:none");
+					$("#dataTable").attr("style","");
+					
+					for(i = 0; i < data.length; i++) {
+						str="";
+						str+='<tr class="boardrow">';
+						str+='	<td style="text-align: center;">' + data[i].creditState + '</td>';
+						str+='	<td style="text-align: right;">' + numberWithCommas(data[i].creditValue) + '</td>';
+						str+='	<td style="text-align: center;">' + data[i].regCreditDt + '</td>';
+						str+='</tr>';
+						
+						$("#earnTable").append(str);
+					}	
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getMileageTable() {
+		$.ajax({
+			url : "/dashboard/getMileageTable",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if(data.length==0) {
+					$("#clearTable").attr("style","");
+					$("#dataTable").attr("style","display:none");
+				} else {
+					$("#earnTable").html("");
+					$("#clearTable").attr("style","display:none");
+					$("#dataTable").attr("style","");
+					
+					for(i = 0; i < data.length; i++) {
+						str="";
+						str+='<tr class="boardrow">';
+						str+='	<td style="text-align: center;">' + data[i].mileageState + '</td>';
+						str+='	<td style="text-align: right;">' + numberWithCommas(data[i].mileageValue) + '</td>';
+						str+='	<td style="text-align: center;">' + data[i].regMileageDt + '</td>';
+						str+='</tr>';
+						
+						$("#earnTable").append(str);
+					}	
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getExpTable() {
+		$.ajax({
+			url : "/dashboard/getExpTable",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if(data.length==0) {
+					$("#clearTable").attr("style","");
+					$("#dataTable").attr("style","display:none");
+				} else {
+					$("#earnTable").html("");
+					$("#clearTable").attr("style","display:none");
+					$("#dataTable").attr("style","");
+					
+					for(i = 0; i < data.length; i++) {
+						str="";
+						str+='<tr class="boardrow">';
+						str+='	<td style="text-align: center;">' + data[i].expState + '</td>';
+						str+='	<td style="text-align: right;">' + numberWithCommas(data[i].expValue) + '</td>';
+						str+='	<td style="text-align: center;">' + data[i].regExpDt + '</td>';
+						str+='</tr>';
+						
+						$("#earnTable").append(str);
+					}	
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getRegisterBoardTable() {
+		$.ajax({
+			url : "/dashboard/getRegisteredBoard",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				$("#dynamicTableTitle").html("게시글 리스트");
+				
+				if(data.length==0) {
+					$("#middleClearDiv").attr("style","");
+					$("#middleTableDiv").attr("style","display:none");
+				} else {
+					$("#middleClearDiv").attr("style","display:none");
+					$("#middleTableDiv").attr("style","");
+					
+					$("#middleTable").html("");
+					
+					var strTitle = "";
+					strTitle += '<th style="width: 15%">게시글 번호</th>';
+					strTitle += '<th style="width: 10%">소셜 구분</th>';
+					strTitle += '<th style="width: 20%">작성자 </th>';
+					strTitle += '<th style="width: 35%">게시글 제목</th>';
+					strTitle += '<th style="width: 20%">작성일</th>';
+					
+					$("#dynamicTitle").html(strTitle);
+					
+					
+					for(i = 0; i < data.length; i++) {
+						str="";
+						str += "<tr>";
+						str += "	<td style='text-align:center;'>" + data[i].boardNo + "</td>";
+						
+						var img = "";
+						
+						if(data[i].custGubun == "ON") {
+							img = '<img src="/img/social/icon/onesportsMiniIcon.jpg" width="30px">';
+						} else if(data[i].custGubun == "FA") {
+							img = '<img src="/img/social/icon/facebookMiniIcon.jpg" width="30px">';
+						} else if(data[i].custGubun == "KA") {
+							img = '<img src="/img/social/icon/kakaoMiniIcon.jpg" width="30px">';
+						} else {
+							img = '<img src="/img/social/icon/naverMiniIcon.jpg" width="30px">';
+						}
+						
+						var aTag = "<a href='/showBoard/" + data[i].boardNo + "'>"
+						+ data[i].boardTitle + "</a>";
+						
+						str += "	<td style='text-align:center;'>" + img + "</td>";
+						str += "	<td style='text-align:center;'>" + data[i].custNickname + "</td>";
+						str += "	<td>" + aTag + "</td>";
+						str += "	<td style='text-align:center;'>" + data[i].regDt + "</td>";
+						str += "</tr>";
+						$("#middleTable").append(str);
+					}	
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getRegisterCommentTable() {
+		$.ajax({
+			url : "/dashboard/getRegisteredComment",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				$("#dynamicTableTitle").html("댓글 리스트");
+				
+				if(data.length==0) {
+					$("#middleClearDiv").attr("style","");
+					$("#middleTableDiv").attr("style","display:none");
+				} else {
+					$("#middleClearDiv").attr("style","display:none");
+					$("#middleTableDiv").attr("style","");
+					
+					var strTitle = "";
+					strTitle += '<th style="width: 10%">댓글 번호</th>';
+					strTitle += '<th style="width: 10%">소셜 구분</th>';
+					strTitle += '<th style="width: 15%">작성자 </th>';
+					strTitle += '<th style="width: 20%">해당 게시글 제목</th>';
+					strTitle += '<th style="width: 25%">댓글 내용</th>';
+					strTitle += '<th style="width: 20%">작성일</th>';
+					
+					$("#dynamicTitle").html(strTitle);
+					
+					$("#middleTable").html("");
+					for(i = 0; i < data.length; i++) {
+						str="";
+						str += "<tr>";
+						str += "	<td style='text-align:center;'>" + data[i].commentNo + "</td>";
+						
+						var img = "";
+						
+						if(data[i].scCustGubun == "ON") {
+							img = '<img src="/img/social/icon/onesportsMiniIcon.jpg" width="30px">';
+						} else if(data[i].scCustGubun == "FA") {
+							img = '<img src="/img/social/icon/facebookMiniIcon.jpg" width="30px">';
+						} else if(data[i].scCustGubun == "KA") {
+							img = '<img src="/img/social/icon/kakaoMiniIcon.jpg" width="30px">';
+						} else {
+							img = '<img src="/img/social/icon/naverMiniIcon.jpg" width="30px">';
+						}
+						
+						var aTag = "<a href='/showBoard/" + data[i].boardNo + "'>"
+						+ data[i].boardTitle + "</a>";
+						
+						str += "	<td style='text-align:center;'>" + img + "</td>";
+						str += "	<td style='text-align:center;'>" + data[i].commentAnnoId + "</td>";
+						str += "	<td style='text-align:left;'>" + aTag  + "</td>";
+						str += "	<td>" + data[i].commentContents + "</td>";
+						str += "	<td style='text-align:center;'>" + data[i].regDt + "</td>";
+						str += "</tr>";
+						$("#middleTable").append(str);
+					}	
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getRegisterProductCommentTable() {
+		$.ajax({
+			url : "/dashboard/getRegisteredProductComment",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				$("#dynamicTableTitle").html("상품평 리스트");
+				
+				if(data.length==0) {
+					$("#middleClearDiv").attr("style","");
+					$("#middleTableDiv").attr("style","display:none");
+				} else {
+					$("#middleClearDiv").attr("style","display:none");
+					$("#middleTableDiv").attr("style","");
+					
+					var strTitle = "";
+					strTitle += '<th style="width: 15%">상품평 번호</th>';
+					strTitle += '<th style="width: 15%">작성자 </th>';
+					strTitle += '<th style="width: 20%">상품 제목</th>';
+					strTitle += '<th style="width: 10%">상품 평</th>';
+					strTitle += '<th style="width: 20%">상품 댓글</th>';
+					strTitle += '<th style="width: 20%">작성일</th>';
+					
+					$("#dynamicTitle").html(strTitle);
+					
+					$("#middleTable").html("");
+					for(i = 0; i < data.length; i++) {
+						str="";
+						str += "<tr>";
+						str += "	<td style='text-align:center;'>" + data[i].productCommentNo + "</td>";						
+						str += "	<td style='text-align:center;'>" + data[i].familyCustNickname + "</td>";
+						
+						var aTag = "<a href='/showProduct/" + data[i].productNo + "'>"
+						+ data[i].productName + "</a>";
+						
+						str += "	<td style='text-align:left;'>" + aTag + "</td>";
+						
+						str += "	<td style='text-align:center;'>" + data[i].productCommentRating + "</td>";
+						str += "	<td style='text-align:left;'>" + data[i].productCommentContents + "</td>";
+						str += "	<td style='text-align:center;'>" + data[i].regDt + "</td>";
+						str += "</tr>";
+						$("#middleTable").append(str);
+					}	
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 </script>

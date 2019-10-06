@@ -282,7 +282,7 @@ var helpCommentList = [
 						return;
 					} else if(data > 0) {
 						GLOBAL_MAX_GRPAH_DATA = data;
-						
+						asyncExp();
 						var currentCredit = removeComma($("#currentCredit").val());
 						var resultCredit = parseInt(currentCredit) - parseInt($("#credit").val());
 						$("#currentCredit").val(numberWithCommas(resultCredit));
@@ -322,6 +322,7 @@ var helpCommentList = [
 						$("#credit").val("");
 						clearGraph();
 						$("#credit").focus();
+						asyncExp();
 					}
 				},
 				error : function(request, status, error) {

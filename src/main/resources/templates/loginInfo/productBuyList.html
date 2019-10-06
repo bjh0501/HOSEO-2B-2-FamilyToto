@@ -77,7 +77,8 @@
 							<div class="table-responsive">
 								<table class="table table-bordered dataTable" id="dataTable"
 									width="100%" cellspacing="0" role="grid"
-									aria-describedby="dataTable_info" style="width: 100%;">
+									aria-describedby="dataTable_info" style="width: 100%;"
+									th:if="${productList} != null">
 									<thead>
 										<tr class="table-border-color">
 											<th style="width: 10%">구입번호</th>
@@ -106,7 +107,7 @@
 										</tr>
 									</tbody>
 								</table>
-								<center th:if="${productList.size()} == 0">구입내역이 없습니다.</center>
+								<center th:if="${productList} == null">구입내역이 없습니다.</center>
 							</div>
 						</div>
 					</div>

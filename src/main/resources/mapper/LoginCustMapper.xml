@@ -12,6 +12,7 @@
 	    ,		FC.FAMILY_CUST_EMAIL AS familyCustEmail
 	    ,		FC.FAMILY_CUST_NICKNAME as familyCustNick
 	   	,		C.CUST_OPERATOR_GUBUN as custOperatorGubun
+	   	,		FC.FAMILY_CUST_COMPANY_NUMBER as familyCustCompanyNumber
 		FROM	CUSTOM C
 	    	inner join	FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
 	    AND			C.USE_YN = 'Y'
@@ -44,5 +45,11 @@
         FROM 	FAMILY_CUSTOM
         WHERE	FAMILY_CUST_NO = #{familycustNo}
         AND		USE_YN = 'Y'
+	</select>
+	<select id="listPreferProduct" parameterType="int" resultType="String">
+		SELECT	PRODUCT_NO as productNo
+		FROM	CUST_PRODUCT_PREFER
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
 	</select>
 </mapper>

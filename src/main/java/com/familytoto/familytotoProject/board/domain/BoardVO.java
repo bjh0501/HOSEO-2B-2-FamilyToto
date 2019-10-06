@@ -34,7 +34,7 @@ public class BoardVO {
 
     private int chgCustNo;
 
-    private Timestamp regDt;
+    private String regDt;
 
     private Timestamp chgDt;
 
@@ -155,11 +155,11 @@ public class BoardVO {
 		this.chgCustNo = chgCustNo;
 	}
 
-	public Timestamp getRegDt() {
+	public String getRegDt() {
 		return regDt;
 	}
 
-	public void setRegDt(Timestamp regDt) {
+	public void setRegDt(String regDt) {
 		this.regDt = regDt;
 	}
 

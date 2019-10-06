@@ -1,6 +1,7 @@
 package com.familytoto.familytotoProject.toto.controller;
 
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,8 +48,9 @@ public class RulletController {
 				return mv;
 			} catch(Exception e) {}
 		}
-		
+				
 		mv.addObject("creditInfo", commonService.getCustCredit(cVo));
+		mv.addObject("accumRulletCredit", rulletService.getAccumCredit());
 		mv.setViewName("/toto/rullet");
 		
 		rulletService.updateInitialRullet(cVo.getFamilyCustNo());
@@ -99,20 +101,30 @@ public class RulletController {
 	
 	// 배팅연산
 	public double betOperate(String[] sNumbers) {
+		int[] nums = Arrays.asList(sNumbers).stream().mapToInt(Integer::parseInt).toArray();
+		Arrays.sort(nums);
 		
-		if(sNumbers[0].equals(sNumbers[1]) && sNumbers[0].equals(sNumbers[2])) {
+		if((nums[0]==2 && nums[1] == 4 && nums[2] == 6) 
+				|| (nums[0]==2 && nums[1] == 4 && nums[2] == 6)
+				|| (nums[0]==4 && nums[1] == 6 && nums[2] == 8)
+				|| (nums[0]==1 && nums[1] == 3 && nums[2] == 5)
+				|| (nums[0]==3 && nums[1] == 5 && nums[2] == 7)
+				|| (nums[0]==5 && nums[1] == 7 && nums[2] == 9)) {
+			return 1.49;
+		}
+		
+		// 전부 같은숫자인 경우
+		if(nums[0]==nums[1] && nums[0] == nums[2]) {
 			if(sNumbers[0].equals("7")) {
-				return 12.95;
+				return -777;
 			} else {
 				return 4.95;
 			}
 		}
-		
-		
-		
-		if(sNumbers[0].equals(sNumbers[1]) ||
-				sNumbers[0].equals(sNumbers[2]) ||
-				sNumbers[1].equals(sNumbers[2])) {
+
+		if(nums[0] == nums[1] ||
+				nums[0] == nums[2] ||
+				nums[1] == nums[2]) {
 			return 2.95;
 		}
 		

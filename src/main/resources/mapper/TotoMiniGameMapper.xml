@@ -107,4 +107,27 @@
 		WHERE	USE_YN = 'W'
 		AND		FAMILY_CUST_NO = #{familyCustNo}
 	</update>
+	<insert id="insertRulletStorage">
+		INSERT INTO TOTO_RULLET_STORAGE(
+			CREDIT_ID,		RULLET_NO,	FAMILY_CUST_NO,
+		    REG_CUST_NO,	REG_DT,		REG_IP,			USE_YN
+		) VALUES (
+			#{creditId},	#{rulletNo},#{familyCustNo},
+		    #{regCustNo},	NOW(),		#{regIp},		'Y'
+		)
+	</insert>
+	<select id="getAccumCredit" resultType="int">
+		SELECT	IFNULL(SUM(CC.CREDIT_VALUE),0)*-1 as creditValue
+		FROM	TOTO_RULLET_STORAGE TRS
+			INNER JOIN CUSTOM_CREDIT CC ON TRS.CREDIT_ID = CC.CREDIT_ID AND CC.USE_YN = 'Y'
+		WHERE	TRS.USE_YN = 'Y'
+	</select>
+	<update id="updateRulletAccumCredit">
+		UPDATE	TOTO_RULLET_STORAGE
+		SET		USE_YN = 'N'
+		,		CHG_DT = NOW()
+		,		CHG_CUST_NO = #{chgCustNo}
+		,		FAMILY_CUST_NO = #{familyCustNo}
+		WHERE	USE_YN = 'Y'
+	</update>
 </mapper>

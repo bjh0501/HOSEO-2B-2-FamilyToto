@@ -6,6 +6,7 @@ import com.familytoto.familytotoProject.creditShop.domain.CategoryVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 
 public interface CreditShopDao {
 	// 상품보기
@@ -37,4 +38,16 @@ public interface CreditShopDao {
 	
 	// 상품평 달았을때 랜덤 마일리지 얻기
 	int getRandomMileage(MileageVO vo);
+	
+	// 상품찜
+	int insertPreferProduct(ProductBuyVO vo);
+	
+	// 상품찜햇는지 체크
+	String getPreferProduct(ProductBuyVO vo);
+	
+	// 상품찜취소 or 다시찜
+	int updatePreferProduct(ProductBuyVO vo);
+	
+	// 배송비가져오기
+	int getDeliveryCredit(List<Integer> productNo);
 }

@@ -2,21 +2,36 @@ package com.familytoto.familytotoProject.creditShop.domain;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.URL;
+
+import com.google.firebase.database.annotations.NotNull;
+
 public class ProductVO {
     // 30000001
     private int productNo;
 
     // 100001
+    @NotNull
     private int categoryNo;
 
+    @NotBlank
     private String productName;
 
+    @NotBlank
     private String productDesc;
 
     // 0
+    @Min(10)
+    @Max(100000000)
     private int productCredit;
 
     // 재고
+    @Min(0)
+    @Max(100000)
     private int productAmount;
 
     private int regCustNo;
@@ -40,10 +55,9 @@ public class ProductVO {
     
     private String familyCustNickname;
     
-    private String DeliveryName;
-    
     private int totalCredit;
     
+    @URL
     private String productImgUrl;
     
     private int basketNo;    
@@ -56,7 +70,49 @@ public class ProductVO {
     
     private int pagingNo;
     
-   	public String getCateogryName() {
+    private int familyCustNo;
+    
+    private String seller;
+    
+    private int deliveryCredit;
+    
+    private String deliveryName;
+    
+    private int cateogryNo;
+    
+	public int getCateogryNo() {
+		return cateogryNo;
+	}
+
+	public void setCateogryNo(int cateogryNo) {
+		this.cateogryNo = cateogryNo;
+	}
+    
+   	public String getSeller() {
+		return seller;
+	}
+
+	public void setSeller(String seller) {
+		this.seller = seller;
+	}
+
+	public int getDeliveryCredit() {
+		return deliveryCredit;
+	}
+
+	public void setDeliveryCredit(int deliveryCredit) {
+		this.deliveryCredit = deliveryCredit;
+	}
+
+	public int getFamilyCustNo() {
+		return familyCustNo;
+	}
+
+	public void setFamilyCustNo(int familyCustNo) {
+		this.familyCustNo = familyCustNo;
+	}
+
+	public String getCateogryName() {
 		return cateogryName;
 	}
 
@@ -241,11 +297,11 @@ public class ProductVO {
 	}
 
 	public String getDeliveryName() {
-		return DeliveryName;
+		return deliveryName;
 	}
 
 	public void setDeliveryName(String deliveryName) {
-		DeliveryName = deliveryName;
+		this.deliveryName = deliveryName;
 	}
 
 	@Override
@@ -255,7 +311,7 @@ public class ProductVO {
 				+ productAmount + ", regCustNo=" + regCustNo + ", chgCustNo=" + chgCustNo + ", regDt=" + regDt
 				+ ", chgDt=" + chgDt + ", regIp=" + regIp + ", chgIp=" + chgIp + ", useYn=" + useYn + ", deliveryNo="
 				+ deliveryNo + ", categoryName=" + categoryName + ", familyCustNickname=" + familyCustNickname
-				+ ", DeliveryName=" + DeliveryName + ", totalCredit=" + totalCredit + "]";
+				+ ", DeliveryName=" + deliveryName + ", totalCredit=" + totalCredit + "]";
 	}
 
 	

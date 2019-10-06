@@ -56,4 +56,10 @@ public interface ProductBuyDao {
 	
 	// 기본 배송지 가져오기
 	RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo);
+	
+	// 상품추가
+	int insertProduct(ProductVO vo);
+	
+	// 상품이미지추가
+	int insertProductImgUrl(ProductVO vo);
 }

@@ -156,7 +156,7 @@ $(function(){
 						alert("알수없는 에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.");
 					} else {
 						$('[data-node=' + node + ']').val(data + "배");
-						
+						asyncExp();
 						if(data > 0) {
 							GLOBAL_HAVE_CREDIT += parseInt((GLOBAL_BET_CREDIT * data));
 							$("#haveCredit").val(numberWithCommas(GLOBAL_HAVE_CREDIT));

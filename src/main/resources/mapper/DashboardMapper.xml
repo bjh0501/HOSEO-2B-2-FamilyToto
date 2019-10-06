@@ -38,6 +38,61 @@
 	        LIMIT 1
 		]]>
 	</select>
+	<select id="getBoardCnt"  resultType="int" parameterType="int">
+		SELECT	COUNT(*) as boardCnt
+			FROM	(
+				SELECT	CUST_NO AS custNo
+		        ,		FC.FAMILY_CUST_NICKNAME as custNickname
+		        ,		'ON' as custGubun
+				FROM	CUSTOM  C
+					INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+				WHERE	C.FAMILY_CUST_NO = #{familyCustNo} 
+				AND		C.USE_YN = 'Y'
+				UNION DISTINCT 
+				SELECT	SC.SC_CUST_NO  as custNo
+		        ,		SC.SC_CUST_NICK as custNickname
+		        ,		SC.SC_CUST_GUBUN as custGubun
+				FROM	FAMILY_CUSTOM FC
+					INNER JOIN SOCIAL_CUSTOM SC ON FC.FAMILY_CUST_NO = SC.FAMILY_CUST_NO
+						AND SC.USE_YN = 'Y'
+				WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+				AND		FC.USE_YN = 'Y'
+			) S
+		INNER JOIN BOARD B ON IFNULL(B.CHG_CUST_NO, B.REG_CUST_NO) = S.custNo
+		AND  B.USE_YN = 'Y'
+	</select>
+	<select id="getCommentCnt"  resultType="int" parameterType="int">
+		SELECT	COUNT(*) as commentCnt
+			FROM	(
+				SELECT	CUST_NO AS custNo
+		        ,		FC.FAMILY_CUST_NICKNAME as commentAnnoId
+		        ,		'ON' as scCustGubun
+				FROM	CUSTOM  C
+					INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+				WHERE	C.FAMILY_CUST_NO = #{familyCustNo}
+				AND		C.USE_YN = 'Y'
+				UNION DISTINCT 
+				SELECT	SC.SC_CUST_NO  as custNo
+		        ,		SC.SC_CUST_NICK as commentAnnoId
+		        ,		SC.SC_CUST_GUBUN as scCustGubun
+				FROM	FAMILY_CUSTOM FC
+					INNER JOIN SOCIAL_CUSTOM SC ON FC.FAMILY_CUST_NO = SC.FAMILY_CUST_NO
+						AND SC.USE_YN = 'Y'
+				WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+				AND		FC.USE_YN = 'Y'
+			) S
+		INNER JOIN COMMENT C ON IFNULL(C.CHG_CUST_NO, C.REG_CUST_NO) = S.custNo
+	       INNER JOIN BOARD B ON C.BOARD_NO = B.BOARD_NO AND B.USE_YN = 'Y'
+		AND  C.USE_YN = 'Y'
+		ORDER BY C.COMMENT_NO DESC
+	</select>
+	<select id="getProductCommentCnt"  resultType="int" parameterType="int">
+		SELECT	COUNT(*) as commentCnt
+		FROM	PRODUCT_COMMENT PC
+			INNER JOIN PRODUCT P ON PC.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'
+		WHERE	PC.FAMILY_CUST_NO = #{familyCustNo}
+		AND		PC.USE_YN = 'Y'
+	</select>
 	<select id="listRecentProfitCredit" parameterType="int" resultType="CreditVO">
 		SELECT	S.REG_DT AS regCreditDt
         ,		IFNULL(SUM(C.CREDIT_VALUE),0) AS creditValue
@@ -79,5 +134,190 @@
            AND		M.USE_YN = 'Y'
            GROUP BY S.REG_DT
 		ORDER BY S.REG_DT
-	</select>	
+	</select>
+	<select id="listRecentProfitExp"  parameterType="int" resultType="ExpVO">
+		SELECT	S.REG_DT AS regExpDt
+        ,		IFNULL(SUM(E.EXP_VALUE),0) AS expValue
+		FROM	CUSTOM_EXP E
+		RIGHT OUTER JOIN (
+			select DATE_FORMAT( DATE_ADD(now(), INTERVAL -a.a DAY),'%m. %d' ) as REG_DT
+			from (
+				  select 1 as a  union all 
+				  select 2 union all 
+				  select 3 union all 
+				  select 4 union all 
+				  select 5 union all
+				  select 6 union all 
+				  select 7
+			) a
+		) S		ON DATE_FORMAT(E.REG_DT,'%m. %d' ) = S.REG_DT
+           AND		E.FAMILY_CUST_NO = #{familyCustNo}
+           AND		E.USE_YN = 'Y'
+           GROUP BY S.REG_DT
+		ORDER BY S.REG_DT
+	</select>
+	<select id="listExpTable" parameterType="int" resultType="ExpVO">
+		SELECT	CASE
+				WHEN EXP_STATE = 'GGS' THEN '그래프게임시작'
+		        WHEN EXP_STATE = 'GGW' THEN '그래프게임승리'
+		        WHEN EXP_STATE = 'DGS' THEN '주사위게임시작'
+		        WHEN EXP_STATE = 'DGW' THEN '주사위게임승리'
+		        WHEN EXP_STATE = 'RGS' THEN '슬롯머신게임시작'
+		        WHEN EXP_STATE = 'RGW' THEN '슬롯머신게임승리' 
+				WHEN EXP_STATE = 'LGS' THEN '사다리게임시작'
+		        WHEN EXP_STATE = 'LGW' THEN '사다리게임승리'
+		        WHEN EXP_STATE = 'STW' THEN '스포츠토토적중'
+		        END AS expState
+		,		EXP_VALUE as expValue
+		,		DATE_FORMAT(IFNULL(CHG_DT, REG_DT),'%y. %m. %d %H:%i') AS regExpDt
+		FROM	CUSTOM_EXP
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+		ORDER BY IFNULL(CHG_DT, REG_DT) DESC
+		LIMIT 0, 100
+	</select>
+	<select id="listCreditTable" parameterType="int" resultType="CreditVO">
+		SELECT	CASE
+				WHEN CREDIT_STATE = 'CBC' THEN '카드로 충전'
+				WHEN CREDIT_STATE = 'PBB' THEN '장바구니로 구입'
+				WHEN CREDIT_STATE = 'PDB' THEN '상품구매'
+				WHEN CREDIT_STATE = 'GBP' THEN '그래프배팅'
+				WHEN CREDIT_STATE = 'GBG' THEN '그래프적중'
+		        WHEN CREDIT_STATE = 'DBP' THEN '주사위배팅'
+		        WHEN CREDIT_STATE = 'DBG' THEN '주사위적중'
+		        WHEN CREDIT_STATE = 'LBP' THEN '사다리배팅'
+		        WHEN CREDIT_STATE = 'LBG' THEN '사다리적중'
+		        WHEN CREDIT_STATE = 'RBP' THEN '슬롯머신배팅'
+		        WHEN CREDIT_STATE = 'RBG' THEN '슬롯머신적중'
+		        WHEN CREDIT_STATE = 'ISB' THEN '국내축구배팅'
+		        WHEN CREDIT_STATE = 'TES' THEN '테스트'
+		        WHEN CREDIT_STATE = 'IPP' THEN '상품판매'
+		        WHEN CREDIT_STATE = 'IDC' THEN '배송비'
+				END AS creditState
+		,		CREDIT_VALUE as creditValue
+		,		DATE_FORMAT(IFNULL(CHG_DT, REG_DT), '%y. %m. %d %H:%i') AS regCreditDt
+		FROM	CUSTOM_CREDIT
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+		ORDER BY IFNULL(CHG_DT, REG_DT) DESC
+		LIMIT 0, 100
+	</select>
+	<select id="listMileageTable" parameterType="int" resultType="MileageVO">
+		SELECT	CASE
+				WHEN MILEAGE_STATE = 'MIR' THEN '추천인'
+		        WHEN MILEAGE_STATE = 'MIP' THEN '상품 구입 적립'
+		        WHEN MILEAGE_STATE = 'IP1' THEN '상품 구입 적립'
+		        WHEN MILEAGE_STATE = 'IP2' THEN '상품 구입 적립'
+		        WHEN MILEAGE_STATE = 'ITM' THEN '아이템 구입'
+		        WHEN MILEAGE_STATE = 'PDS' THEN '상품 구입'
+		        WHEN MILEAGE_STATE = 'CRM' THEN '상품평'
+				END AS mileageState
+		,		MILEAGE_VALUE as mileageValue
+		,		DATE_FORMAT(IFNULL(CHG_DT, REG_DT), '%y. %m. %d %H:%i') AS regMileageDt
+		FROM	CUSTOM_MILEAGE
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+		ORDER BY IFNULL(CHG_DT, REG_DT) DESC
+		LIMIT 0, 100
+	</select>
+	<select id="listBettingGroup" parameterType="int" resultType="SportsVO">
+		SELECT	TSBG.SPORTS_BETTING_GROUP_NO as sportsBettingGroupNo
+		,		CC.CREDIT_VALUE as creditValue
+		,		TSBG.BETTING_GROUP_BET as bettingGroupBet
+		,		CASE 
+				WHEN TS.SPORTS_GUBUN = 'ISO'
+				THEN '국내축구'
+				END AS sportsGubun
+		,		TS.SPORTS_LEAGUE_NAME as sportsLeagueName
+		,		TS.SPORTS_TEAM1_NAME as sportsTeam1Name
+		,		TS.SPORTS_TEAM2_NAME as sportsTeam2Name
+		,		TS.SPORTS_SCORE1 as sportsScore1
+		,		TS.SPORTS_SCORE2 as sportsScore2
+		,		TS.SPORTS_RESULT as sportsResult
+		,		DATE_FORMAT(TS.SPORTS_SCHEDULE, '%Y. %c. %d %H:%i')  as sportsSchedule
+		FROM	TOTO_SPORTS_BETTING_GROUP TSBG
+			INNER JOIN CUSTOM_CREDIT CC ON TSBG.CREDIT_ID = CC.CREDIT_ID AND CC.USE_YN = 'Y'
+			INNER JOIN TOTO_SPORTS_BETTING TSB ON TSB.SPORTS_BETTING_GROUP_NO = TSBG.SPORTS_BETTING_GROUP_NO 
+				AND TSB.USE_YN = 'Y'
+			INNER JOIN TOTO_SPORTS TS ON TS.SPORTS_NO = TSB.SPORTS_NO AND TS.USE_YN = 'Y'
+		WHERE	TSB.USE_YN = 'Y'
+		AND		TSBG.FAMILY_CUST_NO = #{familyCustNo}
+	</select>
+	<select id="listRegisteredBoard" parameterType="int" resultType="BoardVO">
+		SELECT	B.BOARD_NO as boardNo
+		,		B.BOARD_TITLE as boardTitle
+		,		B.BOARD_CONTENTS as boardContents
+		,		S.custNickname
+		,		S.custGubun
+		,		IFNULL(DATE_FORMAT(B.CHG_DT, '%Y. %c. %d %H:%i'),
+				DATE_FORMAT(B.REG_DT, '%Y. %c. %d %H:%i')) as regDt
+			FROM	(
+				SELECT	CUST_NO AS custNo
+		        ,		FC.FAMILY_CUST_NICKNAME as custNickname
+		        ,		'ON' as custGubun
+				FROM	CUSTOM  C
+					INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+				WHERE	C.FAMILY_CUST_NO = #{familyCustNo} 
+				AND		C.USE_YN = 'Y'
+				UNION DISTINCT 
+				SELECT	SC.SC_CUST_NO  as custNo
+		        ,		SC.SC_CUST_NICK as custNickname
+		        ,		SC.SC_CUST_GUBUN as custGubun
+				FROM	FAMILY_CUSTOM FC
+					INNER JOIN SOCIAL_CUSTOM SC ON FC.FAMILY_CUST_NO = SC.FAMILY_CUST_NO
+						AND SC.USE_YN = 'Y'
+				WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+				AND		FC.USE_YN = 'Y'
+			) S
+		INNER JOIN BOARD B ON IFNULL(B.CHG_CUST_NO, B.REG_CUST_NO) = S.custNo
+		AND  B.USE_YN = 'Y'
+		ORDER BY B.BOARD_NO DESC
+	</select>
+	<select id="listRegisteredComment" parameterType="int" resultType="CommentVO">
+		SELECT	C.COMMENT_NO as commentNo
+		,		C.COMMENT_CONTENTS as commentContents
+		,		S.commentAnnoId
+		,		S.scCustGubun
+		,		IFNULL(DATE_FORMAT(C.CHG_DT, '%Y. %c. %d %H:%i')
+			,		DATE_FORMAT(C.REG_DT, '%Y. %c. %d %H:%i')) as regDt
+        ,		B.BOARD_NO AS boardNo
+        ,		B.BOARD_TITLE as boardTitle
+			FROM	(
+				SELECT	CUST_NO AS custNo
+		        ,		FC.FAMILY_CUST_NICKNAME as commentAnnoId
+		        ,		'ON' as scCustGubun
+				FROM	CUSTOM  C
+					INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+				WHERE	C.FAMILY_CUST_NO = #{familyCustNo}
+				AND		C.USE_YN = 'Y'
+				UNION DISTINCT 
+				SELECT	SC.SC_CUST_NO  as custNo
+		        ,		SC.SC_CUST_NICK as commentAnnoId
+		        ,		SC.SC_CUST_GUBUN as scCustGubun
+				FROM	FAMILY_CUSTOM FC
+					INNER JOIN SOCIAL_CUSTOM SC ON FC.FAMILY_CUST_NO = SC.FAMILY_CUST_NO
+						AND SC.USE_YN = 'Y'
+				WHERE	FC.FAMILY_CUST_NO = #{familyCustNo}
+				AND		FC.USE_YN = 'Y'
+			) S
+		INNER JOIN COMMENT C ON IFNULL(C.CHG_CUST_NO, C.REG_CUST_NO) = S.custNo
+        INNER JOIN BOARD B ON C.BOARD_NO = B.BOARD_NO AND B.USE_YN = 'Y'
+		AND  C.USE_YN = 'Y'
+		ORDER BY C.COMMENT_NO DESC
+	</select>
+	<select id="listRegisteredProductComment" parameterType="int" resultType="ProductCommentVO">
+		SELECT	PC.PRODUCT_COMMENT_NO as productCommentNo 
+		,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
+		,		P.PRODUCT_NAME as productName
+		,		P.PRODUCT_NO as productNo
+		,		PC.PRODUCT_COMMENT_RATING as productCommentRating
+		,		PC.PRODUCT_COMMENT_CONTENTS as productCommentContents
+		,		IFNULL(DATE_FORMAT(PC.CHG_DT, '%Y. %c. %d %H:%i')
+			,		DATE_FORMAT(PC.REG_DT, '%Y. %c. %d %H:%i')) as regDt
+		FROM	PRODUCT_COMMENT PC
+			INNER JOIN PRODUCT P ON PC.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'
+		    INNER JOIN FAMILY_CUSTOM FC ON PC.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+		WHERE	PC.FAMILY_CUST_NO = #{familyCustNo}
+		AND		PC.USE_YN = 'Y'				
+	</select>
 </mapper>

@@ -359,7 +359,7 @@
 												this.getAttribute('data-gubun'),
 												this.getAttribute('data-grpOrd'),
 												this.getAttribute('data-grpNo'),);|">삭제</button>
-											<label class="text-word-l" th:text="${com.getRegDtStr()}">날짜</label>
+											<label class="text-word-l" th:text="${com.getRegDt()}">날짜</label>
 										</p>
 									</div>
 								</div>
@@ -567,8 +567,8 @@ var helpCommentList = [
 				return ;
 			}
 			
-			dataStr += "&commentAnnoId=" + id;
-			dataStr += "&commentAnnoPw=" + pass;
+			dataStr += "&commentAnnoId=" + encodeURIComponent(id);
+			dataStr += "&commentAnnoPw=" + encodeURIComponent(pass);
 		}
 		
 		if(comment.trim() == "") {
@@ -585,7 +585,7 @@ var helpCommentList = [
 		dataStr += "&commentGrpNo=" + grp;
 		dataStr += "&commentGrpOrd=" + ord;
 		dataStr += "&commentGrpDepth=" + depth;
-		dataStr += "&commentContents=" + comment;
+		dataStr += "&commentContents=" + encodeURIComponent(comment);
 		
 		$.ajax({
 			url : "/board/replyComment",
@@ -630,7 +630,7 @@ var helpCommentList = [
 				type : "POST",
 				cache : false,
 				dataType : "json",
-				data : "boardAnnoPw=" + $("#annoInputPw").val()
+				data : "boardAnnoPw=" + encodeURIComponent($("#annoInputPw").val())
 				+ "&boardGrpOrd=" + [[ ${board.getBoardGrpOrd()} ]]
 				+ "&boardGrpNo=" + [[ ${board.getBoardGrpNo()} ]],
 				success : function(data) {
@@ -663,7 +663,7 @@ var helpCommentList = [
 					type : "POST",
 					cache : false,
 					dataType : "json",
-					data : "boardAnnoPw=" + $("#annoInputPw").val()
+					data : "boardAnnoPw=" + encodeURIComponent($("#annoInputPw").val())
 							+ "&boardNo=" + boardNo
 							+ "&boardAnnoId=" + annoId,
 					success : function(data) {
@@ -759,9 +759,9 @@ var helpCommentList = [
 			cache : false,
 			dataType : "json",
 			data : "boardNo=" + boardNo
-					+ "&commentContents=" + $("#annoComment").val()
-					+ "&commentAnnoId=" + $("#annoId").val()
-					+ "&commentAnnoPw=" + $("#annoPw").val(),
+					+ "&commentContents=" + encodeURIComponent($("#annoComment").val())
+					+ "&commentAnnoId=" + encodeURIComponent($("#annoId").val())
+					+ "&commentAnnoPw=" + encodeURIComponent($("#annoPw").val()),
 			success : function(data) {
 				location.reload();
 			},
@@ -790,7 +790,7 @@ var helpCommentList = [
 			cache : false,
 			dataType : "json",
 			data : "boardNo=" + boardNo
-					+ "&commentContents=" + $("#inputComment").val(),
+					+ "&commentContents=" + encodeURIComponent($("#inputComment").val()),
 			success : function(data) {
 				location.reload();
 			},
@@ -815,7 +815,7 @@ var helpCommentList = [
 			cache : false,
 			dataType : "json",
 			data : "commentNo=" + no
-			+ "&commentAnnoPw=" + pass
+			+ "&commentAnnoPw=" + encodeURIComponent(pass)
 			+ "&commentGrpOrd=" + grpOrd
 			+ "&commentGrpNo=" + grpNo,				
 			success : function(data) {
@@ -936,7 +936,7 @@ var helpCommentList = [
 		}
 		
 		dataStr = "commentNo=" + commentNo
-		+"&commentContents=" + contents;
+		+"&commentContents=" + encodeURIComponent(contents);
 		
 		if(gubun == "AN") {
 			var pass = obj.prev().val();
@@ -946,7 +946,7 @@ var helpCommentList = [
 				obj.prev().focus();
 				return ;
 			} else {
-				dataStr +="&commentAnnoPw=" + pass; 
+				dataStr +="&commentAnnoPw=" + encodeURIComponent(pass); 
 			}
 		}
 		

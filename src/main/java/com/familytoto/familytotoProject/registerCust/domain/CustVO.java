@@ -64,6 +64,16 @@ public class CustVO {
 	
 	private int familyCustExp;
 	
+	private String familyCustCompanyNumber;
+	
+	public String getFamilyCustCompanyNumber() {
+		return familyCustCompanyNumber;
+	}
+
+	public void setFamilyCustCompanyNumber(String familyCustCompanyNumber) {
+		this.familyCustCompanyNumber = familyCustCompanyNumber;
+	}
+
 	public int getFamilyCustExp() {
 		return familyCustExp;
 	}

@@ -10,6 +10,7 @@ import com.familytoto.familytotoProject.creditShop.domain.CategoryVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 
 @Repository
 public class CreditShopDaoImpl implements CreditShopDao {
@@ -64,5 +65,25 @@ public class CreditShopDaoImpl implements CreditShopDao {
 	@Override
 	public int getRandomMileage(MileageVO vo) {
 		return sqlSession.insert("mileage.insertMileage", vo);
+	}
+
+	@Override
+	public int insertPreferProduct(ProductBuyVO vo) {
+		return sqlSession.insert("creditShop.insertPreferProduct", vo);
+	}
+
+	@Override
+	public String getPreferProduct(ProductBuyVO vo) {
+		return sqlSession.selectOne("creditShop.getPreferProduct", vo);
+	}
+
+	@Override
+	public int updatePreferProduct(ProductBuyVO vo) {
+		return sqlSession.update("creditShop.updatePreferProduct", vo);
+	}
+
+	@Override
+	public int getDeliveryCredit(List<Integer> productNo) {
+		return sqlSession.selectOne("creditShop.getDeliveryCredit", productNo);
 	}
 }

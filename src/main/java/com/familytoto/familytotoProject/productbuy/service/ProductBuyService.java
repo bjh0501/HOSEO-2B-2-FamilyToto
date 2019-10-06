@@ -12,7 +12,7 @@ import lombok.Builder.Default;
 
 public interface ProductBuyService {
 	// 상품 즉시구매
-	int insertProductDirectBuy(ProductBuyVO vo, String gubun);
+	int insertProductDirectBuy(ProductBuyVO vo, String gubun, int sellerFmailyCustNo);
 	
 	// 구입할 상품보기
 	ProductVO getProductBuy(ProductBuyVO vo);
@@ -33,4 +33,7 @@ public interface ProductBuyService {
 	
 	// 기본 배송지 가져오기
 	RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo);
+	
+	// 상품추가
+	int insertProduct(ProductVO vo, String[] productImgUrls) ;
 }

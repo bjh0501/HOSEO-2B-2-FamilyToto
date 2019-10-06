@@ -95,5 +95,15 @@ public class ProductBuyDaoImpl implements ProductBuyDao {
 	@Override
 	public RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo) {
 		return sqlSession.selectOne("productBuy.getFamilyCustDefaultAddr", familyCustNo);
-	}	
+	}
+
+	@Override
+	public int insertProduct(ProductVO vo) {
+		return sqlSession.insert("productBuy.insertProduct", vo);
+	}
+
+	@Override
+	public int insertProductImgUrl(ProductVO vo) {
+		return sqlSession.insert("productBuy.insertProductImgUrl", vo);
+	}
 }

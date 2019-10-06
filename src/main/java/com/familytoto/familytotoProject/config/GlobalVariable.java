@@ -58,6 +58,8 @@ public class GlobalVariable {
 			nRandomExp = GlobalVariable.radnomValue(210, 300);
 		} else if(creditValue >= 1000) {
 			nRandomExp = GlobalVariable.radnomValue(110, 200);
+		} else {
+			nRandomExp = GlobalVariable.radnomValue(100, 100);
 		}
 		
 		return nRandomExp;

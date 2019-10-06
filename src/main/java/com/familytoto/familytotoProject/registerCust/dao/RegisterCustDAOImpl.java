@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.registerCust.domain.DeliveryVO;
 import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 import com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO;
 
@@ -60,4 +61,10 @@ public class RegisterCustDAOImpl implements RegisterCustDAO{
 	public Map<String, Object> getUsedId(CustVO vo) {
 		return sqlSession.selectOne("registerCust.checkId", vo);
 	}
+
+	@Override
+	public List<DeliveryVO> listDelivery() {
+		return sqlSession.selectList("registerCust.listDelivery");
+	}
+
 }

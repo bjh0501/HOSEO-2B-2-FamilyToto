@@ -40,7 +40,8 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 	 */
 	
 	@Transactional
-	public int insertProductDirectBuy(ProductBuyVO vo, String gubun) {
+	public int insertProductDirectBuy(ProductBuyVO vo, String gubun,
+			int sellerFmailyCustNo) {
 		if(productBuyDao.isProductAmount(vo) == false) {	// 상품재고초과한경우
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return -96;
@@ -63,6 +64,13 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 		mVo.setRegCustNo(vo.getRegCustNo());
 		mVo.setRegIp(vo.getRegIp());
 		
+		// 크레딧 테이블에 insert할 크레딧
+		int nRealUsedCredit = vo.getProductBuyCredit();
+		
+		// 상품 구입한 테이블에 insert할 크레딧 
+		// 상품가격 * 상품개수한걸 그대로 나누는거라 이렇게해야함 
+		vo.setProductBuyCredit(vo.getProductBuyCredit() / vo.getProductBuyAmount());
+		
 		if(productBuyDao.insertProductBuy(vo) == 1) {
 			CreditVO creditVo = new CreditVO();
 			BasketVO bVo = new BasketVO();
@@ -77,16 +85,33 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 			}
 			
 			if(gubun.equals("CREDIT")) {	// 크레딧으로 구입	
-				creditVo.setCreditValue(vo.getProductBuyCredit()*-1);
+				creditVo.setCreditValue(nRealUsedCredit*-1);
 				creditVo.setCreditState("PDB");
 				creditVo.setRegCustNo(vo.getRegCustNo());
 				creditVo.setFamilyCustNo(vo.getFamilyCustNo());
 				creditVo.setRegIp(vo.getRegIp());
 				
+				// 크레딧 소모
 				if(chargeDao.doCharge(creditVo) < 1) {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					return -2;
 				}
+				
+				creditVo.setCreditValue((int) (nRealUsedCredit*0.95));
+				creditVo.setCreditState("IPP");
+				creditVo.setRegCustNo(vo.getRegCustNo());
+				
+				// 상품 판매자의 패밀리번호
+				creditVo.setFamilyCustNo(sellerFmailyCustNo);
+				creditVo.setRegIp(vo.getRegIp());
+				
+				// 상품 등록자의 크레딧 등록
+				if(chargeDao.doCharge(creditVo) < 1) {
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					return -7;
+				}
+				
+				
 				
 				// 10퍼센트적립
 				int nMileageAccum = (int) (vo.getProductBuyCredit() / 10);
@@ -105,7 +130,7 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 				productBuyDao.insertUseMileage(mVo);
 			}
 			
-			// 장박구니 경우
+			// 장바구니 경우
 			if(bVo.getBasketNo() != 0) {
 				if(productBuyDao.updateUsedBasket(bVo) < 1) {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -168,4 +193,28 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 	public RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo) {
 		return productBuyDao.getFamilyCustDefaultAddr(familyCustNo);
 	}
+
+	@Override
+	@Transactional
+	public int insertProduct(ProductVO vo, String[] productImgUrls)  {
+		if(productBuyDao.insertProduct(vo) != 1) {
+			throw new RuntimeException("상품 추가 실패");
+		}
+		
+		if(productImgUrls != null) {
+			vo.setProductImgPrimary("Y");
+			
+			for(String str : productImgUrls) {
+				vo.setProductImgUrl(str);
+				
+				if(productBuyDao.insertProductImgUrl(vo) != 1) {
+					throw new RuntimeException("이미지 추가 실패");
+				} else {
+					vo.setProductImgPrimary("N");
+				}
+			}
+		}
+		
+		return 1;
+	}	
 }

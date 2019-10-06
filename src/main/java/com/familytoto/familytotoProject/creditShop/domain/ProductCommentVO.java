@@ -27,7 +27,7 @@ public class ProductCommentVO {
 
     private int chgCustNo;
 
-    private Timestamp regDt;
+    private String regDt;
 
     private Timestamp chgDt;
 
@@ -40,7 +40,17 @@ public class ProductCommentVO {
 
     private String familyCustNickname;
     
-    public String getFamilyCustNickname() {
+    private String productName;
+    
+    public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getFamilyCustNickname() {
 		return familyCustNickname;
 	}
 
@@ -106,11 +116,11 @@ public class ProductCommentVO {
 		this.chgCustNo = chgCustNo;
 	}
 
-	public Timestamp getRegDt() {
+	public String getRegDt() {
 		return regDt;
 	}
 
-	public void setRegDt(Timestamp regDt) {
+	public void setRegDt(String regDt) {
 		this.regDt = regDt;
 	}
 

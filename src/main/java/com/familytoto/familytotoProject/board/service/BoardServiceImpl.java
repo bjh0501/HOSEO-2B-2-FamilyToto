@@ -126,22 +126,6 @@ public class BoardServiceImpl implements BoardService{
 			if(sCovertContetns.length() >= 50) {
 				sCovertContetns = sCovertContetns.substring(0, 48) + " ...";
 			}
-			
-			vo.setBoardContents(sCovertContetns);
-			
-			vo.setRegDtStr(GlobalVariable.formatTimeString(vo.getRegDt()));
-			
-			if(vo.getRegDtStr().equals("출력")) {
-				Timestamp ts = vo.getRegDt();
-				Date date = new Date();
-				date.setTime(ts.getTime());
-				String formattedDate = new SimpleDateFormat("yyyy. MM. dd. hh:mm").format(date);
-				
-				vo.setRegDtStr(formattedDate);
-			}
-			
-			list.set(i, vo);
-			i++;
 		}
 		
 		return list;
@@ -287,20 +271,6 @@ public class BoardServiceImpl implements BoardService{
 			}  else {
 				vo.setCustGubun("");
 			}
-			
-			vo.setRegDtStr(GlobalVariable.formatTimeString(vo.getRegDt()));
-			
-			if(vo.getRegDtStr().equals("출력")) {
-				Timestamp ts = vo.getRegDt();
-				Date date = new Date();
-				date.setTime(ts.getTime());
-				String formattedDate = new SimpleDateFormat("yyyy. MM. dd. hh:mm").format(date);
-				
-				vo.setRegDtStr(formattedDate);
-			}
-			
-			list.set(i, vo);
-			i++;
 		}
 		
 		return list;

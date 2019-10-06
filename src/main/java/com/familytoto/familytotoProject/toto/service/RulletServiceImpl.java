@@ -14,6 +14,7 @@ import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.toto.dao.CommonDao;
 import com.familytoto.familytotoProject.toto.dao.RulletDao;
+import com.familytoto.familytotoProject.toto.domain.RulletStorageVO;
 import com.familytoto.familytotoProject.toto.domain.RulletVO;
 
 @Service
@@ -41,6 +42,7 @@ public class RulletServiceImpl implements RulletService {
 	 * 크레딧 소모
 	 * 경험치 등록
 	 * 경기 등록(W)
+	 * 룰렛 돈 축적
 	 * 
 	 */
 	@Transactional
@@ -76,6 +78,17 @@ public class RulletServiceImpl implements RulletService {
 			return -3;
 		} else {
 			globalRuletNo=vo.getRulletNo();
+			
+			RulletStorageVO rsVo = new RulletStorageVO();
+			rsVo.setCreditId(creVo.getCreditId());
+			rsVo.setRulletNo(vo.getRulletNo());
+			rsVo.setFamilyCustNo(vo.getFamilyCustNo());
+			rsVo.setRegCustNo(vo.getRegCustNo());
+			rsVo.setRegIp(vo.getRegIp());
+			
+			if(rulletDao.insertRulletStorage(rsVo) != 1) {
+				throw new RuntimeException("룰렛에 축적 실패");
+			}
 		}
 
 		return 1;
@@ -104,8 +117,22 @@ public class RulletServiceImpl implements RulletService {
 		creVo.setFamilyCustNo(vo.getFamilyCustNo());
 		creVo.setCreditState("RBG");
 		
-		int nCreditValue = (int) (globalCredit * vo.getRulletBet());
-		
+		int nCreditValue = 0;
+		if(vo.getRulletBet() == -777) {
+			// 지금까지 모인돈
+			nCreditValue = (int) (rulletDao.getAccumCredit());
+			
+			RulletStorageVO rsVo = new RulletStorageVO();
+			rsVo.setChgCustNo(vo.getRegCustNo());
+			rsVo.setFamilyCustNo(vo.getFamilyCustNo());
+			
+			if(rulletDao.updateRulletAccumCredit(rsVo) < 1) {
+				throw new RuntimeException("축적된돈 가져오기 실패");
+			}
+		} else {
+			nCreditValue = (int) (globalCredit * vo.getRulletBet());
+		}
+				
 		creVo.setCreditValue(nCreditValue);
 		
 		if(chargeDao.doCharge(creVo) != 1) {
@@ -130,6 +157,11 @@ public class RulletServiceImpl implements RulletService {
 	@Override
 	public int updateInitialRullet(int familyCustNo) {
 		return rulletDao.updateInitialRullet(familyCustNo);
+	}
+
+	@Override
+	public int getAccumCredit() {
+		return rulletDao.getAccumCredit();
 	}
 
 }

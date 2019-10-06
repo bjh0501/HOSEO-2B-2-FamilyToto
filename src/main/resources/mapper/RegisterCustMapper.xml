@@ -7,12 +7,15 @@
 			INSERT INTO FAMILY_CUSTOM (FAMILY_CUST_NICKNAME, FAMILY_CUST_EMAIL, FAMILY_CUST_ADDR, 
 				FAMILY_CUST_ADDR_SI, FAMILY_CUST_ADDR_GUGUN, FAMILY_CUST_ADDR_DONG,
 			    FAMILY_CUST_RECOMMEND, REG_CUST_NO, CHG_CUST_NO,
-			    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN, ZIP_CODE1, ZIP_CODE2)
-			VALUES(
-		    #{familyCustNickname}, #{familyCustEmail}, #{familyCustAddr},
-		     #{familyCustAddrSi}, #{familyCustAddrGugun}, #{familyCustAddrDong},
-		    #{familyCustRecommend}, 0, NULL,
-		     NOW(), NULL, #{regIp}, NULL, 'Y', #{zipCode1}, #{zipCode2});
+			    REG_DT, CHG_DT, REG_IP, CHG_IP, USE_YN, ZIP_CODE1, ZIP_CODE2,
+			    FAMILY_CUST_COMPANY_NUMBER, DELIVERY_NO
+			)VALUES(
+			    #{familyCustNickname}, #{familyCustEmail}, #{familyCustAddr},
+			     #{familyCustAddrSi}, #{familyCustAddrGugun}, #{familyCustAddrDong},
+			    #{familyCustRecommend}, 0, NULL,
+			     NOW(), NULL, #{regIp}, NULL, 'Y', #{zipCode1}, #{zipCode2},
+			    #{familyCustCompanyNumber}, #{deliveryNo}
+		     );
 	</insert>
 	<select id="checkNickname" resultType="map">
 		SELECT	FAMILY_CUST_NICKNAME
@@ -131,5 +134,11 @@
         AND		SI_GUN_GU_KOR =  #{gugun}
         AND		DONG_KOR = #{dong}
         ORDER BY ri ASC
+    </select>
+    <select id="listDelivery" resultType="DeliveryVO">
+    	SELECT	DELIVERY_NAME as deliveryName
+        ,		DELIVERY_NO as deliveryNo
+        FROM	DELIVERY
+        WHERE	USE_YN = 'Y'
     </select>
 </mapper>

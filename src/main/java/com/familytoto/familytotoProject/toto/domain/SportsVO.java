@@ -23,7 +23,7 @@ public class SportsVO {
     // 1,2,D
     private String sportsResult;
 
-    private Timestamp sportsSchedule;
+    private String sportsSchedule;
 
     private double sportsTeam1Bet;
 
@@ -48,7 +48,37 @@ public class SportsVO {
     
     private String bettingTeamChoice;
     
+    private int creditValue;
     
+    private int sportsBettingGroupNo;    
+
+    private double bettingGroupBet;
+    
+    
+    
+	public double getBettingGroupBet() {
+		return bettingGroupBet;
+	}
+
+	public void setBettingGroupBet(double bettingGroupBet) {
+		this.bettingGroupBet = bettingGroupBet;
+	}
+
+	public int getSportsBettingGroupNo() {
+		return sportsBettingGroupNo;
+	}
+
+	public void setSportsBettingGroupNo(int sportsBettingGroupNo) {
+		this.sportsBettingGroupNo = sportsBettingGroupNo;
+	}
+
+	public int getCreditValue() {
+		return creditValue;
+	}
+
+	public void setCreditValue(int creditValue) {
+		this.creditValue = creditValue;
+	}
 
 	public String getBettingTeamChoice() {
 		return bettingTeamChoice;
@@ -121,12 +151,14 @@ public class SportsVO {
 	public void setSportsResult(String sportsResult) {
 		this.sportsResult = sportsResult;
 	}
+	
+	
 
-	public Timestamp getSportsSchedule() {
+	public String getSportsSchedule() {
 		return sportsSchedule;
 	}
 
-	public void setSportsSchedule(Timestamp sportsSchedule) {
+	public void setSportsSchedule(String sportsSchedule) {
 		this.sportsSchedule = sportsSchedule;
 	}
 

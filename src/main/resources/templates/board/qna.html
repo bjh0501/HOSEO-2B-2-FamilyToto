@@ -268,7 +268,7 @@ function question() {
 		type : "POST",
 		cache : false,
 		dataType : "json",
-		data : "qnaQuestionContents=" + $("#contents").val().trim(),
+		data : "qnaQuestionContents=" +encodeURIComponent($("#contents").val().trim()),
 		success : function(data) {
 			if(data == 1) {
 				alert("문의가 등록되었습니다.");
@@ -331,9 +331,9 @@ function annoQuestion() {
 		type : "POST",
 		cache : false,
 		dataType : "json",
-		data : "qnaQuestionAnnoId=" + $("#nickname").val().trim()
-				+"&qnaQuestionAnnoPw=" + $("#password").val()
-				+"&qnaQuestionContents=" + $("#contents").val().trim(),
+		data : "qnaQuestionAnnoId=" + encodeURIComponent($("#nickname").val().trim())
+				+"&qnaQuestionAnnoPw=" + encodeURIComponent($("#password").val())
+				+"&qnaQuestionContents=" + encodeURIComponent($("#contents").val().trim()),
 		success : function(data) {
 			if(data == 1) {
 				alert("문의가 등록되었습니다.");
@@ -361,7 +361,7 @@ function answer(obj, qnaNo)  {
 		cache : false,
 		dataType : "json",
 		data : "qnaNo=" + qnaNo
-				+"&qnaAdminContents=" + $(obj).prev().val(),
+				+"&qnaAdminContents=" + encodeURIComponent($(obj).prev().val()),
 		success : function(data) {
 			if(data == 1) {
 				alert("답변이 등록되었습니다.");

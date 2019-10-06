@@ -11,13 +11,11 @@
 		,		PRODUCT_CREDIT as productCredit
 		,		PRODUCT_AMOUNT as productAmount
 		,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
-		,		D.DELIVERY_NAME as deliveryName
-		,		P.DELIVERY_NO as deliveryNo
+		,		FC.FAMILY_CUST_NO as familyCustNo
         ,		AVG(PCO.PRODUCT_COMMENT_RATING) as ratingAvg
 		FROM	PRODUCT P
 			LEFT OUTER JOIN PRODUCT_COMMENT PCO ON P.PRODUCT_NO = PCO.PRODUCT_NO AND PCO.USE_YN = 'Y'
 			INNER JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_NO = PC.CATEGORY_NO AND PC.USE_YN = 'Y'
-			INNER JOIN DELIVERY D ON P.DELIVERY_NO = D.DELIVERY_NO AND D.USE_YN = 'Y'
 		    INNER JOIN CUSTOM C ON P.REG_CUST_NO = C.CUST_NO AND C.USE_YN = 'Y'
 		    INNER JOIN FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
 		WHERE	P.PRODUCT_NO = #{productNo}
@@ -25,14 +23,18 @@
 	</select>
 	
 	<select id="listCreditShop" resultType="ProductVO" parameterType="ProductVO">
-		
         SELECT	P.PRODUCT_NO as productNo
 		,		P.PRODUCT_NAME as productName
 		,		P.PRODUCT_CREDIT as productCredit
 		,		P.PRODUCT_AMOUNT as productAmount
 		,		PI.PRODUCT_IMG_URL as productImgUrl
+		,		IFNULL(CPP.USE_YN,'') as useYn
 		FROM	PRODUCT P
 			INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y' AND PI.PRODUCT_IMG_PRIMARY = 'Y'
+			LEFT OUTER JOIN CUST_PRODUCT_PREFER CPP ON P.PRODUCT_NO = CPP.PRODUCT_NO AND CPP.USE_YN = 'Y'
+		<if test="familyCustNo != null">
+			AND	CPP.FAMILY_CUST_NO = #{familyCustNo}
+		</if>
 		WHERE	P.USE_YN = 'Y'
 		<if test="productName != ''">
         	AND		P.PRODUCT_NAME LIKE CONCAT('%',#{productName},'%')
@@ -103,4 +105,49 @@
 		FROM	PRODUCT_CATEGORY
 		WHERE	USE_YN = 'Y'
 	</select>
+	<insert id="insertPreferProduct">
+		INSERT INTO CUST_PRODUCT_PREFER (
+			PRODUCT_NO,		FAMILY_CUST_NO,	REG_CUST_NO,
+		    REG_DT,			REG_IP,			USE_YN
+		) VALUES (
+			#{productNo},	#{familyCustNo},#{regCustNo},
+			NOW(),			#{regIp},		'Y'
+		)
+	</insert>
+	<select id="getPreferProduct" parameterType="ProductBuyVO" resultType="String">
+		SELECT	USE_YN as useYn 
+		FROM	CUST_PRODUCT_PREFER
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		PRODUCT_NO = #{productNo}
+	</select>
+	<update id="updatePreferProduct">
+		UPDATE	CUST_PRODUCT_PREFER
+		SET		USE_YN = #{useYn}
+		,		CHG_DT = NOW()
+		,		CHG_CUST_NO = #{chgCustNo}
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		PRODUCT_NO = #{productNo}
+	</update>
+	<select id="listPreferProduct" parameterType="int" resultType="String">
+		SELECT	PRODUCT_NO as productNo
+		FROM	CUST_PRODUCT_PREFER
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+	</select>
+	<select id="getDeliveryCredit" resultType="int" parameterType="List">
+    	SELECT SUM(D.DELIVERY_CREDIT) as deliveryCredit
+        FROM (
+			SELECT	DISTINCT
+					FC.FAMILY_CUST_NO
+            ,		FC.DELIVERY_NO
+			FROM	PRODUCT P 
+				INNER JOIN FAMILY_CUSTOM FC ON FC.FAMILY_CUST_NO = P.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+			WHERE	P.PRODUCT_NO IN
+			<foreach collection="list" item="productNo" index="index" open="(" separator="," close=")">
+				#{productNo}
+			</foreach>
+			AND		P.USE_YN = 'Y'
+		) A
+        INNER JOIN DELIVERY D ON A.DELIVERY_NO = D.DELIVERY_NO AND D.USE_YN = 'Y'
+</select>
 </mapper>

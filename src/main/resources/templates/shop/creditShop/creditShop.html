@@ -59,6 +59,7 @@
 											th:text="${list.getCategoryName()}">카드</option>
 									</th:block>
 								</select>
+								<a href="/product/insertProduct">상품등록 (임시)</a>
 							</div>
 						</div>
 					</div>
@@ -132,7 +133,6 @@
 		<!-- Custom scripts for all pages-->
 		<script src="/js/sb-admin-2.min.js"></script>
 		
-		<script src="/js/header/header.js"></script>
 	<!-- common -->
     <script src="/js/common.js"></script>
 	<script src="/js/header.js"></script>
@@ -174,39 +174,27 @@ var helpCommentList = [
 	
 	var page = 0;
 	
-	$(function() { //페이지가 로드되면 데이터를 가져오고 page를 증가시킨다.		
-		getList(page, 'N');
-		page+=20;
+	$(function() { //페이지가 로드되면 데이터를 가져오고 page를 증가시킨다.
+		getList(-1, 'N');
 	});
 
 	$(window).scroll(
 		function() { //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
 			if ($(window).scrollTop() >= $(document).height()
 				- $(window).height()) {
-			getList(page, 'N');
+				getScrollList(page, 'N');
 			page += 20;
 		}
 	});
 
 
 	
-	function getList(page, searchGubun) {
-		if(searchGubun == "Y") {
-			if($("#search").val() == beforeSearch) {
-				return;
-			}
-		}
+	function getList() {
 			
-		if(page == -1) {
-			$("#creditMain").html("");
-			page = 0;
-		}
+		$("#creditMain").html("");
 		
 		beforeSearch = $("#search").val();
-		
-		if(page == -1) {
-			page = 0;
-		}
+		page=0;
 		
 		$.ajax({
 			url : "/creditShop/list?pagingNo=" + page,
@@ -241,29 +229,43 @@ var helpCommentList = [
 							var productName = data[i].productName.trim();
 							var productAmount = data[i].productAmount;
 							var productNo = data[i].productNo;
+							var prefer = data[i].useYn;
 							var productCredit = comma(data[i].productCredit);
 
-							str += "	<div class='card col-lg-3 col-md-3 col-sm-6  col-xs-12'>";
+							str += "	<div class='card col-lg-3 col-md-6 col-sm-6  col-xs-12'>";
 							str += "		<img class='card-img-top' alt=''...' style='height: 180px; width:180px;;'";
 							str += "			src='" + img + "'";
-							str += "			onerror=this.src='/img/error/notFound.jpg'>";
+							str += "			onerror=this.src='/img/error/not-found.png'>";
 							str += "		<div class='card-body'>";
 							str += "			<hr>";
 							str += "			<h5 class='card-title'>";
 							str += "				<span>"
 									+ productName
-									+ "</span><span style='float: right'> <input";
-							str += "					class='btn-secondary' type='button' value='상세보기'";
-							str += "					onclick=javascript:openProduct('" + productNo + "')>";
-							str += "				</span>";
+									+ "</span>";
 							str += "			</h5>";
 							str += "			<p class='card-text'>";
 							str += "				<span>"
 									+ productCredit
-									+ "</span>크레딧<span style='float: right'><input";
+									+ "</span>크레딧<span style='float: right'>";
+							str += "			</p>";
+							str += "			<p class='card-text'>";
+							str += "				<span style='float: right'> <input id='prefer" + productNo + "'";
+							str += "					class='btn-secondary' type='button' value='찜'";
+							
+							if(prefer == "Y") {
+								str += " style='background: orange;'"
+							}
+							
+							str += "					onclick=javascript:preferProduct(" + productNo + ");>";
+							str += "				</span>";
+							str += "				<span style='float: right'> <input";
+							str += "					class='btn-secondary' type='button' value='상세보기'";
+							str += "					onclick=javascript:openProduct('" + productNo + "')>";
+							str += "				</span>";
+							str += "				<span style='float: right'> <input";
 							str += "					class='btn-secondary' type='button' productName ='" + productName +
 																"' productNo='" + productNo + "' productamount='" + productAmount+ "' value='장바구니'";
-							str += "						onClick=javascript:openModal($(this))>";
+							str += "						onClick=javascript:openModal($(this))>"
 							str += "			</p>";
 							str += "		</div>";
 							str += "	</div>";
@@ -279,7 +281,7 @@ var helpCommentList = [
 					str += "</div>";
 				}
 
-				page+=10;
+				page+=20;
 				$("#creditMain").append(str);
 				$("#creditMain").slideDown(200);
 			},
@@ -290,6 +292,113 @@ var helpCommentList = [
 			}
 		});
 	};
+	
+	function getScrollList(page, searchGubun) {
+		if(searchGubun == "Y") {
+			if($("#search").val() == beforeSearch) {
+				return;
+			}
+		}
+		
+		beforeSearch = $("#search").val();
+		
+		$.ajax({
+			url : "/creditShop/list?pagingNo=" + page,
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : {
+				categoryNo :  $("#category").val()   
+			,	productName : $("#search").val()
+			},
+			success : function(data) {
+				str = "";
+
+				var i = 0;
+				var num = data.length;
+
+				if (num > 20) {
+					num = 20;
+				}
+
+				while (i < num) {
+					str += "<div class='row'>";
+
+					for (var j = 0; j < 4; j++) {
+						if (data[i] != undefined) {
+							var img = "";
+
+							if (data[i].productImgUrl != undefined) {
+								img = data[i].productImgUrl;
+							}
+
+							var productName = data[i].productName.trim();
+							var productAmount = data[i].productAmount;
+							var productNo = data[i].productNo;
+							var prefer = data[i].useYn;
+							var productCredit = comma(data[i].productCredit);
+
+							str += "	<div class='card col-lg-3 col-md-6 col-sm-6  col-xs-12'>";
+							str += "		<img class='card-img-top' alt=''...' style='height: 180px; width:180px;;'";
+							str += "			src='" + img + "'";
+							str += "			onerror=this.src='/img/error/not-found.png'>";
+							str += "		<div class='card-body'>";
+							str += "			<hr>";
+							str += "			<h5 class='card-title'>";
+							str += "				<span>"
+									+ productName
+									+ "</span>";
+							str += "			</h5>";
+							str += "			<p class='card-text'>";
+							str += "				<span>"
+									+ productCredit
+									+ "</span>크레딧<span style='float: right'>";
+							str += "			</p>";
+							str += "			<p class='card-text'>";
+							str += "				<span style='float: right'> <input id='prefer" + productNo + "'";
+							
+							str += "					class='btn-secondary' type='button' value='찜'";
+							
+							if(prefer == "Y") {
+								str += " style='background: orange;'"
+							}
+							
+							str += "					onclick=javascript:preferProduct(" + productNo + ");>";
+							str += "				</span>";
+							str += "				<span style='float: right'> <input";
+							str += "					class='btn-secondary' type='button' value='상세보기'";
+							str += "					onclick=javascript:openProduct('" + productNo + "')>";
+							str += "				</span>";
+							str += "				<span style='float: right'> <input";
+							str += "					class='btn-secondary' type='button' productName ='" + productName +
+																"' productNo='" + productNo + "' productamount='" + productAmount+ "' value='장바구니'";
+							str += "						onClick=javascript:openModal($(this))>"
+							str += "			</p>";
+							str += "		</div>";
+							str += "	</div>";
+
+							if (i >= num) {
+								break;
+							}
+
+							i++;
+						}
+					}
+
+					str += "</div>";
+				}
+
+				page+=20;
+				$("#creditMain").append(str);
+				$("#creditMain").slideDown(200);
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
 
 	function openProduct(productNo) {
 		var win = window.open("/showProduct/" + productNo, "_blank");
@@ -344,6 +453,34 @@ var helpCommentList = [
 		$("#productNameByModal").html(productName);
 		$("#productAmountByModal").html(productAmount);
 		$('#promptModal').modal('show');
+	}
+
+	function preferProduct(productNo) {
+		$.ajax({
+			url : "/showProduct/prefer",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : "productNo=" + productNo,
+			success : function(data) {				
+				if (data.trim() == 0) {
+					$("#prefer" + productNo).attr("Style","background:orange");
+				} else if(data.trim() == 1) {
+					$("#prefer" + productNo).attr("Style","");
+				} else if(data.trim() == -97) { 
+					alert("로그인을 해야만 찜을 할 수 있습니다.");
+				} else if(data.trim() == -96) { 
+					alert("패밀리 회원만 찜을 할 수 있습니다.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 	
 	$("#search").keyup(function(e){getList(-1, "Y"); });

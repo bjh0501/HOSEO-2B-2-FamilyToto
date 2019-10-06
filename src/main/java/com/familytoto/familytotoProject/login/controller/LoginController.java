@@ -1,8 +1,10 @@
 package com.familytoto.familytotoProject.login.controller;
 
 import java.io.PrintWriter;
-import java.util.Map;
+import java.net.URLEncoder;
+import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -59,7 +61,7 @@ public class LoginController {
 		model.addAttribute("naverLoginUrl", sNaverLoginLink);
 		model.addAttribute("kakaoLoginUrl", sKakaoLoginLink);
 		model.addAttribute("facebookLoginUrl", sFacebookLoginLink);
-		
+
 		return "/loginInfo/login";
     }
 	
@@ -81,7 +83,9 @@ public class LoginController {
 	// 원스포츠 회원전용
 	@RequestMapping("/login/custLogin")
 	@ResponseBody
-	public int custLogin(@ModelAttribute CustVO vo, HttpServletRequest request) {
+	public int custLogin(@ModelAttribute CustVO vo
+			,HttpServletRequest request
+			,HttpServletResponse response) {
 		CustVO login = custLoginService.login(vo);
 		int nReuslt = 0;
 		

@@ -6,15 +6,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	content="width=device-width, initial-scale=1, shrink-to-fit=no"
+>
 <meta name="description" content="">
 <meta name="author" content="">
 
 <title>One Sports</title>
 
 <!-- Custom fonts for this template-->
-<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
-	rel="stylesheet" type="text/css">
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}" rel="stylesheet"
+	type="text/css"
+>
 <link th:href="@{css/Nunito.css}" rel="stylesheet">
 
 <!-- Custom styles for this template-->
@@ -29,26 +31,18 @@
 </head>
 
 <body id="page-top">
-<div style="background: #000000c4;
-    width: 100%;
-    height: 71px;
-    position: fixed;
-    z-index: 10000;
-    color: white;
-    font-weight: 800;
-    cursor:pointer;"
-    onClick="javascript:$(this).slideUp()"
-    >
-    <center>
-		기능이 일부만 되거나 안되는 페이지입니다.
-		</center>
+	<div
+		style="background: #000000c4; width: 100%; height: 71px; position: fixed; z-index: 10000; color: white; font-weight: 800; cursor: pointer;"
+		onClick="javascript:$(this).slideUp()"
+	>
+		<center>기능이 일부만 되거나 안되는 페이지입니다.</center>
 	</div>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<ul
-			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-			id="accordionSidebar" th:include="/sidebar/sidebar">
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar"
+		>
 		</ul>
 
 		<!-- Content Wrapper -->
@@ -60,7 +54,8 @@
 				<!-- Topbar -->
 				<nav
 					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-					th:include="/header/header"></nav>
+					th:include="/header/header"
+				></nav>
 				<!-- End of Topbar -->
 
 				<!-- Begin Page Content -->
@@ -114,19 +109,53 @@
 	<!-- Custom scripts for all pages-->
 	<script src="/js/sb-admin-2.min.js"></script>
 	<!-- common -->
-    <script src="/js/common.js"></script>
+	<script src="/js/common.js"></script>
 	<script src="/js/header.js"></script>
-	
+
 
 </body>
 
 </html>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+// Firebase 기본 SDK, 꼭 필요로 함
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+
+// Firebase App SDK
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
+
+// Firebase Auth SDK, 계정 인증 사용시 필요
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
+
+// Firebase Database SDK, 데이터베이스 사용시 필요
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
 <script>
-	function goCharge() {
-		location.href = "/charge"
-	}
-	
-	function clickBoard(no) {
-		location.href= "/showBoard/" + no;
+	// Your web app's Firebase configuration
+	var firebaseConfig = {
+		apiKey : "AIzaSyA2rSRgor5OCyVBpkdyPpUbtuiBkVlzZxY",
+		authDomain : "familytoto-a142b.firebaseapp.com",
+		databaseURL : "https://familytoto-a142b.firebaseio.com",
+		projectId : "familytoto-a142b",
+		storageBucket : "familytoto-a142b.appspot.com",
+		messagingSenderId : "92460229559",
+		appId : "1:92460229559:web:20dd41e80ac304ce4c7e32",
+		measurementId : "G-NSJXMNT524"
+	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	// firebase.analytics();
+	var database = firebase.database();
+
+	function writeUserData(roomNum) {
+		firebase.database().ref('russaRullet/' + roomNum).set({
+			turn : "1"
+		});
+		firebase.database().ref('russaRullet/' + roomNum + "/players").set({
+			turn : "1"
+		});
 	}
 </script>

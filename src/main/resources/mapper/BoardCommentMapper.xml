@@ -48,7 +48,8 @@
 	</update>	
 	<select id="getListComment" resultType="CommentVO">
         SELECT	IFNULL(IFNULL(C.COMMENT_ANNO_ID, SC.SC_CUST_NICK), FC.FAMILY_CUST_NICKNAME) as commentAnnoId
-		,		IFNULL(C.CHG_DT, C.REG_DT) as regDt
+		,		IFNULL(DATE_FORMAT(C.CHG_DT, '%Y. %c. %d %H:%i')
+			,		DATE_FORMAT(C.REG_DT, '%Y. %c. %d %H:%i')) as regDt
 		,		C.COMMENT_CONTENTS as commentContents
 		,		C.COMMENT_NO as commentNo
 		,		IFNULL(IFNULL(CUST.CUST_NO, SC.SC_CUST_NO), 0) AS regCustNo

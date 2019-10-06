@@ -43,7 +43,7 @@ public class CommentVO {
 
     private int chgCustNo;
 
-    private Timestamp regDt;
+    private String regDt;
 
     private Timestamp chgDt;
 
@@ -58,6 +58,18 @@ public class CommentVO {
     
     private String useYn;
     
+    private String boardTitle;
+    
+    
+    
+	public String getBoardTitle() {
+		return boardTitle;
+	}
+
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
+	}
+
 	public String getUseYn() {
 		return useYn;
 	}
@@ -161,12 +173,12 @@ public class CommentVO {
 	public void setChgCustNo(int chgCustNo) {
 		this.chgCustNo = chgCustNo;
 	}
-
-	public Timestamp getRegDt() {
+	
+	public String getRegDt() {
 		return regDt;
 	}
 
-	public void setRegDt(Timestamp regDt) {
+	public void setRegDt(String regDt) {
 		this.regDt = regDt;
 	}
 

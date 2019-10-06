@@ -234,8 +234,10 @@ var helpCommentList = [
 						diceResult2 = "/img/toto/dice/dice" + i + ".png";
 					}
 				}
+				
 				$("#resultText").html(data.dice1 + ", " + data.dice2 + "<br>"
 						+ numberWithCommas(data.getCredit) + "크레딧을 얻었습니다.");
+				
 				timeRef = setInterval(function() {
 					draw(data.error, data.getCredit);
 				}, 10);
@@ -299,9 +301,9 @@ var helpCommentList = [
 			$("#betButton").attr("onclick", "location.reload()");
 			imgClo1.src = diceResult1;
 			imgClo2.src = diceResult2;
+			asyncExp();
 			
 			// 이상하게 이걸 써야 마지막 이미지가나온다.
-			
 			setInterval(function(){
 				ctx2.drawImage(imgClo2, x2, y2, ballRadius, ballRadius);
 				ctx1.drawImage(imgClo1, x1, y1, ballRadius, ballRadius);

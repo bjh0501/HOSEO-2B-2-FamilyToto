@@ -1,6 +1,8 @@
 package com.familytoto.familytotoProject.productbuy.controller;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -113,6 +115,9 @@ public class ProductBuyController {
         return mv;
     }
 	
+	
+	
+	
 	@RequestMapping("/productSell/insert")
 	@ResponseBody
 	@Transactional // 장바구니경우 필요
@@ -135,6 +140,22 @@ public class ProductBuyController {
 		String sProductNo[] = request.getParameterValues("productNo");
 		String sProductBuAmount[] = request.getParameterValues("produtBuyAmount");
 		String sBasketNo[] = null;
+		
+		List<Integer> list = new ArrayList<Integer>();
+		
+		for(int i = 0; i < sProductNo.length; i++) {
+			list.add(Integer.parseInt(sProductNo[i]));			
+		}
+		
+		cVo.setRegIp(request.getRemoteAddr());
+		
+		// 배송비 추가
+		// 상품구입할때 크레딧 유호성검사하기 때문에 
+		// 배송비에서는 크레딧 예외 처리 안해도됨
+		if(creditShopService.getDeliveryCredit(list, cVo) != 1) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return -6;
+		}
 		
 		// 장바구니 경우
 		if(request.getParameterValues("basketNo") != null) {
@@ -187,8 +208,12 @@ public class ProductBuyController {
 				vo.setProductBuyAmount(nProductAmount);
 				vo.setProductBuyCredit(pVo.getProductCredit() * nProductAmount);
 				vo.setRegCustNo(cVo.getCustNo());
+				vo.setFamilyCustNo(cVo.getFamilyCustNo());
 				
-				nResult = productBuyService.insertProductDirectBuy(vo, sGubun);
+				int sellerFmailyCustNo = pVo.getFamilyCustNo();
+				
+				// , sllerFamiyNo
+				nResult = productBuyService.insertProductDirectBuy(vo, sGubun, sellerFmailyCustNo);
 				
 				if(nResult != 1) {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

@@ -16,4 +16,7 @@ public interface RulletService {
 	
 	// 배팅도중 팅기고 다시 들어올경우 패배처리
 	int updateInitialRullet(int familyCustNo);
+	
+	// 룰렛 축적된돈 불러오기
+	int getAccumCredit();
 }

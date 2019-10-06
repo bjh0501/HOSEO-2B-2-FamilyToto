@@ -59,8 +59,8 @@ public class ProductBuyVO {
     private int basketNo;
     
     private String productName;
-    
-   	public String getProductName() {
+
+	public String getProductName() {
 		return productName;
 	}
 

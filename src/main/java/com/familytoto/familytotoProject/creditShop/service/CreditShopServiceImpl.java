@@ -9,18 +9,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import com.familytoto.familytotoProject.charge.dao.ChargeDao;
+import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.creditShop.dao.CreditShopDao;
 import com.familytoto.familytotoProject.creditShop.domain.CategoryVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
+import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
 public class CreditShopServiceImpl implements CreditShopService {
 	@Autowired
 	CreditShopDao creditShopDao;
-		
+	
+	@Autowired
+	ChargeDao chargeDao;
+	
 	@Override
 	public ProductVO getShowProduct(ProductVO vo) {
 		return creditShopDao.getShowProduct(vo);
@@ -83,5 +89,45 @@ public class CreditShopServiceImpl implements CreditShopService {
 	@Override
 	public List<CategoryVO> listProductCategory() {
 		return creditShopDao.listProductCategory();
+	}
+
+	@Override
+	public int insertPreferProduct(ProductBuyVO vo) {
+		return creditShopDao.insertPreferProduct(vo);
+	}
+
+	@Override
+	public String getPreferProduct(ProductBuyVO vo) {
+		return creditShopDao.getPreferProduct(vo);
+	}
+
+	@Override
+	public int updatePreferProduct(ProductBuyVO vo) {
+		return creditShopDao.updatePreferProduct(vo);
+	}
+
+	@Override
+	@Transactional
+	public int getDeliveryCredit(List<Integer> productNo, CustVO vo) {
+		int deliveryCredit = creditShopDao.getDeliveryCredit(productNo);
+
+		CreditVO creditVo = new CreditVO();
+		creditVo.setCreditValue(deliveryCredit*-1);
+		creditVo.setCreditState("IDC");
+		creditVo.setRegCustNo(vo.getCustNo());
+		creditVo.setFamilyCustNo(vo.getFamilyCustNo());
+		creditVo.setRegIp(vo.getRegIp());
+		
+		if(chargeDao.doCharge(creditVo) != 1) {
+			throw new RuntimeException("배송 실패");
+		}
+		
+		return 1;
+	}
+
+	@Override
+	public boolean productSellInsert() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

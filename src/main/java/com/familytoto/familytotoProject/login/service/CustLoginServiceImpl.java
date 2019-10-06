@@ -1,5 +1,7 @@
 package com.familytoto.familytotoProject.login.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,11 @@ public class CustLoginServiceImpl implements CustLoginService {
 	@Override
 	public CustVO getExpInfo(int familyCustNo) {
 		return null;
+	}
+
+	@Override
+	public List<String> listPreferProduct(int familyCustNo) {
+		return custLoginDao.listPreferProduct(familyCustNo);
 	}
 
 }

@@ -48,21 +48,9 @@ public class DemoApplicationTests {
 		boolean isValidPassword = BCrypt.checkpw(password, passwordHashed1);
 		System.out.println(isValidPassword);		
 	}
-	
+
 	@Test
-	public void timeDiff() throws ParseException {
-		String start = "2019-08-19 00:01:01.0";
-		Calendar tempcal = Calendar.getInstance();
-		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd Hh:mm:ss.SSS");
-		Date startday = sf.parse(start, new ParsePosition(0));
-		long startTime = startday.getTime();
-		Calendar cal = Calendar.getInstance();
-		Date endDate = sf.parse( "2019-08-18 23:58:59.0", new ParsePosition(0));
-		long endTime = endDate.getTime();
-		long mills = endTime - startTime;
-		long min = mills / 60000;
-		StringBuffer diffTime = new StringBuffer();
-		diffTime.append("시간의 차이는").append(min).append("분 입니다.");
-		System.out.println(diffTime.toString());
+	public void lucy() {
+		
 	}
 }

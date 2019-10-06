@@ -34,6 +34,16 @@ public class ExpVO {
     private int startExp;
     
     private int endExp;
+    
+    private String regExpDt;
+
+	public String getRegExpDt() {
+		return regExpDt;
+	}
+
+	public void setRegExpDt(String regExpDt) {
+		this.regExpDt = regExpDt;
+	}
 
 	public int getStartExp() {
 		return startExp;

@@ -68,6 +68,26 @@ public class RegisterCustVO {
 	private String zipCode1;
 	
 	private String zipCode2;
+	
+	private String familyCustCompanyNumber;
+	
+	private Integer deliveryNo;
+
+	public String getFamilyCustCompanyNumber() {
+		return familyCustCompanyNumber;
+	}
+
+	public void setFamilyCustCompanyNumber(String familyCustCompanyNumber) {
+		this.familyCustCompanyNumber = familyCustCompanyNumber;
+	}
+
+	public Integer getDeliveryNo() {
+		return deliveryNo;
+	}
+
+	public void setDeliveryNo(Integer deliveryNo) {
+		this.deliveryNo = deliveryNo;
+	}
 
 	public String getZipCode1() {
 		return zipCode1;

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.registerCust.dao.RegisterCustDAO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.registerCust.domain.DeliveryVO;
 import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 import com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO;
 
@@ -65,6 +66,11 @@ public class RegisterCustServiceImpl implements RegisterCustService {
 	@Override
 	public Map<String, Object> getUsedId(CustVO vo) {
 		return registerCustDao.getUsedId(vo);
+	}
+
+	@Override
+	public List<DeliveryVO> listDelivery() {
+		return registerCustDao.listDelivery();
 	}
 
 	

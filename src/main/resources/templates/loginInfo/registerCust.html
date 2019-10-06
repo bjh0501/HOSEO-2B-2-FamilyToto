@@ -182,6 +182,51 @@
 							<div class="card shadow h-100 py-12">
 								<div style="padding: 20px;">
 									<div class="row">
+										<h4>판매자</h4>&nbsp;
+										<span>
+											<div class="input-group mb-3">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" id="seller" onClick="javascript:switchSeller();">
+													<label class="custom-control-label" for="seller">
+														판매자 등록
+													</label>
+												</div>
+											</div>
+										</span>
+									</div>
+									<hr class="sellerDiv" style="display: none">
+									<div class="row sellerDiv" style="display: none">
+										<span class="text-word-r">사업자 등록 번호</span>
+										<div class="col-xl-3 col-md-3 mb-3">
+											<input type="text" class="form-control" placeholder="000" id="sellNum1">
+										</div>
+										<label style="padding-top: 6px;">-</label>
+										<div class="col-xl-3 col-md-3 mb-3">
+											<input type="text" class="form-control" placeholder="00" id="sellNum2">
+										</div>
+										<label style="padding-top: 6px;">-</label>
+										<div class="col-xl-3 col-md-3 mb-3">
+											<input type="text" class="form-control" placeholder="0000" id="sellNum3">
+										</div>
+									</div>
+									<div class="row sellerDiv" style="display: none;">
+										<span class="text-word-r">택배사 선택</span>
+										<select class="custom-select" id="deliveryNo">
+											<th:block  th:each="list : ${delivery}">
+												<option th:value="${list.deliveryNo}" th:text="${list.deliveryName}"></option>
+											</th:block>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xl-12 col-md-12 mb-12">
+							<div class="card shadow h-100 py-12">
+								<div style="padding: 20px;">
+									<div class="row">
 										<h4>기타</h4>
 									</div>
 									<hr>
@@ -505,7 +550,7 @@ var helpCommentList = [
 		} else if (ec == "N") {
 			email2.val("naver.com");
 		} else if (ec == "D") {
-			email2.val("daume.net");
+			email2.val("daum.net");
 		} else {
 			email2.val("google.com");
 		}
@@ -634,24 +679,62 @@ var helpCommentList = [
 			return false;
 		}
 		
+		var paramSellerStr = "";
+		
+		if ($("input:checkbox[id='seller']").is(":checked") == true) {
+			var regexp = /^\d{3}$/
+			v = $("#sellNum1").val();
+
+			if( !regexp.test(v) ) {
+				alert("3자리 숫자만 입력해주세요.");
+				$("#sellNum1").focus();
+				return;
+			}
+			
+			var regexp = /^\d{2}$/
+			v = $("#sellNum2").val();
+
+			if( !regexp.test(v) ) {
+				alert("2자리 숫자만 입력해주세요.");
+				$("#sellNum2").focus();
+				return;
+			}
+			
+			var regexp = /^\d{4}$/
+			v = $("#sellNum3").val();
+
+			if( !regexp.test(v) ) {
+				alert("4자리 숫자만 입력해주세요.");
+				$("#sellNum3").focus();
+				return;
+			}
+			paramSellerStr =
+				"&deliveryNo=" + $("#deliveryNo").val()
+				+ "&familyCustCompanyNumber=" + $("#sellNum1").val()+"-" + $("#sellNum2").val() + "-" + $("#sellNum3").val();
+		}
+		
+		var paramStr = "";
+		
+		paramStr = "custId=" + custId.val()
+		+ "&custPassword=" + passwordCheck.val()
+		+ "&familyCustNickname=" + familyCustNickname.val()
+		+ "&familyCustEmail=" + email
+		+ "&familyCustAddr=" + addr.val()
+			+ "&zipCode1=" + zipCode
+		+ "&zipCode2="
+		+ "&familyCustAddrSi=" + $("#sido").val()
+		+ "&familyCustAddrGugun=" + $("#gugun").val()
+		+ "&familyCustAddrDong=" + $("#dong").val()
+		+ "&familyCustRecommend=" + reco.val()
+		+ "&captcha=" + captcha.val() + paramSellerStr;
+		
 		$.ajax({
 			url : "/registerCust/register",
 			type : "POST",
 			cache : false,
 			async : false,
 			dataType : "json",
-			data : "custId=" + custId.val()
-					+ "&custPassword=" + passwordCheck.val()
-					+ "&familyCustNickname=" + familyCustNickname.val()
-					+ "&familyCustEmail=" + email
-					+ "&familyCustAddr=" + addr.val()
- 					+ "&zipCode1=" + zipCode
-					+ "&zipCode2="
-					+ "&familyCustAddrSi=" + $("#sido").val()
-					+ "&familyCustAddrGugun=" + $("#gugun").val()
-					+ "&familyCustAddrDong=" + $("#dong").val()
-					+ "&familyCustRecommend=" + reco.val()
-					+ "&captcha=" + captcha.val(),
+			data : paramStr,
 			success : function(data) {
 				if (data == -99) {
 					alert("자동 가입 방지 문자를 잘못 입력하였습니다.");
@@ -759,5 +842,13 @@ var helpCommentList = [
 				console.log(msg);
 			}
 		});
+	}
+	
+	function switchSeller() {
+		if ($("input:checkbox[id='seller']").is(":checked") == false) {
+			$(".sellerDiv").attr("style", "display: none");
+		} else {
+			$(".sellerDiv").attr("style", "");
+		}
 	}
 </script>

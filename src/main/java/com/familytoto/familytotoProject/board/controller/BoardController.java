@@ -231,22 +231,6 @@ public class BoardController {
 
 		List<CommentVO> listCommentVo = commentService.getListComment(vo);
 
-		for (int i = 0; i < listCommentVo.size(); i++) {
-
-			String sDateStr = GlobalVariable.formatTimeString(listCommentVo.get(i).getRegDt());
-
-			if (sDateStr.equals("출력")) {
-				Timestamp ts = listCommentVo.get(i).getRegDt();
-				Date date = new Date();
-				date.setTime(ts.getTime());
-				String formattedDate = new SimpleDateFormat("yyyy. MM. dd. hh:mm").format(date);
-
-				listCommentVo.get(i).setRegDtStr(formattedDate);
-			} else {
-				listCommentVo.get(i).setRegDtStr(sDateStr);
-			}
-		}
-
 		String sGubun = (String) session.getAttribute("social");
 
 		if (sGubun != null) {

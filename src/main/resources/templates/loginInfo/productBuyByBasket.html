@@ -85,26 +85,35 @@
 											width="100%" cellspacing="0">
 											<thead>
 												<tr>
+													<th style="width: 10%;">판매자</th>
 													<th style="width: 10%;">상품번호</th>
-													<th style="width: 50%;">상품명</th>
-													<th style="width: 15%;">가격</th>
+													<th style="width: 30%;">상품명</th>
+													<th style="width: 10%;">가격</th>
 													<th style="width: 10%;">개수</th>
-													<th style="width: 15%;">총가격</th>
+													<th style="width: 10%;">총가격</th>
+													<th style="width: 20%;">택배사(비용)</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr th:each="pro : ${product}">
 													<input name="basketNo" type="hidden"
 														th:value="${pro.getBasketNo()}">
-													<td class="productNo" th:text="${pro.getProductNo()}"></td>
+													<td style="text-align: center;" th:class="${pro.getSeller()}" th:text="${pro.getSeller()}"></td>
+													<td class="productNo" th:text="${pro.getProductNo()}" 
+													style="text-align: center;"></td>
 													<td class="productName" th:text="${pro.getProductName()}"></td>
 													<td class="productPrice"
+														style="text-align: right;"
 														th:value="${pro.getProductCredit()}"
 														th:text="${#numbers.formatInteger(pro.getProductCredit(), 0, 'COMMA')}"></td>
 													<td class="productAmount"
+														style="text-align: center;"
 														th:text="${pro.getProductAmount()}"></td>
-													<td class="totalCredit" th:value="${pro.getTotalCredit()}"
-														th:text="${#numbers.formatInteger(pro.getTotalCredit(), 0, 'COMMA')}"></td>
+													<td style="text-align: right;" class="totalCredit" th:value="${pro.getTotalCredit()}" th:text="${#numbers.formatInteger(pro.getTotalCredit(), 0, 'COMMA')}"></td>
+													<td name="deliveryrow" th:class="${pro.getSeller()}"
+													th:value="${pro.getDeliveryCredit()}"
+													style="text-align: center;"
+													th:text="${pro.getDeliveryName() + '(' + #numbers.formatInteger(pro.getDeliveryCredit(), 0, 'COMMA') + ')'}"></td>
 												</tr>
 											</tbody>
 										</table>
@@ -208,6 +217,7 @@
 									<h4>
 										배송크레딧 : <span id="buyDeliveryCredit">Loading...</span>
 									</h4>
+									*배송비는 크레딧으로만 구입가능합니다.
 									<h4>
 										총 크레딧 : <span id="buyTotalCredit">Loading...</span>
 									</h4>
@@ -272,6 +282,42 @@
 </html>
 <script>
 	$(function() {
+		$.fn.rowspan = function(colIdx, isStats) {       
+		    return this.each(function(){      
+		        var that;     
+		        $('tr', this).each(function(row) {      
+		            $('td:eq('+colIdx+')', this).filter(':visible').each(function(col) {
+		                 
+		                if ($(this).attr("class") == $(that).attr("class")
+		                    && (!isStats 
+		                            || isStats && $(this).prev().attr("class") == $(that).prev().attr("class")
+		                            )
+		                    ) {            
+		                    rowspan = $(that).attr("rowspan") || 1;
+		                    rowspan = Number(rowspan)+1;
+		 
+		                    $(that).attr("rowspan",rowspan);
+		                     
+		                    // do your action for the colspan cell here            
+		                    $(this).remove();
+		                     
+		                    //$(this).remove(); 
+		                    // do your action for the old cell here
+		                     
+		                } else {            
+		                    that = this;         
+		                }          
+		                 
+		                // set the that if not already set
+		                that = (that == null) ? this : that;      
+		            });     
+		        });    
+		    });  
+		};
+
+		$('#productTable').rowspan(6);
+		$('#productTable').rowspan(0);
+		
 		$("#hadCredit").html(comma([[${custInfo.credit}]]));			// 보유 크레딧
 		$("#hadMileage").html(comma([[${custInfo.mileage}]]));			// 보유 마일리지
 		
@@ -284,7 +330,12 @@
 		$("#buyProductCredit").attr("credit",totalProductCredit );
 		$("#buyProductCredit").html(comma(totalProductCredit  ));
 		
-		var deliveryCredit = 0										// 택배비		
+		var deliveryCredit = 0;											// 택배비
+		
+		for(i = 0; i < $("[name=deliveryrow]").length; i++) {
+			deliveryCredit += parseInt($("[name=deliveryrow]").eq(i).attr("value"))
+		}
+		
 		$("#buyDeliveryCredit").attr("credit", deliveryCredit);
 		$("#buyDeliveryCredit").html(comma(deliveryCredit));
 		

@@ -65,7 +65,8 @@
 				,		B.REG_CUST_NO as regCustNo
 				,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
 				,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun 
-				,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+				,		IFNULL(DATE_FORMAT(B.CHG_DT, '%Y. %c. %d %H:%i')
+					,		DATE_FORMAT(B.REG_DT, '%Y. %c. %d %H:%i')) as regDt
 				,		B.BOARD_GRP_DEPTH as boardGrpDepth
 				,		B.BOARD_GRP_ORD as boardGrpOrd
 				,		B.BOARD_VISIT as visit
@@ -128,7 +129,8 @@
 	    ,		B.BOARD_CONTENTS as boardContents
 		,		IFNULL(IFNULL(FC.FAMILY_CUST_NICKNAME, SC.SC_CUST_NICK), B.BOARD_ANNO_ID)  as custNickname
 		,		IFNULL(SC_CUST_GUBUN, 'ON') AS custGubun
-		,		IFNULL(B.CHG_DT, B.REG_DT) as regDt
+		,		IFNULL(DATE_FORMAT(B.CHG_DT, '%Y. %c. %d %H:%i')
+			,		DATE_FORMAT(B.REG_DT, '%Y. %c. %d %H:%i')) as regDt
 		,		IFNULL(B.BOARD_VISIT, 0) as visit
         ,		IFNULL(BF.BOARD_FILE_PATH, '') as boardFilePath
         ,		IFNULL(BF.BOARD_FILE_NAME, '') as boardFileName

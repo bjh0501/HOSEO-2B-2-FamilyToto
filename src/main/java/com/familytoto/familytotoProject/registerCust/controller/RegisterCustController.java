@@ -2,6 +2,8 @@ package com.familytoto.familytotoProject.registerCust.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,8 +11,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,12 +46,14 @@ public class RegisterCustController {
 	CaptchaService captchaService;
 	
 	@RequestMapping("/registerCust")
-    public String registerCust(HttpServletRequest request) {
+    public String registerCust(HttpServletRequest request, Model model) {
+		model.addAttribute("delivery", registerCustService.listDelivery());
         return "loginInfo/registerCust";
     }
 	
 	@RequestMapping(value = "/registerCust/register", method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public int insertRegister(@Valid @ModelAttribute RegisterCustVO rcVo, @ModelAttribute CustVO cVo, 
 			HttpServletRequest request, HttpServletResponse rep, HttpSession session, BindingResult br) throws Exception {
 		int nCaptchaResult = captchaService.isRight(session, request);
@@ -69,6 +75,18 @@ public class RegisterCustController {
 			nResult = -96;
 		} else {
 			
+			if(rcVo.getFamilyCustCompanyNumber() != null) {
+				Pattern p = Pattern.compile("(^[0-9]{3}-[0-9]{2}-[0-9]{4}$)");
+		        
+		        String inputVal = rcVo.getFamilyCustCompanyNumber();
+		        Matcher m = p.matcher(inputVal);
+		        
+		        if(!m.find()) {
+		            return -1;
+		        }
+			}
+				
+			
 			// 트랜잭션 걸어야함
 			if(rcVo.getFamilyCustRecommend() != null && !rcVo.getFamilyCustRecommend().equals("")) {
 				CustVO checkVo = new CustVO();
@@ -81,16 +99,25 @@ public class RegisterCustController {
 					RegisterCustVO vo = new RegisterCustVO(); 
 					vo.setRegIp(request.getRemoteAddr());
 					vo.setFamilyCustNo(Integer.parseInt(checkDupleRecommend.get("familyCustNo").toString()));
-					registerCustService.insertRecommend(vo);
+					if(registerCustService.insertRecommend(vo) != 1) {
+						TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+						return -4;
+					}
 				} else {
 					nResult = 1;
 				}
 			}
 
-			registerCustService.insertRegisterCust(rcVo, request);
+			if(registerCustService.insertRegisterCust(rcVo, request) != 1) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -2;
+			}
 			cVo.setFamilyCustNo(rcVo.getFamilyCustNo());
 			
-			custService.insertCust(cVo, request);
+			if(custService.insertCust(cVo, request) != 1) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -3;
+			}
 			// 트랜잭션 걸어야함
 		}
 		

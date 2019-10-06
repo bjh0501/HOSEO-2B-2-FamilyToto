@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
+import com.familytoto.familytotoProject.registerCust.domain.DeliveryVO;
 import com.familytoto.familytotoProject.registerCust.domain.RegisterCustVO;
 import com.familytoto.familytotoProject.registerCust.domain.ZipcodeVO;
 
@@ -24,4 +25,7 @@ public interface RegisterCustDAO {
 	
 	// 아이디체크
 	Map<String, Object> getUsedId(CustVO vo);
+	
+	// 택배사 불러오기
+	List<DeliveryVO> listDelivery();
 }

@@ -1,3 +1,5 @@
+document.write("<script src='/js/jquery.cookie.min.js'></script>");
+
 $(document).ready(function() {
 	if ($("#levelInHeader").html() != undefined) {
 		asyncExp();
@@ -79,13 +81,9 @@ var deleteCookie = function(name) {
 	document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
 }
 
-function InpuOnlyNumber(obj) {
-	if (event.keyCode >= 48 && event.keyCode <= 57) { // 숫자키만 입력
-		return true;
-	} else {
-		event.returnValue = false;
-	}
-}
+$("input:text[numberOnly]").on("keyup", function() {
+    $(this).val($(this).val().replace(/[^0-9]/g,""));
+});
 
 var GLOBAL_COMMENT_IDX = 0;
 function helpMeCharacter(characterName) {
@@ -96,7 +94,7 @@ function helpMeCharacter(characterName) {
 		tip = confirm("설명을 해준 " + characterName + "에게 팁으로 1,000크레딧을 드리겠습니까?")
 
 		if (tip == true) {
-			alert(characterName +"가 감사하다고합니다.")
+			alert(characterName + "가 감사하다고합니다.")
 		}
 
 		$("#helpCharacter").remove();
@@ -104,28 +102,60 @@ function helpMeCharacter(characterName) {
 }
 
 $('#helpButton').click(
-	function() {
-		// function
-		var characterName = $("#helpButton").attr("character");
-		var img = "";
+		function() {
+			// function
+			var characterName = $("#helpButton").attr("character");
+			var img = "";
 
-		if(characterName == "리지") {
-			img = "leage";
-		} else if(characterName == "토순이") {
-			img = "tosoon";
-		} else if(characterName == "보아") {
-			img = "boar";
+			if (characterName == "리지") {
+				img = "leage";
+			} else if (characterName == "토순이") {
+				img = "tosoon";
+			} else if (characterName == "보아") {
+				img = "boar";
+			}
+
+			var makeDiv = "";
+			makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter(\''
+					+ characterName + '\')">';
+			makeDiv += '	<img class="character" src="/img/character/' + img
+					+ '.png" alt="">';
+			makeDiv += '	<div class="balloon">';
+			makeDiv += '		<span id="helpComment"></span>';
+			makeDiv += '	</div>';
+			makeDiv += '</div>';
+
+			$("#page-top").prepend(makeDiv);
+
+			helpMeCharacter();
+		});
+
+// 배열쿠키
+/*
+ * var list = new cookieList("prefer"); list.add("foo"); list.remove("foo");
+ * 
+ */
+var cookieList = function(cookieName) {
+	var cookie = $.cookie(cookieName);
+	var items = cookie ? cookie.split(/,/) : new Array();
+
+	return {
+		"add" : function(val) {
+			items.push(val);
+			$.cookie(cookieName, items.join(','));
+		},
+		"remove" : function(val) {
+			indx = items.indexOf(val);
+			if (indx != -1)
+				items.splice(indx, 1);
+			$.cookie(cookieName, items.join(','));
+		},
+		"clear" : function() {
+			items = null;
+			$.cookie(cookieName, null);
+		},
+		"items" : function() {
+			return items;
 		}
-		
-		var makeDiv = "";
-		makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter(\'' + characterName + '\')">';
-		makeDiv += '	<img class="character" src="/img/character/' + img + '.png" alt="">';
-		makeDiv += '	<div class="balloon">';
-		makeDiv += '		<span id="helpComment"></span>';
-		makeDiv += '	</div>';
-		makeDiv += '</div>';
-
-		$("#page-top").prepend(makeDiv);
-
-		helpMeCharacter();
-	});
+	}
+}
