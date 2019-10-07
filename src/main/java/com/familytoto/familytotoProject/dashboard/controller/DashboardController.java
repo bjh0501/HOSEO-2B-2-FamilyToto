@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -55,6 +56,10 @@ public class DashboardController {
 	            mv.setViewName("/");
 	            return mv;
 			} catch(Exception e) {}
+		}
+		
+		if(vo.getFamilyCustCompanyNumber() != null) {
+			mv.addObject("productList", dashboardService.listRegisteredProduct(vo.getFamilyCustNo()));
 		}
 		
 		mv.addObject("list", dashboardService.getDefaultInfo(vo.getFamilyCustNo()));
@@ -163,6 +168,22 @@ public class DashboardController {
 		return json;
 	}
 	
+	@RequestMapping("/dashboard/listShowBettingTotoMatch/{sportsBetingGroupNo}")
+	@ResponseBody
+	public String listShowBettingTotoMatch(HttpSession session,
+			@PathVariable("sportsBetingGroupNo") int sportsBetingGroupNo) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		SportsBettingVO sbVo = new SportsBettingVO();
+		sbVo.setSportsBettingGroupNo(sportsBetingGroupNo);
+		sbVo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(dashboardService.listShowBettingTotoMatch(sbVo));
+		
+		return json;
+	}
+	
 	/*
 	 * 
 	 * 사용자가 선택한 경기날짜 < 해당경기 결과있는지 체크
@@ -175,10 +196,11 @@ public class DashboardController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/dashboard/resultToto")
-	public int sportsResult(CustVO cVo, String creditState,
+	public int sportsResult(HttpSession session,
 			HttpServletRequest request,
 			int sportsBettingGroupNo) {
 		SportsBettingVO sbVo = new SportsBettingVO();
+		CustVO cVo = (CustVO) session.getAttribute("cust");
 		
 		sbVo.setFamilyCustNo(cVo.getFamilyCustNo());
 		sbVo.setSportsBettingGroupNo(sportsBettingGroupNo);
@@ -218,9 +240,9 @@ public class DashboardController {
 		int operateCreditValue = sportsTotoSchedulerDao.getCreditValueByBettingGroup(sbVo);
 		
 		creVo.setCreditValue(operateCreditValue);		// 크레딧 세팅
-		creVo.setCreditState(creditState);				// 상태값
+		creVo.setCreditState("STG");				// 상태값
 		creVo.setRegCustNo(cVo.getCustNo());			// 넣기
-		creVo.setRegIp(cVo.getRegIp());					// 넣기
+		creVo.setRegIp(request.getRemoteAddr());					// 넣기
 		creVo.setFamilyCustNo(cVo.getFamilyCustNo());	// 넣기
 		
 		if(chargeDao.doCharge(creVo) != 1) {  // 크레딧 추가
@@ -229,7 +251,7 @@ public class DashboardController {
 		}
 			
 		
-		/*
+		/* 
 		 * 1개		200
 		 * 2개		500
 		 * 3~4개	900~1200
@@ -237,16 +259,16 @@ public class DashboardController {
 		 * 7개~		3500~5000 
 		 */
 		
-		String sRightCnt[] = sbVo.getSportsResult().split(",");
+		int nRightCnt = list.size();
 		int nExpValue = 0;
 		
-		if(sRightCnt.length == 1) {
+		if(nRightCnt == 1) {
 			nExpValue = 200;
-		} else if(sRightCnt.length == 2) {
+		} else if(nRightCnt == 2) {
 			nExpValue = 500;
-		} else if(sRightCnt.length >= 3 && sRightCnt.length <= 4) {
+		} else if(nRightCnt >= 3 && nRightCnt <= 4) {
 			nExpValue = GlobalVariable.radnomValue(900, 1200);
-		} else if(sRightCnt.length >= 5 && sRightCnt.length <= 6) {
+		} else if(nRightCnt >= 5 && nRightCnt <= 6) {
 			nExpValue = GlobalVariable.radnomValue(1500, 2500);
 		} else {
 			nExpValue = GlobalVariable.radnomValue(3500, 5000);

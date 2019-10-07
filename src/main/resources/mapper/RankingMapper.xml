@@ -21,37 +21,62 @@
 		]]>	
 	</select>
 	<select id="listGameRanking" parameterType="String" resultType="RankingVO">
-		
+		SELECT B.expValue
+		,		B.familyCustNickname
+		,		B.gameCnt
+		,		B.level
+		,		B.familyCustNO
+	    ,		SUM(CC.CREDIT_VALUE) as creditValue
+	    FROM (
 		SELECT	A.expValue
 		,		A.familyCustNickname
 		,		A.gameCnt
 		,		L.LEVEL as level
-			FROM (SELECT	SUM(CE.EXP_VALUE) as expValue
-		    ,				SUM(IF(CE.EXP_STATE=#{_parameter},1,0)) as gameCnt
-			,				FC.FAMILY_CUST_NICKNAME as familyCustNickname
+		,		A.familyCustNO
+			FROM (
+	        SELECT	SUM(CE.EXP_VALUE) as expValue
+			,		SUM(IF(CE.EXP_STATE=#{_parameter},1,0)) as gameCnt
+			,		FC.FAMILY_CUST_NICKNAME as familyCustNickname
+			,		FC.FAMILY_CUST_NO AS familyCustNo
 			FROM	CUSTOM_EXP CE
-				INNER JOIN FAMILY_CUSTOM FC  ON CE.FAMILY_CUST_NO= FC.FAMILY_CUST_NO AND  FC.USE_YN = 'Y'
+				INNER JOIN FAMILY_CUSTOM FC ON CE.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
 			WHERE	CE.USE_YN = 'Y'
-		    <choose>
-		    	<when test='_parameter == "LGS"'>
-		    		AND		CE.EXP_STATE IN ('LGS', 'LGW')
-		    	</when>
-		    	<when test='_parameter == "DGS"'>
-		    		AND		CE.EXP_STATE IN ('DGS', 'DGW')
-		    	</when>
-		    	<when test='_parameter == "GGS"'>
-		    		AND		CE.EXP_STATE IN ('GGS', 'GGW')
-		    	</when>
-		    	<otherwise>
-		    		AND		CE.EXP_STATE IN ('RGS', 'RGW')
-		    	</otherwise>
-		    </choose>
-		    <![CDATA[   
-			GROUP BY CE.FAMILY_CUST_NO) A
-		    LEFT OUTER JOIN LEVEL L ON L.START_EXP <= A.expValue AND L.END_EXP >= A.expValue
-		WHERE A.expValue between L.START_EXP AND L.END_EXP
-		ORDER BY  A.expValue DESC
-		LIMIT 0, 100;
-		]]>
+				<choose>
+					<when test='_parameter == "LGS"'>
+						AND		CE.EXP_STATE IN ('LGS', 'LGW')
+					</when>
+					<when test='_parameter == "DGS"'>
+						AND		CE.EXP_STATE IN ('DGS', 'DGW')
+					</when>
+					<when test='_parameter == "GGS"'>
+						AND		CE.EXP_STATE IN ('GGS', 'GGW')
+					</when>
+					<otherwise>
+						AND		CE.EXP_STATE IN ('RGS', 'RGW')
+					</otherwise>
+				</choose>
+				GROUP BY CE.FAMILY_CUST_NO) A
+			<![CDATA[
+			LEFT OUTER JOIN LEVEL L ON L.START_EXP <= A.expValue AND L.END_EXP >= A.expValue
+	        ]]>
+		WHERE A.expValue between L.START_EXP AND L.END_EXP) B
+		INNER JOIN CUSTOM_CREDIT CC ON CC.FAMILY_CUST_NO = B.familyCustNo AND CC.USE_YN = 'Y'
+		<choose>
+			<when test='_parameter == "LGS"'>
+				AND		CC.CREDIT_STATE IN ('LBP', 'LBG')
+			</when>
+			<when test='_parameter == "DGS"'>
+				AND		CC.CREDIT_STATE IN ('DBP', 'DBG')
+			</when>
+			<when test='_parameter == "GGS"'>
+				AND		CC.CREDIT_STATE IN ('GBP', 'GBG')
+			</when>
+			<otherwise>
+				AND		CC.CREDIT_STATE IN ('RBP', 'RBG')
+			</otherwise>
+		</choose>
+	    GROUP BY B.familyCustNO
+	    ORDER BY B.expValue desc
+	LIMIT 0, 100;
 	</select>	
 </mapper>

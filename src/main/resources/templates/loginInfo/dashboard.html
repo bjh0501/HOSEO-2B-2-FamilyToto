@@ -6,8 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no"
->
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -21,6 +20,8 @@
 
 <!-- Custom styles for this template-->
 <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<link th:href="@{/css/jquery-ui.min.css}" rel="stylesheet">
+
 <style>
 .button {
 	cursor: pointer;
@@ -28,6 +29,18 @@
 
 .button div:hover {
 	background-color: #c5c5c5;
+}
+
+.row-L {
+	background: #ff7979;
+}
+
+.row-W {
+	background: #e2e2ff;
+}
+
+.row-wait {
+	
 }
 </style>
 </head>
@@ -59,8 +72,9 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">대시보드</h2>
-						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="토순" href="javascript:;">
-							<i class="fas fa-info-circle"></i>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="토순"
+							href="javascript:;"
+						> <i class="fas fa-info-circle"></i>
 						</a>
 					</div>
 
@@ -77,7 +91,8 @@
 					</div>
 					<div class="row">
 						<div class="col-xl-4  col-md-6 mb-4 button"
-							onClick="javascript:creditInfo()">
+							onClick="javascript:creditInfo()"
+						>
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
@@ -100,7 +115,8 @@
 						</div>
 
 						<div class="col-xl-4 col-md-6 mb-4 button"
-							onclick="javascript:mileageInfo()">
+							onclick="javascript:mileageInfo()"
+						>
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
@@ -122,13 +138,14 @@
 							</div>
 						</div>
 
-						<div class="col-xl-4 col-md-6 mb-4 button"
-							onclick="javascript:expInfo()">
+						<div class="col-xl-4 col-md-6 mb-4 button" onclick="javascript:expInfo()">
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Experience</div>
+											<div
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+											>Experience</div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">
 												LEVEL <b th:text="${#numbers.formatInteger(list.level, 0, 'COMMA')}"></b><br>
 												<span th:text="${#numbers.formatInteger(list.exp, 0, 'COMMA')}"></span>
@@ -172,7 +189,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-6 col-lg-6">	
+						<div class="col-xl-6 col-lg-6">
 							<!-- Area Chart -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
@@ -180,9 +197,13 @@
 										<span class="profitChartName">크레딧 수익</span> 최근내역 TOP 100
 									</h6>
 								</div>
-								<div class="table-responsive" style="overflow-y: auto; max-height: 418px;">
+								<div class="table-responsive"
+									style="overflow-y: auto; max-height: 418px;"
+								>
 									<center id="clearTable">존재하지않습니다.</center>
-									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+									<table class="table table-bordered" id="dataTable" width="100%"
+										cellspacing="0"
+									>
 										<thead>
 											<tr>
 												<th style="width: 33%">상태</th>
@@ -200,7 +221,8 @@
 					<!-- 등록 게시글, 등록 댓글, 등록 상품평  -->
 					<div class="row">
 						<div class="col-xl-4  col-md-6 mb-4 button"
-							onClick="javascript:getRegisterBoardTable()">
+							onClick="javascript:getRegisterBoardTable()"
+						>
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
@@ -219,14 +241,15 @@
 						</div>
 
 						<div class="col-xl-4 col-md-6 mb-4 button"
-							onclick="javascript:getRegisterCommentTable()">
+							onclick="javascript:getRegisterCommentTable()"
+						>
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-primary mb-1">댓글</div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">
-											<span th:text="${#numbers.formatInteger(list.comment, 0, 'COMMA')}">0</span>
+												<span th:text="${#numbers.formatInteger(list.comment, 0, 'COMMA')}">0</span>
 											</div>
 										</div>
 										<div class="col-auto">
@@ -238,14 +261,17 @@
 						</div>
 
 						<div class="col-xl-4 col-md-6 mb-4 button"
-							onclick="javascript:getRegisterProductCommentTable()">
+							onclick="javascript:getRegisterProductCommentTable()"
+						>
 							<div class="card border-left-secondary shadow h-100 py-2">
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div class="text-xs font-weight-bold text-primary mb-1">상품평</div>
 											<div class="h5 mb-0 font-weight-bold text-gray-800">
-												<span th:text="${#numbers.formatInteger(list.productComment, 0, 'COMMA')}">0</span>
+												<span
+													th:text="${#numbers.formatInteger(list.productComment, 0, 'COMMA')}"
+												>0</span>
 											</div>
 										</div>
 										<div class="col-auto">
@@ -258,46 +284,51 @@
 					</div>
 					<!-- 2번째  row -->
 					<div class="row">
-						<div class="col-xl-12 col-lg-12">	
+						<div class="col-xl-12 col-lg-12">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary">
 										<span id="dynamicTableTitle">게시글 리스트</span>
 									</h6>
 								</div>
-								<div class="table-responsive" style="overflow-y: auto; max-height: 418px;">
+								<div class="table-responsive"
+									style="overflow-y: auto; max-height: 418px;"
+								>
 									<center id="middleClearDiv">존재하지않습니다.</center>
-									<table id="middleTableDiv" class="table table-bordered" width="100%" cellspacing="0">
+									<table id="middleTableDiv" class="table table-bordered" width="100%"
+										cellspacing="0"
+									>
 										<thead>
 											<tr id="dynamicTitle">
 												<th style="width: 15%">게시글 번호</th>
 												<th style="width: 10%">소셜 구분</th>
-												<th style="width: 20%">작성자 </th>
+												<th style="width: 20%">작성자</th>
 												<th style="width: 35%">게시글 제목</th>
 												<th style="width: 20%">작성일</th>
 											</tr>
 										</thead>
 										<tbody id="middleTable">
-											
+
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- 토토 -->
 					<div class="row">
-						<div class="col-xl-12 col-lg-12">	
+						<div class="col-xl-12 col-lg-12">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">
-										배팅한 토토 목록
-									</h6>
+									<h6 class="m-0 font-weight-bold text-primary">배팅한 토토 목록</h6>
 								</div>
-								<div class="table-responsive" style="overflow-y: auto; max-height: 418px;">
+								<div class="table-responsive"
+									style="overflow-y: auto; max-height: 418px;"
+								>
 									<center th:if="${totoBetList} == null">존재하지않습니다.</center>
-									<table class="table table-bordered" id="totoTable" width="100%" cellspacing="0">
+									<table class="table table-bordered" id="totoTable" width="100%"
+										cellspacing="0">
 										<thead>
 											<tr>
 												<th style="width: 10%">배팅번호</th>
@@ -312,25 +343,76 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="list : ${totoBetList}">
+											<tr th:each="list : ${totoBetList}"
+												th:class="'row-'+${list.bettingGroupResult}">
 												<td th:class="${list.sportsBettingGroupNo}"
-												th:text="${list.sportsBettingGroupNo}"
-												style="text-align: center"></td>
+													style="text-align: center">
+													<a href="javascript:;"
+														th:data-result="${list.bettingGroupResult}"
+														th:onClick="|javascript:getBettingToto(${list.sportsBettingGroupNo}, $(this).attr('data-result'));|"														th:text="${list.sportsBettingGroupNo}" data-toggle="modal"
+														data-target=".totoModal"
+													></a>
+												</td>
 												<td style="text-align: right"
-												th:class="${list.sportsBettingGroupNo}"
-												th:text="${#numbers.formatInteger(list.creditValue, 3, 'COMMA')}"></td>
+													th:class="${list.sportsBettingGroupNo}"
+													th:text="${#numbers.formatInteger(list.creditValue, 3, 'COMMA')}"
+												></td>
 												<td style="text-align: right"
-												th:class="${list.sportsBettingGroupNo}" th:text="${list.bettingGroupBet}"></td>
+													th:class="${list.sportsBettingGroupNo}"
+													th:text="${list.bettingGroupBet}"
+												></td>
 												<td style="text-align: center" th:text="${list.sportsSchedule}"></td>
-												<td style="text-align: center"
-												th:text="${list.sportsGubun}"></td>
-												<td style="text-align: center"
-												th:text="${list.sportsLeagueName}"></td>
-												<td style="text-align: center"
-												th:text="${list.sportsTeam1Name}"></td>
-												<td style="text-align: center"
-												th:text="${list.sportsTeam2Name}"></td>
-												<td th:class="${list.sportsBettingGroupNo}" style="text-align: center">대기중</td>
+												<td style="text-align: center" th:text="${list.sportsGubun}"></td>
+												<td style="text-align: center" th:text="${list.sportsLeagueName}"></td>
+												<td style="text-align: center" th:text="${list.sportsTeam1Name}"></td>
+												<td style="text-align: center" th:text="${list.sportsTeam2Name}"></td>
+												<td th:class="${list.sportsResult}+${list.sportsBettingGroupNo}"
+													th:text="${list.sportsResult}" style="text-align: center">대기중</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" th:if="${productList} != null">
+						<div class="col-xl-12 col-lg-12">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">등록상품 리스트</h6>
+								</div>
+								<div class="table-responsive"
+									style="overflow-y: auto; max-height: 418px;"
+								>
+									<table class="table table-bordered" id="productTable" width="100%"
+										cellspacing="0"
+									>
+										<thead>
+											<tr>
+												<th style="width: 15%">상품번호</th>
+												<th style="width: 15%">카테고리</th>
+												<th style="width: 35%">상품명</th>
+												<th style="width: 15%">상품 크레딧</th>
+												<th style="width: 10%">상품 재고</th>
+												<th style="width: 10%">상품평</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="list : ${productList}">
+												<td th:text="${list.productNo}" style="text-align: center;"></td>
+												<td th:text="${list.categoryName}" style="text-align: center;"></td>
+												<td style="text-align: left;">
+													<a th:href="'/showProduct/'+${list.productNo}"
+														th:text="${list.productName}"
+													  th:data-geo="${list.productImgUrl}"></a>
+												</td>
+												<td style="text-align: right;"
+													th:text="${#numbers.formatInteger(list.productCredit, 0, 'COMMA')}"
+												></td>
+												<td th:text="${list.productAmount}" style="text-align: right;"></td>
+												<td th:text="${list.producctCommentRating}"
+													style="text-align: right;"
+												>없음</td>
 											</tr>
 										</tbody>
 									</table>
@@ -351,6 +433,62 @@
 
 			</div>
 			<!-- End of Content Wrapper -->
+
+			<div class="modal fade bd-example-modal-xl totoModal" tabindex="-1"
+				role="dialog" aria-labelledby="totoModal" aria-hidden="true"
+			>
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">스포츠 배팅 상세보기</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close"
+							>
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="table-responsive"
+								style="overflow-y: auto; max-height: 418px;"
+							>
+								<table class="table table-bordered" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th style="width: 10%">경기번호</th>
+											<th style="width: 10%">경기구분</th>
+											<th style="width: 10%">리그이름</th>
+											<th style="width: 20%" id="totoMatchTeam1">팀1</th>
+											<th style="width: 10%" id="totoMatchTeam2">팀2</th>
+											<th style="width: 10%">경기결과</th>
+											<th style="width: 10%">나의 픽</th>
+											<th style="width: 10%">결과</th>
+										</tr>
+									</thead>
+									<tbody id="totoMatchTr">
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-secondary"
+							id="modalGetBetting" onClick="javascript:getBettingCredit();">배팅금액 받기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 		<!-- End of Page Wrapper -->
 
@@ -364,10 +502,47 @@
 		<script src="/vendor/chart.js/Chart.min.js"></script>
 		<!-- common -->
 		<script src="/js/common.js"></script>
+		<script src="/js/jquery-ui.min.js"></script>
 </body>
-
+  <style>
+  .photo {
+    width: 300px;
+    text-align: center;
+  }
+  .photo .ui-widget-header {
+    margin: 1em 0;
+  }
+  .map {
+    width: 350px;
+    height: 350px;
+  }
+  .ui-tooltip {
+    max-width: 350px;
+  }
+  </style>
 </html>
 <script>
+
+$( document ).tooltip({
+    items: "img, [data-geo], [title]",
+    show : { effect: "blind", duration: 250 },
+    hide :{ effect: "blind", duration: 0 },
+    content: function() {
+      var element = $( this );
+      if ( element.is( "[data-geo]" ) ) {
+        var text = element.text();
+        
+        return "<img style='width:200px; height:200px;' src='" + element.attr("data-geo") + "'>";
+      }
+      if ( element.is( "[title]" ) ) {
+        return element.attr( "title" );
+      }
+      if ( element.is( "img" ) ) {
+        return element.attr( "alt" );
+      }
+    }
+  });
+
 	$.fn.rowspan = function(colIdx, isStats) {       
 	    return this.each(function(){      
 	        var that;     
@@ -677,6 +852,69 @@
 				
 				// 마지막 인덱스는 변동하면안되서0으로
 				nSubMileage[6] = 0;
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	var GLOBAL_SPORTS_GROUP_NO = 0;
+	
+	function getBettingToto(sportsGroupNo, gubun) {
+		$.ajax({
+			url : "/dashboard/listShowBettingTotoMatch/" + sportsGroupNo,
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				var trStr = "";
+				GLOBAL_SPORTS_GROUP_NO = sportsGroupNo;
+				if(gubun == "W" || gubun == "L") {
+					$("#modalGetBetting").attr("style", "display:none");
+				} else {
+					$("#modalGetBetting").attr("style", "");
+				}				
+				
+				
+				for(i = 0; i < data.length; i++) {
+					trStr += "<tr>";
+					trStr += "	<td>" + data[i].sportsNo + "</td>";
+					trStr += "	<td>" + data[i].sportsGubun + "</td>";
+					trStr += "	<td>" + data[i].sportsLeagueName + "</td>";
+					trStr += "	<td>" + data[i].sportsTeam1Name + "</td>";
+					trStr += "	<td>" + data[i].sportsTeam2Name + "</td>";
+					
+					var result = "";
+					
+					if(data[i].sportsResult == "0") {
+						result = "무승부";
+					} else if(data[i].sportsResult == "1") {
+						result = data[i].sportsTeam1Name + "승";
+					} else {
+						result = data[i].sportsTeam2Name + "승";
+					}
+					
+					trStr += "	<td>" + result + "</td>";
+					
+					var choice = "";
+					
+					if(data[i].teamBettingChoice == "0") {
+						choice = "무승부";
+					} else if(data[i].teamBettingChoice == "1") {
+						choice = data[i].sportsTeam1Name + "승";
+					} else {
+						choice = data[i].sportsTeam2Name + "승";
+					}
+					
+					trStr += "	<td>" + choice + "</td>";					
+					trStr += "	<td>" + data[i].sportsResult + "</td>";
+					trStr += "</tr>";	
+				}
+				
+				$("#totoMatchTr").html(trStr);
 			}, 
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
@@ -1067,6 +1305,33 @@
 						str += "</tr>";
 						$("#middleTable").append(str);
 					}	
+				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function getBettingCredit() {
+		$.ajax({
+			url : "/dashboard/resultToto?sportsBettingGroupNo=" + GLOBAL_SPORTS_GROUP_NO,
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if(data == "1") {
+					alert("아이고난! 꼴았습니다!");
+					location.reload();
+					return false;
+				} else if(data == "0") {
+					alert("이거나드셔! 적중하였습니다!");
+					location.reload();
+					return false;
+				} else if(data == "-99") {
+					alert("아직 결과가 안나왔다맨이야.");
 				}
 			}, 
 			error : function(request, status, error) {

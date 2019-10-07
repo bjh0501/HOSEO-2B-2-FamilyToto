@@ -191,7 +191,7 @@ public class GraphController {
 		
 		CreditVO creVo = new CreditVO();
 		creVo.setCreditValue((int) (dTimeValue*creditValue));
-		creVo.setCreditState("DBG");
+		creVo.setCreditState("GBG");
 		creVo.setRegCustNo(cVo.getCustNo());
 		creVo.setRegIp(request.getRemoteAddr());
 		creVo.setFamilyCustNo(cVo.getFamilyCustNo());

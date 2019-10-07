@@ -43,9 +43,19 @@ public class TotoSportsVO {
     private String regIp;
 
     private String chgIp;
-
+    
     // Y,N,B
     private String useYn;
+    
+    private int teamBettingChoice;
+
+	public int getTeamBettingChoice() {
+		return teamBettingChoice;
+	}
+
+	public void setTeamBettingChoice(int teamBettingChoice) {
+		this.teamBettingChoice = teamBettingChoice;
+	}
 
 	public int getSportsNo() {
 		return sportsNo;

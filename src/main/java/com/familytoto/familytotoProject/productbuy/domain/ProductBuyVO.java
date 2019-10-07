@@ -59,6 +59,28 @@ public class ProductBuyVO {
     private int basketNo;
     
     private String productName;
+    
+    private String startDt;
+    
+    private String endDt;
+    
+    
+
+	public String getStartDt() {
+		return startDt;
+	}
+
+	public void setStartDt(String startDt) {
+		this.startDt = startDt;
+	}
+
+	public String getEndDt() {
+		return endDt;
+	}
+
+	public void setEndDt(String endDt) {
+		this.endDt = endDt;
+	}
 
 	public String getProductName() {
 		return productName;

@@ -50,7 +50,7 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 					<div class="row">
-						<h2 class="text-title">경험치 랭킹</h2>
+						<h2 class="text-title">게임 랭킹</h2>
 					</div>
 					<div class="card shadow h-100 py-12">
 						<div style="padding-bottom:20px;">
@@ -81,6 +81,7 @@
 											<th width="15%">레벨</th>
 											<th width="15%">플레이 수</th>
 											<th width="*">닉네임</th>
+											<th width="15%">크레딧 수익</th>
 											<th width="15%">누적경험치</th>
 										</tr>
 									</thead>
@@ -90,6 +91,7 @@
 											<td style="text-align: center;" th:text="${list.getLevel()}"></td>
 											<td style="text-align: center;" th:text="${list.getGameCnt()}"></td>
 											<td th:text="${list.getFamilyCustNickname()}"></td>
+											<td style="text-align: right;" th:text="${#numbers.formatInteger(list.getCreditValue(), 0, 'COMMA')}"></td>
 											<td style="text-align: right;" th:text="${#numbers.formatInteger(list.getExpValue(), 0, 'COMMA')}"></td>
 										</tr>
 									</tbody>

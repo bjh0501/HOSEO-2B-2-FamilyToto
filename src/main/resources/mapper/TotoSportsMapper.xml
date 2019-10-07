@@ -104,7 +104,7 @@
 			LEFT OUTER JOIN  TOTO_SPORTS_BETTING TSB ON TS.SPORTS_NO = TSB.SPORTS_NO AND  TSB.USE_YN = 'Y'
 			AND	TSB.FAMILY_CUST_NO = #{familyCustNo}
 		WHERE	TS.SPORTS_GUBUN = 'ISO'
-		AND		TS.SPORTS_LEAGUE_NAME = 'K리그1'
+		-- AND		TS.SPORTS_LEAGUE_NAME = 'K리그1'
         AND		TS.USE_YN = 'Y'
 		ORDER BY SPORTS_SCHEDULE ASC, TS.SPORTS_RESULT DESC;
 	</select>
@@ -137,6 +137,7 @@
 		SET		BETTING_GROUP_RESULT = #{bettingGroupResult}
 		WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		SPORTS_BETTING_GROUP_NO = #{sportsBettingGroupNo}
+		AND		BETTING_GROUP_RESULT IS NULL
 		AND		USE_YN = 'Y'
 	</update>
 	<select id="getCreditValueByBettingGroup" parameterType="SportsBettingVO" resultType="int">

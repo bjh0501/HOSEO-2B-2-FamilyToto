@@ -233,8 +233,9 @@
 		,		TS.SPORTS_TEAM2_NAME as sportsTeam2Name
 		,		TS.SPORTS_SCORE1 as sportsScore1
 		,		TS.SPORTS_SCORE2 as sportsScore2
-		,		TS.SPORTS_RESULT as sportsResult
 		,		DATE_FORMAT(TS.SPORTS_SCHEDULE, '%Y. %c. %d %H:%i')  as sportsSchedule
+		,		IFNULL(TSBG.BETTING_GROUP_RESULT,'wait') as bettingGroupResult
+        ,		IF(IFNULL(TS.SPORTS_RESULT, -1) = -1,'대기중', IF(TS.SPORTS_RESULT = TSB.BETTING_TEAM_CHOICE, '적중', '미적중')) as sportsResult
 		FROM	TOTO_SPORTS_BETTING_GROUP TSBG
 			INNER JOIN CUSTOM_CREDIT CC ON TSBG.CREDIT_ID = CC.CREDIT_ID AND CC.USE_YN = 'Y'
 			INNER JOIN TOTO_SPORTS_BETTING TSB ON TSB.SPORTS_BETTING_GROUP_NO = TSBG.SPORTS_BETTING_GROUP_NO 
@@ -319,5 +320,39 @@
 		    INNER JOIN FAMILY_CUSTOM FC ON PC.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
 		WHERE	PC.FAMILY_CUST_NO = #{familyCustNo}
 		AND		PC.USE_YN = 'Y'				
+	</select>
+	<select id="listShowBettingTotoMatch" parameterType="SportsBettingVO" resultType="TotoSportsVO">
+		SELECT	TS.SPORTS_NO as sportsNo
+        ,		TS.SPORTS_GUBUN as sportsGubun
+        ,		TS.SPORTS_LEAGUE_NAME as sportsLeagueName
+        ,		TS.SPORTS_SCORE1 as sportsScore1
+        ,		TS.SPORTS_SCORE2 as sportsScore2
+        ,		TS.SPORTS_TEAM1_NAME as sportsTeam1Name
+        ,		TS.SPORTS_TEAM2_NAME as sportsTeam2Name
+        ,		IF(IFNULL(TS.SPORTS_RESULT, -1) = -1,'대기중', IF(TS.SPORTS_RESULT = TSB.BETTING_TEAM_CHOICE, '적중', '미적중')) as sportsResult
+        ,		TSB.BETTING_TEAM_CHOICE as teamBettingChoice
+        FROM 	TOTO_SPORTS TS
+			INNER JOIN TOTO_SPORTS_BETTING TSB ON TS.SPORTS_NO = TSB.SPORTS_NO AND TSB.USE_YN = 'Y'
+            INNER JOIN TOTO_SPORTS_BETTING_GROUP TSBG ON TSB.SPORTS_BETTING_GROUP_NO = TSBG.SPORTS_BETTING_GROUP_NO AND TSBG.USE_YN = 'Y'
+				AND TSBG.SPORTS_BETTING_GROUP_NO = #{sportsBettingGroupNo}
+		WHERE	TS.USE_YN = 'Y'
+        AND		TSB.FAMILY_CUST_NO = #{familyCustNo}
+	</select>
+	<select id="listRegisteredProduct" parameterType="int" resultType="ProductVO">
+		SELECT	P.PRODUCT_NO AS productNo
+        ,		PC.CATEGORY_NAME as categoryName
+        ,		P.PRODUCT_NAME AS productName
+        ,		P.PRODUCT_CREDIT as productCredit
+        ,		P.PRODUCT_AMOUNT as productAmount
+        ,		IFNULL(ROUND(AVG(PCO.PRODUCT_COMMENT_RATING),2), '없음') AS producctCommentRating
+        ,		PI.PRODUCT_IMG_URL as productImgUrl
+        FROM	PRODUCT P
+			INNER JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_NO = PC.CATEGORY_NO AND PC.USE_YN = 'Y'
+            LEFT OUTER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y' AND PI.PRODUCT_IMG_PRIMARY = 'Y'
+            LEFT OUTER JOIN PRODUCT_COMMENT PCO ON P.PRODUCT_NO = PCO.PRODUCT_NO AND PCO.USE_YN = 'Y'
+        WHERE	P.FAMILY_CUST_NO = #{familyCustNo}
+        AND		P.USE_YN = 'Y'
+        GROUP BY P.PRODUCT_NO
+        ORDER BY P.PRODUCT_NO DESC
 	</select>
 </mapper>

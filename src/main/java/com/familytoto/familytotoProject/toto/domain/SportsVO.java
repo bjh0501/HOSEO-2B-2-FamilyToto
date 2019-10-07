@@ -54,8 +54,18 @@ public class SportsVO {
 
     private double bettingGroupBet;
     
+    private String bettingGroupResult;
     
     
+    
+	public String getBettingGroupResult() {
+		return bettingGroupResult;
+	}
+
+	public void setBettingGroupResult(String bettingGroupResult) {
+		this.bettingGroupResult = bettingGroupResult;
+	}
+
 	public double getBettingGroupBet() {
 		return bettingGroupBet;
 	}

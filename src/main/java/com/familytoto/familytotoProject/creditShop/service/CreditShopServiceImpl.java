@@ -122,7 +122,7 @@ public class CreditShopServiceImpl implements CreditShopService {
 			throw new RuntimeException("배송 실패");
 		}
 		
-		return 1;
+		return deliveryCredit;
 	}
 
 	@Override

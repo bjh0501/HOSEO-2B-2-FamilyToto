@@ -86,6 +86,7 @@ public class DiceServiceImpl implements DiceService {
 			map.put("dice2", randomValue2);
 			
 			if(vo.getDiceOption().equals(vo.getDiceCustBetOption())) {
+				creVo.setCreditState("DBG");
 				int getCredit = (int) (vo.getDiceBet()* creVo.getCreditValue())*-1 ;
 				creVo.setCreditValue(getCredit);
 				map.put("getCredit", getCredit);

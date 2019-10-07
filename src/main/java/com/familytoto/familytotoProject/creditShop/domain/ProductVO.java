@@ -80,6 +80,17 @@ public class ProductVO {
     
     private int cateogryNo;
     
+    private String producctCommentRating;
+    
+    
+	public String getProducctCommentRating() {
+		return producctCommentRating;
+	}
+
+	public void setProducctCommentRating(String producctCommentRating) {
+		this.producctCommentRating = producctCommentRating;
+	}
+
 	public int getCateogryNo() {
 		return cateogryNo;
 	}

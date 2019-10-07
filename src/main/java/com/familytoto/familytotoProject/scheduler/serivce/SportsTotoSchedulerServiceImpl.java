@@ -48,7 +48,7 @@ public class SportsTotoSchedulerServiceImpl implements SportsTotoSchedulerServic
 	// 정각 12시마다 크롤링한다.
 	public void inSoccer() {
 		TotoSportsVO vo = new TotoSportsVO();
-		String league = "1"; // 1 or 2
+		String league = "2"; // 1 or 2
 		String year = "2019";
 		String month = "10";
 		

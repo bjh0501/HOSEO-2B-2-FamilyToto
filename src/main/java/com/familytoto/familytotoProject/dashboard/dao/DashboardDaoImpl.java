@@ -11,7 +11,10 @@ import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
+import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.exp.domain.ExpVO;
+import com.familytoto.familytotoProject.scheduler.domain.TotoSportsVO;
+import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 import com.familytoto.familytotoProject.toto.domain.SportsVO;
 
 @Repository
@@ -102,5 +105,15 @@ public class DashboardDaoImpl implements DashboardDao {
 	@Override
 	public List<ProductCommentVO> listRegisteredProductComment(int familyCustNo) {
 		return sqlSession.selectList("dashboard.listRegisteredProductComment", familyCustNo);
+	}
+
+	@Override
+	public List<TotoSportsVO> listShowBettingTotoMatch(SportsBettingVO vo) {
+		return sqlSession.selectList("dashboard.listShowBettingTotoMatch", vo);
+	}
+
+	@Override
+	public List<ProductVO> listRegisteredProduct(int familyCustNo) {
+		return sqlSession.selectList("dashboard.listRegisteredProduct", familyCustNo);
 	}	
 }

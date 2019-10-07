@@ -111,8 +111,6 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 					return -7;
 				}
 				
-				
-				
 				// 10퍼센트적립
 				int nMileageAccum = (int) (vo.getProductBuyCredit() / 10);
 				
@@ -138,7 +136,6 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 				}
 			}
 			
-
 			return 1;
 		} else {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

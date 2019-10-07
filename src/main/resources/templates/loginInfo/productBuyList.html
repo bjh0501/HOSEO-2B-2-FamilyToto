@@ -19,6 +19,7 @@
 
 <!-- Custom styles for this template-->
 <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<link th:href="@{/css/jquery-ui.min.css}" rel="stylesheet">
 </head>
 <body id="page-top">
 
@@ -51,26 +52,22 @@
 						</a>
 					</div>
 					<div class="row">
-						<div class="col-xl-8 col-lg-6 col-md-12 col-sm-12">
-							<div class="input-group mb-3">
-								<input type="text" class="form-control" placeholder="Search"
-									aria-label="Search" aria-describedby="basic-addon1">
-							</div>
-						</div>
-
-						<div class="col-xl-3 col-lg-4 col-md-10 col-sm-12">
+						<div class="col-xl-6 col-lg-6 col-md-10 col-sm-12">
 							<div class="input-group mb-3">
 								<input type="text" class="form-control" placeholder="yyyymmdd"
-									aria-label="yyyymmdd" aria-describedby="basic-addon1" numberOnly>
+									aria-label="yyyymmdd" 
+									id="datepicker1" numberOnly>
 								<span class="text-word-l" style="color: white">~</span> <input
 									type="text" class="form-control" placeholder="yyyymmdd"
+									id="datepicker2"
 									aria-label="yyyymmdd" aria-describedby="basic-addon1" numberOnly>
 
 							</div>
 						</div>
 						<div class="col-xl-1 col-lg-2 col-md-2 col-sm-12">
-							<button type="button" class="btn btn-secondary btn-block">검색</button>
+							<button type="button" onClick="javascript:goDate();" class="btn btn-secondary btn-block">검색</button>
 						</div>
+						<span class="text-word-l" style="color:white;">*빈칸으로 검색하면전체범위로 검색됩니다.</span>
 					</div>
 					<div class="card shadow mb-4">
 						<div class="card-body">
@@ -96,14 +93,19 @@
 									<tbody>
 										<tr th:each="list : ${productList}" class="table-border-color">
 											<td class="align-middle"
+												th:class="${list.getProductBuyGrpNo()}"
 												th:text="${list.getProductBuyGrpNo()}" style="text-align: center;">1</td>
 											<td class="align-middle" th:text="${list.getRegDt()}" style="text-align: center;">날짜</td>
 											<td class="align-middle"><a th:href="'/showProduct/'+${list.getProductNo()}+'/'" th:text="${list.getProductName()}" target="_blank" style="text-align: left;">상품이름</a></td>
-											<td class="align-middle" th:text="${#numbers.formatInteger(list.getProductBuyCredit(), 3, 'COMMA')}" style="text-align: right;">가격</td>
+											<td class="align-middle" th:text="${#numbers.formatInteger(list.getProductBuyCredit(), 0, 'COMMA')}" style="text-align: right;">가격</td>
 											<td class="align-middle" th:text="${list.getProductBuyAmount()}" style="text-align: center;">갯수</td>
 											<td class="align-middle"
-												th:text="${list.getProductBuyDelCredit()}" style="text-align: right;">배송비</td>
-											<td class="align-middle" th:text="${#numbers.formatInteger(list.getTotalCredit(), 3, 'COMMA')}" style="text-align: right;">총가격</td>
+												th:class="${list.getProductBuyGrpNo()}"
+												th:text="${#numbers.formatInteger(list.getProductBuyDelCredit(), 0, 'COMMA')}" style="text-align: right;">배송비</td>
+											<td class="align-middle"
+											th:class="${list.getProductBuyGrpNo()}"
+											th:text="${#numbers.formatInteger(list.getTotalCredit(), 0, 'COMMA')}"
+											style="text-align: right;">총가격</td>
 										</tr>
 									</tbody>
 								</table>
@@ -157,7 +159,7 @@
 	<!-- common -->
     <script src="/js/common.js"></script>
 	<script src="/js/header.js"></script>
-	
+	<script src="/js/jquery-ui.min.js"></script>
 
 </body>
 
@@ -176,32 +178,56 @@ var helpCommentList = [
 + "하시면됩니다. "]
 
 
-
-
+$( function() {
+    $( "#datepicker1, #datepicker2" ).datepicker({
+    	 dateFormat: "yymmdd"
+    ,	monthNames: [ "1월", "2월", "3월",
+    	"4월", "5월", "6월",
+    	"7월", "8월", "9월",
+    	"10월", "11월", "12월" ]
+    ,	dayNamesMin: [ "일","월","화","수","목","금","토" ]
+    ,showMonthAfterYear:true
+    ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
+        ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
+    });
+    
+  } );
+  
 	$.fn.rowspan = function(colIdx, isStats) {       
 	    return this.each(function(){      
-	        var that;     
-	        $('tr', this).each(function(row) {      
+	        var that;
+	        
+        	var sum = 0;
+	        $('tr', this).each(function(row) {
+
 	            $('td:eq('+colIdx+')', this).filter(':visible').each(function(col) {
-	                 
-	                if ($(this).html() == $(that).html()
+	                if ($(this).attr("class") == $(that).attr("class")
 	                    && (!isStats 
-	                            || isStats && $(this).prev().html() == $(that).prev().html()
+	                            || isStats && $(this).prev().attr("class") == $(that).prev().attr("class")
 	                            )
-	                    ) {            
+	                    ) {       
+
 	                    rowspan = $(that).attr("rowspan") || 1;
 	                    rowspan = Number(rowspan)+1;
-	 
+	                    
+	                    if(colIdx==6) {
+		                    sum += parseInt(removeComma($(this).html()));
+		                    $(that).html(numberWithCommas(sum));
+	                    }
+	                    
 	                    $(that).attr("rowspan",rowspan);
-	                     
 	                    // do your action for the colspan cell here            
 	                    $(this).hide();
+	                    
 	                     
 	                    //$(this).remove(); 
-	                    // do your action for the old cell here
-	                     
+	                    // do your action for the old cell here	                    
 	                } else {            
-	                    that = this;         
+	                    that = this;
+	                    if(colIdx==6) {
+							sum = removeComma($(this).prev().html());
+							sum += parseInt(removeComma($(this).html()));
+	                    }
 	                }          
 	                 
 	                // set the that if not already set
@@ -210,6 +236,55 @@ var helpCommentList = [
 	        });    
 	    });  
 	};
-
+	
+	if(getParameterByName("startDt") != "") {
+		if(getParameterByName("startDt") != "19000101") {
+			$("#datepicker1").val(getParameterByName("startDt"));			
+		}
+	}
+	
+	if(getParameterByName("endDt") != "") {
+		if(getParameterByName("endDt") != "20991231") {
+			$("#datepicker2").val(getParameterByName("endDt"));			
+		}
+	}
+	
+	$('#dataTable').rowspan(6);
+	$('#dataTable').rowspan(5);
 	$('#dataTable').rowspan(0);
+	
+	function goDate() {
+		var date_pattern = /^(19|20)\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[0-1])$/; 
+
+		if($("#datepicker1").val() == "") {
+			$("#datepicker1").val("19000101");
+		}
+		
+		if($("#datepicker2").val() == "") {
+			$("#datepicker2").val("20991231");
+		}
+		
+		if(!date_pattern.test($("#datepicker1").val())){
+			alert("yyyymmdd형식으로 입력해주세요.");
+			$("#datepicker1").focus();
+			return;
+		}
+		
+		if(!date_pattern.test($("#datepicker2").val())){
+			alert("yyyymmdd형식으로 입력해주세요.");
+			$("#datepicker2").focus();
+			return;
+		}
+		
+		location.href="/productBuyList?startDt="
+				+ $("#datepicker1").val() + "&endDt=" +
+				$("#datepicker2").val()
+	}
+	
+	function getParameterByName(name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
 </script>

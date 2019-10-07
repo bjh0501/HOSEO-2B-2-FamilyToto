@@ -101,34 +101,33 @@ function helpMeCharacter(characterName) {
 	}
 }
 
-$('#helpButton').click(
-		function() {
-			// function
-			var characterName = $("#helpButton").attr("character");
-			var img = "";
+$('#helpButton').click(function() {
+	// function
+	var characterName = $("#helpButton").attr("character");
+	var img = "";
 
-			if (characterName == "리지") {
-				img = "leage";
-			} else if (characterName == "토순이") {
-				img = "tosoon";
-			} else if (characterName == "보아") {
-				img = "boar";
-			}
+	if (characterName == "리지") {
+		img = "leage";
+	} else if (characterName == "토순이") {
+		img = "tosoon";
+	} else if (characterName == "보아") {
+		img = "boar";
+	}
 
-			var makeDiv = "";
-			makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter(\''
-					+ characterName + '\')">';
-			makeDiv += '	<img class="character" src="/img/character/' + img
-					+ '.png" alt="">';
-			makeDiv += '	<div class="balloon">';
-			makeDiv += '		<span id="helpComment"></span>';
-			makeDiv += '	</div>';
-			makeDiv += '</div>';
+	var makeDiv = "";
+	makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter(\''
+			+ characterName + '\')">';
+	makeDiv += '	<img class="character" src="/img/character/' + img
+			+ '.png" alt="">';
+	makeDiv += '	<div class="balloon">';
+	makeDiv += '		<span id="helpComment"></span>';
+	makeDiv += '	</div>';
+	makeDiv += '</div>';
 
-			$("#page-top").prepend(makeDiv);
+	$("#page-top").prepend(makeDiv);
 
-			helpMeCharacter();
-		});
+	helpMeCharacter();
+});
 
 // 배열쿠키
 /*

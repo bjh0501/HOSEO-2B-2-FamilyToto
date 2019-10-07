@@ -135,20 +135,23 @@ public class RulletServiceImpl implements RulletService {
 				
 		creVo.setCreditValue(nCreditValue);
 		
-		if(chargeDao.doCharge(creVo) != 1) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return -3;
-		}
+		// 이긴경우만아래 탄다
+		if(nCreditValue != 0) {
+			if(chargeDao.doCharge(creVo) != 1) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -3;
+			}
 		
-		CustVO cVo = new CustVO();
-		cVo.setFamilyCustNo(vo.getFamilyCustNo());
-		cVo.setCustNo(vo.getRegCustNo());
-		
-		int randomExp = GlobalVariable.getWinCredit(creVo.getCreditValue());
-		
-		if(expService.insertExp(cVo, "RGW", randomExp, request) != 1) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return -4;
+			CustVO cVo = new CustVO();
+			cVo.setFamilyCustNo(vo.getFamilyCustNo());
+			cVo.setCustNo(vo.getRegCustNo());
+			
+			int randomExp = GlobalVariable.getWinCredit(creVo.getCreditValue());
+			
+			if(expService.insertExp(cVo, "RGW", randomExp, request) != 1) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return -4;
+			}
 		}
 		
 		return nCreditValue;

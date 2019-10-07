@@ -7,7 +7,10 @@ import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
+import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.exp.domain.ExpVO;
+import com.familytoto.familytotoProject.scheduler.domain.TotoSportsVO;
+import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 import com.familytoto.familytotoProject.toto.domain.SportsVO;
 
 public interface DashboardDao {
@@ -61,4 +64,10 @@ public interface DashboardDao {
 	
 	// 작성된 상품평 가져오기
 	List<ProductCommentVO> listRegisteredProductComment(int familyCustNo);
+	
+	// 배팅한 토토경기보기
+	List<TotoSportsVO> listShowBettingTotoMatch(SportsBettingVO vo);
+	
+	// 등록상품 가져오기
+	List<ProductVO> listRegisteredProduct(int familyCustNo);
 }

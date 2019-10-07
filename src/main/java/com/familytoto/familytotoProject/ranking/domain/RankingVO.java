@@ -9,6 +9,16 @@ public class RankingVO {
 	
 	private int level;
 
+	private int creditValue;
+	
+	public int getCreditValue() {
+		return creditValue;
+	}
+
+	public void setCreditValue(int creditValue) {
+		this.creditValue = creditValue;
+	}
+
 	public int getExpValue() {
 		return expValue;
 	}

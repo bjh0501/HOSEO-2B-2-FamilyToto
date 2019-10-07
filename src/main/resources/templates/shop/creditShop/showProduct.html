@@ -222,13 +222,15 @@ ul, li {
 									<div class="container">
 										<ul class="slide">
 											<li class="first" id="slide-1"><img id="mainImg"
-												th:src="${listImgs[0].getProductImgUrl()}" alt=""></li>
+												th:src="${listImgs[0].getProductImgUrl()}" alt=""
+												onerror="this.src='/img/error/not-found.png'"></li>
 										</ul>
 										<ul class="thumbs">
 											<li th:each="list : ${listImgs}"><a href="javascript:;"
 												th:onClick="|javascript:clickThumb('thumbImg'+${list.getProductNo()});|">
 													<img th:src="${list.getProductImgUrl()}"
-													th:id="'thumbImg' + ${list.getProductNo()}">
+													th:id="'thumbImg' + ${list.getProductNo()}"
+													onerror="this.src='/img/error/not-found.png'">
 											</a></li>
 										</ul>
 									</div>

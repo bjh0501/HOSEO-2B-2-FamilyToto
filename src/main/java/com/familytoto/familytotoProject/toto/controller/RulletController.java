@@ -109,7 +109,8 @@ public class RulletController {
 				|| (nums[0]==4 && nums[1] == 6 && nums[2] == 8)
 				|| (nums[0]==1 && nums[1] == 3 && nums[2] == 5)
 				|| (nums[0]==3 && nums[1] == 5 && nums[2] == 7)
-				|| (nums[0]==5 && nums[1] == 7 && nums[2] == 9)) {
+				|| (nums[0]==5 && nums[1] == 7 && nums[2] == 9)
+				|| (nums[0]==3 && nums[1] == 6 && nums[2] == 9)) {
 			return 1.49;
 		}
 		

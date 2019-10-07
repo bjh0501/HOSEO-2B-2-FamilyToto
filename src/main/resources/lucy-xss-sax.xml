@@ -11,6 +11,8 @@
 		<element name="object" disable="true" />
 		<element name="script" disable="true" /> <!-- <SCRIPT> alert(“XSS”); </SCRIPT> -->
 		<element name="style" disable="true" />
+		<element name="input" disable="true" />
+		<element name="button" disable="true" />
 		<element name="link" disable="true" />
 		<element name="base" disable="true" />
 		<element name="p" disable="false" />

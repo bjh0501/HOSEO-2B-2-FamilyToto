@@ -12,8 +12,11 @@ import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.comment.domain.CommentVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
+import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.dashboard.dao.DashboardDao;
 import com.familytoto.familytotoProject.exp.domain.ExpVO;
+import com.familytoto.familytotoProject.scheduler.domain.TotoSportsVO;
+import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 import com.familytoto.familytotoProject.toto.domain.SportsVO;
 
 @Service
@@ -92,5 +95,15 @@ public class DashboardServiceImpl implements DashboardService {
 	@Override
 	public List<ProductCommentVO> listRegisteredProductComment(int familyCustNo) {
 		return dashboardDao.listRegisteredProductComment(familyCustNo);
+	}
+
+	@Override
+	public List<TotoSportsVO> listShowBettingTotoMatch(SportsBettingVO vo) {
+		return dashboardDao.listShowBettingTotoMatch(vo);
+	}
+
+	@Override
+	public List<ProductVO> listRegisteredProduct(int familyCustNo) {
+		return dashboardDao.listRegisteredProduct(familyCustNo);
 	}
 }

@@ -2,9 +2,6 @@ package com.familytoto.familytotoProject.toto.domain;
 
 import java.sql.Timestamp;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 public class SportsBettingVO {
 
     // 100000001

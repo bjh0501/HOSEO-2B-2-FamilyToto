@@ -152,11 +152,8 @@ public class ProductBuyController {
 		// 배송비 추가
 		// 상품구입할때 크레딧 유호성검사하기 때문에 
 		// 배송비에서는 크레딧 예외 처리 안해도됨
-		if(creditShopService.getDeliveryCredit(list, cVo) != 1) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return -6;
-		}
-		
+		int getDeliveryCredit = creditShopService.getDeliveryCredit(list, cVo);
+		vo.setProductBuyDelCredit(getDeliveryCredit);
 		// 장바구니 경우
 		if(request.getParameterValues("basketNo") != null) {
 			sBasketNo = request.getParameterValues("basketNo");
@@ -231,7 +228,9 @@ public class ProductBuyController {
 	@RequestMapping("/productBuyList")
 	public String productBuyList(Model model,
 			HttpSession session,
-			HttpServletResponse response) {
+			HttpServletResponse response,
+			String startDt,
+			String endDt) {
 		CustVO vo = (CustVO) session.getAttribute("cust");
 		
 		if(vo.getFamilyCustNo() == 0) {
@@ -246,6 +245,12 @@ public class ProductBuyController {
 		
 		ProductBuyVO pbVo = new ProductBuyVO();
 		pbVo.setFamilyCustNo(vo.getFamilyCustNo());
+		
+		if(startDt != null) {
+			pbVo.setStartDt(startDt);
+			pbVo.setEndDt(endDt);
+		}
+		
 		model.addAttribute("productList", productBuyService.listBoughtProduct(pbVo));
 		
 		return "/loginInfo/productBuyList";
