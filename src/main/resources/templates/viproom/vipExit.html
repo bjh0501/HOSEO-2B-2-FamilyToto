@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>One Sports</title>
+
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+.boardrow:hover {
+	background: black;
+	color: white;
+	cursor: pointer;
+}
+</style>
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+				
+					<!-- row -->
+					<div class="row">
+					<!-- 방 입장 -->
+					<div class="col-xs-3 col-lg-3 .col-md-3 .col-sm-3">
+						<div class="card shadow h-100 py-12" style=" margin-top:90px;">
+							<br>
+							<h2 style="margin-top:2.0rem; margin-left:1.5rem; float:none; margin:0 auto;"><a href="/vipEnter">VIP룸 입장하기</a></h2>
+							<br><br><br><hr>
+							<h2 style="margin-top:1.0rem; margin-left:1.5rem; float:none; margin:0 auto;"><a href="/vipExit">VIP룸 개설하기</a></h2>
+						</div>
+					</div>
+					
+					<!-- 방 만들기 -->
+					<div>
+					</div>				
+					
+					<!-- 공지사항 -->
+					<div>
+					</div>
+					
+					<!-- 리지 설명 -->
+					<div>
+					</div>
+					</div>
+				
+			</div>
+		</div>
+					<!-- Page Heading -->
+					<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+          </div> -->
+
+					<!-- 광고, 공지사항Row -->
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+			</footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+	<!-- common -->
+    <script src="/js/common.js"></script>
+	<script src="/js/header.js"></script>
+	
+
+</body>
+
+</html>
+<script>
+	function goCharge() {
+		location.href = "/charge"
+	}
+	
+	function clickBoard(no) {
+		location.href= "/showBoard/" + no;
+	}
+</script>
