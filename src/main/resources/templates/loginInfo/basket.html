@@ -93,7 +93,7 @@
 												<input type="text" class="form-control"
 												placeholder="Amount" name="amount"
 												th:value="${ba.getBasketAmount()}"
-												onKeyup="javascript:updateCredit($(this));">
+												onKeyup="javascript:updateCredit($(this));" numberOnly>
 											</td>
 											<td th:text="${#numbers.formatInteger(ba.getTotalCredit(), 0, 'COMMA')}" class="totalCredit" style="text-align: right;"></td>
 										</tr>

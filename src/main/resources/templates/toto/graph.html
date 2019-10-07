@@ -90,7 +90,7 @@
 									<input type="text" class="form-control" disabled value="0" id="currentCredit"
 										th:value="${#numbers.formatInteger(creditInfo.getCreditValue(), 0, 'COMMA')}"> <br>
 									<h6 class="m-0 font-weight-bold text-primary text-center">배팅 크레딧</h6>
-									<input type="text" class="form-control" placeholder="Bet" id="credit" onKeyPress="InpuOnlyNumber();">
+									<input type="text" class="form-control" placeholder="Bet" id="credit" numberOnly>
 
 								</div>
 							</div>
