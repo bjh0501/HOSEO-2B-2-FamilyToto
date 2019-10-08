@@ -48,4 +48,9 @@ public class SportsTotoDaoImpl implements SportsTotoDao {
 	public List<SportsVO> listBoughtSportsNo(int familyCustNo) {
 		return sqlSession.selectList("totoSports.listBoughtSportsNo", familyCustNo);
 	}
+
+	@Override
+	public boolean isCanSportsTotoSChedule(SportsBettingVO vo) {
+		return sqlSession.selectOne("totoSports.isCanSportsTotoSChedule", vo);
+	}
 }

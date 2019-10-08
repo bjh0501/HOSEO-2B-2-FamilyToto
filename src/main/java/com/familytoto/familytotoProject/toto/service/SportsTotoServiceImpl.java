@@ -4,11 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.familytoto.familytotoProject.charge.dao.ChargeDao;
-import com.familytoto.familytotoProject.charge.domain.CreditVO;
-import com.familytoto.familytotoProject.toto.dao.CommonDao;
 import com.familytoto.familytotoProject.toto.dao.SportsTotoDao;
 import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 import com.familytoto.familytotoProject.toto.domain.SportsVO;
@@ -50,5 +46,10 @@ public class SportsTotoServiceImpl implements SportsTotoService{
 	@Override
 	public List<SportsVO> listBoughtSportsNo(int familyCustNo) {
 		return sportsTotoDao.listBoughtSportsNo(familyCustNo);
+	}
+
+	@Override
+	public boolean isCanSportsTotoSChedule(SportsBettingVO vo) {
+		return sportsTotoDao.isCanSportsTotoSChedule(vo);
 	}
 }

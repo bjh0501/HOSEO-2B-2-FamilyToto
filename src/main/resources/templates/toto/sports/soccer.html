@@ -151,7 +151,7 @@
 																<span th:text="${list.sportsTeam2Name}">Radio</span>
 															</label>															
 															<input th:if="${list.bettingTeamChoice == null}" class="btn-secondary" type="button" value="배팅하기"
-															th:onClick="|javascript:basketBet(${list.sportsNo});|">
+															th:onClick="|javascript:basketBet(${list.sportsNo}, $(this));|">
 															<span th:if="${list.bettingTeamChoice != null}" class="text-word-l"><b>배팅완료</b><i class="fas fa-check"></i></span>
 														</div>
 													</td>
@@ -236,12 +236,6 @@
 	});
 
 	function bet() {
-		if($("#credit").val() < 1000 || $("#credit").val() > 100000) {
-			alert("크레딧은 1,000 ~ 100,000 까지배팅이 가능합니다");
-			$("#credit").focus();
-			return false;
-		}
-
 		var sportsNo = new Array();
 		var choiceTeam = new Array();
 		// var choiceTeam = [ 1, 2, 1 ];
@@ -249,6 +243,17 @@
 		for(i = 0; i < $("[totobetid]").length; i++) {
 			sportsNo.push($("[totobetid]").eq(i).attr("totobetid"));
 			choiceTeam.push($("[totobetid]").eq(i).attr("choiceteam"));
+		}
+		
+		if(choiceTeam.length == 0) {
+			alert("1개이상의 결과를 선택한 후에 배팅해주세요.");
+			return false;
+		}
+		
+		if($("#credit").val() < 1000 || $("#credit").val() > 100000) {
+			alert("크레딧은 1,000 ~ 100,000 까지배팅이 가능합니다");
+			$("#credit").focus();
+			return false;
 		}
 
 		var credit = $("#credit").val() ;
@@ -270,7 +275,7 @@
 					alert("경기 " + $("#choiceCnt").html() +"건\n"+
 							$("#currentBet").html()  + "배당 X " +
 							numberWithCommas(credit) + "크레딧 = " +
-							(resultCredit) + "크레딧\n" +
+							($("#resultCredit").html()) + "크레딧\n" +
 							"배팅이 완료되었습니다.");
 					location.reload();
 				}   else {
@@ -286,8 +291,26 @@
 		});
 	}
 
-	function basketBet(sportsTotoNo) {
-		setCookie("totoDate", )
+	function basketBet(sportsTotoNo, obj) {
+		var d = new Date();
+		var dateStr = obj.parent().parent().next().html();
+		
+		var yyyymmdd = dateStr.split("-");
+		var hhmm = dateStr.split(":");
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		
+		var startDate  = new Date(yyyymmdd[0],yyyymmdd[1],yyyymmdd[2].substring(0,2),
+				hhmm[0].substring(11, 13), hhmm[1], 00);
+		var endDate = new Date(yyyy,mm,dd,d.getHours(),d.getMinutes(),00);
+		var timeDiff = (endDate.getTime() - startDate.getTime()) / 60000;
+		
+		if(timeDiff > -10) {
+			alert("시작 10분전 경기는 배팅할수 없다 맨이야");
+			return false;
+		}
 		
 		$("#clear").attr("style", "display: none");
 		

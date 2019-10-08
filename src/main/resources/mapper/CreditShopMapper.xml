@@ -149,5 +149,5 @@
 			AND		P.USE_YN = 'Y'
 		) A
         INNER JOIN DELIVERY D ON A.DELIVERY_NO = D.DELIVERY_NO AND D.USE_YN = 'Y'
-</select>
+	</select>
 </mapper>

@@ -27,4 +27,7 @@ public interface SportsTotoDao {
 	
 	// 구입한 스포츠번호 리스트
 	List<SportsVO> listBoughtSportsNo(int familyCustNo);
+	
+	// 경기시작전인지 체크
+	boolean isCanSportsTotoSChedule(SportsBettingVO vo);
 }

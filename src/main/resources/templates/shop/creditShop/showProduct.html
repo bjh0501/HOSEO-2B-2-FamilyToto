@@ -287,12 +287,25 @@ ul, li {
 									</div>
 									<div class="input-group mb-2">
 										<div class="input-group mb-3">
-											<div class="col-6">
+											<div class="col-4">
 												<button type="button"
 													class="btn btn-secondary btn-block btn-lg amountcheck"
 													th:onClick="|javascript:basket(${product.productNo});|">장바구니</button>
 											</div>
-											<div class="col-6">
+											<div class="col-4">
+												<button type="button"
+													th:if="${preferProdut == null}"
+													class="btn btn-secondary btn-block btn-lg amountcheck"
+													id="prefer"
+													th:onClick="|javascript:preferProduct(${product.productNo});|">찜</button>
+												<button type="button"
+													th:if="${preferProdut != null}"
+													class="btn btn-secondary btn-block btn-lg amountcheck"
+													id="prefer"
+													style="background:orange"
+													th:onClick="|javascript:preferProduct(${product.productNo});|">찜</button>
+											</div>
+											<div class="col-4">
 												<button type="button"
 													class="btn btn-secondary btn-block btn-lg amountcheck"
 													th:onClick="|javascript:directBuy(${product.productNo});|">즉시구매</button>
@@ -570,4 +583,32 @@ var helpCommentList = [
 	}
 	
 	$("#comment").keyup(function(e){if(e.keyCode == 13)  comment(); });
+	
+	function preferProduct(productNo) {
+		$.ajax({
+			url : "/showProduct/prefer",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : "productNo=" + productNo,
+			success : function(data) {				
+				if (data.trim() == 0) {
+					$("#prefer").attr("Style","background:orange");
+				} else if(data.trim() == 1) {
+					$("#prefer").attr("Style","");
+				} else if(data.trim() == -97) { 
+					alert("로그인을 해야만 찜을 할 수 있습니다.");
+				} else if(data.trim() == -96) { 
+					alert("패밀리 회원만 찜을 할 수 있습니다.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
 </script>

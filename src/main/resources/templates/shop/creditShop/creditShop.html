@@ -59,7 +59,9 @@
 											th:text="${list.getCategoryName()}">카드</option>
 									</th:block>
 								</select>
-								<a href="/product/insertProduct">상품등록 (임시)</a>
+								<a href="/product/insertProduct" th:if="${productButton == 'Y'}">
+									<button type="button" class="btn btn-secondary">상품등록</button>
+								</a>
 							</div>
 						</div>
 					</div>

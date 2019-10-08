@@ -47,7 +47,15 @@ public class CreditShopController {
 	AWSService awsService;
 	
 	@RequestMapping("/creditShop")
-    public String creditShop(Model model) {
+    public String creditShop(Model model, HttpSession session) {
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+		
+		if(custVo != null && custVo.getFamilyCustCompanyNumber() != null) {
+			model.addAttribute("productButton", "Y");
+		} else {
+			model.addAttribute("productButton", "N");
+		}
+		
 		model.addAttribute("categoryList", creditShopService.listProductCategory());
 		return "/shop/creditShop/creditShop";
     }
@@ -71,11 +79,30 @@ public class CreditShopController {
 	
 	
 	@RequestMapping("/showProduct/{productNo}")
-    public String showProduct(ProductVO vo, Model model, @PathVariable("productNo") int nProductNo) {
+    public String showProduct(ProductVO vo, Model model,
+    		@PathVariable("productNo") int nProductNo,
+    		HttpSession session) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
 		vo.setProductNo(nProductNo);
 		
 		ProductVO pVo= new ProductVO();
 		pVo = creditShopService.getShowProduct(vo);
+		
+		if(cVo != null) {
+			if(cVo.getFamilyCustNo() != 0) {
+				ProductBuyVO pbVo = new ProductBuyVO();
+				pbVo.setFamilyCustNo(cVo.getFamilyCustNo());
+				pbVo.setProductNo(nProductNo);
+				
+				String useYn = creditShopService.getPreferProduct(pbVo);
+				
+				if(useYn != null && useYn.equals("Y")) {
+					model.addAttribute("preferProdut", creditShopService.getPreferProduct(pbVo));
+				}
+			}
+		}
+		
 		
 		model.addAttribute("product", pVo);
 		model.addAttribute("listComment", creditShopService.listProductComment(vo));

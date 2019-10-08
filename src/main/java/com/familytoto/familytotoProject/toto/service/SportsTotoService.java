@@ -2,7 +2,6 @@ package com.familytoto.familytotoProject.toto.service;
 
 import java.util.List;
 
-import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 import com.familytoto.familytotoProject.toto.domain.SportsVO;
 
@@ -26,5 +25,8 @@ public interface SportsTotoService {
 	List<SportsVO> listSportsTotoInnerSoccer(int familyCustNo);
 	
 	// 구입한 스포츠번호 리스트
-	List<SportsVO> listBoughtSportsNo(int familyCustNo);	
+	List<SportsVO> listBoughtSportsNo(int familyCustNo);
+	
+	// 경기시작전인지 체크
+	boolean isCanSportsTotoSChedule(SportsBettingVO vo);
 }

@@ -147,4 +147,12 @@
         WHERE	TSBG.FAMILY_CUST_NO = #{familyCustNo}
         AND		TSBG.SPORTS_BETTING_GROUP_NO = #{sportsBettingGroupNo}
 	</select>
+	<select id="isCanSportsTotoSChedule" parameterType="SportsBettingVO" resultType="boolean">
+		SELECT EXISTS (
+		SELECT	*
+		FROM	TOTO_SPORTS
+		WHERE	TIMESTAMPDIFF(MINUTE, NOW(), SPORTS_SCHEDULE) >= 10
+		AND		USE_YN = 'Y'
+		AND		SPORTS_NO = #{sportsNo}) AS CHECKSCHEDULE
+	</select>
 </mapper>

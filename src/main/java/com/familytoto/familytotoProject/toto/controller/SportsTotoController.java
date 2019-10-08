@@ -80,7 +80,8 @@ public class SportsTotoController {
 	 *  
 	 *  종목베팅 배당값get
 	 *  해당종목 배팅했는지 체크
-	 *  크레딧id get
+	 *  해당종목이 시작전 30분인지 체크
+	 *   크레딧id get
 	 *  배팅그룹 get
 	 *  
 	 *  베팅 insert
@@ -156,8 +157,12 @@ public class SportsTotoController {
 			
 			// 해당 종복 배팅했는지 체크
 			if(sportsTotoService.isDupleBet(vo) == true) {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				return -6;
+				throw new RuntimeException("중복 배팅했습니다.");
+			}
+			
+			// 시작전 n이상인지 체크 시작 n분전이면 배팅실패
+			if(sportsTotoService.isCanSportsTotoSChedule(vo) == true) {
+				throw new RuntimeException("너무 늦게 배팅했습니다.");
 			}
 			
 			vo.setSportsBettingGroupNo(betGroupId);

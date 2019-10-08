@@ -225,6 +225,12 @@
 		var imageUrl = new Array;
 
 		for (i = 0; i < $(".image-url").length; i++) {
+			if(checkUrlForm($(".image-url").eq(i).val()) == false) {
+				alert("링크 이미지가 URL형식이 아닙니다.\nURL형식으로만 등록이 가능합니다.");
+				$(".image-url").eq(i).focus();
+				return false;
+			} 			
+			
 			imageUrl.push($(".image-url").eq(i).val());
 		}
 
@@ -246,6 +252,11 @@
 							+ (imgCnt +1) + "번째 파일이 1메가 이상입니다.");
 				}
 			});
+		}
+		
+		if(imgCnt == 0) {
+			alert("최소한 1개이상의 사진을 등록해주세요.");
+			return false;
 		}
 
 		$.ajax({
@@ -287,7 +298,11 @@
 				productImgUrls : imageUrl
 			},
 			success : function(data) {
-				alert(data)
+				if(data == 0) {
+					alert("상품이 등록되었습니다.");
+				} else {
+					alert("문제가 생겼습니다. 새로고침 후 다시 시도해주세요.");
+				}
 			},
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"
@@ -394,5 +409,10 @@
 
 			reader.readAsDataURL(input.files[0]);
 		}
+	}
+	
+	function checkUrlForm(strUrl) {
+	    var expUrl = /^http[s]?\:\/\//i;
+	    return expUrl.test(strUrl);
 	}
 </script>
