@@ -31,10 +31,10 @@
 .balloon {
 	position: fixed;
     background: #ccc;
-    border-radius: 50%;
+    border-radius: 10% 20% 40%;
     bottom: 20rem;
     left: 12rem;
-    padding: 34px;
+    padding: 50px;
 }
 .balloon:before {
     content: '';
