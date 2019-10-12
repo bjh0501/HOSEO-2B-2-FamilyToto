@@ -100,8 +100,6 @@ public class BoardServiceImpl implements BoardService{
 	public List<BoardVO> getBoardList(SearchVO search) throws Exception {		
 		List<BoardVO> list =boardDao.getBoardList(search);
 		
-		int i = 0;
-		
 		for(BoardVO vo :list) {
 			if(vo.getRegCustNo() == 0) {
 				vo.setCustGubun("");
@@ -126,6 +124,8 @@ public class BoardServiceImpl implements BoardService{
 			if(sCovertContetns.length() >= 50) {
 				sCovertContetns = sCovertContetns.substring(0, 48) + " ...";
 			}
+			
+			vo.setBoardContents(sCovertContetns);
 		}
 		
 		return list;

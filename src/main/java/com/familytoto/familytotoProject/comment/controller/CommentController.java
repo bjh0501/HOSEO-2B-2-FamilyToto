@@ -38,12 +38,16 @@ public class CommentController {
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 		vo.setRegIp(request.getRemoteAddr());
 	
-		// 회원
+		if(vo.getCommentAnnoPw() != null){ // 비회원 댓글삭제
+			return commentService.updateDeleteAnnoComment(vo);
+		}
+		
+		// 회원댓글삭제
 		if(cVo != null) {
 			vo.setChgCustNo(cVo.getCustNo());
 			return commentService.updateDeleteComment(vo);
-		} else { // 비회원
-			return commentService.updateDeleteAnnoComment(vo);
+		} else {
+			return -1;
 		}
 	}
 	
