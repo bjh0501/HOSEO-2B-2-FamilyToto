@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.creditShop.domain.CategoryVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
@@ -44,9 +45,12 @@ public interface CreditShopService {
 	// 배송비가져오기
 	int getDeliveryCredit(List<Integer> productNo, CustVO vo);
 	
-	public boolean productSellInsert();
-}
-
-class WithMessgaeException extends RuntimeException{
+	// 상품 수정 가져오기
+	ProductVO getUpdatingProduct(ProductVO vo);
 	
+	// 상품 이미지 가져오기
+	List<ProductVO> listGetProductImg(ProductVO vo);
+	
+	// 장바구니 리모콘
+	List<BasketVO> listCreditShopBasket(int familyCustNo);
 }

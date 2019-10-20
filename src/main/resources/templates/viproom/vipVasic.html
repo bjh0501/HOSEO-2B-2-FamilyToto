@@ -123,16 +123,16 @@
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
-// Firebase 기본 SDK, 꼭 필요로 함
+<!-- // Firebase 기본 SDK, 꼭 필요로 함 -->
 <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
 
-// Firebase App SDK
+<!-- // Firebase App SDK -->
 <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
 
-// Firebase Auth SDK, 계정 인증 사용시 필요
+<!-- // Firebase Auth SDK, 계정 인증 사용시 필요 -->
 <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
 
-// Firebase Database SDK, 데이터베이스 사용시 필요
+<!-- // Firebase Database SDK, 데이터베이스 사용시 필요 -->
 <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
 <script>
 	// Your web app's Firebase configuration
@@ -151,12 +151,17 @@
 	// firebase.analytics();
 	var database = firebase.database();
 
-	function writeUserData(roomNum) {
-		firebase.database().ref('russaRullet/' + roomNum).set({
+	var fmailyCustNo = 100000001;
+	
+	function enterRoom(roomNum) {
+		firebase.database().ref('russiaRullet/' + roomNum).set({
 			turn : "1"
+		,	state : "W"
 		});
-		firebase.database().ref('russaRullet/' + roomNum + "/players").set({
-			turn : "1"
+		firebase.database().ref('russiaRullet/' + roomNum + "/players").push({
+			$fmailyCustNo : "W"
 		});
 	}
+	
+// 	database.ref("russiaRullet/" + roomNum + "/players" + ).remove();
 </script>

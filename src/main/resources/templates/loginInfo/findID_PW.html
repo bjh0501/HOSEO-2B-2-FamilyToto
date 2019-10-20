@@ -205,6 +205,7 @@ var helpCommentList = [
 			url : "/findIdList",
 			type : "POST",
 			cache : false,
+			async : false,
 			dataType : "json",
 			data : "familyCustEmail=" + email,
 			success : function(data) {
@@ -260,6 +261,7 @@ var helpCommentList = [
 			type : "POST",
 			cache : false,
 			dataType : "json",
+			async : false,
 			data : "familyCustEmail=" + email+ "&custId=" + $("#id").val(),
 			success : function(data) {
 				if(data == 0) {

@@ -62,4 +62,22 @@ public interface ProductBuyDao {
 	
 	// 상품이미지추가
 	int insertProductImgUrl(ProductVO vo);
+	
+	// 상품수정
+	int updateProduct(ProductVO vo);
+	
+	// 상품 사진 삭제했을 때
+	int updateDeleteProductImgs(ProductVO vo);
+	
+	// 상품 이미지 리스트
+	List<ProductVO> listProductImg(int productNo);
+	
+	// 상품 이미지 모두 대표이미지 해제
+	int updateAllImgToN(int productNo);
+	
+	// 대표이미지 선택
+	int updateChooseKingImg(ProductVO vo);
+	
+	// 상품삭제
+	int updateDeleteProduct(ProductVO vo);
 }

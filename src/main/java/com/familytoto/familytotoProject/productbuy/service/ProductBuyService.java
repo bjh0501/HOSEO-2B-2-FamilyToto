@@ -35,5 +35,20 @@ public interface ProductBuyService {
 	RegisterCustVO getFamilyCustDefaultAddr(int familyCustNo);
 	
 	// 상품추가
-	int insertProduct(ProductVO vo, String[] productImgUrls) ;
+	int insertProduct(ProductVO vo, String[] productImgUrls, String[] productImgServer) ;
+	
+	// 상품수정
+	int updateProduct(ProductVO vo, String[] productImgUrls, String[] productImgServer) ;
+	
+	// 상품 사진 삭제했을 때
+	int updateDeleteProductImgs(ProductVO vo);
+	
+	// 상품 이미지 리스트
+	List<ProductVO> listProductImg(int productNo);
+	
+	// 대표이미지 선택
+	int updateChooseKingImg(ProductVO vo);
+	
+	// 상품삭제
+	int updateDeleteProduct(ProductVO vo);
 }

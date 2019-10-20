@@ -1,6 +1,7 @@
 package com.familytoto.familytotoProject.charge.dao;
 
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 public interface ItemShopDao {
@@ -15,4 +16,13 @@ public interface ItemShopDao {
 	
 	// 닉네임업뎃
 	public int updateNickname(CustVO cVo);
+	
+	// VIP권 구매
+	int insertVipTicket(ExpVO vo);
+	
+	// VIP권 체크
+	boolean isVipTicket(int familyCustNo);
+	
+	// VIP권 경험치얻기
+	int updateVipExp(int familyCustNo);
 }

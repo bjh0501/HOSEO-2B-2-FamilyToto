@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Repository
@@ -30,6 +31,21 @@ public class ItemShopDaoImpl implements ItemShopDao{
 	@Override
 	public int insertCredit(CreditVO vo) {
 		return sqlSession.insert("itemShop.insertCreditHistory", vo);
+	}
+
+	@Override
+	public int insertVipTicket(ExpVO vo) {
+		return sqlSession.insert("itemShop.insertVipTicket", vo);
+	}
+
+	@Override
+	public boolean isVipTicket(int familyCustNo) {
+		return sqlSession.selectOne("itemShop.isVipTicket", familyCustNo);
+	}
+
+	@Override
+	public int updateVipExp(int familyCustNo) {
+		return sqlSession.update("itemShop.updateVipExp", familyCustNo);
 	}
 }
 

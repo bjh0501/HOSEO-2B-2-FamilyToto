@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.charge.service.ItemShopService;
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Controller
@@ -46,9 +47,8 @@ public class ItemShopController {
 			return -98;
 		} else {
 			vo.setCreditValue(needCredit*-1);
-			vo.setFamilyCustNo(cVo.getFamilyCustNo());
 			vo.setCreditState("CHN");
-			vo.setRegCustNo(cVo.getRegCustNo());
+			vo.setRegCustNo(cVo.getCustNo());
 			vo.setRegIp(request.getRemoteAddr());
 			itemShopService.insertCredit(vo);
 		}
@@ -66,6 +66,70 @@ public class ItemShopController {
 			return 0;		
 		} else {
 			return -1;
+		}
+    }
+
+	@RequestMapping("/itemShop/buyVIP")
+	@ResponseBody
+	@Transactional
+    public int buyVipTicket(@ModelAttribute @Valid CreditVO vo,
+    		HttpSession session,
+    		HttpServletRequest request,
+    		String dt) {
+		
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		if(cVo == null) {  
+			return -99;			
+		}
+		
+		vo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+		// 이미 VIP권이 있는경우
+		if(itemShopService.isVipTicket(cVo.getFamilyCustNo()) == true) {
+			return -97;
+		}
+		
+		// 돈없는경우
+		int needCredit = 0;
+		
+		if(dt.equals("1")) {
+			needCredit = 10000;
+		} else if(dt.equals("7")) {
+			needCredit = 50000;
+		} else {
+			needCredit = 200000;
+		}
+		
+		vo.setCreditValue(needCredit);
+		
+		if(isCheckCredit(vo)== false) {
+			return -98;
+		} else {
+			vo.setCreditValue(needCredit*-1);
+			vo.setCreditState("VIP");
+			vo.setRegCustNo(cVo.getCustNo());
+			vo.setRegIp(request.getRemoteAddr());
+
+			if(itemShopService.insertCredit(vo) != 1) {
+				throw new RuntimeException("크레딧 추가 에러");
+			}
+			
+			ExpVO expVo = new ExpVO();
+			expVo.setFamilyCustNo(vo.getFamilyCustNo());
+			expVo.setRegCustNo(cVo.getCustNo());
+			expVo.setRegExpDt(dt);
+			expVo.setRegIp(vo.getRegIp());
+			
+			if(itemShopService.insertVipTicket(expVo) != 1) {
+				throw new RuntimeException("VIP 구입에러");
+			}
+			
+			if(itemShopService.updateVipExp(cVo.getFamilyCustNo()) != 1) {
+				throw new RuntimeException("VIP 경험치 갱신에러");
+			}
+			
+			return 0;
 		}
     }
 	

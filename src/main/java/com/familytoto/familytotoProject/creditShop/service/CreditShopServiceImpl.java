@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.charge.dao.ChargeDao;
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.creditShop.dao.CreditShopDao;
@@ -126,8 +127,17 @@ public class CreditShopServiceImpl implements CreditShopService {
 	}
 
 	@Override
-	public boolean productSellInsert() {
-		// TODO Auto-generated method stub
-		return false;
+	public ProductVO getUpdatingProduct(ProductVO vo) {
+		return creditShopDao.getUpdatingProduct(vo);
+	}
+
+	@Override
+	public List<ProductVO> listGetProductImg(ProductVO vo) {
+		return creditShopDao.listGetProductImg(vo);
+	}
+
+	@Override
+	public List<BasketVO> listCreditShopBasket(int familyCustNo) {
+		return creditShopDao.listCreditShopBasket(familyCustNo);
 	}
 }

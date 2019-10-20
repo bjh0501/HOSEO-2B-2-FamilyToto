@@ -19,6 +19,17 @@
 
 <!-- Custom styles for this template-->
 <link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+#draggable {
+	width: 320px;
+	padding: 0.5em;
+	z-index: 9999;
+	right: 5%;
+	background: #d2d2d2db;
+	cursor: all-scroll;
+}
+</style>
+<link rel="stylesheet" href="/css/jquery-ui.min.css">
 </head>
 <body id="page-top">
 
@@ -71,6 +82,35 @@
 								<input type="text" class="form-control" placeholder="Search"
 									aria-label="Search" aria-describedby="basic-addon1" id="search">
 								<button type="button" class="btn btn-secondary">검색</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div id="draggable" class="ui-widget-content" style="position: fixed">
+							<p>장바구니</p>
+							<h6>*마우스로 움직일수 있습니다.</h6>
+							<hr>
+							<div style="overflow-y: auto; max-height: 263px;" id="basketDiv">
+								<div class="alert alert-secondary" role="alert"
+								style="display: flex;" th:if="${cust==null}">
+									<b> 로그인을 해주세요.</b>
+								</div>
+								<div class="alert alert-secondary" role="alert"
+								style="display: flex;" th:if="${cust!=null && cust.familyCustNo==null}">
+									<b id="login2" >
+										연동을 해주세요.
+									</b>
+								</div>
+							</div>
+							<div id="clear" th:if="${cust!=null && cust.familyCustNo!=null}">
+								<div class="alert alert-secondary" role="alert" style="display: flex;">
+									<b>비어있습니다.</b>
+								</div>
+							</div>
+							<hr class="notClear">
+							<div class="notClear">
+								<button type="button" class="btn btn-secondary btn-block"
+								onClick="location.href='/basket'">구입하기</button>
 							</div>
 						</div>
 					</div>
@@ -138,7 +178,8 @@
 	<!-- common -->
     <script src="/js/common.js"></script>
 	<script src="/js/header.js"></script>
-	
+	<!--jquery ui -->
+	<script src="/js/jquery-ui.min.js"></script>
 </body>
 </html>
 <script>
@@ -155,6 +196,10 @@ var helpCommentList = [
 + "상품을사고싶으면 구매하실 수량을<br>적으시고 즉시구매를 누르시면되구여<br>"
 + "상품을 사기싫으시다면 크레딧샵을클릭해 이동하실수있어여"]
 
+	$(function() {
+		$( "#draggable" ).draggable({ containment: "#content", scroll: false });
+		getBasket();
+	});
 
 	function comma(num) {
 		var len, point, str;
@@ -192,7 +237,6 @@ var helpCommentList = [
 
 	
 	function getList() {
-			
 		$("#creditMain").html("");
 		
 		beforeSearch = $("#search").val();
@@ -202,6 +246,7 @@ var helpCommentList = [
 			url : "/creditShop/list?pagingNo=" + page,
 			type : "POST",
 			cache : false,
+			async: false,
 			dataType : "json",
 			data : {
 				categoryNo :  $("#category").val()   
@@ -308,6 +353,7 @@ var helpCommentList = [
 			url : "/creditShop/list?pagingNo=" + page,
 			type : "POST",
 			cache : false,
+			async : false,
 			dataType : "json",
 			data : {
 				categoryNo :  $("#category").val()   
@@ -424,6 +470,8 @@ var helpCommentList = [
 			success : function(data) {
 				if (data.trim() == 0) {
 					alert("장바구니에 담았습니다.\n누군가 전부 구입하기전에 먼저 구입해주세요!");
+					getBasket();
+					$("#promptModal").modal("hide");
 				} else if (data.trim() == -99) {
 					alert("로그인을 해야 장바구니에 담을 수 있습니다.");
 				} else if (data.trim() == -98) {
@@ -482,6 +530,79 @@ var helpCommentList = [
 				msg += +"내용 : " + request.responseText + "<br>" + error;
 				console.log(msg);
 			}
+		});
+	}
+
+	function getBasket() {
+		$.ajax({
+			url : "/creditShop/getBasket",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data == -99) {
+					return false;
+				} else {
+					$("#basketDiv").html("");
+					
+					for(i = 0; i < data.length; i++) {
+						var str = "";
+						str +="<div class='alert alert-secondary' style='display: flex;'>";
+						str +=" <div>";
+						str +=" 	<b>" + data[i].productName + "</b><br> <b>" + data[i].basketAmount + "개</b>";
+						str +=" </div>";
+						str +=" <div>";
+						str +=" 	<i class='fas fa-trash-alt' basketNo='" + data[i].basketNo + "'";
+						str +=" 		style='cursor: pointer; margin-top: 14px; margin-left: 67px;'";
+						str +=" 		onclick='deleteBasketDiv($(this));'></i>";
+						str +=" </div>";
+						str +="</div>";
+						
+						$("#basketDiv").append(str);
+					}
+					
+					if($("#basketDiv div").length != 0) {
+						$("#clear").attr("style", "display: none");
+						$(".notClear").attr("style", "");
+					} else {
+						$("#clear").attr("style", "");
+						$(".notClear").attr("style", "display: none");
+					}
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+
+	function deleteBasketDiv(obj) {
+		obj.parent().parent().fadeOut(300, function() {
+			
+			$.ajax({
+				url : "/basket/delete",
+				type : "POST",
+				cache : false,
+				dataType : "html",
+				data : "basketNoStr=" + obj.attr("basketNo"), 
+				success : function(data) {
+					if(data == 1) {
+						obj.parent().parent().remove();
+						
+						if($("#basketDiv div").length == 0) {
+							$("#clear").fadeIn(300);
+							$(".notClear").attr("style", "display: none");
+						}
+					}
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
 		});
 	}
 	

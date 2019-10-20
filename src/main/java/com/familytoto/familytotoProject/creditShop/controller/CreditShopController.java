@@ -57,6 +57,7 @@ public class CreditShopController {
 		}
 		
 		model.addAttribute("categoryList", creditShopService.listProductCategory());
+		model.addAttribute("cust", custVo);
 		return "/shop/creditShop/creditShop";
     }
 	
@@ -105,6 +106,7 @@ public class CreditShopController {
 		
 		
 		model.addAttribute("product", pVo);
+		model.addAttribute("cust", cVo);
 		model.addAttribute("listComment", creditShopService.listProductComment(vo));
 		model.addAttribute("commentCnt", creditShopService.productCommentCnt(vo));
 		model.addAttribute("listImgs", creditShopService.listProductImgs(vo));
@@ -170,16 +172,46 @@ public class CreditShopController {
 	
 	@RequestMapping("/product/insertProduct")
     public String insertProductPage(Model model,
-    		HttpSession session) {
+    		HttpSession session,
+    		HttpServletResponse response) {
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 		
 		if(cVo == null) {
-			return "/error/notLogin";
+			throw new RuntimeException("로그인 필수");
+		}
+		
+		if(cVo.getFamilyCustCompanyNumber() == null) {
+			throw new RuntimeException("사업자등록 필수");
 		}
 		
 		model.addAttribute("categoryList", creditShopService.listProductCategory());
 		
 		return "/shop/creditShop/insertProduct";
+    }
+	
+	@RequestMapping("/product/updateProduct/{productNo}")
+    public String updateProductPage(Model model,
+    		HttpSession session,
+    		@PathVariable("productNo") int productNo) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		if(cVo == null) {
+			throw new RuntimeException("로그인 필수");
+		}
+		
+		if(cVo.getFamilyCustCompanyNumber() == null) {
+			throw new RuntimeException("사업자등록 필수");
+		}
+		
+		ProductVO vo = new ProductVO();
+		vo.setFamilyCustNo(cVo.getFamilyCustNo());
+		vo.setProductNo(productNo);
+		
+		model.addAttribute("categoryList", creditShopService.listProductCategory());
+		model.addAttribute("product", creditShopService.getUpdatingProduct(vo));
+		model.addAttribute("productImgs", creditShopService.listGetProductImg(vo));
+		
+		return "/shop/creditShop/updateProduct";
     }
 	
 	@RequestMapping("/product/insertProduct/insert")
@@ -188,7 +220,8 @@ public class CreditShopController {
     		HttpSession session,
     		ProductVO productVo,
     		String[] productImgUrls,
-    		HttpServletRequest request) {
+    		HttpServletRequest request,
+    		String[] productImgServer) {
 		CustVO cVo = (CustVO) session.getAttribute("cust");
 		
 		if(cVo.getFamilyCustCompanyNumber() == null) {
@@ -198,9 +231,72 @@ public class CreditShopController {
 		productVo.setRegCustNo(cVo.getCustNo());
 		productVo.setRegIp(request.getRemoteAddr());
 		productVo.setFamilyCustNo(cVo.getFamilyCustNo());
-		productBuyService.insertProduct(productVo, productImgUrls);
+		
+		return productBuyService.insertProduct(productVo, productImgUrls, productImgServer);
+	}
+	
+	@RequestMapping("/product/updateProduct/update")
+	@ResponseBody
+    public int updateProduct(Model model,
+    		HttpSession session,
+    		ProductVO productVo,
+    		String[] productImgUrls,
+    		HttpServletRequest request,
+    		String[] productImgServer) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		if(cVo.getFamilyCustCompanyNumber() == null) {
+			return -1;
+		}
+		
+		productVo.setRegCustNo(cVo.getCustNo());
+		productVo.setRegIp(request.getRemoteAddr());
+		productVo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+		productBuyService.updateProduct(productVo, productImgUrls, productImgServer);
 		
 		return 0;
+	}
+	
+	@RequestMapping("/product/updateProduct/deleteImg")
+	@ResponseBody
+    public int deleteImgProduct(Model model,
+    		HttpSession session,
+    		ProductVO productVo,
+    		HttpServletRequest request,
+    		int productImageNo[]) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		
+		if(cVo.getFamilyCustCompanyNumber() == null) {
+			return -1;
+		}
+		
+		productVo.setChgCustNo(cVo.getCustNo());
+		productVo.setRegIp(request.getRemoteAddr());
+		
+		// 사진 삭제 반영
+		for(int i : productImageNo) {
+			productVo.setProductImageNo(i);
+			productBuyService.updateDeleteProductImgs(productVo);
+		}
+		
+		return 0;
+	}
+	
+	@RequestMapping("/creditShop/getBasket")
+	@ResponseBody
+    public String getBasket(HttpServletRequest request,
+    		HttpSession session) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");		
+		
+		if(cVo == null) {
+			return "-99";
+		}
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(creditShopService.listCreditShopBasket(cVo.getFamilyCustNo()));
+		
+		return json;
 	}
 	
 	@RequestMapping("/product/uploadImages")
@@ -274,4 +370,47 @@ public class CreditShopController {
 
 		return sPath;
 	}
+	
+	@RequestMapping("/product/listImgs")
+	@ResponseBody
+	private String listImgs(int productNo, HttpSession session) {
+		CustVO cust = (CustVO) session.getAttribute("cust");
+		
+		if(cust.getFamilyCustCompanyNumber() == null) {
+			throw new RuntimeException("판매자만 접속가능");
+		}
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(productBuyService.listProductImg(productNo));
+		
+		return json;
+	}
+	
+	@RequestMapping("/product/chooseKingImg")
+	@ResponseBody
+	private int chooseKingImg(@ModelAttribute ProductVO vo, HttpSession session) {
+		CustVO cust = (CustVO) session.getAttribute("cust");
+		
+		if(cust.getFamilyCustCompanyNumber() == null) {
+			throw new RuntimeException("판매자만 접속가능");
+		}
+		
+		return productBuyService.updateChooseKingImg(vo);
+	}
+	
+	@RequestMapping("/product/deleteProduct/delete")
+	@ResponseBody
+	private int updateDeleteProduct(@ModelAttribute ProductVO vo, HttpSession session) {
+		CustVO cust = (CustVO) session.getAttribute("cust");
+		
+		if(cust.getFamilyCustCompanyNumber() == null) {
+			throw new RuntimeException("판매자만 접속가능");
+		}
+		
+		vo.setChgCustNo(cust.getCustNo());
+		vo.setFamilyCustNo(cust.getFamilyCustNo());
+		
+		return productBuyService.updateDeleteProduct(vo);
+	}
 }
+	

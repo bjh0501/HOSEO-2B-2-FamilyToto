@@ -167,6 +167,7 @@
 				WHEN EXP_STATE = 'LGS' THEN '사다리게임시작'
 		        WHEN EXP_STATE = 'LGW' THEN '사다리게임승리'
 		        WHEN EXP_STATE = 'STW' THEN '스포츠토토적중'
+		        WHEN EXP_STATE = 'VIP' THEN 'VIP권'
 		        END AS expState
 		,		EXP_VALUE as expValue
 		,		DATE_FORMAT(IFNULL(CHG_DT, REG_DT),'%y. %m. %d %H:%i') AS regExpDt
@@ -193,6 +194,10 @@
 		        WHEN CREDIT_STATE = 'TES' THEN '테스트'
 		        WHEN CREDIT_STATE = 'IPP' THEN '상품판매'
 		        WHEN CREDIT_STATE = 'IDC' THEN '배송비'
+		        WHEN CREDIT_STATE = 'VIP' THEN 'VIP권 구입'
+		        WHEN CREDIT_STATE = 'FRE' THEN '무료충전'
+		        WHEN CREDIT_STATE = 'CHN' THEN '닉네임 변경'
+		        WHEN CREDIT_STATE = 'TES' THEN '테스트 크레딧'
 				END AS creditState
 		,		CREDIT_VALUE as creditValue
 		,		DATE_FORMAT(IFNULL(CHG_DT, REG_DT), '%y. %m. %d %H:%i') AS regCreditDt
@@ -211,6 +216,7 @@
 		        WHEN MILEAGE_STATE = 'ITM' THEN '아이템 구입'
 		        WHEN MILEAGE_STATE = 'PDS' THEN '상품 구입'
 		        WHEN MILEAGE_STATE = 'CRM' THEN '상품평'
+		        WHEN MILEAGE_STATE = 'TES' THEN '테스트 마일리지'
 				END AS mileageState
 		,		MILEAGE_VALUE as mileageValue
 		,		DATE_FORMAT(IFNULL(CHG_DT, REG_DT), '%y. %m. %d %H:%i') AS regMileageDt
@@ -348,7 +354,8 @@
         ,		PI.PRODUCT_IMG_URL as productImgUrl
         FROM	PRODUCT P
 			INNER JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_NO = PC.CATEGORY_NO AND PC.USE_YN = 'Y'
-            LEFT OUTER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y' AND PI.PRODUCT_IMG_PRIMARY = 'Y'
+            INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y'
+            	AND PI.PRODUCT_IMG_PRIMARY = 'Y'
             LEFT OUTER JOIN PRODUCT_COMMENT PCO ON P.PRODUCT_NO = PCO.PRODUCT_NO AND PCO.USE_YN = 'Y'
         WHERE	P.FAMILY_CUST_NO = #{familyCustNo}
         AND		P.USE_YN = 'Y'

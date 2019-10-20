@@ -1,4 +1,4 @@
-package com.familytoto.familytotoProject.charge.controller;
+ package com.familytoto.familytotoProject.charge.controller;
 
 import java.io.PrintWriter;
 import java.util.Map;
@@ -27,7 +27,6 @@ public class ChargeController {
 
 	private int nCustNo = 0;
 	private int nFamilyCustNo = 0;
-	private String sEmail = "";
 
 	@RequestMapping("/charge")
 	public ModelAndView charge(ModelAndView mv, HttpSession session, HttpServletResponse response) {
@@ -48,7 +47,6 @@ public class ChargeController {
 			return mv;
 		}
 
-		sEmail = vo.getFamilyCustEmail();
 		nCustNo = vo.getCustNo();
 		nFamilyCustNo = vo.getFamilyCustNo();
 
@@ -67,13 +65,15 @@ public class ChargeController {
 
 	@RequestMapping(value = "/charge/doCharge", method = RequestMethod.POST)
 	@ResponseBody
-	public int doCharge(@Valid @ModelAttribute CreditVO vo, HttpServletRequest request) {
+	public int doCharge(@Valid @ModelAttribute CreditVO vo,
+			HttpServletRequest request,
+			String sEmail,
+			String emailAddress) {
 		vo.setRegCustNo(nCustNo);
 		vo.setRegIp(request.getRemoteAddr());
 		vo.setFamilyCustNo(nFamilyCustNo);
 
 		String sMail = request.getParameter("mail");
-		
 		String sGubun = request.getParameter("gubun");
 		
 		if(!sGubun.equals("FREE") && !sGubun.equals("CARD")) {
@@ -89,8 +89,14 @@ public class ChargeController {
 		int nResult = chargeService.doCharge(vo);
 
 		if (nResult == 1) {
-			if (sMail.equals("Y") && sEmail != null) {
-				chargeService.sendHistoryEmail(sEmail, vo.getCreditValue());
+			if (sMail.equals("Y") && emailAddress != null) {
+				if(sGubun.equals("FREE")) {
+					sGubun = "무료충전";
+				} else {
+					sGubun = "카드충전";
+				}
+				
+				chargeService.sendHistoryEmail(emailAddress, vo.getCreditValue(), sGubun);
 				return 0;
 			} else {
 				return 1;

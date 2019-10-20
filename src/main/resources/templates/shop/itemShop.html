@@ -37,20 +37,6 @@
 </head>
 
 <body id="page-top">
-<div style="background: #000000c4;
-    width: 100%;
-    height: 71px;
-    position: fixed;
-    z-index: 10000;
-    color: white;
-    font-weight: 800;
-    cursor:pointer;"
-    onClick="javascript:$(this).slideUp()"
-    >
-    <center>
-		기능이 일부만 되거나 안되는 페이지입니다.
-		</center>
-	</div>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -83,7 +69,7 @@
 					<div class="row">
 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow h-100 py-12">
-								<div style="padding: 20px;">
+								<div style="padding: 20px;" onDblClick="javascript:buyVIP();">
 									<div class="input-group">
 										<h2>VIP권</h2>
 									</div>
@@ -92,63 +78,64 @@
 									</div>
 									<div class="input-group">
 										<div class="btn-group btn-group-toggle" data-toggle="buttons">
-											<label class="btn btn-secondary active"> <input
+											<label class="btn btn-secondary active" onClick="javascript:vipDt(0);"> <input
 												type="radio" name="options" id="option1" autocomplete="off"
 												checked> 1일
-											</label> <label class="btn btn-secondary"> <input
-												type="radio" name="options" id="option2" autocomplete="off">
+											</label>
+											<label class="btn btn-secondary" onClick="javascript:vipDt(1);">
+											<input type="radio" name="options" id="option2" autocomplete="off">
 												7일
-											</label> <label class="btn btn-secondary"> <input
-												type="radio" name="options" id="option3" autocomplete="off">
+											</label> <label class="btn btn-secondary" onClick="javascript:vipDt(2);">
+												<input type="radio" name="options" id="option3" autocomplete="off">
 												30일
 											</label>
 										</div>
 									</div>
 									<div class="input-group">
-										<h3>10,000크레딧</h3>
+										<h3><span id="vipCredit">10,000</span>크레딧</h3>
 									</div>
 
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
-							<div class="card shadow h-100 py-12" >
-								<div style="padding: 20px;">
-									<div class="input-group">
-										<h2>랜덤박스</h2>
-									</div>
-									<div class="input-group">
-										<h6>모든아이템중 하나가 랜덤으로 나옵니다.</h6>
-									</div>
-									<div class="input-group">
-										<input type="text" class="form-control" placeholder="직접입력" numberOnly>
-										<div style="padding-top: 8px;">&nbsp;개</div>
-									</div>
-									<div class="input-group">
-										<h3>30,000크레딧</h3>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
-							<div class="card shadow h-100 py-12">
-								<div style="padding: 20px;">
-									<div class="input-group">
-										<h2>무르기권</h2>
-									</div>
-									<div class="input-group">
-										<h6>경기시작전 30분전까지 사용하여 배팅취소를 할 수 있습니다.</h6>
-									</div>
-									<div class="input-group">
-										<input type="text" class="form-control" placeholder="직접입력" numberOnly >
-										<div style="padding-top: 8px;">&nbsp;개</div>
-									</div>
-									<div class="input-group">
-										<h3>3,000크레딧</h3>
-									</div>
-								</div>
-							</div>
-						</div>
+<!-- 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4"> -->
+<!-- 							<div class="card shadow h-100 py-12" > -->
+<!-- 								<div style="padding: 20px;"> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<h2>랜덤박스</h2> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<h6>모든아이템중 하나가 랜덤으로 나옵니다.</h6> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<input type="text" class="form-control" placeholder="직접입력" numberOnly> -->
+<!-- 										<div style="padding-top: 8px;">&nbsp;개</div> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<h3>30,000크레딧</h3> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4"> -->
+<!-- 							<div class="card shadow h-100 py-12"> -->
+<!-- 								<div style="padding: 20px;"> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<h2>무르기권</h2> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<h6>경기시작전 30분전까지 사용하여 배팅취소를 할 수 있습니다.</h6> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<input type="text" class="form-control" placeholder="직접입력" numberOnly > -->
+<!-- 										<div style="padding-top: 8px;">&nbsp;개</div> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-group"> -->
+<!-- 										<h3>3,000크레딧</h3> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 						<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 mb-4">
 							<div class="card shadow h-100 py-12">
 								<div style="padding: 20px;"  ondblclick="javascript:buyNickChange();">
@@ -198,17 +185,16 @@
 </html>
 <script>
 var helpCommentList = [
-	"안녕하세여 리지입니다.<br>아이템상점은  vip권,랜덤박스,무르기권,닉네임변경권<br>"
+	"안녕하세여 리지입니다.<br>아이템상점은  vip권"/*,랜덤박스,무르기권,*/+"닉네임변경권<br>"
 + "이렇게 구성되있어여",
 "vip권은 vip룸에 입장하실수있는 이용권이에여<br>"
 + "지불하는 액수에따라 1~30일까지<br>"
-+ "랜덤박스는 상점에있는<br>"
-+ "임의의물품들을 1개로 구매하는박스에여<br>",
-  "무르기권은 자신이 배팅취소를<br>"
-+ "하고싶을떄 사실수있는아이템이에여<br>"
-+ "30분전까지니 사용에 유의하세여 <br>닉네임변경권은 회원님의<br>"
-+ " 닉네임을 바꾸실수있는 아이템이에여"]
-
+// + "랜덤박스는 상점에있는<br>"
+//+ "임의의물품들을 1개로 구매하는박스에여<br>",
+//  "무르기권은 자신이 배팅취소를<br>"
+//+ "하고싶을떄 사실수있는아이템이에여<br>"
++ /*"30분전까지니 사용에 유의하세여 <br>*/ "닉네임변경권은 회원님의<br>"
++ " 닉네임을 바꾸실수있는 아이템이에여"];
 
 	function buyNickChange() {
 		var nick = prompt("변경할 닉네임");
@@ -242,5 +228,56 @@ var helpCommentList = [
 				console.log(msg);
 			}
 		});
+	}
+	
+	function buyVIP() {
+		var vipDt = 0;
+		
+		if($("[name=options]:eq(0)").parent().hasClass("active") == true) {
+			vipDt = 1;
+		} else if($("[name=options]:eq(1)").parent().hasClass("active") == true) {
+			vipDt = 7;
+		} else {
+			vipDt = 30;
+		}
+		
+		var con = confirm("VIP " + vipDt + "일권을 구입하시겠습니까?");
+		
+		if(con == false) {
+			return false;
+		}
+		
+		$.ajax({
+			url : "/itemShop/buyVIP?dt=" + vipDt,
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			success : function(data) {
+				if(data == 0) {
+					alert("VIP " + vipDt + "일권을 구입하였습니다.");
+				} else if(data == -98) {
+					alert("크레딧이 부족합니다.");
+				} else if(data == -97) {
+					alert("이미 VIP권을 구입하였습니다.");
+				} else {
+					alert("새로고침후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function vipDt(i) {
+		if(i==0) {
+			$("#vipCredit").html("10,000");
+		} else if(i==1) {
+			$("#vipCredit").html("50,000");
+		} else {
+			$("#vipCredit").html("200,000");
+		}
 	}
 </script>

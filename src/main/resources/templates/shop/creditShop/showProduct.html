@@ -315,6 +315,16 @@ ul, li {
 													class="btn btn-secondary btn-block btn-lg"
 													onClick="javascript:location.href='/creditShop'">크레딧샵</button>
 											</div>
+											<div class="col-6" th:if="${cust != null && cust.familyCustNo != null && cust.familyCustNo == product.familyCustNo }">
+												<button type="button"
+													class="btn btn-secondary btn-block btn-lg"
+													th:onClick="|javascript:location.href='/product/updateProduct/${product.productNo}'|">수정하기</button>
+											</div>
+											<div class="col-6" th:if="${cust != null && cust.familyCustNo != null && cust.familyCustNo == product.familyCustNo }">
+												<button type="button"
+													class="btn btn-secondary btn-block btn-lg"
+													th:onClick="|javascript:deleteProduct(${product.productNo});|">삭제하기</button>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -600,6 +610,33 @@ var helpCommentList = [
 					alert("로그인을 해야만 찜을 할 수 있습니다.");
 				} else if(data.trim() == -96) { 
 					alert("패밀리 회원만 찜을 할 수 있습니다.");
+				} else {
+					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
+				}
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function deleteProduct(productNo) {
+		if(confirm("상품을 삭제하시겠습니까?") == false) {
+			return false;
+		}
+		
+		$.ajax({
+			url : "/product/deleteProduct/delete",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : "productNo=" + productNo,
+			success : function(data) {				
+				if (data.trim() == 1) {
+					alert("상품이 삭제되었습니다.");
+					location.replace("/creditShop");
 				} else {
 					alert("알수없는 에러가 발생하였습니다.\n새로고침 후 다시 시도해주세요.");
 				}

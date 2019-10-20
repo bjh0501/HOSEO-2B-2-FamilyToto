@@ -161,7 +161,7 @@ public class SportsTotoController {
 			}
 			
 			// 시작전 n이상인지 체크 시작 n분전이면 배팅실패
-			if(sportsTotoService.isCanSportsTotoSChedule(vo) == true) {
+			if(sportsTotoService.isCanSportsTotoSChedule(vo) == false) {
 				throw new RuntimeException("너무 늦게 배팅했습니다.");
 			}
 			

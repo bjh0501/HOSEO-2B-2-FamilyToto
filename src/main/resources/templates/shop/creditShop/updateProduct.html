@@ -35,11 +35,14 @@
 	margin-right: 7px;
 	margin-bottom: 7px;
 	cursor: pointer;
+	border: 1px solid;
 }
+
 .kingImg:hover {
 	opacity: .5;
 }
 </style>
+
 </head>
 
 <body id="page-top">
@@ -66,7 +69,7 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 					<div class="row">
-						<h2 class="text-title">판매자 상품등록</h2>
+						<h2 class="text-title">판매자 상품수정</h2>
 					</div>
 					<div class="card shadow mb-4">
 						<div class="card-body">
@@ -81,8 +84,8 @@
 								</div>
 								<select class="form-control" id="category">
 									<option th:each="list : ${categoryList}"
-										th:text="${list.getCategoryName()}" th:value="${list.getCategoryNo()}"
-									></option>
+										th:text="${list.getCategoryName()}" th:value="${list.getCategoryNo()}">
+										</option>
 								</select>
 							</div>
 							<div class="input-group mb-3">
@@ -90,14 +93,14 @@
 									<span class="input-group-text">상품명</span>
 								</div>
 								<input type="text" class="form-control" placeholder="Product Name"
-									id="productName"
-								>
+									id="productName" th:value="${product.productName}">
 							</div>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text">부가설명</span>
 								</div>
-								<textarea class="form-control" id="productDesc"></textarea>
+								<textarea class="form-control" id="productDesc"
+								th:text="${product.productDesc}"></textarea>
 							</div>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -105,7 +108,7 @@
 								</div>
 								<input type="text" class="form-control" placeholder="Credit"
 									id="productPrice" numberOnly
-								>
+									th:value="${product.productCredit}">
 							</div>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -113,7 +116,7 @@
 								</div>
 								<input type="text" class="form-control" placeholder="Amount" numberOnly
 									id="productAmount"
-								>
+									th:value="${product.productAmount}">
 							</div>
 						</div>
 					</div>
@@ -135,27 +138,52 @@
 								<i class="fas fa-plus-square"></i>&nbsp;링크 추가하기
 							</button>
 							<div id="imgDiv"
-								style="height: 150px; border: 1px solid; padding: 2px; overflow-y: auto;"
-							></div>
+								style="height: 150px; border: 1px solid; padding: 2px; overflow-y: auto;">
+								<div class="input-group mb-3" th:each="list : ${productImgs}"
+								th:if="${list.productImgServer == 'N'}">
+									<input type="text" class="form-control"
+										placeholder="Image URL" th:value="${list.productImgUrl}">
+									<button type="button"
+										onClick="javascript:previewImg($(this));"
+										class="btn btn-secondary" data-toggle="modal"
+										data-target="#exampleModalCenter">
+										<i class="fas fa-images"></i>&nbsp;이미지 미리보기
+									</button>
+									&nbsp;
+									<button type="button" class="btn btn-secondary"
+										th:onclick="|javascript:removeOriginalImg($(this), ${list.productImageNo});|"
+										onclick="javascript:deleteLink($(this))">
+										<i class="fas fa-trash-alt"></i>&nbsp;링크 삭제
+									</button>
+								</div>
+							</div>
 							<hr>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
 									<h5>파일로 이미지 추가</h5>
 								</div>
 								<div class="input-group mb-3">
-									*이미지를 삭제하려면 이미지를 클릭해주세요.
-								</div>
-								<div class="input-group mb-3">
 									<button type="button" class="btn btn-secondary" id="btn-upload">
 										<i class="fas fa-plus-square"></i>&nbsp;이미지 추가하기
 									</button>
-									<div id="fileImgDiv" style="display: none;"></div>
+									<div id="fileImgDiv" style="display: none;">
+									</div>
 								</div>
 							</div>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend"
-									style="display: flex; overflow-x: auto;" id="imgPreviewDiv"
-								></div>
+									style="display: flex; overflow-x: auto;" id="imgPreviewDiv">
+									<div th:each="list : ${productImgs}"
+									th:if="${list.productImgServer=='Y'}">
+										<img th:src="${list.productImgUrl}" width="150px;" height="150px;" >
+										<div style="display: inline-grid;">
+											<button class="btn btn-secondary"
+												th:onclick="|javascript:removeOriginalFileImg($(this), ${list.productImageNo});|">
+												<i class="fas fa-times"></i>&nbsp;삭제
+											</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -170,8 +198,8 @@
 								</div>
 								<div class="col-4">
 									<button type="button" class="btn btn-secondary btn-block"
-										onClick="register();">
-										<i class="fab fa-product-hunt"></i>&nbsp;등록하기
+										onClick="update();">
+										<i class="fab fa-product-hunt"></i>&nbsp;수정하기
 									</button>
 								</div>
 							</div>
@@ -216,6 +244,7 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
 	<!-- End of Main Content -->
@@ -243,7 +272,10 @@
 
 </html>
 <script>
-	function register() {
+	$("#category").val("[[ ${product.categoryNo} ]]");
+	var GLOBAL_ORIGINAL_IMG = new Array();
+	
+	function update() {
 		if ($("#productName").val().trim() == "") {
 			alert("상품명을 입력해주세요.");
 			$("#productName").focus();
@@ -281,6 +313,7 @@
 		}
 
 		var desc = $("#productDesc").val().replace("\n", "<br>");
+
 		
 		var formData = new FormData();
  		var fileLength = $("input[type='file']").length;
@@ -305,16 +338,33 @@
 			});
 		}
 		
-		for (i = 0; i < $(".image-url").length; i++) {
-			imageUrl.push($(".image-url").eq(i).val());
-			imageServerGubun.push("N");
-		}
-		
-		if($("#imgDiv input").length == 0 && imgCnt == 0) {
+		if($("#imgPreviewDiv img").length == 0 && imgCnt == 0) {
 			alert("최소한 1개이상의 사진을 등록해주세요.");
 			return false;
 		}
 
+		// 사진삭제한경우
+		$.ajax({
+			url : "/product/updateProduct/deleteImg",
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			traditional : true,
+			data : {
+				productImageNo : GLOBAL_ORIGINAL_IMG
+			},
+			success : function(data) {
+				
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+		
+		// 사진파일업로드
 		$.ajax({
 			url : "/product/uploadImages",
 			type : "POST",
@@ -339,12 +389,17 @@
 			}
 		});
 		
+		for (i = 0; i < $(".image-url").length; i++) {
+			imageUrl.push($(".image-url").eq(i).val());
+			imageServerGubun.push("N");
+		}
+		
 		$.ajax({
-			url : "/product/insertProduct/insert",
+			url : "/product/updateProduct/update",
 			type : "POST",
 			cache : false,
 			async : false,
-			dataType : "html",
+			dataType : "json",
 			traditional : true,
 			data : {
 				categoryNo : $("#category").val(),
@@ -352,13 +407,16 @@
 				productDesc : desc,
 				productCredit : $("#productPrice").val(),
 				productAmount : $("#productAmount").val(),
+				productNo : "[[ ${product.productNo} ]]",
 				productImgUrls : imageUrl,
-				productImgServer : imageServerGubun
+				productImgServer : imageServerGubun 
 			},
 			success : function(data) {
-				if(data >= 1) {
-					//alert("상품이 등록되었습니다.");
-					var productNo = data;
+				if(data == 0) {
+// 					alert("상품이 수정되었습니다.");
+// 					location.replace("/showProduct/" +  "[[ ${product.productNo} ]]");
+
+					var productNo = "[[ ${product.productNo} ]]";
 					$.ajax({
 						url : "/product/listImgs",
 						type : "POST",
@@ -470,7 +528,7 @@
 								imgStr = "<div>";
 								imgStr += "	<img src='" + e.target.result + "' ";
 								imgStr += "	for='" + (GLOBAL_FOR_IMG++) + "'";
-								imgStr += "	width='150px;' height='150px;' style='cursor: pointer;'>";
+								imgStr += "	width='150px;' height='150px;' >";
 								
 								imgStr +='	<div style="display: inline-grid;">';
 // 								imgStr +='		<button class="btn btn-secondary" onClick="javascript:kingImg($(this));" name="king">';
@@ -524,11 +582,22 @@
 		$("#imgPreviewByLink").attr("src", obj.prev().val());
 	}
 	
-// 	function kingImg(obj) {
-// 		$('#imgPreviewDiv').prepend(obj.parent().parent());
-// 		$("[name='king']").attr("style","");
-// 		obj.attr("style", "background: orange");
-// 	}
+	function kingImg(obj) {
+		$('#imgPreviewDiv').prepend(obj.parent().parent());
+		$("[name='king']").attr("style","");
+		obj.attr("style", "background: orange");
+	}
+	
+	function removeOriginalImg(obj, imgNo) {
+		GLOBAL_ORIGINAL_IMG.push(imgNo);		
+		
+		deleteLink(obj);
+	}
+	
+	function removeOriginalFileImg(obj, imgNo) {
+		GLOBAL_ORIGINAL_IMG.push(imgNo);
+		removeImg(obj);
+	}
 	
 	function selectImg(productNo, productImgNo) {
 		$.ajax({
@@ -542,7 +611,7 @@
 				productImageNo :productImgNo
 			},
 			success : function(data) {
-				alert("상품이 등록되었습니다.");
+				alert("상품이 수정되었습니다.");
 				location.replace("/showProduct/" + productNo);
 			},
 			error : function(request, status, error) {

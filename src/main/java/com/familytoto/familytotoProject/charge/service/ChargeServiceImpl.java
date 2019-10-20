@@ -1,5 +1,6 @@
 package com.familytoto.familytotoProject.charge.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,35 @@ public class ChargeServiceImpl implements ChargeService {
 	}
 
 	@Override
-	public void sendHistoryEmail(String to, int credit) {
-		String sTitle = "[원스포츠] 충전내역";
-		String sContents = "";
-		sContents += "원스포츠입니다.\n";
-		sContents += "충전한 크레딧 : " + credit + "\n";
+	public void sendHistoryEmail(String to, int credit, String gubun) {
+		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy년 MM월dd일 HH시mm분ss초");
+		String format_time1 = format1.format (System.currentTimeMillis());
 		
+		String sTitle = "[원스포츠] 충전내역안내";
+		String sContents = "";
+		
+		sContents += "안녕하세요. OneSports입니다.<br>";
+		sContents += "<br>";
+		sContents += "회원(아이디)님이 충전하신 내역을 안내해드립니다.<br>";
+		sContents += "<br>";
+		sContents += "<h2>OneSports 충전 내역</h2><br>";
+		sContents += "<table border=1>";
+		sContents += "	<tr bgcolor='gray'>";
+		sContents += "		<th>충전일시</th>";
+		sContents += "		<th>충전금액</th>";
+		sContents += "		<th>결제방식</th>";
+		sContents += "	</tr>";
+		sContents += "	<tr>";
+		sContents += "		<td>" + format_time1 + "</td>";
+		sContents += "		<td>" + credit + "</td>";
+		sContents += "		<td>" + gubun + "</td>";
+		sContents += "	</tr>";
+		sContents += "</table><br><br>";
+		
+		sContents += "크레딧 환불은 절대 안됩니다.<br><br>";
+		sContents += "충전, 환불, 구매 등의 대한 약관은 충전페이지 내에서 확인해 주시길바랍니다.<br><br>";
+		sContents += "회사와 회원간 권리, 의무에 관한 문제가 발생한 경우, 관련 법령이 정한 절차에 따릅니다.<br><br>";
+		sContents += "해당메일은 발신전용 메일이오니 문의는 홈페이지 내에서 이용해주시기 바랍니다.<br><br>";
 		
 		emailService.sendEmail(to, sTitle, sContents);
 	}

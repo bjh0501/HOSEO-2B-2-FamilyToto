@@ -150,4 +150,37 @@
 		) A
         INNER JOIN DELIVERY D ON A.DELIVERY_NO = D.DELIVERY_NO AND D.USE_YN = 'Y'
 	</select>
+	<select id="getUpdatingProduct" resultType="ProductVO" parameterType="ProductVO">
+	<![CDATA[
+		SELECT	CATEGORY_NO as categoryNo
+		,		PRODUCT_NAME as productName
+		,		PRODUCT_NO as productNo	
+		,		PRODUCT_DESC as productDesc
+		,		PRODUCT_CREDIT as productCredit
+		,		PRODUCT_AMOUNT as productAmount
+		FROM	PRODUCT
+		WHERE	PRODUCT_NO = #{productNo}
+		AND		FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+	]]>
+	</select>
+	<select id="listGetProductImg" parameterType="ProductVO" resultType="ProductVO">
+		SELECT	PRODUCT_IMG_URL as productImgUrl
+		,		PRODUCT_IMAGE_NO as productImageNo
+		,		PRODUCT_IMG_PRIMARY as productImgPrimary
+		,		PRODUCT_IMG_SERVER as productImgServer
+		FROM	PRODUCT_IMAGE
+		WHERE	PRODUCT_NO = #{productNo}
+		AND		USE_YN = 'Y'
+	</select>
+	<select id="listCreditShopBasket" parameterType="int" resultType="BasketVO">
+		SELECT	B.BASKET_NO as basketNo
+        ,		B.BASKET_AMOUNT as basketAmount
+        ,		P.PRODUCT_NAME as productName
+        FROM	BASKET B
+        INNER JOIN PRODUCT P ON B.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'
+        WHERE	B.FAMILY_CUST_NO = #{familyCustNo}
+        AND		B.USE_YN = 'Y'
+	</select>
+	
 </mapper>

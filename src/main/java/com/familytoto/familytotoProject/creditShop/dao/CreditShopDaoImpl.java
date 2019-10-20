@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.creditShop.domain.CategoryVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
@@ -85,5 +86,20 @@ public class CreditShopDaoImpl implements CreditShopDao {
 	@Override
 	public int getDeliveryCredit(List<Integer> productNo) {
 		return sqlSession.selectOne("creditShop.getDeliveryCredit", productNo);
+	}
+
+	@Override
+	public ProductVO getUpdatingProduct(ProductVO vo) {
+		return sqlSession.selectOne("creditShop.getUpdatingProduct", vo);
+	}
+
+	@Override
+	public List<ProductVO> listGetProductImg(ProductVO vo) {
+		return sqlSession.selectList("creditShop.listGetProductImg", vo);
+	}
+
+	@Override
+	public List<BasketVO> listCreditShopBasket(int familyCustNo) {
+		return sqlSession.selectList("creditShop.listCreditShopBasket", familyCustNo);
 	}
 }

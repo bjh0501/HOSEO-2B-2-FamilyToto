@@ -338,9 +338,11 @@ var helpCommentList = [
 				url : "/charge/doCharge?gubun=FREE",
 				type : "POST",
 				cache : false,
+				async : false,
 				dataType : "json",
 				data : "creditValue=" + encodeURIComponent(parseInt(credit)) 
-				+ "&mail=" + mail,
+				+ "&mail=" + mail
+				+ "&emailAddress=" + '[[ ${custEmail} ]]',
 				success : function(data) {
 					if(data == 0) {
 						alert("충전에 성공하였습니다.");
@@ -394,8 +396,10 @@ var helpCommentList = [
 						type : "POST",
 						cache : false,
 						dataType : "json",
+						async : false,
 						data : "creditValue=" + encodeURIComponent(parseInt(credit)) 
-						+ "&mail=" + mail,
+						+ "&mail=" + mail
+						+ "&emailAddress=" + '[[ ${custEmail} ]]',
 						success : function(data) {
 							if(data == 0) {
 								alert(msg);

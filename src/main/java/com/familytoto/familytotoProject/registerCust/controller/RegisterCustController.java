@@ -86,8 +86,6 @@ public class RegisterCustController {
 		        }
 			}
 				
-			
-			// 트랜잭션 걸어야함
 			if(rcVo.getFamilyCustRecommend() != null && !rcVo.getFamilyCustRecommend().equals("")) {
 				CustVO checkVo = new CustVO();
 				checkVo.setCustId(rcVo.getFamilyCustRecommend());
@@ -118,7 +116,6 @@ public class RegisterCustController {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 				return -3;
 			}
-			// 트랜잭션 걸어야함
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();

@@ -106,4 +106,34 @@ public class ProductBuyDaoImpl implements ProductBuyDao {
 	public int insertProductImgUrl(ProductVO vo) {
 		return sqlSession.insert("productBuy.insertProductImgUrl", vo);
 	}
+
+	@Override
+	public int updateProduct(ProductVO vo) {
+		return sqlSession.update("productBuy.updateProduct", vo);
+	}
+
+	@Override
+	public int updateDeleteProductImgs(ProductVO vo) {
+		return sqlSession.update("productBuy.updateDeleteProductImgs", vo);
+	}
+
+	@Override
+	public List<ProductVO> listProductImg(int productNo) {
+		return sqlSession.selectList("productBuy.listProductImg", productNo);
+	}
+
+	@Override
+	public int updateAllImgToN(int productNo) {
+		return sqlSession.update("productBuy.updateAllImgToN", productNo);
+	}
+
+	@Override
+	public int updateChooseKingImg(ProductVO vo) {
+		return sqlSession.update("productBuy.updateChooseKingImg", vo);
+	}
+
+	@Override
+	public int updateDeleteProduct(ProductVO vo) {
+		return sqlSession.update("productBuy.updateDeleteProduct", vo);
+	}
 }

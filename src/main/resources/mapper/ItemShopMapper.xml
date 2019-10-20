@@ -4,11 +4,11 @@
 
 <mapper namespace="itemShop">
 	<select id="checkBuyCharge" parameterType="CreditVO" resultType="boolean">
-		SELECT	COUNT(*)
+		SELECT EXISTS(SELECT	COUNT(*)
 		FROM	CUSTOM_CREDIT
 		WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'Y'
-		HAVING	SUM(CREDIT_VALUE) >= #{creditValue}
+		HAVING	SUM(CREDIT_VALUE) >= #{creditValue})
 	</select>
 	
 	<update id="updateNickname">
@@ -39,4 +39,30 @@
             0
 		)
 	</insert>
+	<insert id="insertVipTicket">
+		INSERT INTO CUSTOM_EXP (
+			FAMILY_CUST_NO,		EXP_STATE,		EXP_VALUE,
+		    REG_CUST_NO,		REG_DT,
+		    REG_IP,				USE_YN			
+		) VALUES (
+			#{familyCustNo},	'VIP',			30000,
+		    #{regCustNo},		DATE_ADD(NOW(), INTERVAL #{regExpDt} DAY),
+		    #{regIp},			'Y'				
+		);
+	</insert>
+	<select id="isVipTicket" parameterType="int" resultType="boolean">
+		SELECT  EXISTS(
+			SELECT	EXP_NO
+			FROM	CUSTOM_EXP
+			WHERE	FAMILY_CUST_NO = #{familyCustNo}
+			AND		EXP_STATE = 'VIP'
+			AND		USE_YN = 'Y'
+        )
+	</select>
+	<update id="updateVipExp" parameterType="int">
+		UPDATE	FAMILY_CUSTOM
+		SET		FAMILY_CUST_EXP = FAMILY_CUST_EXP + 30000
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+	</update>
 </mapper>

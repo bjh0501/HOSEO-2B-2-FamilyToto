@@ -171,10 +171,64 @@
 	<insert id="insertProductImgUrl">
 		INSERT INTO PRODUCT_IMAGE (
 			PRODUCT_NO,		PRODUCT_IMG_URL,	PRODUCT_IMG_PRIMARY,	REG_CUST_NO,
-		    REG_DT,			REG_IP,				USE_YN
+		    REG_DT,			REG_IP,				USE_YN,					PRODUCT_IMG_SERVER
 		) VALUES (
 			#{productNo},	#{productImgUrl},	#{productImgPrimary},	#{regCustNo},
-		    NOW(),			#{regIp},			'Y'
+		    NOW(),			#{regIp},			'Y',					#{productImgServer}
 		)
 	</insert>
+	<update id="updateProduct">
+		UPDATE	PRODUCT
+		SET		CATEGORY_NO = #{categoryNo}
+		,		PRODUCT_NAME = #{productName}
+		,		PRODUCT_DESC = #{productDesc}
+		,		PRODUCT_CREDIT = #{productCredit}
+		,		PRODUCT_AMOUNT = #{productAmount}
+		,		CHG_DT = #{chgDt}
+		,		CHG_IP = #{chgIp}
+		,		CHG_CUST_NO = #{chgCustNo}
+		WHERE	PRODUCT_NO = #{productNo}
+		AND		FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+	</update>
+	<update id="updateDeleteProductImgs">
+		UPDATE	PRODUCT_IMAGE
+		SET		USE_YN = 'N'
+		,		CHG_CUST_NO = #{chgCustNo}
+		,		CHG_DT = NOW()
+		,		CHG_IP = #{chgIp}
+		WHERE	PRODUCT_IMAGE_NO = #{productImageNo}
+		AND		USE_YN = 'Y'
+	</update>	
+	<select id="listProductImg" parameterType="int" resultType="ProductVO">
+		SELECT	PRODUCT_IMAGE_NO as productImageNo
+        ,		PRODUCT_IMG_URL as productImgUrl
+        ,		PRODUCT_IMG_PRIMARY as productImgPrimary
+        FROM	PRODUCT_IMAGE
+        WHERE	PRODUCT_NO = #{productNo}
+        AND		USE_YN = 'Y'
+	</select>
+	<update id="updateAllImgToN" parameterType="int">
+		UPDATE	PRODUCT_IMAGE
+        SET		PRODUCT_IMG_PRIMARY= 'N'
+        WHERE	PRODUCT_NO = #{productNo}
+        AND		USE_YN = 'Y'
+	</update>
+	<update id="updateChooseKingImg">
+		 UPDATE	PRODUCT_IMAGE
+        SET		PRODUCT_IMG_PRIMARY= 'Y'
+        WHERE	PRODUCT_NO = #{productNo}
+        AND		PRODUCT_IMAGE_NO = #{productImageNo}
+        AND		USE_YN = 'Y'
+	</update>
+	<update id="updateDeleteProduct" parameterType="ProductVO">
+		UPDATE	PRODUCT
+		SET		USE_YN = 'N'
+		,		CHG_CUST_NO = #{chgCustNo}
+		,		CHG_DT = NOW()
+		WHERE	PRODUCT_NO = #{productNo}
+		AND		FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+	</update>
+	
 </mapper>

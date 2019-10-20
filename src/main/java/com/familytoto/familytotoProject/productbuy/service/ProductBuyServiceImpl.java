@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -193,7 +194,7 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 
 	@Override
 	@Transactional
-	public int insertProduct(ProductVO vo, String[] productImgUrls)  {
+	public int insertProduct(ProductVO vo, String[] productImgUrls, String[] productImgServer)  {
 		if(productBuyDao.insertProduct(vo) != 1) {
 			throw new RuntimeException("상품 추가 실패");
 		}
@@ -201,8 +202,34 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 		if(productImgUrls != null) {
 			vo.setProductImgPrimary("Y");
 			
-			for(String str : productImgUrls) {
-				vo.setProductImgUrl(str);
+			for(int i = 0; i < productImgUrls.length; i++) {
+				vo.setProductImgUrl(productImgUrls[i]);
+				vo.setProductImgServer(productImgServer[i]);
+				
+				if(productBuyDao.insertProductImgUrl(vo) != 1) {
+					throw new RuntimeException("이미지 추가 실패");
+				} else {
+					vo.setProductImgPrimary("N");
+				}
+			}
+		}
+		
+		return vo.getProductNo();
+	}
+
+	@Override
+	@Transactional
+	public int updateProduct(ProductVO vo, String[] productImgUrls, String[] productImgServer) {
+		if(productBuyDao.updateProduct(vo) != 1) {
+			throw new RuntimeException("상품 수정 실패");
+		}
+		
+		if(productImgUrls != null) {
+			vo.setProductImgPrimary("N");
+			
+			for(int i = 0; i < productImgUrls.length; i++) {
+				vo.setProductImgUrl(productImgUrls[i]);
+				vo.setProductImgServer(productImgServer[i]);
 				
 				if(productBuyDao.insertProductImgUrl(vo) != 1) {
 					throw new RuntimeException("이미지 추가 실패");
@@ -213,5 +240,34 @@ public class ProductBuyServiceImpl implements ProductBuyService {
 		}
 		
 		return 1;
+	}
+
+	@Override
+	public int updateDeleteProductImgs(ProductVO vo) {
+		return productBuyDao.updateDeleteProductImgs(vo);
+	}
+
+	@Override
+	public List<ProductVO> listProductImg(int productNo) {
+		return productBuyDao.listProductImg(productNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateChooseKingImg(ProductVO vo) {
+		if(productBuyDao.updateAllImgToN(vo.getProductNo()) == 0) {
+			throw new RuntimeException("상품 대표이미지 모두 업데이트 에러");
+		}
+		
+		if(productBuyDao.updateChooseKingImg(vo) == 0) {
+			throw new RuntimeException("상품 대표이미지 업데이트 에러");
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public int updateDeleteProduct(ProductVO vo) {
+		return productBuyDao.updateDeleteProduct(vo);
 	}	
 }

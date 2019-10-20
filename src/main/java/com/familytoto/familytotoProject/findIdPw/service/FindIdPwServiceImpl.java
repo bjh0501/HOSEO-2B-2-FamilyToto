@@ -38,22 +38,22 @@ public class FindIdPwServiceImpl implements FindIdPwService {
 			if(setPassword(map.get("custId").toString(), sTempPassword) >= 1) {	
 				String contents = "";
 				
-				contents += "안녕하세요 OneSports입니다.\n";
-				contents += "\n";
-				contents += cVo.getCustId() + "님의 임시 비밀번호는 아래와 같습니다.";
-				contents += "\n";
-				contents += "임시비밀번호 : " + uuid + "\n";
-				contents += "\n";
+				contents += "안녕하세요 OneSports입니다.<br>";
+				contents += "<br>";
+				contents += "<b>"+cVo.getCustId() + "</b>님의 임시 비밀번호는 아래와 같습니다.";
+				contents += "<br>";
+				contents += "임시비밀번호 : <b>" + uuid + "</b><br>";
+				contents += "<br>";
 				contents += "발송된 임시 비밀번호는 보안을 위해 꼭 홈페이지에 접속하셔서 로그인 후 비밀번호를 변경해주시기 바랍니다.";
-				contents += "\n";
-				contents += "1. OneSports홈페이지( http://15.164.215.251/ ) 접속\n";
-				contents += "2. 아이디/임시 비밀번호 입력 후 로그인\n";
-				contents += "3. 내정보보기 > 비밀번호 변경\n";
-				contents += "\n";
-				contents += "\n";
+				contents += "<br>";
+				contents += "1. <a href='https://onesports.ga' target='_blank'>OneSports홈페이지</a>접속<br>";
+				contents += "2. 아이디/임시 비밀번호 입력 후 로그인<br>";
+				contents += "3. 내정보보기 > 비밀번호 변경";
+				contents += "<br>";
+				contents += "<br>";
 				contents += "해당 메일은 발신전용 메일이오니 문의는 홈페이지 내에서 이용해주시기 바랍니다.";
-				contents += "\n";
-				contents += "\n";
+				contents += "<br>";
+				contents += "<br>";
 				
 				emailService.sendEmail(map.get("familyCustEmail").toString(), "[원 스포츠] 임시 비밀번호 발급", contents);
 			}

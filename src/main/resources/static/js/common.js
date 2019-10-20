@@ -112,17 +112,19 @@ $('#helpButton').click(function() {
 		img = "tosoon";
 	} else if (characterName == "보아") {
 		img = "boar";
+	} else {
+		img = "hana";
 	}
 
-			var makeDiv = "";
-			makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter(\''
-					+ characterName + '\')">';
-			makeDiv += '	<img class="character" src="/img/character/' + img
-					+ '.png" alt="">';
-			makeDiv += '	<div class="balloon" style="line-height:2.0em">';
-			makeDiv += '		<span id="helpComment"></span>';
-			makeDiv += '	</div>';
-			makeDiv += '</div>';
+	var makeDiv = "";
+	makeDiv += '<div id="helpCharacter" onclick="helpMeCharacter(\''
+			+ characterName + '\')">';
+	makeDiv += '	<img class="character" src="/img/character/' + img
+			+ '.png" alt="">';
+	makeDiv += '	<div class="balloon" style="line-height:2.0em">';
+	makeDiv += '		<span id="helpComment"></span>';
+	makeDiv += '	</div>';
+	makeDiv += '</div>';
 
 	$("#page-top").prepend(makeDiv);
 

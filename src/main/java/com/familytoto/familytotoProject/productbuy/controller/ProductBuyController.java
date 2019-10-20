@@ -115,9 +115,6 @@ public class ProductBuyController {
         return mv;
     }
 	
-	
-	
-	
 	@RequestMapping("/productSell/insert")
 	@ResponseBody
 	@Transactional // 장바구니경우 필요

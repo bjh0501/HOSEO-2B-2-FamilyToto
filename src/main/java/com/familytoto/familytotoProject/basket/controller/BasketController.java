@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.basket.service.BasketService;
-import com.familytoto.familytotoProject.config.SecretGlobalVariable;
 import com.familytoto.familytotoProject.productbuy.domain.ProductBuyVO;
 import com.familytoto.familytotoProject.productbuy.service.ProductBuyService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -30,16 +29,6 @@ public class BasketController {
 	
 	@Autowired
 	ProductBuyService productBuyService;
-	
-//	@Autowired
-//	SportsTotoSchedulerService test;
-//	
-//	@RequestMapping("/scheduleTest")
-//	@ResponseBody
-//	public String test() {
-//		test.inSoccer();
-//		return "test";
-//	}
 	
 	@RequestMapping("/basket")
     public ModelAndView basket(HttpSession session, HttpServletResponse response) {

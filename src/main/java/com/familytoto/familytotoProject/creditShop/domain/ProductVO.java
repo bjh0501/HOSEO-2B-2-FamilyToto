@@ -82,7 +82,26 @@ public class ProductVO {
     
     private String producctCommentRating;
     
+    private int productImageNo;
     
+    private String productImgServer;
+
+	public String getProductImgServer() {
+		return productImgServer;
+	}
+
+	public void setProductImgServer(String productImgServer) {
+		this.productImgServer = productImgServer;
+	}
+
+	public int getProductImageNo() {
+		return productImageNo;
+	}
+
+	public void setProductImageNo(int productImageNo) {
+		this.productImageNo = productImageNo;
+	}
+
 	public String getProducctCommentRating() {
 		return producctCommentRating;
 	}

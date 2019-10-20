@@ -2,6 +2,7 @@ package com.familytoto.familytotoProject.creditShop.dao;
 
 import java.util.List;
 
+import com.familytoto.familytotoProject.basket.domain.BasketVO;
 import com.familytoto.familytotoProject.creditShop.domain.CategoryVO;
 import com.familytoto.familytotoProject.creditShop.domain.MileageVO;
 import com.familytoto.familytotoProject.creditShop.domain.ProductCommentVO;
@@ -50,4 +51,13 @@ public interface CreditShopDao {
 	
 	// 배송비가져오기
 	int getDeliveryCredit(List<Integer> productNo);
+	
+	// 상품 수정 가져오기
+	ProductVO getUpdatingProduct(ProductVO vo);
+	
+	// 상품 이미지 가져오기
+	List<ProductVO> listGetProductImg(ProductVO vo);
+	
+	// 장바구니 리모콘
+	List<BasketVO> listCreditShopBasket(int familyCustNo);
 }
