@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.familytoto.familytotoProject.charge.dao.ChargeDao;
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.config.GlobalVariable;
+import com.familytoto.familytotoProject.creditShop.domain.ProductVO;
 import com.familytoto.familytotoProject.dashboard.service.DashboardService;
 import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
@@ -280,5 +281,20 @@ public class DashboardController {
 		}
 		
 		return 0;
+	}
+	
+	@RequestMapping("/dashboard/getSellProductDetailList")
+	@ResponseBody
+	public String getSellProductDetailList(HttpSession session,
+			int productNo) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+		ProductVO productVo = new ProductVO();
+		productVo.setProductNo(productNo);
+		productVo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(dashboardService.listSellCnt(productVo));
+		
+		return json;
 	}
 }

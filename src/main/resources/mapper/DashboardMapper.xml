@@ -352,14 +352,27 @@
         ,		P.PRODUCT_AMOUNT as productAmount
         ,		IFNULL(ROUND(AVG(PCO.PRODUCT_COMMENT_RATING),2), '없음') AS producctCommentRating
         ,		PI.PRODUCT_IMG_URL as productImgUrl
+        ,		COUNT(PB.PRODUCT_NO) AS sellCnt
         FROM	PRODUCT P
 			INNER JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_NO = PC.CATEGORY_NO AND PC.USE_YN = 'Y'
             INNER JOIN PRODUCT_IMAGE PI ON P.PRODUCT_NO = PI.PRODUCT_NO AND PI.USE_YN = 'Y'
             	AND PI.PRODUCT_IMG_PRIMARY = 'Y'
             LEFT OUTER JOIN PRODUCT_COMMENT PCO ON P.PRODUCT_NO = PCO.PRODUCT_NO AND PCO.USE_YN = 'Y'
+            LEFT OUTER JOIN PRODUCT_BUY PB ON P.PRODUCT_NO = PB.PRODUCT_NO AND PB.USE_YN = 'Y'
         WHERE	P.FAMILY_CUST_NO = #{familyCustNo}
         AND		P.USE_YN = 'Y'
         GROUP BY P.PRODUCT_NO
-        ORDER BY P.PRODUCT_NO DESC
+        ORDER BY P.PRODUCT_NO DESC;
+	</select>
+	<select id="listSellCnt" parameterType="ProductVO" resultType="ProductVO">
+		 SELECT	FC.FAMILY_CUST_NICKNAME AS familyCustNickname
+        ,		PB.PRODUCT_BUY_AMOUNT AS productBuyAmount
+        ,		DATE_FORMAT(IFNULL(PB.CHG_DT, PB.REG_DT), '%Y-%m-%d %h:%i:%s') as regDt
+        FROM	PRODUCT_BUY PB
+			INNER JOIN PRODUCT P ON PB.PRODUCT_NO = P.PRODUCT_NO AND P.USE_YN = 'Y'
+            INNER JOIN FAMILY_CUSTOM FC ON PB.FAMILY_CUST_NO = FC.FAMILY_CUST_NO AND FC.USE_YN = 'Y'
+        WHERE	PB.PRODUCT_NO = #{productNo}
+        AND		P.FAMILY_CUST_NO = #{familyCustNo}
+        AND		PB.USE_YN = 'Y'
 	</select>
 </mapper>

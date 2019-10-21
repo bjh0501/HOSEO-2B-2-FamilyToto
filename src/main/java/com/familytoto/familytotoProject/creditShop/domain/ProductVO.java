@@ -38,7 +38,7 @@ public class ProductVO {
 
     private int chgCustNo;
 
-    private Timestamp regDt;
+    private String regDt;
 
     private Timestamp chgDt;
 
@@ -85,6 +85,26 @@ public class ProductVO {
     private int productImageNo;
     
     private String productImgServer;
+    
+    private int sellCnt;
+    
+    private int productBuyAmount;
+
+	public int getProductBuyAmount() {
+		return productBuyAmount;
+	}
+
+	public void setProductBuyAmount(int productBuyAmount) {
+		this.productBuyAmount = productBuyAmount;
+	}
+
+	public int getSellCnt() {
+		return sellCnt;
+	}
+
+	public void setSellCnt(int sellCnt) {
+		this.sellCnt = sellCnt;
+	}
 
 	public String getProductImgServer() {
 		return productImgServer;
@@ -261,12 +281,12 @@ public class ProductVO {
 	public void setChgCustNo(int chgCustNo) {
 		this.chgCustNo = chgCustNo;
 	}
-
-	public Timestamp getRegDt() {
+	
+	public String getRegDt() {
 		return regDt;
 	}
 
-	public void setRegDt(Timestamp regDt) {
+	public void setRegDt(String regDt) {
 		this.regDt = regDt;
 	}
 

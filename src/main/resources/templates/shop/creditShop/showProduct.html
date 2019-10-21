@@ -215,8 +215,16 @@ ul, li {
 					<div class="card shadow mb-4">
 						<div class="card-body">
 							<div class="input-group mb-3">
+								<h4>카테고리 : <span th:text="${product.categoryName}"
+									style="color: orange; margin-right: 50px;"></span></h4>
+								<h4>판매자 : <span th:text="${product.familyCustNickname}"
+									style="color: orange;"></span></h4>
+							</div>
+							<div class="input-group mb-3">
 								<h3 th:text="${product.productName}">상품이름</h3>
 							</div>
+							<hr>
+							
 							<div class="row">
 								<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
 									<div class="container">

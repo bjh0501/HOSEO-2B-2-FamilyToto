@@ -115,5 +115,10 @@ public class DashboardDaoImpl implements DashboardDao {
 	@Override
 	public List<ProductVO> listRegisteredProduct(int familyCustNo) {
 		return sqlSession.selectList("dashboard.listRegisteredProduct", familyCustNo);
+	}
+
+	@Override
+	public List<ProductVO> listSellCnt(ProductVO vo) {
+		return sqlSession.selectList("dashboard.listSellCnt", vo);
 	}	
 }

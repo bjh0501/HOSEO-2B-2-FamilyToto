@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.charge.service.ChargeService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
-
 @Controller
 public class ChargeController {
 	@Autowired
@@ -27,7 +26,7 @@ public class ChargeController {
 
 	private int nCustNo = 0;
 	private int nFamilyCustNo = 0;
-
+	
 	@RequestMapping("/charge")
 	public ModelAndView charge(ModelAndView mv, HttpSession session, HttpServletResponse response) {
 		// 소셜 아이디

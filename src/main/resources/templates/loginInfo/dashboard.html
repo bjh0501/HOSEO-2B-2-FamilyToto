@@ -379,11 +379,12 @@
 										cellspacing="0">
 										<thead>
 											<tr>
-												<th style="width: 15%">상품번호</th>
+												<th style="width: 10%">상품번호</th>
 												<th style="width: 15%">카테고리</th>
-												<th style="width: 35%">상품명</th>
+												<th style="width: 30%">상품명</th>
 												<th style="width: 15%">상품 크레딧</th>
 												<th style="width: 10%">상품 재고</th>
+												<th style="width: 10%">팔린 횟수</th>
 												<th style="width: 10%">상품평</th>
 											</tr>
 										</thead>
@@ -399,7 +400,12 @@
 												<td style="text-align: right;"
 													th:text="${#numbers.formatInteger(list.productCredit, 0, 'COMMA')}"
 												></td>
-												<td th:text="${list.productAmount}" style="text-align: right;"></td>
+												<td th:text="${#numbers.formatInteger(list.productAmount, 0, 'COMMA')}"
+												style="text-align: right;"></td>
+												<td style="text-align: right;">
+													<a th:text="${list.sellCnt}" href="javascript:;"
+													th:onClick="|javascript:detailSellProduct(${list.productNo})|"></a>
+												</td>
 												<td th:text="${list.producctCommentRating}"
 													style="text-align: right;"
 												>없음</td>
@@ -471,6 +477,46 @@
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 							<button type="button" class="btn btn-secondary"
 							id="modalGetBetting" onClick="javascript:getBettingCredit();">배팅금액 받기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade bd-example-modal-xl sellerModal" tabindex="-1"
+				role="dialog" aria-labelledby="sellerModal" aria-hidden="true"
+				id="sellerModal">
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">판매 횟수 상세보기</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="table-responsive"
+								style="overflow-y: auto; max-height: 418px;">
+								<table class="table table-bordered" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th style="width: 33%">판매일</th>
+											<th style="width: 33%">구입자 닉네임</th>
+											<th style="width: 33%">구매 갯수</th>
+										</tr>
+									</thead>
+									<tbody id="sellerDetailTable">
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 						</div>
 					</div>
 				</div>
@@ -1320,6 +1366,42 @@ $( document ).tooltip({
 				} else if(data == "-99") {
 					alert("아직 결과가 안나왔다맨이야.");
 				}
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
+	}
+	
+	function detailSellProduct(productNo) {
+		$.ajax({
+			url : "/dashboard/getSellProductDetailList",
+			type : "POST",
+			cache : false,
+			dataType : "json",
+			data : {
+				productNo : productNo
+			},
+			success : function(data) {
+				if(data.length == 0) {
+					alert("판매내역이 존재하지않습니다.");
+					return false;
+				}
+				
+				var str = "";
+				
+				for(i = 0; i < data.length; i++) {
+					str += "<tr>";
+					str += "	<td>" + data[i].regDt + "</td>";
+					str += "	<td>" + data[i].familyCustNickname + "</td>";
+					str += "	<td>" + data[i].productBuyAmount + "</td>";
+					str += "</tr>";
+				}
+				
+				$("#sellerDetailTable").html(str);
+				$('.sellerModal').modal('show')
 			}, 
 			error : function(request, status, error) {
 				var msg = "ERROR : " + request.status + "<br>"

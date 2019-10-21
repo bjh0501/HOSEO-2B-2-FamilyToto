@@ -106,4 +106,9 @@ public class DashboardServiceImpl implements DashboardService {
 	public List<ProductVO> listRegisteredProduct(int familyCustNo) {
 		return dashboardDao.listRegisteredProduct(familyCustNo);
 	}
+
+	@Override
+	public List<ProductVO> listSellCnt(ProductVO vo) {
+		return dashboardDao.listSellCnt(vo);
+	}
 }

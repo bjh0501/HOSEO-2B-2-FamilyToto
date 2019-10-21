@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="vip">
+	<insert id="insertGameRoom">
+		INSERT INTO VIP_GAME (
+			GAME_GUBUN,		TOTAL_TURN,		REG_CUST_NO,
+            REG_DT,			REG_IP,			USE_YN
+        ) VALUES (
+			#{gameGubun},	#{totalTurn},	#{regCustNo},
+			NOW(),			#{regIp},		'Y'
+		)
+	</insert>
+	<insert id="insertGamePlayers">
+		INSERT INTO VIP_GAME_PLAYERS (
+			VIP_GAME_NO,	CREDIT_ID,		FAMILY_CUST_NO,		DEATH_TURN,
+            REG_CUST_NO,	REG_DT,			REG_IP,				USE_YN
+        ) VALUES (
+			#{vipGameNo},	#{creditId},	#{familyCustNo},	#{deathTurn},
+            #{regCustNo},	NOW(),			#{regIp},			'Y'
+		)
+	</insert>
+</mapper>

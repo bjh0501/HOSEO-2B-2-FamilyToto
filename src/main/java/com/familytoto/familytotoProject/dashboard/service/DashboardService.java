@@ -53,4 +53,7 @@ public interface DashboardService {
 	
 	// 등록상품 가져오기
 	List<ProductVO> listRegisteredProduct(int familyCustNo);
+	
+	// 팔린 상품 상세보기
+	List<ProductVO> listSellCnt(ProductVO vo);
 }
