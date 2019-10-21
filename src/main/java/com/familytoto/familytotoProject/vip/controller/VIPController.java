@@ -20,4 +20,9 @@ public class VIPController {
         return "/viproom/vipIntro";
     }
 	
+	@RequestMapping(value = { "/vipOpenrr"})
+    public String vipOpenrr() {
+        return "/viproom/vipOpenrr";
+    }
+	
 }
