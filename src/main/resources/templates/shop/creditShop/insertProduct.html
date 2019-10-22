@@ -67,6 +67,9 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">판매자 상품등록</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="리지" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>	
 					</div>
 					<div class="card shadow mb-4">
 						<div class="card-body">
@@ -243,6 +246,21 @@
 
 </html>
 <script>
+var helpCommentList = [
+	"판매자 상품등록페이지에여 <br>이곳은 판매자분들만<br>"
++ "상품판매등록이가능해여",	
+"상품 기본정보에서 <br>"
++ "카테고리로 판매할상품의 <br>"
++ "종류를고를실수있고여<br>"
++ "상품명엔 판매할 상품의<br>"
++ "이름을 적으시면되여",
+"부가설명란에는 상품의 <br>특징이나 설명문을적으시면되구여<br>"
++ "가격은 판매자분이 임의로정하시고<br>재고는 판매수량을 적으시면되여",
+"이미지등록에는 <br>링크이미지추가와 <br>"
++ "이미지링크 추가가있어여",
+"링크이미지는 url있는이미지주소를 <br>적어두시면 복사가완료되여<br>"
++ "예시:https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BBUHQ5K.img?h=315&w=600&m=6&q=60&o=t&l=f&f=jpg"]
+		
 	function register() {
 		if ($("#productName").val().trim() == "") {
 			alert("상품명을 입력해주세요.");

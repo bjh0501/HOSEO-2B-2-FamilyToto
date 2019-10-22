@@ -51,6 +51,10 @@
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">게임 랭킹</h2>
+							<h2 class="text-title">경험치 랭킹</h2>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="토순이" href="javascript:;">
+							<i class="fas fa-info-circle"></i>
+						</a>	
 					</div>
 					<div class="card shadow h-100 py-12">
 						<div style="padding-bottom:20px;">
@@ -133,6 +137,15 @@
 </html>
 
 <script>
+var helpCommentList = [
+	"여긴 특정게임마다 순위를보여주는<br>게임랭킹페이지야<br>"
++ "각각 순위,레벨,플레이수,닉네임,누적경험치로 구성되어있어",	
+"게임은사다리,홀짝,그래프,슬롯머신 <br>"
++ "네개의 게임목록이있어 <br>"
++ "여기도 경험치랭킹처럼<br>"
++ "누적경험치량순으로 순위를매겨<br>",
+"여기도 본인의 랭킹을 올리고싶다면<br>토토를 많이해야겠지?"]
+
 	if(getParameterByName("gameName") == "LGS") {
 		$(".lgs").addClass("active");
 	} else if(getParameterByName("gameName") == "DGS") {
