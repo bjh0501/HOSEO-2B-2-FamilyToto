@@ -212,7 +212,7 @@
 							<div class="card shadow h-100 py-12">
 								<div style="padding:20px;">
 									<div style="height:150px; overflow-y: scroll;">
-										<pre th:include="/shop/service/paymentOfService"></pre> 
+										<div th:include="/shop/service/paymentOfService"></div> 
 									</div>
 								</div>
 							</div>
@@ -284,13 +284,13 @@ var helpCommentList = [
 	+ "충천한금액이 메일로 보내져여",
 	"무료충천은 현재크레딧5000미만일경우만가능하며<br>"
 	+ "좌측화면에 충천하고싶은 크레딧을 고르시거나 적으시고<br>"
-	+ "결재동의버튼누른뒤 결제하기를 누르시면<br>",
-	 "충전이완료되여.<br>"
-	+ "카드결재충전도 충전하실 크레딧을적으시고<br>"
-	+ "결재동의버튼누른뒤 결제하기를 누르시면<br>",
-	+ "충천절차가뜨는데 절차대로완료하시면 <br>크레딧충천이완료되여.<br>",
-	+ "단 무료충전은 하루에최대5번이며<br>카드결재는 하루에 최대30만까지만가능하고<br>"
-	+ "한번결재할때 최고금액은 만원이에여"]
+	+ "결재동의버튼누른뒤 결제하기를 누르시면<br>충전이완료되여",
+ "카드결재충전도 충전하실 크레딧을적으시고<br>"
++ "결재동의버튼누른뒤 결제하기를 누르시면<br>"
++ "충천절차가뜨는데 절차대로완료하시면 <br>크레딧충천이완료되여<br>",
+"단 무료충전은 하루에최대5번이며<br>카드결재는 하루에 최대30만까지만가능하고<br>"
++ "한번결재할때 최고금액은 만원이에여"]
+
 
 	var chargeGubun = "free";
 	var IMP = window.IMP; // 생략가능
