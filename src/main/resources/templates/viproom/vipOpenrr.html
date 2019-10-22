@@ -29,19 +29,10 @@
 </head>
 
 <body id="page-top">
-<div style="background: #000000c4;
-    width: 100%;
-    height: 71px;
-    position: fixed;
-    z-index: 10000;
-    color: white;
-    font-weight: 800;
-    cursor:pointer;"
-    onClick="javascript:$(this).slideUp()"
-    >
-    <center>
-		기능이 일부만 되거나 안되는 페이지입니다.
-		</center>
+	<div
+		style="background: #000000c4; width: 100%; height: 71px; position: fixed; z-index: 10000; color: white; font-weight: 800; cursor: pointer;"
+		onClick="javascript:$(this).slideUp()">
+		<center>기능이 일부만 되거나 안되는 페이지입니다.</center>
 	</div>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -65,64 +56,67 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
-					<!-- Page Heading -->
-					<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-          </div> -->
-
-
-
 					<!-- 입장/개설 -->
 					<div class="row">
-						<div class="col-xl-10 col-lg-10 .col-md-10 .col-sm-10 ">
+						<div class="col-xl-8 col-lg-7 .col-md-7 .col-sm-12 ">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">- RUSSIAN ROULETTE -</h6><hr>
-								</div>			
-								
-								<!-- 왼쪽 프로필 -->
-								<div>
-								<table border=1 style="text-align:center;">
-									<tr>
-										<td style="height:100px; width:100px;" id="1st">img</td>
-									</tr>
-									<tr>
-										<td>이름</td>
-									</tr>
-									
-									<tr>
-										<td style="height:100px; width:100px;"  id="2nd">img</td>
-									</tr>
-									<tr>
-										<td>이름</td>
-									</tr>
-									
-									<tr>
-										<td style="height:100px; width:100px;" id="3rd">img</td>
-									</tr>
-									<tr>
-										<td>이름</td>
-									</tr>
-								</table>
-								
-								<table border=1 style="text-align:center;">
-									<tr>
-										<td style="height:150px; width:150px;" id="4th">보닌</td>
-									</tr>
-									<tr>
-										<td>이름</td>
-									</tr>
-								</table>
+									<h6 class="m-0 font-weight-bold text-primary">- RUSSIAN
+										ROULETTE -</h6>
+									<hr>
 								</div>
+
 								<!-- 왼쪽 프로필 -->
-								
+								<div class="row" style="margin-left: 1px; margin-bottom: 1px">
+									<table border=1 style="text-align: center;">
+										<tr>
+											<td style="height: 100px; width: 100px;" id="1st">img</td>
+										</tr>
+										<tr>
+											<td>이름</td>
+										</tr>
+
+										<tr>
+											<td style="height: 100px; width: 100px;" id="2nd">img</td>
+										</tr>
+										<tr>
+											<td>이름</td>
+										</tr>
+
+										<tr>
+											<td style="height: 100px; width: 100px;" id="3rd">img</td>
+										</tr>
+										<tr>
+											<td>이름</td>
+										</tr>
+
+										<tr>
+											<td style="height: 100px; width: 100px;" id="4th">img</td>
+										</tr>
+										<tr>
+											<td>이름</td>
+										</tr>
+
+										<tr>
+											<td style="height: 100px; width: 100px;" id="5th">보닌</td>
+										</tr>
+										<tr>
+											<td>이름</td>
+										</tr>
+									</table>
+									<img src="/img/logo/russian.png" style="margin-left: 5%;margin-right: 5%;margin-top: 1%;margin-bottom: 1%; width:75%;"><br>
+								</div>
+									<input class="btn-secondary" id="triggerButton" type="button"
+										value="방아쇠 당기기" style="width: 100%; margin: 0 auto; height: 45px"></input>
+
+								<!-- 왼쪽 프로필 -->
 							</div>
 						</div>
-						
-						
+						<!-- <img src="/img/character/tosoon.png"> -->
+						<img src="/img/character/tosoon.png" style="margin-left:0 auto">
 					</div>
+
+
 					<!-- 입장/개설 -->
 
 				</div>
@@ -149,9 +143,9 @@
 	<!-- Custom scripts for all pages-->
 	<script src="/js/sb-admin-2.min.js"></script>
 	<!-- common -->
-    <script src="/js/common.js"></script>
+	<script src="/js/common.js"></script>
 	<script src="/js/header.js"></script>
-	
+
 
 </body>
 
@@ -160,8 +154,8 @@
 	function goCharge() {
 		location.href = "/charge"
 	}
-	
+
 	function clickBoard(no) {
-		location.href= "/showBoard/" + no;
+		location.href = "/showBoard/" + no;
 	}
 </script>
