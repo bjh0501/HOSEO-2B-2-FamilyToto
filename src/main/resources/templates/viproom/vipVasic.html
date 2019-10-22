@@ -35,7 +35,7 @@
 </head>
 
 <body id="page-top" onunload="leave()">
-	<h2 id="test">기다려</h2>
+	<h2 id="test">방리스트</h2>
 	<div
 		style="background: #000000c4; width: 100%; height: 71px; position: fixed; z-index: 10000; color: white; font-weight: 800; cursor: pointer;"
 		onClick="javascript:$(this).slideUp()"
@@ -217,10 +217,29 @@
 								    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/" + data.key + "/currentFamilyCustNo");
 								    
 								    // 실시간으로 출력하는 함수 
-								    dbRef.on('value',function(data){								    	
-								    	$("#test").html(data.val());
+								    dbRef.on('value',function(data){
+								    	if(data.val() == GLOBAL_FAMILY_CUST_NO) {
+									    	$("#test").html("방아쇠 당기기 ");								    		
+								    	} else {
+								    		if(data.val() == "0") {
+								    			$("#test").html("대기중");
+								    		} else {
+									    		$("#test").html(data.val() + "차례입니다.");							    			
+								    		}
+								    	}
 								    });
 								    
+								    // 게임시작했는지 여부
+								    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/" + data.key + "/state");
+								    dbRef.on('value',function(data){								    	
+								    	if(data.val() != null) {
+								    		if(data.val() == "Y") {
+								    			$("#test").html("게임이 시작되었습니다.");
+								    		}
+								    	}
+								    });
+								    
+								    // 사망자 통보
 								    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/" + data.key + "/death");
 								    dbRef.on('value',function(data){								    	
 								    	if(data.val() != null) {
@@ -240,6 +259,9 @@
 											if(data.val() == GLOBAL_FAMILY_CUST_NO) {
 												alert("승리하셨습니다.");
 												database.ref('russiaRullet/' + GLOBAL_ROOM_NUM+"/").remove()
+												
+												// 승리 ajax
+												alert(10000 + "크레딧을 얻었습니다!\n이거나드셔 !");
 												return false;
 											}
 										}
@@ -266,6 +288,8 @@
 				database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
 					state: "Y"	
 				})
+				
+				$("#test").html("게임 시작")
 			}
 		})
 	}
@@ -314,9 +338,7 @@
 					
 					// 데스턴과 현재턴같으면 해당 패밀리커스터넘버 사망
 					// 겜종료
-					if(snapshot.val().deathTurn == snapshot.val().turn) { // 사망자 있을때
-						alert(userNoArray[parseInt(snapshot.val().turn)-1] + "님은 사망하였습니다.");
-						
+					if(snapshot.val().deathTurn == snapshot.val().turn) { // 사망자 있을때						
 						// 진사람 파베에서 삭제
 						database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/" +
 								userNoArray[parseInt(snapshot.val().turn)-1]).remove();
@@ -350,6 +372,9 @@
 								return false;
 							}					
 						});
+						
+						alert("얘! 사망했단다.");
+						// 여기서 방나가기
 					} else { // 사망자없이 게임 진행일때
 						var turnVar = parseInt(snapshot.val().turn)+1;
 						
@@ -366,5 +391,6 @@
 	
 	function leave() {
 		database.ref('russiaRullet/' + GLOBAL_ROOM_NUM+"/players/" + GLOBAL_FAMILY_CUST_NO).remove();
+		// location.replace("대기리스트");
 	}
 </script>
