@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.login.service.CustLoginService;
 import com.familytoto.familytotoProject.login.service.facebook.FacebookLoginVO;
 import com.familytoto.familytotoProject.login.service.kakao.KakaoLoginVO;
@@ -93,6 +94,14 @@ public class LoginController {
 			HttpSession session = request.getSession();
 			
 			login.setCustPassword("");
+			
+			ExpVO expVo = new ExpVO();
+			expVo.setChgCustNo(login.getCustNo());
+			expVo.setChgIp(request.getRemoteAddr());
+			expVo.setFamilyCustNo(login.getFamilyCustNo());
+		
+			// VIP만료
+			custLoginService.updateVipticketExpire(expVo);
 			
 			session.setAttribute("cust", login);
 			session.setAttribute("social", "ON"); // 세션 생성

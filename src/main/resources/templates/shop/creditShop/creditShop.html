@@ -87,7 +87,7 @@
 					</div>
 					<div class="row">
 						<div id="draggable" class="ui-widget-content" style="position: fixed">
-							<p>장바구니</p>
+							<p><h4>장바구니</h4></p>
 							<h6>*마우스로 움직일수 있습니다.</h6>
 							<hr>
 							<div style="overflow-y: auto; max-height: 263px;" id="basketDiv">
@@ -196,7 +196,7 @@ var helpCommentList = [
  "상품을사고싶으면 구매하실 수량을<br>적으시고 즉시구매를 누르시면되구여<br>"
 + "상품을 사기싫으시다면 크레딧샵을클릭해 이동하실수있어여"]
 
-	$(function() {
+	$(function() {		
 		$( "#draggable" ).draggable({ containment: "#content", scroll: false });
 		getBasket();
 	});

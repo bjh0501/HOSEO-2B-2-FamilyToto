@@ -82,7 +82,8 @@
 						<div class="col-12">
 							<div class="card shadow h-100 py-2">
 								<div class="card-body">
-									<button type="button" class="btn btn-secondary btn-lg">
+									<button type="button" class="btn btn-secondary btn-lg"
+									onClick="downloadExcel();">
 										<i class="far fa-file-excel"></i> 엑셀 다운로드
 									</button>
 								</div>
@@ -1418,5 +1419,9 @@ $( document ).tooltip({
 				console.log(msg);
 			}
 		});
+	}
+	
+	function downloadExcel() {
+		window.open("/dashboard/download.xls");
 	}
 </script>

@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import com.familytoto.familytotoProject.changeCust.service.ChangeCustAuthService;
 import com.familytoto.familytotoProject.config.SecretGlobalVariable;
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.login.domain.SocialVO;
+import com.familytoto.familytotoProject.login.service.CustLoginService;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.google.gson.JsonElement;
@@ -30,6 +32,9 @@ public class KakaoLoginVO {
     
 	@Autowired
 	ChangeCustAuthService changeCustAuthService;
+	
+	@Autowired
+	CustLoginService custLoginService;
 	
 	@Autowired
 	SocalLoginService socalLoginService;
@@ -183,6 +188,14 @@ public class KakaoLoginVO {
     				// 해결해야함
     				session.setAttribute("cust", cVo2); // 세션 생성
     			} else {
+    				ExpVO expVo = new ExpVO();
+    				expVo.setChgCustNo(nScCustNo);
+    				expVo.setChgIp(request.getRemoteAddr());
+    				expVo.setFamilyCustNo(cVo.getFamilyCustNo());
+    				
+    				// VIP만료
+    				custLoginService.updateVipticketExpire(expVo);
+    				
     				cVo.setCustNo(nScCustNo);
     				cVo.setFamilyCustNick(nickname);
     				cVo.setCustOperatorGubun("N");

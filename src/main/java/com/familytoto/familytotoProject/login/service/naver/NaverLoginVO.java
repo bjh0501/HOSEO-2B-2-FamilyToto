@@ -26,7 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.familytoto.familytotoProject.changeCust.service.ChangeCustAuthService;
 import com.familytoto.familytotoProject.config.SecretGlobalVariable;
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.login.domain.SocialVO;
+import com.familytoto.familytotoProject.login.service.CustLoginService;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -48,6 +50,9 @@ public class NaverLoginVO {
 	
 	@Autowired
 	SocalLoginService socalLoginService; 
+	
+	@Autowired
+	CustLoginService custLoginService;
 	
 	@Autowired
 	ChangeCustAuthService changeCustAuthService;
@@ -231,6 +236,13 @@ public class NaverLoginVO {
 				cVo2.setCustOperatorGubun("N");
 				session.setAttribute("cust", cVo2); // 세션 생성
 			} else {
+				ExpVO expVo = new ExpVO();
+				expVo.setChgCustNo(nScCustNo);
+				expVo.setChgIp(request.getRemoteAddr());
+				expVo.setFamilyCustNo(cVo.getFamilyCustNo());
+				
+				// VIP만료
+				custLoginService.updateVipticketExpire(expVo);
 				cVo.setCustNo(nScCustNo);
 				cVo.setFamilyCustNick(nickname);
 				cVo.setCustOperatorGubun("N");

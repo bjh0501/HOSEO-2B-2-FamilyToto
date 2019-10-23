@@ -140,18 +140,12 @@
 }
 
 /*Animation For Slider*/
-@
--webkit-keyframes slider { 0% {
+@-webkit-keyframes slider { 0% {
 	left: -500px;
 }
-
-100%
-{
-left
-:
- 
-0;
-}
+100% {
+		left :0;
+	}
 }
 .slide li:target {
 	z-index: 100;
@@ -159,20 +153,15 @@ left
 }
 
 /*Not Target*/
-@
--webkit-keyframes 
-noTarget { 0% {
+@-webkit-keyframes noTarget { 0% {
 	z-index: 75;
 }
 
-100%
-{
-z-index
-:
- 
-75;
+100% {
+	z-index : 75;
+	}
 }
-}
+
 .slide li:not (:target ) {
 	-webkit-animation: noTarget 1s 1;
 }
@@ -431,16 +420,12 @@ var helpCommentList = [
 + "구매하신뒤 상품평에 댓글과 별점을 다실수있구요<br>"
 + "구매하고싶지않으시다면 크레딧샵누르시면되여"]
 
-
-
-
-
 </script>
 
 
 <script>
     $(document).ready(function(){
-    	var commentRateOptions = {
+    var commentRateOptions = {
     			max_value: 5,
     			step_size: 0.1,
     			initial_value: 3,
@@ -484,8 +469,6 @@ var helpCommentList = [
             console.log(data);
         });
     });
-</script>
-<script>
 	
 	function basket(productNo) {
 		if (isNaN($("#amount").val()) == true) {

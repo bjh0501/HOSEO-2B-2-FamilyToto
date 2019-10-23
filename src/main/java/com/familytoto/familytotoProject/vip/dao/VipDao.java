@@ -1,9 +1,9 @@
-package com.familytoto.familytotoProject.vip.service;
+package com.familytoto.familytotoProject.vip.dao;
 
 import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.vip.domain.VipVO;
 
-public interface VipService {
+public interface VipDao {
 	// VIP 게임방생성
 	int insertGameRoom(VipVO vo);
 	

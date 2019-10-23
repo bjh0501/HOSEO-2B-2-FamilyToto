@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Repository
@@ -26,5 +27,15 @@ public class CustLoginDAOImpl implements CustLoginDAO {
 	@Override
 	public List<String> listPreferProduct(int familyCustNo) {
 		return sqlSession.selectList("login.listPreferProduct", familyCustNo);
+	}
+
+	@Override
+	public int updateVipticketExpire(ExpVO vo) {
+		return sqlSession.update("login.updateVipticketExpire", vo);
+	}
+
+	@Override
+	public int updateVipTicketExpireExp(int familyCustNo) {
+		return sqlSession.update("login.updateVipTicketExpireExp", familyCustNo);
 	}
 }

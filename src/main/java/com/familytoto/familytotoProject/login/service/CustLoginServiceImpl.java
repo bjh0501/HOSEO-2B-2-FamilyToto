@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.login.dao.CustLoginDAO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
@@ -38,6 +40,20 @@ public class CustLoginServiceImpl implements CustLoginService {
 	@Override
 	public List<String> listPreferProduct(int familyCustNo) {
 		return custLoginDao.listPreferProduct(familyCustNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateVipticketExpire(ExpVO vo) {
+		if(custLoginDao.updateVipticketExpire(vo) != 1) {
+			throw new RuntimeException("VIP 만료 에러");
+		}
+		
+		if(custLoginDao.updateVipTicketExpireExp(vo.getFamilyCustNo()) != 1) {
+			throw new RuntimeException("VIP 만료 경험치 갱신 에러");
+		}
+		
+		return 1;
 	}
 
 }

@@ -91,11 +91,11 @@ function helpMeCharacter(characterName) {
 
 	if (helpCommentList.length == GLOBAL_COMMENT_IDX - 1) {
 		GLOBAL_COMMENT_IDX = 0;
-		tip = confirm("설명을 해준 " + characterName + "에게 팁으로 1,000크레딧을 드리겠습니까?")
-
-		if (tip == true) {
-			alert(characterName + "가 감사하다고합니다.")
-		}
+//		tip = confirm("설명을 해준 " + characterName + "에게 팁으로 1,000크레딧을 드리겠습니까?")
+//
+//		if (tip == true) {
+//			alert(characterName + "가 감사하다고합니다.")
+//		}
 
 		$("#helpCharacter").remove();
 	}
@@ -139,11 +139,12 @@ $('#helpButton').click(function() {
 var cookieList = function(cookieName) {
 	var cookie = $.cookie(cookieName);
 	var items = cookie ? cookie.split(/,/) : new Array();
-
+	
 	return {
 		"add" : function(val) {
-			items.push(val);
-			$.cookie(cookieName, items.join(','));
+			$.cookie(cookieName, items, {
+				path : '/'
+			});
 		},
 		"remove" : function(val) {
 			indx = items.indexOf(val);

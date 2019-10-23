@@ -2,7 +2,6 @@ package com.familytoto.familytotoProject.charge.domain;
 
 import java.sql.Timestamp;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 

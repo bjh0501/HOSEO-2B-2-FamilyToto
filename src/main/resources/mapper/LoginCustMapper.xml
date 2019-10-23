@@ -3,9 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="login">
-	
 	<select id="custLogin" resultType="CustVO">
-			
 		SELECT	C.CUST_NO as custNo
 		,		C.FAMILY_CUST_NO as familyCustNo
 		,		C.CUST_PASSWORD as custPassword
@@ -52,4 +50,23 @@
 		WHERE	FAMILY_CUST_NO = #{familyCustNo}
 		AND		USE_YN = 'Y'
 	</select>
+	<update id="updateVipticketExpire">
+	<![CDATA[
+		UPDATE	CUSTOM_EXP
+		SET		CHG_DT = NOW()
+		,		CHG_CUST_NO = #{chgCustNo}
+		,		CHG_IP = #{chgIp}
+		,		USE_YN = 'N'
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		EXP_STATE = 'VIP'
+		AND		REG_DT <= NOW()
+		AND		USE_YN = 'Y'
+		]]>
+	</update>
+	<update id="updateVipTicketExpireExp" parameterType="int">
+		UPDATE	FAMILY_CUSTOM
+        SET		FAMILY_CUST_EXP = FAMILY_CUST_EXP - 30000
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
+	</update>
 </mapper>

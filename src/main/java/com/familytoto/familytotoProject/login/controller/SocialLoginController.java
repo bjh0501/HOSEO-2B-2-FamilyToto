@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.familytoto.familytotoProject.exp.domain.ExpVO;
 import com.familytoto.familytotoProject.login.domain.SocialVO;
+import com.familytoto.familytotoProject.login.service.CustLoginService;
 import com.familytoto.familytotoProject.login.service.kakao.KakaoLoginVO;
 import com.familytoto.familytotoProject.login.service.naver.NaverLoginVO;
 import com.familytoto.familytotoProject.login.service.social.SocalLoginService;
@@ -36,6 +38,9 @@ public class SocialLoginController {
 	
 	@Autowired
 	SocalLoginService socalLoginService;
+	
+	@Autowired
+	CustLoginService custLoginService;
 	
 	@RequestMapping("login/social/naver")
 	@ResponseBody
@@ -98,7 +103,8 @@ public class SocialLoginController {
 	
 	@RequestMapping("/login/social/facebook")
 	@ResponseBody
-	public int facebookAuth(@ModelAttribute SocialVO vo, HttpSession session) {
+	public int facebookAuth(@ModelAttribute SocialVO vo, HttpSession session,
+			HttpServletRequest request) {
 		// 소셜 부분 
 		CustVO cVo = socalLoginService.getSocialFamilyNo(vo);
 		
@@ -115,6 +121,17 @@ public class SocialLoginController {
 		//페북은 이름 = 닉네임
 		cVo.setFamilyCustNick(vo.getScCustNick());
 		cVo.setCustOperatorGubun("N");
+		
+		if(cVo.getFamilyCustNo() != 0) {
+			ExpVO expVo = new ExpVO();
+			expVo.setChgCustNo(nScCustNo);
+			expVo.setChgIp(request.getRemoteAddr());
+			expVo.setFamilyCustNo(cVo.getFamilyCustNo());
+		
+			// VIP만료
+			custLoginService.updateVipticketExpire(expVo);
+		}
+		
 		session.setAttribute("cust", cVo); // 세션 생성
 		
 		session.setAttribute("custSocial", vo); // 세션 생성
