@@ -52,4 +52,19 @@
 		WHERE	VIP_GAME_NO = #{vipGameNo}
 		AND		USE_YN = 'Y'
 	</select>
+	<update id="updateCloseGameRoom" parameterType="int">
+		UPDATE	VIP_GAME
+        SET		USE_YN = 'N'
+        WHERE	VIP_GAME_NO = #{vipGameNo}
+        AND		USE_YN = 'Y'
+	</update>
+	<select id="isFamilyCustVip" parameterType="int" resultType="boolean">
+		<![CDATA[
+		SELECT EXISTS(SELECT	FAMILY_CUST_NO
+		FROM	FAMILY_CUSTOM
+		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
+		AND		FAMILY_CUST_EXP >= 30000)
+		]]>
+	</select>
 </mapper>

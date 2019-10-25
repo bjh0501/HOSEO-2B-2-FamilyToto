@@ -86,6 +86,21 @@
 									onClick="downloadExcel();">
 										<i class="far fa-file-excel"></i> 엑셀 다운로드
 									</button>
+									<br>
+									<div th:if="${admin == 'Y'}">
+										<span>년 : </span>
+										<select id="totoYear">
+											
+										</select>
+										<span>월 : </span>
+										<select id="totoMonth">
+											
+										</select>
+										<button type="button" class="btn btn-secondary btn-lg"
+										onClick="javascript:soccerSchedule();">
+											<i class="fas fa-futbol"></i> 토토 갱신
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -448,28 +463,18 @@
 								<table class="table table-bordered" width="100%" cellspacing="0">
 									<thead>
 										<tr>
-											<th style="width: 10%">경기번호</th>
+											<th style="width: 15%">경기번호</th>
 											<th style="width: 10%">경기구분</th>
 											<th style="width: 10%">리그이름</th>
-											<th style="width: 20%" id="totoMatchTeam1">팀1</th>
+											<th style="width: 10%" id="totoMatchTeam1">팀1</th>
 											<th style="width: 10%" id="totoMatchTeam2">팀2</th>
-											<th style="width: 10%">경기결과</th>
-											<th style="width: 10%">나의 픽</th>
+											<th style="width: 20%">경기결과</th>
+											<th style="width: 15%">나의 픽</th>
 											<th style="width: 10%">결과</th>
 										</tr>
 									</thead>
 									<tbody id="totoMatchTr">
-										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
+
 									</tbody>
 								</table>
 							</div>
@@ -562,7 +567,20 @@ var helpCommentList = [
 + "경험치량과 토토를한횟수<br>크레딧의 수익변동과<br>"
 + "과거크레딧을 차트로 보실수있습니다."]
 
+for(var i = 2010; i <= 2099;i++) {
+	$("#totoYear").append("<option>" + i + "</option>");
+}
 
+for(var i = 1; i <= 12;i++) {
+	str = "";
+	if(i <= 9) {
+		str = "0" + String(i);
+	} else {
+		str = String(i);
+	}
+	
+	$("#totoMonth").append("<option>" + str + "</option>");
+}
 
 
 
@@ -1423,5 +1441,27 @@ $( document ).tooltip({
 	
 	function downloadExcel() {
 		window.open("/dashboard/download.xls");
+	}
+	
+	function soccerSchedule() {
+		
+		$.ajax({
+			url : "/dashboard/schedularToto",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			data : {
+				year : $("#totoYear").val()
+			,	month : $("#totoMonth").val()
+			},
+			success : function(data) {
+				alert("갱신하였습니다.");
+			}, 
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 </script>

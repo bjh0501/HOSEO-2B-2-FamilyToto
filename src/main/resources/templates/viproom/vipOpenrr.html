@@ -29,10 +29,14 @@
 .display-game-start {
 	display: none;
 }
+
+.centerBullet {
+ 	margin: 0 auto;
+ }
 </style>
 </head>
 
-<body id="page-top" onunload="leave()">
+<body id="page-top">
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -58,40 +62,26 @@
 					<!-- 입장/개설 -->
 					<div class="row">
 						<div class="col-xl-8 col-lg-7 .col-md-7 .col-sm-12 ">
-							<div class="card shadow mb-4">
+							<div class="card shadow mb-4" style="min-height: 392px;">
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary">- RUSSIAN
-										ROULETTE -</h6>
-									
+										ROULETTE -<input class="btn-secondary" type="button"
+										onclick="javascript:location.replace('/vipEnt');" value="탈주하기"
+										style="margin: 0 auto; height: 45px;"></h6>
 								</div>
 
 								<!-- 왼쪽 프로필 -->
+								<b>참가자명단</b>
 								<div class="row" style="margin-left: 1px; margin-bottom: 1px">
-									<table border=1 style="text-align: center;">
-										<tr>
-											<td>참여자 리스트</td>
-										</tr>
-										<tr>
-											<td class="player-name">이름</td>
-										</tr>
-										<tr>
-											<td class="player-name"></td>
-										</tr>
-										<tr>
-											<td class="player-name"></td>
-										</tr>
-										<tr>
-											<td class="player-name"></td>
-										</tr>
-										<tr>
-											<td class="player-name"></td>
-										</tr>
+									<table border=1 style="text-align: center;" class="player-name">
+										
 									</table>
-									<img src="/img/logo/russian.png" style="margin-left: 5%;margin-right: 5%;margin-top: 1%;margin-bottom: 1%; width:75%;"><br>
+									<img id="mainImg" src="/img/logo/russian.png" style="margin: 0 auto; width:75%;"><br>
+									<img id="bullet" src="/img/viproom/rr/bullet.png" class="centerBullet" style="display: none;"><br>
 								</div>
 								<input class="btn-secondary display-game-start" id="gameStartButton" type="button" onClick="javascript:gameStart();"
 									value="러시안 룰렛 게임 진입" style="width: 100%; margin: 0 auto; height: 45px;"></input>
-								<input class="btn-secondary" id="gameButton" type="button" onClick="javascript:turnPassGame();"
+								<input class="btn-secondary" id="gameButton" type="button" onClick="javascript:actionBullet();"
 									value="대기중.." style="width: 100%; margin: 0 auto; height: 45px" disabled></input>
 
 								<!-- 왼쪽 프로필 -->
@@ -168,9 +158,21 @@
 	firebase.initializeApp(firebaseConfig);
 	// firebase.analytics();
 	var database = firebase.database();
+</script>
+
+<script>	
 	
-	var GLOBAL_FAMILY_CUST_NO = [[ ${cust.familyCustNo } ]];
-	var GLOBAL_ROOM_NUM = 20;
+	var GLOBAL_FAMILY_CUST_NICK = "[[ ${cust.familyCustNick } ]]";
+	var GLOBAL_FAMILY_CUST_NO = "[[ ${cust.familyCustNo } ]]";
+	var GLOBAL_ROOM_NUM = [[ ${roomNo} ]];
+	
+	// 방만든경우는 0
+	if(GLOBAL_ROOM_NUM == 0) {
+		createRoom("[[ ${roomName} ]]");
+	} else {// 방입장
+		enterRoom("Y");
+	}
+	
 	var GLOBAL_DEATH_TURN = 0;
 	
 	var userNoArray = new Array();
@@ -233,21 +235,22 @@
 							
 							// 유저정보
 							if(enterState == "Y") {
-								database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/" + String(GLOBAL_FAMILY_CUST_NO)).push({
+								database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/" + String(GLOBAL_FAMILY_CUST_NICK)).push({
 									state : "W"
+								,	familyCustNo : GLOBAL_FAMILY_CUST_NO
 								});
 							}
 							
 							// 방 key 갱신 
 							var dbTestRef = database.ref('russiaRullet/' + GLOBAL_ROOM_NUM)
-		
+							
+							// 사람들어왔을떄
 							dbTestRef.on('child_added', function(data){
 								if(data.key.substring(0,1) === "-") {
-								    
 								    // 실시간으로 출력하는 함수 
 								    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/" + data.key + "/currentFamilyCustNo");
 								    dbRef.on('value',function(data){
-								    	if(data.val() == GLOBAL_FAMILY_CUST_NO) {
+								    	if(data.val() == GLOBAL_FAMILY_CUST_NICK) {
 									    	$("#gameButton").val("방아쇠 당기기 ");		
 									    	$("#gameButton").removeAttr("disabled")
 								    	} else {
@@ -259,22 +262,15 @@
 									    		$("#gameButton").attr("disabled", "disabled");
 								    		}
 								    	}
-								    });
-								    
-								 	// 방 리스트 참여자 갱신
-								 	var playerListidx = 0;
-								    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/players/");
-								    dbRef.on('child_added',function(data){
-								    	// 유저 키정보
-								    	$(".player-name").eq(playerListidx).html(data.key);
-								    	playerListidx++;
-								    })
+								    });								   
 								    
 								    // 게임시작했는지 여부
 								    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/" + data.key + "/state");
 								    dbRef.on('value',function(data){								    	
 								    	if(data.val() != null) {
 								    		if(data.val() == "Y") {
+								    			$("#mainImg").remove();
+								    			$("#bullet").removeAttr("style");
 								    			$("#gameButton").val("게임이 시작되었습니다.");
 								    			$("#gameButton").attr("disabled", "disabled");
 								    		}
@@ -298,7 +294,7 @@
 								 	// 혼자남으면 승리
 									database.ref("russiaRullet/" + GLOBAL_ROOM_NUM + "/" + data.key + "/winner").on('value', function(data){
 										if(data.val() != null) {
-											if(data.val() == GLOBAL_FAMILY_CUST_NO) {												
+											if(data.val() == GLOBAL_FAMILY_CUST_NICK) {												
 												$.ajax({
 													url : "/vip/winGamePlayer",
 													type : "POST",
@@ -337,15 +333,31 @@
 	
 	///// 겜시작
 	function gameStart() {
+		database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
+			if(data.numChildren() == 1) {
+				alert("2인이상만 플레이가 가능합니다.");
+				return false;
+			} else {
+				gameStartProcess();
+			}
+		})
+	}
+	
+	///// 겜시작해서 디비 인서트
+	function gameStartProcess() {		
 		var dbTestRef = database.ref('russiaRullet/' + GLOBAL_ROOM_NUM)
+	    
+		// 방참여자들 디비로
+	    var joinPlayers = new Array();
+
+		var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/players/");
+		dbRef.on('child_added',function(data){
 		
-		// 방 리스트 참여자 갱신
-		var joinPlayers = new Array();
-	    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/players/");
-	    dbRef.on('child_added',function(data){
-	    	// 유저 push
-	    	joinPlayers.push(data.key);
-	    })
+		    var dbRef = firebase.database().ref().child("russiaRullet/" + GLOBAL_ROOM_NUM + "/players/" + data.key);
+			dbRef.on('child_added',function(data){
+				joinPlayers.push(data.val().familyCustNo);
+			})
+		})	  
 		
 		$.ajax({
 			url : "/vip/insertGamePlayer",
@@ -381,7 +393,7 @@
 	}
 	
 	///// 겜 진행	
-	function turnPassGame() {	
+	function turnPassGame() {
 		// 게임유저들 데이터 가져오기
 		var query = firebase.database().ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/");
 		query.on('child_added', function(childSnapshot, prevChildKey) { // 플레이어 패밀리번호 for
@@ -413,7 +425,7 @@
 		
 		// 방 키값 가져오기
 		var dbTestRef = database.ref('russiaRullet/' + GLOBAL_ROOM_NUM);
-		
+			
 		dbTestRef.on('child_added', function(data){
 			if(data.key.substring(0,1) === "-") {
 				var starCountRef = database.ref('russiaRullet/' + GLOBAL_ROOM_NUM +"/" + data.key);
@@ -455,11 +467,10 @@
 								})
 								
 								return false;
-							}					
+							}	
 						});
 						
 						alert("얘! 사망했단다.");
-						// 사망자 업뎃 AJAX 
 						
 						location.replace("/vipEnt");
 						// 여기서 방나가기
@@ -477,13 +488,54 @@
 		})
 	}
 	
-	function leave() {
-		// 방 리스트 참여자 갱신
-		database.ref('russiaRullet/' + GLOBAL_ROOM_NUM+"/players/" + GLOBAL_FAMILY_CUST_NO).remove();
-		enterRoom("N");
-	    
-	    alert("나가셨습니다.");
-	    
-		// location.replace("대기리스트");
+	window.onbeforeunload = function(e){
+		database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK).remove();
+		database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
+			if(data.numChildren() == 0) {
+				database.ref('russiaRullet/' + GLOBAL_ROOM_NUM).remove();
+			}
+		})
+		location.replace("/vipEnt");
+	};
+	
+	database.ref("russiaRullet/" + GLOBAL_ROOM_NUM + "/players").on('child_added',function(data){
+		var str = "";
+		str += "<tr>";
+		str += "	<td>" + data.key + "</td>";
+		str += "</tr>";
+		$(".player-name").append(str);
+	})
+   
+   database.ref("russiaRullet/" + GLOBAL_ROOM_NUM + "/players").on('child_removed',function(data){
+		for(i = 0; i < $(".player-name tr").length; i++) {
+			if($(".player-name td:eq(" + i + ")").html() == data.key) {
+				$(".player-name tr:eq(" + i + ")").remove()
+			}
+		}
+   })
+   
+   function actionBullet() {
+		var speed = 75; 
+		
+		if($("#gameButton").val().trim() == "게임 시작") {
+			turnPassGame();
+		} else {
+			setTimeout(function() {
+				$("#bullet").attr("src", "/img/viproom/rr/bullet.png");
+				setTimeout(function() {
+					$("#bullet").attr("src", "/img/viproom/rr/bullet-cycle1.png");
+					setTimeout(function() {
+						$("#bullet").attr("src", "/img/viproom/rr/bullet-cycle2.png");
+						setTimeout(function() {
+							$("#bullet").attr("src", "/img/viproom/rr/bullet-cycle1.png");
+							setTimeout(function() {
+								$("#bullet").attr("src", "/img/viproom/rr/bullet.png");
+								turnPassGame();
+							}, speed);
+						}, speed);
+					}, speed);
+				}, speed);
+			}, speed);
+		}
 	}
 </script>

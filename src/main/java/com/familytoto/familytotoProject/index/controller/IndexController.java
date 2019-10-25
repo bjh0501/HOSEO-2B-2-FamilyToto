@@ -25,14 +25,6 @@ public class IndexController {
 	@Autowired
 	SportsTotoSchedulerService sportsTotoSchedulerService;
 	
-	@RequestMapping(value = { "/inesrtInSoccer" })
-	@ResponseBody
-    public String insert() {
-		sportsTotoSchedulerService.inSoccer();
-	
-        return "insertSoccer";
-    }
-	
 	@RequestMapping(value = { "/index", "/" })
     public String index(Model model) {
 		model.addAttribute("notice", boardService.listNotice());

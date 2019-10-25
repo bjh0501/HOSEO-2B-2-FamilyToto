@@ -45,14 +45,19 @@ public class CustLoginServiceImpl implements CustLoginService {
 	@Override
 	@Transactional
 	public int updateVipticketExpire(ExpVO vo) {
-		if(custLoginDao.updateVipticketExpire(vo) != 1) {
+		
+		int isExp = custLoginDao.updateVipticketExpire(vo);
+		
+		if(custLoginDao.updateVipticketExpire(vo) >= 2) {
 			throw new RuntimeException("VIP 만료 에러");
 		}
 		
-		if(custLoginDao.updateVipTicketExpireExp(vo.getFamilyCustNo()) != 1) {
-			throw new RuntimeException("VIP 만료 경험치 갱신 에러");
+		if(isExp == 1) {
+			if(custLoginDao.updateVipTicketExpireExp(vo.getFamilyCustNo()) != 1) {
+				throw new RuntimeException("VIP 만료 경험치 갱신 에러");
+			}
 		}
-		
+			
 		return 1;
 	}
 

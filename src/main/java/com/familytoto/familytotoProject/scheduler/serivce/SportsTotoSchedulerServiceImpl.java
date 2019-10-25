@@ -6,7 +6,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,17 +16,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.familytoto.familytotoProject.charge.dao.ChargeDao;
-import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.config.GlobalVariable;
 import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.scheduler.dao.SportsTotoSchedulerDao;
 import com.familytoto.familytotoProject.scheduler.domain.TotoSportsVO;
-import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 
 /**
  * @version 	1.00 2019년 10월 2일
@@ -44,13 +39,14 @@ public class SportsTotoSchedulerServiceImpl implements SportsTotoSchedulerServic
 	@Autowired
 	ExpService expService;
 	
-	// 국내 축구
-	// 정각 12시마다 크롤링한다.
-	public void inSoccer() {
+	public void inSoccer(String gubun, String matchYear,
+			String matchMonth,
+			HttpServletRequest request,
+			CustVO custVo) {
 		TotoSportsVO vo = new TotoSportsVO();
-		String league = "2"; // 1 or 2
-		String year = "2019";
-		String month = "10";
+		String league = gubun; // 1 or 2
+		String year = matchYear;
+		String month = matchMonth;
 		
 		Random random = new Random();
 
@@ -92,23 +88,23 @@ public class SportsTotoSchedulerServiceImpl implements SportsTotoSchedulerServic
 					vo.setSportsDrawBet(GlobalVariable.toTwoFixed(GlobalVariable.radnomValue(2, 4)
 							+ random.nextDouble()));
 					
-					vo.setRegCustNo(100000001);
-					vo.setRegIp("127.0.0.1");
+					vo.setRegCustNo(custVo.getCustNo());
+					vo.setRegIp(request.getRemoteAddr());
 
 					if (score.length() >= 5) { // 추가
 						String timeM = score;
 						String fullTime = time + " " + timeM;
 						Timestamp convertTime = convertStringToTimestamp(fullTime);
 
-						System.out.println(team1 + "=" + team2 + "==" + fullTime);
+						//System.out.println(team1 + "=" + team2 + "==" + fullTime);
 
 						vo.setSportsSchedule(convertTime);
 
 						if (sportsTotoSchedulerDao.inSoccer(vo) != 1) {
-							System.out.println("문제있음" + "==");
+							throw new RuntimeException("국내축구 추가에러"); 
 						}
 					} else { // 업데이트
-						System.out.println(team1 + "=" + team2 + "==" + score + "==" + time);
+						//System.out.println(team1 + "=" + team2 + "==" + score + "==" + time);
 
 						String sScore[] = score.split(":");
 						String sSportsResult = "";

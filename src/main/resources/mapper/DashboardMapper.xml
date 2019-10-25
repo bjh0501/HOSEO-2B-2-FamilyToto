@@ -252,6 +252,7 @@
 			INNER JOIN TOTO_SPORTS TS ON TS.SPORTS_NO = TSB.SPORTS_NO AND TS.USE_YN = 'Y'
 		WHERE	TSB.USE_YN = 'Y'
 		AND		TSBG.FAMILY_CUST_NO = #{familyCustNo}
+		ORDER BY TSBG.SPORTS_BETTING_GROUP_NO DESC
 	</select>
 	<select id="listRegisteredBoard" parameterType="int" resultType="BoardVO">
 		SELECT	B.BOARD_NO as boardNo

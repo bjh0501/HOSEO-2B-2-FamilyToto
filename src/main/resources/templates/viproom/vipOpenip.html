@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>One Sports</title>
+
+<!-- Custom fonts for this template-->
+<link th:href="@{vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link th:href="@{css/Nunito.css}" rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link th:href="@{css/sb-admin-2.min.css}" rel="stylesheet">
+<style>
+.boardrow:hover {
+	background: black;
+	color: white;
+	cursor: pointer;
+}
+
+.display-view {
+	display: none;
+}
+</style>
+</head>
+
+<body id="page-top">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<ul
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar">
+		</ul>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+					th:include="/header/header"></nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<!-- 입장/개설 -->
+					<div class="row">
+						<div class="col-xl-8 col-lg-7 .col-md-7 .col-sm-12 ">
+							<div class="card shadow mb-4" style="min-height: 392px;">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">- INDIAN
+										POKER -<input class="btn-secondary" type="button"
+										onclick="javascript:location.replace('/vipEnt');" value="탈주하기"
+										id="runButton"
+										style="margin: 0 auto; height: 45px;"></h6>
+								</div>
+
+								<!-- 왼쪽 프로필 -->
+								<b>참가자명단, 카드</b>
+								<div class="row" style="margin-left: 1px; margin-bottom: 1px">
+									<table border=1 style="text-align: center;" class="player-name">
+										
+									</table>
+								</div>
+								<br>
+								<center style="height:60px;"><h2 id="actionWord"></h2></center>
+								<center>판돈 : <span id="totalStake">0</span></center>
+								<div style="display: flex;">
+									<input class="btn-secondary button-grp" type="button"
+										onClick="javascript:turnPassGame('call')"
+										value="콜" style="width: 34%; margin: 0 auto; height: 45px" disabled></input>
+									<input class="btn-secondary button-grp" type="button"
+										onClick="javascript:turnPassGame('half')"
+										value="하프" style="width: 33%; margin: 0 auto; height: 45px" disabled></input>
+									<input class="btn-secondary button-grp"  type="button"
+									onClick="javascript:turnPassGame('die')"
+										value="다이" style="width: 33%; margin: 0 auto; height: 45px" disabled></input>
+								</div>
+								<div style="display: flex;">
+									<input class="btn-secondary button-grp" type="button"
+										onClick="javascript:turnPassGame('ddadang')"
+										value="따당" style="width: 34%; margin: 0 auto; height: 45px" disabled></input>
+									<input class="btn-secondary button-grp button-grp-pass" type="button"
+										onClick="javascript:turnPassGame('bbing')"
+										value="삥" style="width: 33%; margin: 0 auto; height: 45px" disabled></input>
+									<input class="btn-secondary button-grp button-grp-pass" type="button"
+										onClick="javascript:turnPassGame('check')"
+										value="체크" style="width: 33%; margin: 0 auto; height: 45px" disabled></input>
+								</div>
+	
+								<input class="btn-secondary" id="gameButton" type="button" onClick="javascript:gameStart();"
+									value="대기중" style="width: 100%; margin: 0 auto; height: 45px" disabled></input>
+								<input class="btn-secondary display-view" type="button" id="viewer"
+									value="구경꾼이 된 나.." style="width: 100%; margin: 0 auto; height: 45px" disabled></input>
+								<!-- 왼쪽 프로필 -->
+							</div>
+						</div>
+						<!-- <img src="/img/character/tosoon.png"> -->
+						<img src="/img/character/tosoon.png" style="margin-left:0 auto">
+					</div>
+
+
+					<!-- 입장/개설 -->
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white" th:include="/footer/footer">
+
+			</footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+	<!-- common -->
+	<script src="/js/common.js"></script>
+	<script src="/js/header.js"></script>
+
+
+</body>
+
+</html>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+<!-- // Firebase 기본 SDK, 꼭 필요로 함 -->
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+
+<!-- // Firebase App SDK -->
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-app.js"></script>
+
+<!-- // Firebase Auth SDK, 계정 인증 사용시 필요 -->
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-auth.js"></script>
+
+<!-- // Firebase Database SDK, 데이터베이스 사용시 필요 -->
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase-database.js"></script>
+<script>
+	// Your web app's Firebase configuration
+	var firebaseConfig = {
+		apiKey : "AIzaSyA2rSRgor5OCyVBpkdyPpUbtuiBkVlzZxY",
+		authDomain : "familytoto-a142b.firebaseapp.com",
+		databaseURL : "https://familytoto-a142b.firebaseio.com",
+		projectId : "familytoto-a142b",
+		storageBucket : "familytoto-a142b.appspot.com",
+		messagingSenderId : "92460229559",
+		appId : "1:92460229559:web:20dd41e80ac304ce4c7e32",
+		measurementId : "G-NSJXMNT524"
+	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	// firebase.analytics();
+	var database = firebase.database();
+</script>
+
+<script>	
+	var GLOBAL_DEFAULT_STAKE = 100000;
+	var GLOBAL_FAMILY_CUST_NICK = "반야맨이야";
+	var GLOBAL_FAMILY_CUST_NO = "10001";
+	var GLOBAL_ROOM_NUM = 100003;
+	var GLOBAL_PLAYER_SHEET_ORDER = 0;
+	var GLOBAL_ONE_STAKE = GLOBAL_DEFAULT_STAKE; // 거는돈
+	var GLOBAL_TOTAL_STAKE = 0; // 판돈
+	var GLOBAL_PASS_CHANCE = true; //
+	var GLOBAL_TURN = 0; //
+	
+	// 방만든경우는 0
+	if(GLOBAL_ROOM_NUM == 0) {
+// 		createRoom(GLOBAL_ROOM_NUM);
+	} else {// 방입장
+// 		enterRoom();
+	}
+	
+	var GLOBAL_DEATH_TURN = 0;
+	
+	var userNoArray = new Array();
+	var userStateArray = new Array();
+	var userLinkArray = new Array();
+	
+	///// 방만들기
+	function createRoom(roomName) {
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).push({
+			turn : 1
+		,	state : "W"
+		,	oneStake : 0
+		,	totalStake : 0
+		,	whoTurn : GLOBAL_FAMILY_CUST_NICK
+		,	action : ""
+		});
+		
+		$("#gameButton").val("게임시작");
+		$("#gameButton").removeAttr("disabled");
+		enterRoom();
+	}
+	
+	
+	// 나중에 바꾸기 (무조건)
+	var allPokerCard = new Array();
+	for(var i = 14; i >=1; i--) {
+		for(j = 1; j <=4; j++) {
+			allPokerCard.push(i + ""+ j);
+		}
+	}
+	
+	shuffle(allPokerCard);
+	
+	///// 방 접속
+	function enterRoom() {
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + String(GLOBAL_FAMILY_CUST_NICK)).push({
+			familyCustNo : GLOBAL_FAMILY_CUST_NO
+		,	card : allPokerCard[GLOBAL_PLAYER_SHEET_ORDER++]
+		});
+	}
+	
+	///// 겜시작
+	function gameStart() {
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").once('value', function(data){
+			if(data.numChildren() == 1) {
+				alert("2인이상만 플레이가 가능합니다.");
+				return false;
+			} else {
+				$(".button-grp").removeAttr("disabled");
+				$("#gameButton").attr("disabled", true);
+				gameStartProcess();
+			}
+		})
+	}
+	
+	///// 겜시작해서 디비 인서트
+	function gameStartProcess() {		
+		var dbTestRef = database.ref('indiaPoker/' + GLOBAL_ROOM_NUM)
+	    
+// 		// 방참여자들 디비로
+	    var joinPlayers = new Array();
+
+		var dbRef = firebase.database().ref().child("indiaPoker/" + GLOBAL_ROOM_NUM + "/players/");
+		dbRef.on('child_added',function(data){
+		
+		    var dbRef = firebase.database().ref().child("indiaPoker/" + GLOBAL_ROOM_NUM + "/players/" + data.key);
+			dbRef.on('child_added',function(data){
+				joinPlayers.push(data.val().familyCustNo);
+			})
+		})	  
+		
+// 		$.ajax({
+// 			url : "/vip/insertGamePlayer",
+// 			type : "POST",
+// 			cache : false,
+// 			dataType : "html",
+// 			traditional : true,
+// 			async : false,
+// 			data : {
+// 				vipGameNo : GLOBAL_ROOM_NUM
+// 			,	familyCustNos : joinPlayers 
+// 			},
+// 			success : function(data) {
+				dbTestRef.on('child_added', function(data){
+					if(data.key.substring(0,1) === "-") {
+						// 방상태값 Y로
+						// AJAX에서 insert된것
+						GLOBAL_TOTAL_STAKE = GLOBAL_ONE_STAKE*2;
+						$("#totalStake").html(GLOBAL_TOTAL_STAKE);
+						database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
+							state: "Y"
+						,	totalStake : GLOBAL_TOTAL_STAKE
+						,	oneStake : GLOBAL_ONE_STAKE
+						})
+						
+						
+					}
+				})
+// 			},
+// 			error : function(request, status, error) {
+// 				var msg = "ERROR : " + request.status + "<br>"
+// 				msg += +"내용 : " + request.responseText + "<br>" + error;
+// 				console.log(msg);
+// 			}
+// 		});
+	}
+	
+	///// 겜 진행	
+	function turnPassGame(gubun) {
+		var nextTurnNick = "";
+		
+		for(var i = 0; i < $(".player-nickname").length; i++) {
+			if($(".player-nickname").eq(i).html() == GLOBAL_FAMILY_CUST_NICK) {
+				if($(".player-nickname").eq(i+1).html() != undefined) { // 턴넘기기
+					nextTurnNick = $(".player-nickname").eq(i+1).html()
+				} else { // 한바퀴돈경우					
+					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data) {
+						if(data.key.substring(0,1) == "-") {
+							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).on('child_added', function(data) {
+								if(data.key == "turn") {
+									GLOBAL_TURN = data.val()+1;
+								}
+							})
+						}
+					})
+
+					nextTurnNick = $(".player-nickname").eq(0).html()
+				}
+				break;
+			}
+		}
+		
+		var gubunStr = "다이";
+		
+		if(gubun == "call") {
+			GLOBAL_TOTAL_STAKE += GLOBAL_ONE_STAKE;
+			gubunStr = "콜"; 
+		} else if(gubun == "half") { // 하프 바닥에깔린 판돈의 절반 걸기 
+			GLOBAL_ONE_STAKE = parseInt(GLOBAL_TOTAL_STAKE/2);
+			GLOBAL_TOTAL_STAKE += GLOBAL_ONE_STAKE;
+			gubunStr = "하프";
+		} else if(gubun == "ddadang") { // 따당 바닥에깔린 판돈의 2배걸기 
+			GLOBAL_ONE_STAKE = parseInt(GLOBAL_TOTAL_STAKE*2);
+			GLOBAL_TOTAL_STAKE += GLOBAL_ONE_STAKE;
+			gubunStr = "따당";
+		} else if(gubun == "bbing" && GLOBAL_PASS_CHANCE == true ) { // 삥 맨처음 배팅금액걸기
+			GLOBAL_PASS_CHANCE = false;
+			GLOBAL_TOTAL_STAKE += GLOBAL_DEFAULT_STAKE;
+			gubunStr = "삥";
+		} else if(gubun == "check" && GLOBAL_PASS_CHANCE == true) { // 체크 패스하는거
+			GLOBAL_PASS_CHANCE = false;
+			GLOBAL_TOTAL_STAKE += 0;
+			gubunStr = "체크";
+		}
+		
+		// 배팅걸기
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+			if(data.key.substring(0,1) == "-") {
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
+					state: "Y"
+				,	totalStake : GLOBAL_TOTAL_STAKE
+				,	oneStake : GLOBAL_ONE_STAKE
+				,	whoTurn : nextTurnNick
+				,	action :  gubunStr
+				,	turn : GLOBAL_TURN
+				});
+			}
+		});
+		
+		if(gubun == "die") {
+			$("#viewer").removeClass("display-view");
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK).remove();
+		}
+	}
+	
+	// 판돈업데이트와 인원업뎃 등등
+	database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+		updateInfo(data);
+	});
+	
+	// 판돈업데이트와 인원업뎃 등등
+	database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_removed', function(data){
+		updateInfo(data);
+	});
+	
+	// 판돈업데이트와 인원업뎃 등등
+	database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_changed', function(data){
+		updateInfo(data);
+		
+		// 3바퀴되서 끝난경우
+		endGameByTurn();
+		
+		// 다나간경우
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
+			if(data.numChildren() == 1) {
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('child_added', function(data){
+					if(data.key == GLOBAL_FAMILY_CUST_NICK) {
+						alert("승리했다맨이야!");
+					}
+				})
+			}	
+		});
+	});
+	
+	function endGameByTurn() {
+		// 3바퀴되서 끝난경우
+		var compareTurn = 0;
+		
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data) {
+			if(data.key.substring(0,1) == "-") {
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).on('child_added', function(data) {
+					if(data.key == "turn") {
+						compareTurn = data.val();
+					}
+				})
+			}
+		})
+		
+		// -1은 완전끝낫을때
+		if(compareTurn >= 3) {
+			var pokerCard = new Array();
+			var resultNick = new Array();
+			
+			var idx = 0;
+			
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_added', function(data) {
+				var loopCustNick = $(".player-nickname").eq(idx).html().trim()
+				
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + loopCustNick).on('child_added', function(data) {
+					if(loopCustNick == GLOBAL_FAMILY_CUST_NICK) {
+						$(".player-card").eq(idx).html("<b>"+data.val().card+"</b>");
+						$(".player-nickname").eq(idx).parent().attr("style", "background: orange");
+					} else {
+						$(".player-card").eq(idx).html(data.val().card);
+					}
+					
+					resultNick.push(loopCustNick);
+					pokerCard.push(parseInt(data.val().card));
+				})
+				
+				idx++;
+			})
+			
+			var resultPokerCard = Math.max.apply(null, pokerCard);
+			var resultWinner = "";
+			
+			for(i = 0; i < pokerCard.length; i++) {
+				if(resultPokerCard == pokerCard[i]) {
+					resultWinner = resultNick[i];
+					break;
+				}							
+			}
+			
+			//database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).remove();
+			if(GLOBAL_TURN != -1) {
+				if(resultWinner == GLOBAL_FAMILY_CUST_NICK) {
+					alert("승리했다맨이야 !\n" + 10000 + "크레딧을 얻었습니다.");	
+				} else {
+					alert("승리자는" + resultWinner);
+				}
+			}
+			$(".button-grp").attr("disabled", true);
+			GLOBAL_TURN = -1; // 누군가 나갔을떄 재알럿 방지
+			return false;
+		}
+	}
+	
+	function updateInfo(data) {
+		if(data.key.substring(0,1) == "-") {
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).on('child_changed', function(data){
+				if(data.key == "totalStake") {
+					$("#totalStake").html(data.val());
+					GLOBAL_TOTAL_STAKE = data.val();
+				} else if(data.key == "oneStake") { // 콜돈
+					GLOBAL_ONE_STAKE = data.val();
+				}  else if(data.key == "whoTurn") { // 턴넘기기
+					if(data.val() == GLOBAL_FAMILY_CUST_NICK) {
+						$(".button-grp").attr("disabled", false);
+						
+						if(GLOBAL_PASS_CHANCE == false) {
+							$(".button-grp-pass").attr("disabled", true);
+						}
+					} else {
+						$(".button-grp").attr("disabled", true);
+					}
+				
+					$("#gameButton").val(data.val() + "차례입니다.");
+					$("#gameButton").attr("disabled", true);
+					
+					var idx = 0;
+					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_added', function(data) {
+
+						if(data.key != GLOBAL_FAMILY_CUST_NICK) {
+							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
+								$(".player-card").eq(idx).html(data.val().card)
+							})
+						} else {
+							$(".player-card").eq(idx).html("블라인드");
+						}
+						
+						idx++;
+					})
+					
+					var idx = 0;
+					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_removed', function(data) {
+
+						if(data.key != GLOBAL_FAMILY_CUST_NICK) {
+							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
+								$(".player-card").eq(idx).html(data.val().card)
+							})
+						} else {
+							$(".player-card").eq(idx).html("블라인드");
+						}
+						
+						idx++;
+					})
+				} else if(data.key == "turn") {
+					GLOBAL_TURN = data.val();
+				}
+			});
+			
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).on('child_added', function(data){
+				if(data.key == "whoTurn") {
+					if($("#totalStake").html() != 0) {
+						$("#gameButton").val(data.val() + "차례입니다.");
+						$("#gameButton").attr("disabled", true);
+						
+						var idx = 0;
+						database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_added', function(data) {
+							
+							if(data.key != GLOBAL_FAMILY_CUST_NICK) {
+								database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
+									$(".player-card").eq(idx).html(data.val().card)
+								})
+							} else {
+								$(".player-card").eq(idx).html("블라인드");
+							}
+							
+							idx++;
+						})
+					}
+				} else if(data.key == "action") {
+					$("#actionWord").attr("Style", "display:none");
+					$("#actionWord").fadeIn(300);
+					$("#actionWord").html(data.val());			
+				}
+			})
+		}
+	}
+	
+	// 나갔을 때
+	window.onbeforeunload = function(e){
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK).remove();
+		GLOBAL_PLAYER_SHEET_ORDER--;
+		
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
+			if(data.numChildren() == 0) {
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).remove();
+			}
+		})
+		location.replace("/vipEnt");
+	};
+	
+	// 인원 입장
+	database.ref("indiaPoker/" + GLOBAL_ROOM_NUM + "/players").on('child_added',function(data){
+		var str = "";
+		str += "<tr>";
+		str += "	<td class='player-nickname'>" + data.key + "</td>";
+		str += "	<td class='player-card'>" + "카드나오는곳" + "</td>";
+		str += "</tr>";
+		$(".player-name").append(str);
+	})
+   
+	///인원 나감
+   database.ref("indiaPoker/" + GLOBAL_ROOM_NUM + "/players").on('child_removed',function(data){
+		for(i = $(".player-name tr").length-1; i >=0; i--) {
+			if($(".player-name tr:eq(" + i + ") td:eq(0)").html() == data.key) {
+				$(".player-name tr:eq(" + i + ")").remove();
+				
+			}
+		}
+   })
+	
+	function shuffle(a) {
+	    var j, x, i;
+	    for (i = a.length; i; i -= 1) {
+	        j = Math.floor(Math.random() * i);
+	        x = a[i - 1];
+	        a[i - 1] = a[j];
+	        a[j] = x;
+	    }
+	}
+</script>

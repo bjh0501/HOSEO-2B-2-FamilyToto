@@ -27,6 +27,7 @@ import com.familytoto.familytotoProject.dashboard.service.DashboardService;
 import com.familytoto.familytotoProject.exp.service.ExpService;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.scheduler.dao.SportsTotoSchedulerDao;
+import com.familytoto.familytotoProject.scheduler.serivce.SportsTotoSchedulerService;
 import com.familytoto.familytotoProject.toto.domain.SportsBettingVO;
 import com.google.gson.Gson;
 
@@ -43,6 +44,9 @@ public class DashboardController {
 
 	@Autowired
 	ChargeDao chargeDao;
+	
+	@Autowired
+	SportsTotoSchedulerService sportsTotoSchedulerService;
 
 	@RequestMapping("/dashboard")
 	public ModelAndView dashboard(HttpSession session, ModelAndView mv, HttpServletResponse response) {
@@ -66,6 +70,13 @@ public class DashboardController {
 		}
 
 		mv.addObject("list", dashboardService.getDefaultInfo(vo.getFamilyCustNo()));
+		
+		if(vo.getCustOperatorGubun() != null && vo.getCustOperatorGubun().equals("Y")) {
+			mv.addObject("admin", "Y");
+		} else {
+			mv.addObject("admin", "N");
+		}
+		
 		mv.addObject("totoBetList", dashboardService.listBettingGroup(vo.getFamilyCustNo()));
 		mv.setViewName("/loginInfo/dashboard");
 
@@ -315,4 +326,22 @@ public class DashboardController {
 	 	
 	 	return "statXls";
 	 }
+
+	@RequestMapping("/dashboard/schedularToto")
+	@ResponseBody
+	public int schedularToto(HttpSession session,
+			String year,
+			String month,
+			HttpServletRequest request) {
+		CustVO cVo = (CustVO) session.getAttribute("cust");
+	 	
+	 	if(cVo == null || !cVo.getCustOperatorGubun().equals("Y")) {
+	 		throw new RuntimeException("운영자만 갱신가능");
+	 	}
+
+	 	sportsTotoSchedulerService.inSoccer("1", year, month, request, cVo);
+	 	sportsTotoSchedulerService.inSoccer("2", year, month, request, cVo);
+	 	
+	 	return 0;
+	}	 
 }

@@ -122,6 +122,8 @@ public class SportsTotoController {
 			return -2;
 		}
 		
+		
+		creVo.setCreditValue(creVo.getCreditValue() * -1); // 크레딧 -로
 		if(chargeDao.doCharge(creVo) != 1) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return -3;

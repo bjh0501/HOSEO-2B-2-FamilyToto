@@ -41,4 +41,14 @@ public class VipDaoImpl implements VipDao {
 	public int insertVipWinnerCredit(CreditVO vo) {
 		return sqlSession.insert("vip.insertVipWinnerCredit", vo);
 	}
+
+	@Override
+	public int updateCloseGameRoom(int vipGameNo) {
+		return sqlSession.update("vip.updateCloseGameRoom", vipGameNo);
+	}
+
+	@Override
+	public boolean isFamilyCustVip(int familyCustNo) {
+		return sqlSession.selectOne("vip.isFamilyCustVip", familyCustNo);
+	}
 }

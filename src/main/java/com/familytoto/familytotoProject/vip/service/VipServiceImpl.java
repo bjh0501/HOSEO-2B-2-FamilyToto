@@ -49,4 +49,14 @@ public class VipServiceImpl implements VipService {
 	public int insertVipWinnerCredit(CreditVO vo) {
 		return vipDao.insertVipWinnerCredit(vo);
 	}
+
+	@Override
+	public int updateCloseGameRoom(int vipGameNo) {
+		return vipDao.updateCloseGameRoom(vipGameNo);
+	}
+
+	@Override
+	public boolean isFamilyCustVip(int familyCustNo) {
+		return vipDao.isFamilyCustVip(familyCustNo);
+	}
 }

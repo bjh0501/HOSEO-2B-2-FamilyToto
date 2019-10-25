@@ -21,4 +21,10 @@ public interface VipService {
 	
 	// VIP 게임 승리 크레딧받기
 	int insertVipWinnerCredit(CreditVO vo);
+	
+	// VIP 게임방못들어오게 막기
+	int updateCloseGameRoom(int vipGameNo);
+	
+	// VIP인지 체크
+	boolean isFamilyCustVip(int familyCustNo);
 }
