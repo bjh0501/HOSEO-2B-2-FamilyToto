@@ -33,6 +33,16 @@ public class VipVO {
     private String gameGubun;
 
     private Integer totalTurn;
+    
+    private int bettingCredit;
+
+	public int getBettingCredit() {
+		return bettingCredit;
+	}
+
+	public void setBettingCredit(int bettingCredit) {
+		this.bettingCredit = bettingCredit;
+	}
 
 	public int getVipGamePlayerNo() {
 		return vipGamePlayerNo;

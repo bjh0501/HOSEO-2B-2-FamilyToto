@@ -31,11 +31,14 @@
 		)
 	</insert>
 	<select id="isVipCreditValue" parameterType="CreditVO" resultType="boolean">
+	<![CDATA[
 		SELECT EXISTS(SELECT	FAMILY_CUST_NO
 		FROM	CUSTOM_CREDIT
 		WHERE	FAMILY_CUST_NO = #{familyCustNo}
+		AND		USE_YN = 'Y'
 		GROUP BY FAMILY_CUST_NO
 		HAVING SUM(CREDIT_VALUE) >= #{creditValue})
+	]]>
 	</select>
 	<insert id="insertVipWinnerCredit">
 		INSERT INTO CUSTOM_CREDIT (
@@ -66,5 +69,29 @@
 		AND		USE_YN = 'Y'
 		AND		FAMILY_CUST_EXP >= 30000)
 		]]>
+	</select>
+	<select id="isBettingCredit" parameterType="VipVO" resultType="boolean">
+		SELECT EXISTS (SELECT	CREDIT_ID
+        FROM	CUSTOM_CREDIT
+        WHERE	USE_YN = 'Y'
+        AND		FAMILY_CUST_NO = #{familyCustNo}
+        HAVING	SUM(CREDIT_VALUE) >= #{bettingCredit})
+	</select>
+	<insert id="insertBettingCredit">
+		INSERT INTO CUSTOM_CREDIT (
+			FAMILY_CUST_NO,		CREDIT_VALUE,	CREDIT_STATE,
+            CREDIT_STATE_ID,	REG_CUST_NO,	REG_DT,
+            REG_IP,				USE_YN
+        ) VALUES (
+			#{familyCustNo},	#{creditValue},	#{creditState},
+            0,					#{regCustNo},	NOW(),
+            #{regIp},			'Y'
+        )
+	</insert>
+	<select id="getHaveTotalCredit" parameterType="int" resultType="int">
+		SELECT	SUM(CREDIT_VALUE) as creditValue
+        FROM	CUSTOM_CREDIT
+        WHERE	FAMILY_CUST_NO = #{familyCustNo}
+        AND		USE_YN = 'Y'
 	</select>
 </mapper>

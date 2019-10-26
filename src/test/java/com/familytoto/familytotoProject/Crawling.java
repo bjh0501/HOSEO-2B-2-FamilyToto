@@ -86,4 +86,30 @@ public class Crawling {
 			
 		}
 	}
+	
+	@Test
+	public void liveScoreParse() throws IOException {
+		String URL = "https://www.spojoy.com/live/?mct=soccer&sct=&pgTk=&sel_date=20191026";
+		Document doc = Jsoup.connect(URL).get();
+		Elements matchInfo = doc.select(".data-body .table"); //첫 번쨰 팀이름
+		
+		for(Element e: matchInfo) {
+			String time = e.select("th[scope=\"col\"]").text().replaceAll("\\s.*", "");
+			Elements tbody = e.select(".team-match");
+			
+			for(Element e2: tbody) {
+				String team1 = e2.select(".team-1 .club").text();
+				String team2 = e2.select(".team-2 .club").text();
+				String score = e2.select(".score").text();
+				
+				if(score.length() >= 5) {
+					System.out.println(team1 + "=" + team2 + "==" + time+ " " + score);					
+				} else {
+					System.out.println(team1 + "=" + team2 + "==" + score + "==" + time);
+				}
+				
+			}
+			
+		}
+	}
 }
