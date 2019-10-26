@@ -654,7 +654,9 @@ var helpCommentList = [
 	function goUpdate(reg, boardNo) {
 		// 익명
 		annoId = $("#regNick").html()
-		if(reg == -1) {
+		
+		// goupdate인데  BE라면 익명 아니면 유저
+		if($("#promptGubun").val() == "BE") {
 			if($("#annoInputPw").val() == "") {
 				alert("비밀번호를 입력해주세요.");
 				return;
@@ -681,7 +683,6 @@ var helpCommentList = [
 					}
 				});
 			}
-			
 		} else { // 유저
 			
 		}

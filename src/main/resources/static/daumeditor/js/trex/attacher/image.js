@@ -203,13 +203,13 @@ Trex.Attachment.Image = Trex.Class.create({
 		return _parastyle;
 	},
 	getSaveHtml: function(data) {
-		return "<img src=\"" + data.imageurl + "\" class=\"txc-image\"/>";
+		return "<img src=\"" + data.imageurl + "\" class=\"txc-image\" style=\"max-width:100%\"/>";
 	},
 	getDispHtml: function(data) {
-		return "<img id=\"" + data.dispElId + "\" src=\"" + data.imageurl + "\" class=\"txc-image\"/>";
+		return "<img id=\"" + data.dispElId + "\" src=\"" + data.imageurl + "\" class=\"txc-image\" style=\"max-width:100%\"/>";
 	},
 	getDispText: function(data) {
-		return "<img src=\"" + data.imageurl + "\" class=\"txc-image\"/>";
+		return "<img src=\"" + data.imageurl + "\" class=\"txc-image\" style=\"max-width:100%\"/>";
 	},
 	getRegLoad: function(data) {
 		return new RegExp("<(?:img|IMG)[^>]*src=\"?" + data.imageurl.getRegExp() + "\"?[^>]*\/?>", "gim");

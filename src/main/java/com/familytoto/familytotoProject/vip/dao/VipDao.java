@@ -27,4 +27,13 @@ public interface VipDao {
 	
 	// VIP인지 체크
 	boolean isFamilyCustVip(int familyCustNo);
+	
+	// 인디언포커 크레딧 충분한지 체크
+	boolean isBettingCredit(VipVO vo);
+	
+	// 인디언포커 배팅
+	int insertBettingCredit(CreditVO vo);
+	
+	// 있는돈 가져오기
+	int getHaveTotalCredit(int familyCustNo);
 }

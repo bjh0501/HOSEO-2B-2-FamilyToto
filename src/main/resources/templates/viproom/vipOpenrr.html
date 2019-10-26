@@ -182,14 +182,14 @@
 	///// 방만들기
 	function createRoom(roomName) {
 		$.ajax({
-			url : "/vip/insertRRGameRoom",
+			url : "/vip/insertGameRoom",
 			type : "POST",
 			cache : false,
 			dataType : "html",
 			async : false,
 			success : function(data) {
 				var randomVal = parseInt((Math.random() * 5 + 1));
-				GLOBAL_ROOM_NUM = data
+				GLOBAL_ROOM_NUM = data;
 				database.ref('russiaRullet/' + GLOBAL_ROOM_NUM).push({
 					turn : "0"					// 턴상태, 0번에서 총알넣고 돌리고 > 1번부터 방장시작
 				,	state : "W"					// 방상태
@@ -323,6 +323,7 @@
 							})
 						} else {
 							alert("대기중인 게임방에만 접속할 수 있습니다.");
+							location.replace("/vipEnt")
 							return false;
 						}
 					}
@@ -368,7 +369,8 @@
 			async : false,
 			data : {
 				vipGameNo : GLOBAL_ROOM_NUM
-			,	familyCustNos : joinPlayers 
+			,	familyCustNos : joinPlayers
+			,	roomOption : "RSI"
 			},
 			success : function(data) {
 				dbTestRef.on('child_added', function(data){

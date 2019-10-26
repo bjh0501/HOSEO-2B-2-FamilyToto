@@ -51,4 +51,19 @@ public class VipDaoImpl implements VipDao {
 	public boolean isFamilyCustVip(int familyCustNo) {
 		return sqlSession.selectOne("vip.isFamilyCustVip", familyCustNo);
 	}
+
+	@Override
+	public boolean isBettingCredit(VipVO vo) {
+		return sqlSession.selectOne("vip.isBettingCredit", vo);
+	}
+
+	@Override
+	public int insertBettingCredit(CreditVO vo) {
+		return sqlSession.insert("vip.insertBettingCredit", vo);
+	}
+
+	@Override
+	public int getHaveTotalCredit(int familyCustNo) {
+		return sqlSession.selectOne("vip.getHaveTotalCredit", familyCustNo);
+	}
 }
