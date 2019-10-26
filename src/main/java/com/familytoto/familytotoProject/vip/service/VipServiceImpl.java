@@ -59,4 +59,19 @@ public class VipServiceImpl implements VipService {
 	public boolean isFamilyCustVip(int familyCustNo) {
 		return vipDao.isFamilyCustVip(familyCustNo);
 	}
+
+	@Override
+	public boolean isBettingCredit(VipVO vo) {
+		return vipDao.isBettingCredit(vo);
+	}
+
+	@Override
+	public int insertBettingCredit(CreditVO vo) {
+		return vipDao.insertBettingCredit(vo);
+	}
+
+	@Override
+	public int getHaveTotalCredit(int familyCustNo) {
+		return vipDao.getHaveTotalCredit(familyCustNo);
+	}
 }

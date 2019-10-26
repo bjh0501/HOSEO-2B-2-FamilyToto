@@ -183,15 +183,15 @@
 		var roomKey = data.key;
 		str = "";
 		
-		console.log(data.key + "==" + "AA")
         dbRef.once('child_added',function(data){
-        		console.log(data.key + "==" + "BB")
-			str += "<tr onClick=javascript:location.href='/vipOpenrr?roomNo=" + roomKey + "'>";
-			str += "	<td>" + roomKey + "</td>";
-			str += "	<td>" + data.val().name + "</td>";
-			str += "	<td>러시안룰렛</td>";
-			str += "</tr>";
-			$("#listGameRoom").append(str);
+        	if(data.val().state == "W") {
+	        	str += "<tr onClick=javascript:location.href='/vipOpenrr?roomNo=" + roomKey + "'>";
+				str += "	<td>" + roomKey + "</td>";
+				str += "	<td>" + data.val().name + "</td>";
+				str += "	<td>러시안룰렛</td>";
+				str += "</tr>";
+				$("#listGameRoom").append(str);
+        	}
         })
 	});
 	
@@ -203,6 +203,34 @@
 		}
 	});
 	
+	var dbRef = firebase.database().ref().child("indiaPoker/");
+
+	dbRef.on('child_added',function(data){
+		var dbRef = firebase.database().ref().child("indiaPoker/" + data.key);
+		var roomKey = data.key;
+		str = "";
+		
+        dbRef.once('child_added',function(data){
+        	if(data.val().state == "W") {
+	        	str += "<tr onClick=javascript:location.href='/vipOpenip?roomNo=" + roomKey + "'>";
+				str += "	<td>" + roomKey + "</td>";
+				str += "	<td>" + data.val().name + "</td>";
+				str += "	<td>인디안포커</td>";
+				str += "</tr>";
+				$("#listGameRoom").append(str);
+        	}
+        })
+	});
+	
+	dbRef.on('child_removed',function(data){
+		for(i = 0; i < $("#listGameRoom tr").length; i++) {
+			if($("#listGameRoom tr:eq(" + i + ") td:eq(0)").html() == data.key) {
+				$("#listGameRoom tr:eq(" + i + ")").remove();
+			}
+		}
+	});
+	
+	// 방생성
 	function createRoom() {
 		roomName = prompt("방이름을 입력해주세요.");
 		

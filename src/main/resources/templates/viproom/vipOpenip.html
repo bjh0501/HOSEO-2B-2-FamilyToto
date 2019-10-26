@@ -69,6 +69,9 @@
 
 								<!-- 왼쪽 프로필 -->
 								<b>참가자명단, 카드</b>
+								<div style="text-align:right">
+									<h3>현재 배팅 금액 : <span id="nowBetCredit"></span></h3>
+								</div>
 								<div class="row" style="margin-left: 1px; margin-bottom: 1px">
 									<table border=1 style="text-align: center;" class="player-name">
 										
@@ -79,9 +82,11 @@
 								<center>판돈 : <span id="totalStake">0</span></center>
 								<div style="display: flex;">
 									<input class="btn-secondary button-grp" type="button"
+										id="callButton"
 										onClick="javascript:turnPassGame('call')"
 										value="콜" style="width: 34%; margin: 0 auto; height: 45px" disabled></input>
 									<input class="btn-secondary button-grp" type="button"
+										id="halfButton"
 										onClick="javascript:turnPassGame('half')"
 										value="하프" style="width: 33%; margin: 0 auto; height: 45px" disabled></input>
 									<input class="btn-secondary button-grp"  type="button"
@@ -91,9 +96,11 @@
 								<div style="display: flex;">
 									<input class="btn-secondary button-grp" type="button"
 										onClick="javascript:turnPassGame('ddadang')"
+										id="ddadangButton"
 										value="따당" style="width: 34%; margin: 0 auto; height: 45px" disabled></input>
 									<input class="btn-secondary button-grp button-grp-pass" type="button"
 										onClick="javascript:turnPassGame('bbing')"
+										id="bbingButton"
 										value="삥" style="width: 33%; margin: 0 auto; height: 45px" disabled></input>
 									<input class="btn-secondary button-grp button-grp-pass" type="button"
 										onClick="javascript:turnPassGame('check')"
@@ -181,21 +188,23 @@
 </script>
 
 <script>	
-	var GLOBAL_DEFAULT_STAKE = 100000;
-	var GLOBAL_FAMILY_CUST_NICK = "반야맨이야";
-	var GLOBAL_FAMILY_CUST_NO = "10001";
-	var GLOBAL_ROOM_NUM = 100003;
-	var GLOBAL_PLAYER_SHEET_ORDER = 0;
-	var GLOBAL_ONE_STAKE = GLOBAL_DEFAULT_STAKE; // 거는돈
-	var GLOBAL_TOTAL_STAKE = 0; // 판돈
-	var GLOBAL_PASS_CHANCE = true; //
-	var GLOBAL_TURN = 0; //
+	var GLOBAL_DEFAULT_STAKE = 100000;				// 판돈
+	var GLOBAL_FAMILY_CUST_NICK =  "[[ ${cust.familyCustNick} ]]";	// 패밀리닉
+	var GLOBAL_FAMILY_CUST_NO = "[[ ${cust.familyCustNo} ]]";		// 패밀리번호
+	var GLOBAL_ROOM_NUM = [[ ${roomNo} ]];							// 방번
+	var GLOBAL_PLAYER_SHEET_ORDER = 0;				// 방인원수
+	var GLOBAL_ONE_STAKE = GLOBAL_DEFAULT_STAKE;	// 거는돈
+	var GLOBAL_TOTAL_STAKE = 0;						// 판돈
+	var GLOBAL_PASS_CHANCE = true;					// 삥, 체크권
+	var GLOBAL_TURN = 0; 							// 턴
+	var GLOBAL_DIE = false; 						// 다이 구분
+	var	GLOBAL_MY_CREDIT = 0;						// 보유돈
 	
 	// 방만든경우는 0
 	if(GLOBAL_ROOM_NUM == 0) {
-// 		createRoom(GLOBAL_ROOM_NUM);
+		createRoom("[[ ${roomName} ]]");
 	} else {// 방입장
-// 		enterRoom();
+		enterRoom();
 	}
 	
 	var GLOBAL_DEATH_TURN = 0;
@@ -206,13 +215,30 @@
 	
 	///// 방만들기
 	function createRoom(roomName) {
-		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).push({
-			turn : 1
-		,	state : "W"
-		,	oneStake : 0
-		,	totalStake : 0
-		,	whoTurn : GLOBAL_FAMILY_CUST_NICK
-		,	action : ""
+		// AJAX 방 DB INSERT
+		$.ajax({
+			url : "/vip/insertGameRoom",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			async : false,
+			success : function(data) {
+				GLOBAL_ROOM_NUM = data;
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).push({
+					turn : 1
+				,	state : "W"
+				,	oneStake : 0
+				,	name : roomName
+				,	totalStake : 0
+				,	whoTurn : GLOBAL_FAMILY_CUST_NICK
+				,	action : ""
+				});
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
 		});
 		
 		$("#gameButton").val("게임시작");
@@ -220,23 +246,44 @@
 		enterRoom();
 	}
 	
-	
-	// 나중에 바꾸기 (무조건)
-	var allPokerCard = new Array();
-	for(var i = 14; i >=1; i--) {
-		for(j = 1; j <=4; j++) {
-			allPokerCard.push(i + ""+ j);
-		}
-	}
-	
-	shuffle(allPokerCard);
-	
 	///// 방 접속
-	function enterRoom() {
-		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + String(GLOBAL_FAMILY_CUST_NICK)).push({
-			familyCustNo : GLOBAL_FAMILY_CUST_NO
-		,	card : allPokerCard[GLOBAL_PLAYER_SHEET_ORDER++]
-		});
+	function enterRoom() {		
+		// 나중에 바꾸기 (무조건)
+		var allPokerCard = new Array();
+		
+		for(i = 14; i >=1; i--) {
+			for(j = 1; j <=4; j++) {
+				allPokerCard.push(i + ""+ j);
+			}
+		}
+		shuffle(allPokerCard);
+		
+		database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
+			// 인원체크
+			if(data.numChildren() >= 5) { 
+				alert("게임방에는 1~5명만 접속할 수 있습니다.");
+				return false;
+			} else {
+				// 대기방체크
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+					if(data.val().state != undefined) {
+						roomState = data.val().state;
+						
+						// 대기방체크
+						if(roomState == "W") {
+							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + String(GLOBAL_FAMILY_CUST_NICK)).push({
+								familyCustNo : GLOBAL_FAMILY_CUST_NO
+							,	card : allPokerCard[GLOBAL_PLAYER_SHEET_ORDER++]
+							});
+						} else {
+							alert("대기중인 게임방에만 접속할 수 있습니다.");
+							location.replace("/vipEnt")
+							return false;
+						}
+					}
+				})
+			}
+		})
 	}
 	
 	///// 겜시작
@@ -269,40 +316,43 @@
 			})
 		})	  
 		
-// 		$.ajax({
-// 			url : "/vip/insertGamePlayer",
-// 			type : "POST",
-// 			cache : false,
-// 			dataType : "html",
-// 			traditional : true,
-// 			async : false,
-// 			data : {
-// 				vipGameNo : GLOBAL_ROOM_NUM
-// 			,	familyCustNos : joinPlayers 
-// 			},
-// 			success : function(data) {
+		$.ajax({
+			url : "/vip/insertGamePlayer",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			traditional : true,
+			async : false,
+			data : {
+				vipGameNo : GLOBAL_ROOM_NUM
+			,	familyCustNos : joinPlayers
+			,	roomOption : "IPO"
+			},
+			success : function(data) {
+				// 배팅금 설정
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").once('value', function(data){
+					GLOBAL_TOTAL_STAKE = GLOBAL_ONE_STAKE*data.numChildren();
+				})
+				
 				dbTestRef.on('child_added', function(data){
 					if(data.key.substring(0,1) === "-") {
-						// 방상태값 Y로
-						// AJAX에서 insert된것
-						GLOBAL_TOTAL_STAKE = GLOBAL_ONE_STAKE*2;
 						$("#totalStake").html(GLOBAL_TOTAL_STAKE);
+						$("#nowBetCredit").html(GLOBAL_ONE_STAKE);
+						
 						database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
 							state: "Y"
 						,	totalStake : GLOBAL_TOTAL_STAKE
 						,	oneStake : GLOBAL_ONE_STAKE
-						})
-						
-						
+						})	
 					}
 				})
-// 			},
-// 			error : function(request, status, error) {
-// 				var msg = "ERROR : " + request.status + "<br>"
-// 				msg += +"내용 : " + request.responseText + "<br>" + error;
-// 				console.log(msg);
-// 			}
-// 		});
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 	
 	///// 겜 진행	
@@ -330,45 +380,153 @@
 			}
 		}
 		
+		var myBettingCredit = 0;
+		var allInCheck = false;
+		var dbBetCredit = 0;
+		
+		// 올인은 콜과같은효과
+		if(gubun == "allin") {//
+			// 최고돈으로올인한다.
+			// 어차피 이렇게해도 서버에서 배팅할 수 잇는 최대크래딧으로 변환함
+			dbBetCredit = parseInt(GLOBAL_TOTAL_STAKE*2); 
+		} else {	
+			if(gubun == "call") {
+				dbBetCredit = GLOBAL_ONE_STAKE;
+			} else if(gubun == "half") { // 하프 바닥에깔린 판돈의 절반 걸기 
+				dbBetCredit = parseInt(GLOBAL_TOTAL_STAKE/2);
+			} else if(gubun == "ddadang") {
+				dbBetCredit = parseInt(GLOBAL_TOTAL_STAKE*2);
+			} else if(gubun == "bbing") {
+				dbBetCredit = GLOBAL_DEFAULT_STAKE;
+			} else if(gubun == "check") {
+				dbBetCredit = 0;
+			}
+		}
+	
 		var gubunStr = "다이";
 		
-		if(gubun == "call") {
-			GLOBAL_TOTAL_STAKE += GLOBAL_ONE_STAKE;
-			gubunStr = "콜"; 
-		} else if(gubun == "half") { // 하프 바닥에깔린 판돈의 절반 걸기 
-			GLOBAL_ONE_STAKE = parseInt(GLOBAL_TOTAL_STAKE/2);
-			GLOBAL_TOTAL_STAKE += GLOBAL_ONE_STAKE;
-			gubunStr = "하프";
-		} else if(gubun == "ddadang") { // 따당 바닥에깔린 판돈의 2배걸기 
-			GLOBAL_ONE_STAKE = parseInt(GLOBAL_TOTAL_STAKE*2);
-			GLOBAL_TOTAL_STAKE += GLOBAL_ONE_STAKE;
-			gubunStr = "따당";
-		} else if(gubun == "bbing" && GLOBAL_PASS_CHANCE == true ) { // 삥 맨처음 배팅금액걸기
-			GLOBAL_PASS_CHANCE = false;
-			GLOBAL_TOTAL_STAKE += GLOBAL_DEFAULT_STAKE;
-			gubunStr = "삥";
-		} else if(gubun == "check" && GLOBAL_PASS_CHANCE == true) { // 체크 패스하는거
-			GLOBAL_PASS_CHANCE = false;
-			GLOBAL_TOTAL_STAKE += 0;
-			gubunStr = "체크";
+		// 배팅걸기
+		if(gubun != "die" && gubun != "pass") {
+			$.ajax({
+				url : "/vip/insertIPGameRoom/insertBetting",
+				type : "POST",
+				cache : false,
+				dataType : "json",
+				async : false,
+				data: {
+					bettingCredit : dbBetCredit
+				,	bettingState : gubun
+				},
+				success : function(data) {
+					if(data.allInUseYn == "Y") {
+						allInCheck = true;
+					}
+					
+					if(gubun == "call") {
+						GLOBAL_TOTAL_STAKE += data.credit;
+						gubunStr = "콜"; 
+					} else if(gubun == "half") { // 하프 바닥에깔린 판돈의 절반 걸기 
+						if(allInCheck == false) { // 올인아닌사람만 판돈을 높힘
+							GLOBAL_ONE_STAKE = parseInt(GLOBAL_TOTAL_STAKE/2);
+						}
+					
+						GLOBAL_TOTAL_STAKE += data.credit;
+						gubunStr = "하프";
+					} else if(gubun == "ddadang") { // 따당 바닥에깔린 판돈의 2배걸기
+						if(allInCheck == false) { // 올인아닌사람만 판돈을 높힘
+							GLOBAL_ONE_STAKE = parseInt(GLOBAL_TOTAL_STAKE*2);
+						}
+					
+						GLOBAL_TOTAL_STAKE += data.credit;
+						gubunStr = "따당";
+					} else if(gubun == "bbing" && GLOBAL_PASS_CHANCE == true ) { // 삥 맨처음 배팅금액걸기
+						GLOBAL_PASS_CHANCE = false;
+						GLOBAL_TOTAL_STAKE += data.credit;
+						
+						gubunStr = "삥";
+					} else if(gubun == "check" && GLOBAL_PASS_CHANCE == true) { // 체크 패스하는거
+						GLOBAL_PASS_CHANCE = false;
+						GLOBAL_TOTAL_STAKE += 0;
+						gubunStr = "체크";
+					} else if(gubun == "die"){
+						gubunStr = "다이";
+					}
+					
+					if(allInCheck == true) {
+						gubunStr = "올인";
+					}
+					
+					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+						if(data.key.substring(0,1) == "-") {
+							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
+								state: "Y"
+							,	totalStake : GLOBAL_TOTAL_STAKE
+							,	oneStake : GLOBAL_ONE_STAKE
+							,	whoTurn : nextTurnNick
+							,	action :  gubunStr
+							,	turn : GLOBAL_TURN
+							});
+						}
+					});
+				},
+				error : function(request, status, error) {
+					var msg = "ERROR : " + request.status + "<br>"
+					msg += +"내용 : " + request.responseText + "<br>" + error;
+					console.log(msg);
+				}
+			});
 		}
 		
-		// 배팅걸기
-		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
-			if(data.key.substring(0,1) == "-") {
-				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
-					state: "Y"
-				,	totalStake : GLOBAL_TOTAL_STAKE
-				,	oneStake : GLOBAL_ONE_STAKE
-				,	whoTurn : nextTurnNick
-				,	action :  gubunStr
-				,	turn : GLOBAL_TURN
-				});
-			}
-		});
+		// 죽은애 차례면 패스
+		if(gubun == "pass") {
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+				if(data.key.substring(0,1) == "-") {
+					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
+						state: "Y"
+					,	totalStake : GLOBAL_TOTAL_STAKE
+					,	oneStake : GLOBAL_ONE_STAKE
+					,	whoTurn : nextTurnNick
+					,	turn : GLOBAL_TURN
+					});
+				}
+			});
+		}
+		
+		if(gubun == "pass") {
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+				if(data.key.substring(0,1) == "-") {
+					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
+						state: "Y"
+					,	turn : GLOBAL_TURN
+					});
+				}
+			});
+		}
 		
 		if(gubun == "die") {
 			$("#viewer").removeClass("display-view");
+			
+			GLOBAL_DIE = true;
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK).on('child_added', function(data){
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK + "/" + data.key).on('child_added', function(data){
+					if(data.key == "card") {
+						alert("나의 카드 : " + data.val());
+					}
+				})
+			})
+			
+			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+				if(data.key.substring(0,1) == "-") {
+					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/" + data.key).update({
+						state: "Y"
+					,	oneStake : GLOBAL_ONE_STAKE
+					,	whoTurn : nextTurnNick
+					,	action :  gubunStr
+					,	turn : GLOBAL_TURN
+					});
+				}
+			});
+			
 			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK).remove();
 		}
 	}
@@ -379,30 +537,21 @@
 	});
 	
 	// 판돈업데이트와 인원업뎃 등등
-	database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_removed', function(data){
-		updateInfo(data);
+	database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_removed', function(data){
+		
+		// 목록에서 삭제
+		for(var i = 0; i < $(".player-nickname").length; i++ ) {
+			if($(".player-nickname").eq(i).html() == data.key) {
+				$(".player-name tr:eq(" + i + ")").remove();
+				break;
+			}			
+		}
 	});
 	
 	// 판돈업데이트와 인원업뎃 등등
 	database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_changed', function(data){
 		updateInfo(data);
 		
-		// 3바퀴되서 끝난경우
-		endGameByTurn();
-		
-		// 다나간경우
-		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
-			if(data.numChildren() == 1) {
-				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('child_added', function(data){
-					if(data.key == GLOBAL_FAMILY_CUST_NICK) {
-						alert("승리했다맨이야!");
-					}
-				})
-			}	
-		});
-	});
-	
-	function endGameByTurn() {
 		// 3바퀴되서 끝난경우
 		var compareTurn = 0;
 		
@@ -429,7 +578,7 @@
 				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + loopCustNick).on('child_added', function(data) {
 					if(loopCustNick == GLOBAL_FAMILY_CUST_NICK) {
 						$(".player-card").eq(idx).html("<b>"+data.val().card+"</b>");
-						$(".player-nickname").eq(idx).parent().attr("style", "background: orange");
+						$(".player-nickname").eq(idx).parent().attr("style", "background: ornage");
 					} else {
 						$(".player-card").eq(idx).html(data.val().card);
 					}
@@ -454,15 +603,54 @@
 			//database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).remove();
 			if(GLOBAL_TURN != -1) {
 				if(resultWinner == GLOBAL_FAMILY_CUST_NICK) {
-					alert("승리했다맨이야 !\n" + 10000 + "크레딧을 얻었습니다.");	
+					// 승리자 크레딧 DB INSERT AJAX
+					var getCredit = youWin();
+					alert("얘 이겼단다!\n" + $("#totalStake").html() + "크레딧을 얻었습니다.");
 				} else {
 					alert("승리자는" + resultWinner);
 				}
-			}
+			} 
+			
 			$(".button-grp").attr("disabled", true);
+			
 			GLOBAL_TURN = -1; // 누군가 나갔을떄 재알럿 방지
 			return false;
 		}
+		
+		// 다나간경우
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
+			if(data.numChildren() == 1) {
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('child_added', function(data){
+					if(data.key == GLOBAL_FAMILY_CUST_NICK) {
+						var getCredit = youWin();
+						alert("승리했다맨이야!" + "\n" + $("#totalStake").html() + "크레딧을 얻었습니다.");
+					}
+				})
+			}	
+		});
+	});
+	
+	
+	// 승리했을때
+	function youWin() {
+		$.ajax({
+			url : "/vip/indiaPoker/winGamePlayer",
+			type : "POST",
+			cache : false,
+			dataType : "html",
+			async : false,
+			data : {
+				betCredit : $("#totalStake").html().trim()
+			},
+			success : function(data) {
+				
+			},
+			error : function(request, status, error) {
+				var msg = "ERROR : " + request.status + "<br>"
+				msg += +"내용 : " + request.responseText + "<br>" + error;
+				console.log(msg);
+			}
+		});
 	}
 	
 	function updateInfo(data) {
@@ -471,14 +659,81 @@
 				if(data.key == "totalStake") {
 					$("#totalStake").html(data.val());
 					GLOBAL_TOTAL_STAKE = data.val();
+					
+					$.ajax({
+						url : "/vipOpenrr/getMyCredit",
+						type : "POST",
+						cache : false,
+						dataType : "html",
+						async : false,
+						success : function(data) {
+							GLOBAL_MY_CREDIT = data;
+						},
+						error : function(request, status, error) {
+							var msg = "ERROR : " + request.status + "<br>"
+							msg += +"내용 : " + request.responseText + "<br>" + error;
+							console.log(msg);
+						}
+					});
+					
+					// 나의 크레딧 < 하프돈
+					if(GLOBAL_MY_CREDIT < parseInt(data.val()/2)) {
+						$("#halfButton").val("올인");
+						$("#halfButton").attr("onclick", "javascript:turnPassGame('allin')");
+					}
+					
+					// 나의 크레딧 < 따당돈
+					if(GLOBAL_MY_CREDIT < parseInt(data.val()*2)) {
+						$("#ddadangButton").val("올인");
+						$("#ddadangButton").attr("onclick", "javascript:turnPassGame('allin')");
+					}
+					
+					// 나의 크레딧 < 삥돈
+					if(GLOBAL_MY_CREDIT < GLOBAL_DEFAULT_STAKE) {
+						$("#bbingButton").val("올인");
+						$("#bbingButton").attr("onclick", "javascript:turnPassGame('allin')");
+					}
+					
+					// 나의 크레딧 < 콜돈
+					if(GLOBAL_MY_CREDIT < GLOBAL_ONE_STAKE) {
+						$("#callButton").val("올인");
+						$("#callButton").attr("onclick", "javascript:turnPassGame('allin')");
+					}
 				} else if(data.key == "oneStake") { // 콜돈
+					$.ajax({
+						url : "/vipOpenrr/getMyCredit",
+						type : "POST",
+						cache : false,
+						dataType : "html",
+						async : false,
+						success : function(data) {
+							GLOBAL_MY_CREDIT = data;
+						},
+						error : function(request, status, error) {
+							var msg = "ERROR : " + request.status + "<br>"
+							msg += +"내용 : " + request.responseText + "<br>" + error;
+							console.log(msg);
+						}
+					});
+				
+					// 나의 크레딧 < 콜돈
+					if(GLOBAL_MY_CREDIT < data.val()) {
+						$("#callButton").val("올인");
+						$("#callButton").attr("onclick", "javascript:turnPassGame('allin')");
+					}
+					
 					GLOBAL_ONE_STAKE = data.val();
+					$("#nowBetCredit").html(GLOBAL_ONE_STAKE);
 				}  else if(data.key == "whoTurn") { // 턴넘기기
-					if(data.val() == GLOBAL_FAMILY_CUST_NICK) {
-						$(".button-grp").attr("disabled", false);
-						
-						if(GLOBAL_PASS_CHANCE == false) {
-							$(".button-grp-pass").attr("disabled", true);
+					if(data.val() == GLOBAL_FAMILY_CUST_NICK) { // 마이턴
+						if(GLOBAL_DIE == true) { // 죽었다면 자동 패스
+							turnPassGame('pass');
+						} else {
+							$(".button-grp").attr("disabled", false);
+							
+							if(GLOBAL_PASS_CHANCE == false) {
+								$(".button-grp-pass").attr("disabled", true);
+							}
 						}
 					} else {
 						$(".button-grp").attr("disabled", true);
@@ -489,22 +744,8 @@
 					
 					var idx = 0;
 					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_added', function(data) {
-
-						if(data.key != GLOBAL_FAMILY_CUST_NICK) {
-							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
-								$(".player-card").eq(idx).html(data.val().card)
-							})
-						} else {
-							$(".player-card").eq(idx).html("블라인드");
-						}
 						
-						idx++;
-					})
-					
-					var idx = 0;
-					database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_removed', function(data) {
-
-						if(data.key != GLOBAL_FAMILY_CUST_NICK) {
+						if($(".player-nickname").eq(idx).html() != GLOBAL_FAMILY_CUST_NICK) {
 							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
 								$(".player-card").eq(idx).html(data.val().card)
 							})
@@ -528,7 +769,7 @@
 						var idx = 0;
 						database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_added', function(data) {
 							
-							if(data.key != GLOBAL_FAMILY_CUST_NICK) {
+							if($(".player-nickname").eq(idx).html() != GLOBAL_FAMILY_CUST_NICK) {
 								database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
 									$(".player-card").eq(idx).html(data.val().card)
 								})
@@ -540,9 +781,11 @@
 						})
 					}
 				} else if(data.key == "action") {
-					$("#actionWord").attr("Style", "display:none");
-					$("#actionWord").fadeIn(300);
-					$("#actionWord").html(data.val());			
+					if(data.val() != "패스") {
+						$("#actionWord").attr("Style", "display:none");
+						$("#actionWord").fadeIn(300);
+						$("#actionWord").html(data.val());
+					}
 				}
 			})
 		}
@@ -573,8 +816,8 @@
    
 	///인원 나감
    database.ref("indiaPoker/" + GLOBAL_ROOM_NUM + "/players").on('child_removed',function(data){
-		for(i = $(".player-name tr").length-1; i >=0; i--) {
-			if($(".player-name tr:eq(" + i + ") td:eq(0)").html() == data.key) {
+		for(i = 0; i < $(".player-name tr").length; i++) {
+			if($(".player-name td:eq(" + i + ")").html() == data.key) {
 				$(".player-name tr:eq(" + i + ")").remove();
 				
 			}

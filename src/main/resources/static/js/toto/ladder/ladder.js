@@ -296,7 +296,7 @@ $(function(){
             var y = userList[i].split('-')[1]*1;
             var left = x * 100  -30
             
-            html += '<div class="user-wrap" style="left:'+left+'px"><button class="ladder-start btn-secondary" data-color="#000000" data-node="'+userList[i]+'">선택</button>';
+            html += '<div class="user-wrap" style="left:'+left+'px; top:-31px;"><button class="ladder-start btn-secondary" data-color="#000000" data-node="'+userList[i]+'">선택</button>';
             html +='</div>'
         }
         ladder.append(html);
@@ -313,7 +313,7 @@ $(function(){
             var node = x + "-" + y;
             var left = x * 100  -30
             
-            html += "<div class='answer-wrap' style='left:"+left+"px'>" +
+            html += "<div class='answer-wrap' style='left:"+left+"px; top:226px;'>" +
             		"<input type='text' data-node='"+node+"' value='결과' readonly>" +
             				"";
             html +='<p id="'+node+'-user"></p>'

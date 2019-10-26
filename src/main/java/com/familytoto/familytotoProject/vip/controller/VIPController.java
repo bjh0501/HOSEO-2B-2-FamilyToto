@@ -1,6 +1,8 @@
 package com.familytoto.familytotoProject.vip.controller;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +21,7 @@ import com.familytoto.familytotoProject.charge.domain.CreditVO;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 import com.familytoto.familytotoProject.vip.domain.VipVO;
 import com.familytoto.familytotoProject.vip.service.VipService;
+import com.google.gson.Gson;
 
 @Controller
 public class VIPController {
@@ -61,14 +64,14 @@ public class VIPController {
     		@Param("roomNo") String roomNo,
     		@Param("roomName") String roomName,
     		HttpServletResponse response) {
-		int creditValueMinus = -100000;
+		int creditValuePlus = 100000;
 		CustVO custVo = (CustVO) session.getAttribute("cust");
 		
 		if(isCheckCust(session, response) == true) {
 			// 크레딧 10만이상인지 체크
 			CreditVO creditVo = new CreditVO(); 
 			creditVo.setFamilyCustNo(custVo.getFamilyCustNo());
-			creditVo.setCreditValue(creditValueMinus);
+			creditVo.setCreditValue(creditValuePlus);
 			
 			if(vipService.isVipCreditValue(creditVo) == false) {
 				try {
@@ -99,7 +102,7 @@ public class VIPController {
 		}
     }
 	
-	@RequestMapping(value = { "/vip/insertRRGameRoom"})
+	@RequestMapping(value = { "/vip/insertGameRoom"})
 	@ResponseBody
     public int vipInsertGameRoom(@ModelAttribute VipVO vipVo,
     		HttpSession session,
@@ -107,8 +110,8 @@ public class VIPController {
     		HttpServletResponse response) {
 		CustVO custVo = (CustVO) session.getAttribute("cust");
 		
-		if(custVo == null) {
-			return -1;
+		if(isCheckCust(session, response) == false) {
+			throw new RuntimeException("VIP만 접근가능");
 		}
 		
 		vipVo.setGameGubun("RSI");
@@ -126,7 +129,16 @@ public class VIPController {
     		HttpServletRequest request,
     		HttpServletResponse response,
     		int vipGameNo,
-    		int familyCustNos[]) {
+    		int familyCustNos[],
+    		String roomOption) {
+		if(isCheckCust(session, response) == false) {
+			throw new RuntimeException("VIP만 접근가능");
+		}
+		
+		if(roomOption!= null && !roomOption.equals("RSI") && !roomOption.equals("IPO")) {
+			throw new RuntimeException("방 참여 에러");
+		}
+		
 		int betPlusCredit = 100000;
 		int betMinusCredit = 100000*-1;
 		CustVO custVo = (CustVO) session.getAttribute("cust");
@@ -139,7 +151,7 @@ public class VIPController {
 			CreditVO creditVo = new CreditVO(); 
 			creditVo.setFamilyCustNo(familyCustNos[i]);
 			creditVo.setCreditValue(betPlusCredit);
-			creditVo.setCreditState("RSI");
+			creditVo.setCreditState(roomOption); // RSI, IPO
 			creditVo.setRegCustNo(custVo.getCustNo());
 			creditVo.setRegIp(request.getRemoteAddr());
 			
@@ -172,7 +184,12 @@ public class VIPController {
 	@ResponseBody
     public int vipWinGamePlayer(HttpSession session,
     		HttpServletRequest request,
-    		int gameRoomNo) {
+    		int gameRoomNo,
+    		HttpServletResponse response) {
+		if(isCheckCust(session, response) == false) {
+			throw new RuntimeException("VIP만 접근가능");
+		}
+		
 		int betCredit = 100000;
 		
 		int playerCnt = vipService.getVipGamePlayersCnt(gameRoomNo);
@@ -235,14 +252,14 @@ public class VIPController {
     		@Param("roomNo") String roomNo,
     		@Param("roomName") String roomName,
     		HttpServletResponse response) {
-		int creditValueMinus = -100000;
+		int creditValuePlus = 100000;
 		CustVO custVo = (CustVO) session.getAttribute("cust");
 		
 		if(isCheckCust(session, response) == true) {
 			// 크레딧 10만이상인지 체크
 			CreditVO creditVo = new CreditVO(); 
 			creditVo.setFamilyCustNo(custVo.getFamilyCustNo());
-			creditVo.setCreditValue(creditValueMinus);
+			creditVo.setCreditValue(creditValuePlus);
 			
 			if(vipService.isVipCreditValue(creditVo) == false) {
 				try {
@@ -273,4 +290,134 @@ public class VIPController {
 		}
     }
 	
+	@RequestMapping(value = { "/vipOpenip/win"})
+    public String vipOpenipWin(Model model, HttpSession session,
+    		@Param("credit") int credit,
+    		HttpServletResponse response) {
+		if(isCheckCust(session, response) == false) {
+			throw new RuntimeException("VIP만 접근가능");
+		}
+		
+		return "";
+    }
+
+
+	/*
+	 * 돈체크
+	 * if 돈있으면
+	 * 		배팅
+	 * else
+	 * 		모든돈 배팅(올인또는 0원)
+	 * 
+	 */
+	@RequestMapping(value = { "/vip/insertIPGameRoom/insertBetting"})
+	@ResponseBody
+    public String vipInsertIPBet(HttpSession session,
+    		HttpServletRequest request,
+    		HttpServletResponse response,
+    		int bettingCredit,
+    		String bettingState) {
+		int minusCredit = bettingCredit *-1;
+		int plusCredit = bettingCredit;
+		
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+		
+		if(isCheckCust(session, response) == false) {
+			throw new RuntimeException("VIP만 접근가능");
+		}
+		
+		if(bettingState.equals("call")) {
+			bettingState = "IPC";
+		} else if(bettingState.equals("half")) {
+			bettingState = "IPH";
+		} else if(bettingState.equals("bbing")) {
+			bettingState = "IPB";
+		} else if(bettingState.equals("ddadang")) {
+			bettingState = "IPD";
+		} else if(bettingState.equals("check")) {
+			bettingState = "IPE";
+		} else if(bettingState.equals("die")) {
+			return "";
+		} else {
+			bettingState = "IPA";
+		}
+		
+		VipVO vipVo = new VipVO();
+		CreditVO creditVo = new CreditVO();
+		
+		vipVo.setFamilyCustNo(custVo.getFamilyCustNo());
+		vipVo.setBettingCredit(plusCredit);
+		
+		creditVo.setFamilyCustNo(custVo.getFamilyCustNo());
+		creditVo.setCreditValue(plusCredit);
+		creditVo.setCreditState(bettingState);
+		creditVo.setRegCustNo(custVo.getCustNo());
+		creditVo.setRegIp(request.getRemoteAddr());
+		
+		// 돈체크
+		String allInUse = "N";
+		
+		if(vipService.isBettingCredit(vipVo) == false) { // 없으면			
+			creditVo.setCreditState("IPA");
+			
+			// 있는돈 다가져오기 (올인)
+			allInUse = "Y";
+			int totalCredit = vipService.getHaveTotalCredit(custVo.getFamilyCustNo())*-1;
+			creditVo.setCreditValue(totalCredit);	
+		} else {
+			creditVo.setCreditValue(minusCredit);
+		}
+		
+		if(vipService.insertBettingCredit(creditVo) != 1) {
+			throw new RuntimeException("배팅하기 실패");
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("credit", creditVo.getCreditValue()*-1);
+		map.put("allInUseYn", allInUse);
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(map);
+		
+        return json;
+    }
+	
+	@RequestMapping(value = { "/vipOpenrr/getMyCredit"})
+	@ResponseBody
+    public int vipGameGetMyCredit(HttpSession session,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+		
+		if(isCheckCust(session, response) == false) {
+			throw new RuntimeException("VIP만 접근가능");
+		}
+		
+		return vipService.getHaveTotalCredit(custVo.getFamilyCustNo());
+	}
+	
+	@RequestMapping(value = { "/vip/indiaPoker/winGamePlayer"})
+	@ResponseBody
+    public int vipWinIPGamePlayer(HttpSession session,
+    		HttpServletRequest request,
+    		int betCredit,
+    		HttpServletResponse response) {
+		if(isCheckCust(session, response) == false) {
+			throw new RuntimeException("VIP만 접근가능");
+		}
+		
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+		CreditVO creditVo = new CreditVO(); 
+		creditVo.setFamilyCustNo(custVo.getFamilyCustNo());
+		creditVo.setCreditValue(betCredit);
+		creditVo.setCreditState("IPW");
+		creditVo.setRegCustNo(custVo.getCustNo());
+		creditVo.setRegIp(request.getRemoteAddr());
+		
+		if(vipService.insertVipWinnerCredit(creditVo) != 1) {
+			throw new RuntimeException("승리 크레딧받기 에러");
+		}
+		
+		return betCredit;
+	}
 }

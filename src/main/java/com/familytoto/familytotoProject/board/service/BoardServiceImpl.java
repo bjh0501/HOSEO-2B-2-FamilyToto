@@ -1,8 +1,5 @@
 package com.familytoto.familytotoProject.board.service;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +13,6 @@ import com.familytoto.familytotoProject.board.dao.BoardDao;
 import com.familytoto.familytotoProject.board.domain.BoardVO;
 import com.familytoto.familytotoProject.board.domain.FileVO;
 import com.familytoto.familytotoProject.board.domain.SearchVO;
-import com.familytoto.familytotoProject.config.GlobalVariable;
 import com.familytoto.familytotoProject.registerCust.domain.CustVO;
 
 @Service
@@ -254,8 +250,6 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<BoardVO> listReplyBoard(int boardGrpNo) {
 		List<BoardVO> list = boardDao.listReplyBoard(boardGrpNo);
-		
-		int i = 0;
 		
 		for(BoardVO vo :list) {
 			if(vo.getRegCustNo() == 0) {
