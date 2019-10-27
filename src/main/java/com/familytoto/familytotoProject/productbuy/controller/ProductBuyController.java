@@ -67,7 +67,7 @@ public class ProductBuyController {
 			try {
 				response.setContentType("text/html; charset=UTF-8");
 	            PrintWriter out = response.getWriter();
-	            out.println("<script>alert('정상적인 경로로 접속해주세요!');location.replace('/');</script>");
+	            out.println("<script>alert('상품수량보다 낮게 입력해주세요.');location.replace('/creditShop');</script>");
 	            out.flush();	            
 			} catch(Exception e) {}
 		}

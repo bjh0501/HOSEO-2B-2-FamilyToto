@@ -69,13 +69,22 @@
 
 								<!-- 왼쪽 프로필 -->
 								<b>참가자명단, 카드</b>
-								<div style="text-align:right">
-									<h3>현재 배팅 금액 : <span id="nowBetCredit"></span></h3>
-								</div>
 								<div class="row" style="margin-left: 1px; margin-bottom: 1px">
-									<table border=1 style="text-align: center;" class="player-name">
-										
-									</table>
+									<div class="col-xl-4 col-lg-4 .col-md-4 .col-sm-4 ">
+										<table border=1 style="text-align: center;" class="player-name">
+											
+										</table>
+									</div>
+									<div class="col-xl-6 col-lg-6 .col-md-6 .col-sm-12 ">
+										<div class="card shadow mb-4" style="min-height: 392px;">
+											<div class="card-header py-3">
+												<h6 class="m-0 font-weight-bold text-primary">- 알림창 -</h6>
+											</div>
+											<h3>현재 배팅 금액 : <span id="nowBetCredit"></span></h3>
+											*게임진행 알람이 여기에 나옵니다.
+											<h2 id="iamAlert"></h2>
+										</div>
+									</div>
 								</div>
 								<br>
 								<center style="height:60px;"><h2 id="actionWord"></h2></center>
@@ -110,12 +119,13 @@
 								<input class="btn-secondary" id="gameButton" type="button" onClick="javascript:gameStart();"
 									value="대기중" style="width: 100%; margin: 0 auto; height: 45px" disabled></input>
 								<input class="btn-secondary display-view" type="button" id="viewer"
-									value="구경꾼이 된 나.." style="width: 100%; margin: 0 auto; height: 45px" disabled></input>
+									value="` 된 나.." style="width: 100%; margin: 0 auto; height: 45px" disabled></input>
 								<!-- 왼쪽 프로필 -->
 							</div>
 						</div>
-						<!-- <img src="/img/character/tosoon.png"> -->
-						<img src="/img/character/tosoon.png" style="margin-left:0 auto">
+						<div class="col-xl-4 col-lg-5 .col-md-5 .col-sm-12 ">
+							<img src="/img/character/tosoon.png" style="margin-left:0 auto">
+						</div>
 					</div>
 
 
@@ -135,7 +145,28 @@
 
 		</div>
 		<!-- End of Content Wrapper -->
-
+		<div class="modal fade" id="loseModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalCenterTitle">나의 패</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<center id="myCard">
+						
+						</center>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- End of Page Wrapper -->
 
@@ -251,7 +282,7 @@
 		// 나중에 바꾸기 (무조건)
 		var allPokerCard = new Array();
 		
-		for(i = 14; i >=1; i--) {
+		for(i = 13; i >=1; i--) {
 			for(j = 1; j <=4; j++) {
 				allPokerCard.push(i + ""+ j);
 			}
@@ -260,8 +291,8 @@
 		
 		database.ref('russiaRullet/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
 			// 인원체크
-			if(data.numChildren() >= 5) { 
-				alert("게임방에는 1~5명만 접속할 수 있습니다.");
+			if(data.numChildren() >= 5) {
+				pokerAlert("게임방에는 1~5명만 접속할 수 있습니다.");
 				return false;
 			} else {
 				// 대기방체크
@@ -276,7 +307,7 @@
 							,	card : allPokerCard[GLOBAL_PLAYER_SHEET_ORDER++]
 							});
 						} else {
-							alert("대기중인 게임방에만 접속할 수 있습니다.");
+							pokerAlert("대기중인 게임방에만 접속할 수 있습니다.");
 							location.replace("/vipEnt")
 							return false;
 						}
@@ -290,7 +321,7 @@
 	function gameStart() {
 		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").once('value', function(data){
 			if(data.numChildren() == 1) {
-				alert("2인이상만 플레이가 가능합니다.");
+				pokerAlert("2인이상만 플레이가 가능합니다.");
 				return false;
 			} else {
 				$(".button-grp").removeAttr("disabled");
@@ -510,7 +541,9 @@
 			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK).on('child_added', function(data){
 				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + GLOBAL_FAMILY_CUST_NICK + "/" + data.key).on('child_added', function(data){
 					if(data.key == "card") {
-						alert("나의 카드 : " + data.val());
+						// getPokerCard(data.val())
+						$('#loseModal').modal('show');
+						$("#myCard").html(getPokerCard(data.val()))
 					}
 				})
 			})
@@ -570,6 +603,9 @@
 			var pokerCard = new Array();
 			var resultNick = new Array();
 			
+			var pokerCard = new Array();
+			var resultNick = new Array();
+			
 			var idx = 0;
 			
 			database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players").on('child_added', function(data) {
@@ -577,10 +613,10 @@
 				
 				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + loopCustNick).on('child_added', function(data) {
 					if(loopCustNick == GLOBAL_FAMILY_CUST_NICK) {
-						$(".player-card").eq(idx).html("<b>"+data.val().card+"</b>");
-						$(".player-nickname").eq(idx).parent().attr("style", "background: ornage");
+						$(".player-card").eq(idx).html(getPokerCard(data.val().card));
+						$(".player-name tr:eq("+idx+")").attr("style", "background: orange");
 					} else {
-						$(".player-card").eq(idx).html(data.val().card);
+						$(".player-card").eq(idx).html(getPokerCard(data.val().card));
 					}
 					
 					resultNick.push(loopCustNick);
@@ -589,6 +625,7 @@
 				
 				idx++;
 			})
+			
 			
 			var resultPokerCard = Math.max.apply(null, pokerCard);
 			var resultWinner = "";
@@ -605,9 +642,11 @@
 				if(resultWinner == GLOBAL_FAMILY_CUST_NICK) {
 					// 승리자 크레딧 DB INSERT AJAX
 					var getCredit = youWin();
-					alert("얘 이겼단다!\n" + $("#totalStake").html() + "크레딧을 얻었습니다.");
+					$(".button-grp").attr("disabled", true);
+					pokerAlert("얘 이겼단다!\n" + $("#totalStake").html() + "크레딧을 얻었습니다.");
+					
 				} else {
-					alert("승리자는" + resultWinner);
+					pokerAlert("승리자는" + resultWinner);
 				}
 			} 
 			
@@ -617,17 +656,22 @@
 			return false;
 		}
 		
-		// 다나간경우
-		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
-			if(data.numChildren() == 1) {
-				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('child_added', function(data){
-					if(data.key == GLOBAL_FAMILY_CUST_NICK) {
-						var getCredit = youWin();
-						alert("승리했다맨이야!" + "\n" + $("#totalStake").html() + "크레딧을 얻었습니다.");
-					}
-				})
-			}	
-		});
+		
+		// 겜이시작되었는데 다나간경우
+		database.ref('indiaPoker/' + GLOBAL_ROOM_NUM).on('child_added', function(data){
+			if(data.val().state == "Y") {
+				database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('value', function(data){
+					if(data.numChildren() == 1) {
+						database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/").once('child_added', function(data){
+							if(data.key == GLOBAL_FAMILY_CUST_NICK) {
+								var getCredit = youWin();
+								pokerAlert("승리했다맨이야!" + "\n" + $("#totalStake").html() + "크레딧을 얻었습니다.");
+							}
+						})
+					}	
+				});
+			}    
+		})
 	});
 	
 	
@@ -747,10 +791,10 @@
 						
 						if($(".player-nickname").eq(idx).html() != GLOBAL_FAMILY_CUST_NICK) {
 							database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
-								$(".player-card").eq(idx).html(data.val().card)
+								$(".player-card").eq(idx).html(getPokerCard(data.val().card))
 							})
 						} else {
-							$(".player-card").eq(idx).html("블라인드");
+							$(".player-card").eq(idx).html(getPokerCard("블라인드"));
 						}
 						
 						idx++;
@@ -771,10 +815,10 @@
 							
 							if($(".player-nickname").eq(idx).html() != GLOBAL_FAMILY_CUST_NICK) {
 								database.ref('indiaPoker/' + GLOBAL_ROOM_NUM + "/players/" + data.key).on('child_added', function(data) {
-									$(".player-card").eq(idx).html(data.val().card)
+									$(".player-card").eq(idx).html(getPokerCard(data.val().card))
 								})
 							} else {
-								$(".player-card").eq(idx).html("블라인드");
+								$(".player-card").eq(idx).html(getPokerCard("블라인드"));
 							}
 							
 							idx++;
@@ -789,6 +833,18 @@
 				}
 			})
 		}
+	}
+	
+	function getPokerCard(cardNo) {
+		var str = "";
+		
+		if(cardNo == "블라인드") {
+			str = "<img src='/img/viproom/ip/card/card-back.png' style='width:82px;'>";
+		} else {
+			str = "<img src='/img/viproom/ip/card/" + cardNo + ".png' style='width:82px;'>";
+		}
+		
+		return str;
 	}
 	
 	// 나갔을 때
@@ -832,5 +888,11 @@
 	        a[i - 1] = a[j];
 	        a[j] = x;
 	    }
+	}
+	
+	function pokerAlert(message) {
+		$("#iamAlert").attr("style", "display: none");
+		$("#iamAlert").fadeIn(300)
+		$("#iamAlert").html(message);
 	}
 </script>

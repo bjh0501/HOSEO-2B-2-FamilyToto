@@ -6,25 +6,25 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	content="width=device-width, initial-scale=1, shrink-to-fit=no"
+>
 <meta name="description" content="">
 <meta name="author" content="">
 
 <title>One Sports</title>
 
 <!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css"
-	rel="stylesheet" type="text/css">
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css"
+>
 <link href="css/Nunito.css" rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <style>
-.naverButton{
-
--webkit-filter: grayscale(100%);
-filter: gray;
-
+.naverButton {
+	-webkit-filter: grayscale(100%);
+	filter: gray;
 }
 
 .login-img {
@@ -37,9 +37,9 @@ filter: gray;
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-	<ul
-			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-			id="accordionSidebar" th:include="/sidebar/sidebar">
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar" th:include="/sidebar/sidebar"
+		>
 		</ul>
 		<div id="content-wrapper" class="d-flex flex-column">
 
@@ -49,98 +49,110 @@ filter: gray;
 				<!-- Topbar -->
 				<nav
 					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
-					th:include="/header/header"></nav>
+					th:include="/header/header"
+				></nav>
 				<!-- End of Topbar -->
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 					<div class="row">
 						<h2 class="text-title">로그인</h2>
-						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="하나" href="javascript:;">
-							<i class="fas fa-info-circle"></i>
+						&nbsp;<a class="btn btn-light btn-circle" id="helpButton" character="하나"
+							href="javascript:;"
+						> <i class="fas fa-info-circle"></i>
 						</a>
 					</div>
-
-					<div class="row d-flex justify-content-center">
-						
-						<!-- 이미지 -->
-						
-							<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12"  style="margin-right:-25px; margin-left:-25px" ><!-- mb-4  -->
-								<div class="card shadow h-100 py-12" style="padding:50px 0;">
-									<center>
-										<img src="/img/OneSports.png" width="80%" />
-									</center>
-								</div>
-							</div>
-							
-							
-							<div class="col-xs-4 col-lg-4 .col-md-4 .col-sm-4">
-								<div class="card shadow h-100 py-12" style="padding:50px;">
-									<div>
-										<div class="input-group mb-3">
-											<input type="text" class="form-control" placeholder="ID"
-												aria-label="Sizing example input"
-												aria-describedby="inputGroup-sizing-default" id="id">
+					<div class="row justify-content-center">
+						<div class="col-xl-10 col-lg-12 col-md-9">
+							<div class="card o-hidden border-0 shadow-lg my-5">
+								<div class="card-body p-0">
+									<!-- Nested Row within Card Body -->
+									<div class="row">
+										<div class="col-lg-6 align-middle" style="text-align: center;padding-top: 5rem;">
+											<img width="80%" src="/img/OneSports.png">
 										</div>
-	
-										<div class="input-group mb-3">
-											<input type="password" class="form-control" placeholder="Password"
-												aria-label="Sizing example input"
-												aria-describedby="inputGroup-sizing-default" id="pw"
-												onkeypress="caps_lock(event)">
-										</div>
-										<p id="capslock"
-											style="position: relative; border: 2px solid #003b83; width: 300px; bottom: 0px; display: none">
-											&nbsp;<b>CapsLock</b> 키가 눌려있습니다.&nbsp;
-										</p>
-										<div class="input-group mb-2">
-											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input" id="use">
-												<label class="custom-control-label" for="use">아이디 기억</label>
+										<div class="col-lg-6">
+											<div class="p-3">
+												<div class="text-center">
+													<h1 class="h4 text-gray-900 mb-4">Welcome to OneSports!</h1>
+												</div>
+												<div class="form-group">
+													<input type="text" class="form-control form-control-user"
+														id="id" aria-describedby="emailHelp"
+														placeholder="id"
+													>
+												</div>
+												<div class="form-group">
+													<input type="password" class="form-control form-control-user"
+														id="pw" placeholder="Password"
+														onkeypress="caps_lock(event)">
+													<p id="capslock"
+														style="position: relative; border: 2px solid #003b83; width: 300px; bottom: 0px; display: none">
+														&nbsp;<b>CapsLock</b> 키가 눌려있습니다.&nbsp;
+													</p>
+												</div>
+												<div class="form-group">
+													<div class="custom-control custom-checkbox small">
+														<input type="checkbox" class="custom-control-input" id="use">
+														<label class="custom-control-label" for="use">아이디 기억</label>
+													</div>
+												</div>
+												<div class="input-group mb-2">
+													<img class="login-img" src="/img/social/button/onesportsButton.png"
+														style="width: 100%; cursor: pointer;"
+														onclick="javascript:custLogin()"
+													>
+												</div>
+												<hr>
+												<div class="input-group mb-2">
+													<img class="login-img" src="/img/social/button/facebookButton.png"
+														style="width: 100%; cursor: pointer;"
+														onClick="javascript:facebookLogin();"
+													>
+												</div>
+												<div class="input-group mb-2">
+													<img class="login-img" src="/img/social/button/kakaoButton.png"
+														style="width: 100%; cursor: pointer;"
+														onClick="javascript:kakaoLogin();"
+													> <a th:href="${kakaoLoginUrl}" style="display: none"
+														id="kakaoSocial"
+													>kakao</a>
+												</div>
+												<div class="input-group mb-2">
+													<img class="login-img naverButton" src="/img/social/button/naverButton.jpg"
+														style="width: 100%; cursor: pointer;"
+														onClick="javascript:naverLogin();"
+													> <a th:href="${naverLoginUrl}" style="display: none"
+														id="naverSocial"
+													>naver</a>
+													<span style="text-align: justify; font-size: 0.9rem;">*
+														<u>
+														<a href="http://www.law.go.kr/LSW//precInfoP.do?precSeq=186216"
+															target="_blank">관련 법</a></u>
+														에 의하여 네이버 로그인이 중지되었습니다.<br>
+														<small>네이버 로그인을 하려면 운영자에게 문의줘야된다 맨이야.</small>
+													</span>
+												</div>
+												<hr>
+												<p class="text-center">
+													<a href="/findID_PW">아이디/비밀번호 찾기</a>
+												</p>
+												<p class="text-center">
+													<a href="/registerCust">회원가입</a>
+												</p>
+												<input type="hidden" id="refer" th:value="${referUrl}">
 											</div>
 										</div>
-										<div class="input-group mb-2">
-											<img class="login-img" src="/img/social/button/onesportsButton.png"
-												style="width: 100%; cursor: pointer;"
-												onclick="javascript:custLogin()">
-										</div>
-										<div class="input-group mb-2">
-											<img class="login-img" src="/img/social/button/facebookButton.png"
-												style="width: 100%; cursor: pointer;"
-												onClick="javascript:facebookLogin();">
-										</div>
-										<div class="input-group mb-2">
-											<img class="login-img" src="/img/social/button/kakaoButton.png"
-												style="width: 100%; cursor: pointer;"
-												onClick="javascript:kakaoLogin();"> <a
-												th:href="${kakaoLoginUrl}" style="display: none"
-												id="kakaoSocial">kakao</a>
-										</div>
-										<div class="input-group mb-2">
-											<img class="login-img"
-											src="/img/social/button/naverButton.jpg"
-												style="width: 100%; cursor: pointer; -webkit-filter: grayscale(100%); filter: gray; border-radius:30px;"
-												onClick="javascript:naverLogin();"> <a
-												th:href="${naverLoginUrl}" style="display: none"
-												id="naverSocial">naver</a> <span>*<u><a
-													href="http://www.law.go.kr/LSW//precInfoP.do?precSeq=186216"
-													target="_blank">관련 법</a></u>에 의하여 네이버 로그인이 중지되었습니다.<br>
-													<small>네이버 로그인을 하려면 운영자에게 문의줘야된다 맨이야.</small>
-											</span><br>
-										</div>
-										<p class="text-center">
-											<a href="/findID_PW">아이디/비밀번호 찾기</a>
-										</p>
-										<p class="text-center">
-											<a href="/registerCust">회원가입</a>
-										</p>
-										<input type="hidden" id="refer" th:value="${referUrl}">
 									</div>
 								</div>
-							<!-- ㅇㅇ --></div>
-					
-				</div><br><br><br><br>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<br>
+				<br>
+				<br>
 				<!-- /.container-fluid -->
-
 			</div>
 			<!-- End of Main Content -->
 
@@ -148,26 +160,21 @@ filter: gray;
 			<footer class="sticky-footer bg-white" th:include="/footer/footer">
 			</footer>
 			<!-- End of Footer -->
-
 		</div>
 		<!-- End of Content Wrapper -->
-
 	</div>
 	<!-- End of Page Wrapper -->
 
 
-	 <!-- Bootstrap core JavaScript-->
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom scripts for all pages-->
-  <script src="/js/sb-admin-2.min.js"></script>
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
 
 	<!-- common -->
-    <script src="/js/common.js"></script>
+	<script src="/js/common.js"></script>
 	<script src="/js/header.js"></script>
-	
-  
-  
 </body>
 
 </html>

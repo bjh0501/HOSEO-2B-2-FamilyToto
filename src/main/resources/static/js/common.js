@@ -127,7 +127,6 @@ $('#helpButton').click(function() {
 	makeDiv += '</div>';
 
 	$("#page-top").prepend(makeDiv);
-
 	helpMeCharacter();
 });
 

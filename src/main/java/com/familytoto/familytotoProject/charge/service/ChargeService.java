@@ -10,7 +10,7 @@ public interface ChargeService {
 	int doCharge(CreditVO vo);
 	
 	// 충전 내역 메일
-	void sendHistoryEmail(String to, int credit, String gubun);
+	void sendHistoryEmail(String to, int credit, String gubun, String nickname);
 	
 	// 현재 보유 크레딧 보기
 	int getCurrentCredit(int familyCustNo);

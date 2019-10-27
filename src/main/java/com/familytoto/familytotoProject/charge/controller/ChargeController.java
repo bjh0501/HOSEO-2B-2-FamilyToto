@@ -67,7 +67,14 @@ public class ChargeController {
 	public int doCharge(@Valid @ModelAttribute CreditVO vo,
 			HttpServletRequest request,
 			String sEmail,
-			String emailAddress) {
+			String emailAddress,
+			HttpSession session) {
+		CustVO custVo = (CustVO) session.getAttribute("cust");
+		
+		if(custVo == null || custVo.getFamilyCustNo() == 0) {
+			throw new  RuntimeException("패밀리 회원만 충전가능");
+		}
+		
 		vo.setRegCustNo(nCustNo);
 		vo.setRegIp(request.getRemoteAddr());
 		vo.setFamilyCustNo(nFamilyCustNo);
@@ -95,7 +102,7 @@ public class ChargeController {
 					sGubun = "카드충전";
 				}
 				
-				chargeService.sendHistoryEmail(emailAddress, vo.getCreditValue(), sGubun);
+				chargeService.sendHistoryEmail(emailAddress, vo.getCreditValue(), sGubun, custVo.getFamilyCustNick());
 				return 0;
 			} else {
 				return 1;

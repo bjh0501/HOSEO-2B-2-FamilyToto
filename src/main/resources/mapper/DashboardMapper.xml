@@ -201,6 +201,14 @@
 		        WHEN CREDIT_STATE = 'TES' THEN '테스트 크레딧'
 		        WHEN CREDIT_STATE = 'RSI' THEN '러시안 룰렛 참여'
 		        WHEN CREDIT_STATE = 'RSW' THEN '러시안 룰렛 승'
+		        WHEN CREDIT_STATE = 'IPC' THEN '인디안 포커 콜'
+		        WHEN CREDIT_STATE = 'IPH' THEN '인디안 포커 하프'
+		        WHEN CREDIT_STATE = 'IPB' THEN '인디안 포커 삥'
+		        WHEN CREDIT_STATE = 'IPD' THEN '인디안 포커 따당'
+		        WHEN CREDIT_STATE = 'IPE' THEN '인디안 포커 체크'
+		        WHEN CREDIT_STATE = 'IPA' THEN '인디안 포커 올인'
+		        WHEN CREDIT_STATE = 'IPW' THEN '인디안 포커 승리'
+		        WHEN CREDIT_STATE = 'IPO' THEN '인디안 포커 시작'
 				END AS creditState
 		,		CREDIT_VALUE as creditValue
 		,		DATE_FORMAT(IFNULL(CHG_DT, REG_DT), '%y. %m. %d %H:%i') AS regCreditDt

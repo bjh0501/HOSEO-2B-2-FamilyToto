@@ -47,7 +47,7 @@ public class ChargeServiceImpl implements ChargeService {
 	}
 
 	@Override
-	public void sendHistoryEmail(String to, int credit, String gubun) {
+	public void sendHistoryEmail(String to, int credit, String gubun, String nickname) {
 		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy년 MM월dd일 HH시mm분ss초");
 		String format_time1 = format1.format (System.currentTimeMillis());
 		
@@ -56,7 +56,7 @@ public class ChargeServiceImpl implements ChargeService {
 		
 		sContents += "안녕하세요. OneSports입니다.<br>";
 		sContents += "<br>";
-		sContents += "회원(아이디)님이 충전하신 내역을 안내해드립니다.<br>";
+		sContents += "회원(" + nickname + ")님이 충전하신 내역을 안내해드립니다.<br>";
 		sContents += "<br>";
 		sContents += "<h2>OneSports 충전 내역</h2><br>";
 		sContents += "<table border=1>";
