@@ -143,7 +143,7 @@
 		WHERE	PB.FAMILY_CUST_NO = #{familyCustNo}
         AND		PB.USE_YN = 'Y'
         <if test="startDt != null">
-        	AND		DATE_FORMAT(IFNULL(PBG.CHG_DT, PBG.REG_DT), '%Y%c%d') BETWEEN #{startDt} and #{endDt}
+        	AND		DATE_FORMAT(IFNULL(PBG.CHG_DT, PBG.REG_DT), '%Y%m%d') BETWEEN #{startDt} and #{endDt}
        	</if>
         ORDER BY IFNULL(PBG.CHG_DT, PBG.REG_DT) DESC
 	</select>

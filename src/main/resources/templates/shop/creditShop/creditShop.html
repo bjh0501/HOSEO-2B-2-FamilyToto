@@ -28,6 +28,14 @@
 	background: #d2d2d2db;
 	cursor: all-scroll;
 }
+
+a#MOVE_TOP_BTN {
+    position: fixed;
+    right: -10%;
+    bottom: 50px;
+    z-index: 2;
+    display: none;
+}
 </style>
 <link rel="stylesheet" href="/css/jquery-ui.min.css">
 </head>
@@ -135,6 +143,9 @@
 				<!-- End of Footer -->
 
 			</div>
+			<a id="MOVE_TOP_BTN" href="#">
+				<img src="/img/creditshop/top.png" style="width: 25%;">
+			</a>
 			<div class="modal fade" id="promptModal" tabindex="-1" role="dialog"
 				aria-labelledby="promptModal" aria-hidden="true">
 				<div class="modal-dialog" role="document">
@@ -603,5 +614,22 @@ var helpCommentList = [
 	}
 	
 	$("#search").keyup(function(e){getList(-1, "Y"); });
+	
+	$(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 500) {
+                $('#MOVE_TOP_BTN').fadeIn();
+            } else {
+                $('#MOVE_TOP_BTN').fadeOut();
+            }
+        });
+        
+        $("#MOVE_TOP_BTN").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+    });
 </script>
 

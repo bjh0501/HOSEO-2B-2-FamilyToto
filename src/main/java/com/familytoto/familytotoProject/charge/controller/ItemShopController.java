@@ -55,6 +55,10 @@ public class ItemShopController {
 		
 		String nickname = request.getParameter("nickname");
 		
+		if(nickname.length() > 8 || nickname.length() < 2) {
+			throw new RuntimeException("닉은 2~8까지만가능");
+		}
+		
 		// 존재 닉네임
 		if(itemShopService.isCheckNickname(nickname) == true) {
 			return -97;

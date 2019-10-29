@@ -13,9 +13,9 @@
 	   	,		FC.FAMILY_CUST_COMPANY_NUMBER as familyCustCompanyNumber
 		FROM	CUSTOM C
 	    	inner join	FAMILY_CUSTOM FC ON C.FAMILY_CUST_NO = FC.FAMILY_CUST_NO
-	    AND			C.USE_YN = 'Y'
-	    AND			FC.USE_YN = 'Y'
+		    AND			FC.USE_YN = 'Y'
 		where	CUST_ID = #{custId}
+		AND		C.USE_YN = 'Y'
 		limit 1;
 	</select>
 	<select id="socialLogin" resultType="CustVO">

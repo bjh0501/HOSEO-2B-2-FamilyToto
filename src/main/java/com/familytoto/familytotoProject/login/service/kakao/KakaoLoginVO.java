@@ -148,24 +148,24 @@ public class KakaoLoginVO {
             
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
             String email = "";
-            String age_range = "";
+            //String age_range = "";
             
             if(kakao_account.getAsJsonObject().get("email") != null) {
             	email = kakao_account.getAsJsonObject().get("email").getAsString();            	
             }
             
-            if(kakao_account.getAsJsonObject().get("age_range") != null) {
-            	age_range = kakao_account.getAsJsonObject().get("age_range").getAsString().substring(0,2);            	
-            }
+//            if(kakao_account.getAsJsonObject().get("age_range") != null) {
+//            	age_range = kakao_account.getAsJsonObject().get("age_range").getAsString().substring(0,2);            	
+//            }
             
-            if(nickname.equals("") || email.equals("") || age_range.equals("")) {
+            if(nickname.equals("") || email.equals("")) {
             	vo.setScCustId("-99");
             	kakaoDisRegister(access_Token);
             } else {
-            	if(Integer.parseInt(age_range) < 20) {
-            		vo.setScCustId("-98");
-            		kakaoDisRegister(access_Token);
-            	}
+//            	if(Integer.parseInt(age_range) < 20) {
+//            		vo.setScCustId("-98");
+//            		kakaoDisRegister(access_Token);
+//            	}
             	
             	vo.setScCustNick(nickname);
             	vo.setScCustEmail(email);
@@ -283,24 +283,24 @@ public class KakaoLoginVO {
             
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
             String email = "";
-            String age_range = "";
+//            String age_range = "";
             
             if(kakao_account.getAsJsonObject().get("email") != null) {
             	email = kakao_account.getAsJsonObject().get("email").getAsString();            	
             }
             
-            if(kakao_account.getAsJsonObject().get("age_range") != null) {
-            	age_range = kakao_account.getAsJsonObject().get("age_range").getAsString().substring(0,2);            	
-            }
+//            if(kakao_account.getAsJsonObject().get("age_range") != null) {
+//            	age_range = kakao_account.getAsJsonObject().get("age_range").getAsString().substring(0,2);            	
+//            }
             
-            if(nickname.equals("") || email.equals("") || age_range.equals("")) {
+            if(nickname.equals("") || email.equals("")) {
             	map.put("error", -98);
             	kakaoDisRegister(access_Token);
             } else {
-            	if(Integer.parseInt(age_range) < 20) {
-            		map.put("error", -97);
-            		kakaoDisRegister(access_Token);
-            	}
+//            	if(Integer.parseInt(age_range) < 20) {
+//            		map.put("error", -97);
+//            		kakaoDisRegister(access_Token);
+//            	}
             	
             	CustVO cVo = (CustVO) session.getAttribute("cust");
             	SocialVO vo = new SocialVO();

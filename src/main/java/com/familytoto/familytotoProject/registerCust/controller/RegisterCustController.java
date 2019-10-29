@@ -73,7 +73,7 @@ public class RegisterCustController {
 			nResult = -97;
 		} else if(cVo.getCustPassword().length() < 4 || cVo.getCustPassword().length() > 20) {
 			nResult = -96;
-		} else {
+		} else { // 회원가입성공
 			
 			if(rcVo.getFamilyCustCompanyNumber() != null) {
 				Pattern p = Pattern.compile("(^[0-9]{3}-[0-9]{2}-[0-9]{4}$)");
@@ -116,12 +116,12 @@ public class RegisterCustController {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 				return -3;
 			}
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("custId", cVo.getCustId());
+			
+			custLoginService.login(cVo);
 		}
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("custId", cVo.getCustId());
-		
-		custLoginService.login(cVo);
 		
 		return nResult;
 	}

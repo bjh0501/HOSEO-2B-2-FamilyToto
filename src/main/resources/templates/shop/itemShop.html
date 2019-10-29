@@ -204,6 +204,7 @@ var helpCommentList = [
 		
 		if(nick.length > 8 || nick.length < 2) {
 			alert("닉네임은 2~8글자만 가능합니다.");
+			return false;
 		}
 		
 		$.ajax({
